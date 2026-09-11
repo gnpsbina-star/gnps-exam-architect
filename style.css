@@ -2012,9 +2012,9 @@ optgroup option {
 }
 
 .student-syllabus-paper.is-pdf-exporting {
-  width: 745px !important;
-  max-width: 745px !important;
-  min-width: 745px !important;
+  width: 750px !important;
+  max-width: 750px !important;
+  min-width: 750px !important;
   margin: 0 auto !important;
   padding: 8px 12px !important;
   background: #ffffff !important;

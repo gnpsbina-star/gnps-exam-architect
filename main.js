@@ -5512,18 +5512,23 @@ function renderSyllabusSheetPaper() {
 
 async function triggerPrintSyllabusSheet() {
   if (!syllabusSheetPaper) return;
-  const wasAlreadyHiding = syllabusSheetPaper.classList.contains('hide-unselected');
-  syllabusSheetPaper.classList.add('hide-unselected');
-  syllabusSheetPaper.classList.add('is-pdf-exporting');
+  const stage = document.createElement('div');
+  stage.id = 'print-sandbox-stage';
+  stage.style.cssText = 'position: fixed; left: 0; top: 0; width: 100%; height: 100%; margin: 0; padding: 0; background: #ffffff; z-index: 999999; overflow: auto;';
+
+  const clone = syllabusSheetPaper.cloneNode(true);
+  clone.classList.add('is-pdf-exporting');
+  clone.classList.add('hide-unselected');
+  clone.style.cssText = 'width: 100% !important; max-width: 750px !important; margin: 0 auto !important; padding: 8px 12px !important; background: #ffffff !important; box-sizing: border-box !important; display: block !important;';
+
+  stage.appendChild(clone);
+  document.body.appendChild(stage);
 
   await new Promise(resolve => setTimeout(resolve, 150));
   window.print();
 
   setTimeout(() => {
-    syllabusSheetPaper.classList.remove('is-pdf-exporting');
-    if (!wasAlreadyHiding && (!sheetHideUncheckedToggle || !sheetHideUncheckedToggle.checked)) {
-      syllabusSheetPaper.classList.remove('hide-unselected');
-    }
+    stage.remove();
   }, 1000);
 }
 
@@ -5539,17 +5544,22 @@ async function exportSyllabusSheetToPdf() {
     exportPdfSheetBtn.disabled = true;
     exportPdfSheetBtn.innerHTML = '<span>⏳ Generating PDF...</span>';
 
-    // Reset scroll positions so html2canvas doesn't capture blank offset
-    if (syllabusSheetModal) syllabusSheetModal.scrollTop = 0;
-    const scrollWrapper = document.querySelector('.sheet-preview-scroll-wrapper');
-    if (scrollWrapper) scrollWrapper.scrollTop = 0;
+    // 1. Create a dedicated, clean top-level export stage directly on document.body
+    // This eliminates ALL modal flexbox centering, scroll-wrapper offsets, and parent clipping!
+    const stage = document.createElement('div');
+    stage.id = 'pdf-render-stage';
+    stage.style.cssText = 'position: fixed; left: 0; top: 0; width: 750px; min-width: 750px; max-width: 750px; margin: 0; padding: 0; background: #ffffff; z-index: 999999; overflow: visible;';
 
-    // Strictly apply hide-unselected and is-pdf-exporting so checkboxes & unselected items are completely stripped from PDF
-    const wasAlreadyHiding = syllabusSheetPaper.classList.contains('hide-unselected');
-    syllabusSheetPaper.classList.add('hide-unselected');
-    syllabusSheetPaper.classList.add('is-pdf-exporting');
+    // 2. Clone the syllabusSheetPaper
+    const clone = syllabusSheetPaper.cloneNode(true);
+    clone.classList.add('is-pdf-exporting');
+    clone.classList.add('hide-unselected');
+    clone.style.cssText = 'width: 750px !important; min-width: 750px !important; max-width: 750px !important; margin: 0 !important; padding: 8px 12px !important; background: #ffffff !important; box-sizing: border-box !important; display: block !important;';
 
-    // Give browser layout engine time to reflow into fixed 745px A4 CBSE layout
+    stage.appendChild(clone);
+    document.body.appendChild(stage);
+
+    // Give browser layout engine time to reflow into fixed 750px A4 layout
     await new Promise(resolve => setTimeout(resolve, 200));
 
     const opt = {
@@ -5562,8 +5572,7 @@ async function exportSyllabusSheetToPdf() {
         logging: false,
         letterRendering: true,
         scrollX: 0,
-        scrollY: 0,
-        windowWidth: 745
+        scrollY: 0
       },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       pagebreak: {
@@ -5573,17 +5582,14 @@ async function exportSyllabusSheetToPdf() {
     };
 
     try {
-      await html2pdf().set(opt).from(syllabusSheetPaper).save();
+      await html2pdf().set(opt).from(clone).save();
     } catch (err) {
       console.error('html2pdf error, falling back to print:', err);
       triggerPrintSyllabusSheet();
     } finally {
+      stage.remove();
       exportPdfSheetBtn.innerHTML = origHtml;
       exportPdfSheetBtn.disabled = false;
-      syllabusSheetPaper.classList.remove('is-pdf-exporting');
-      if (!wasAlreadyHiding && (!sheetHideUncheckedToggle || !sheetHideUncheckedToggle.checked)) {
-        syllabusSheetPaper.classList.remove('hide-unselected');
-      }
     }
   } else {
     triggerPrintSyllabusSheet();
