@@ -5512,7 +5512,7 @@ function renderSyllabusSheetPaper() {
   `;
 }
 
-function exportSyllabusSheetToPdf() {
+async function exportSyllabusSheetToPdf() {
   if (!syllabusSheetPaper) return;
   const school = (sheetSchoolName && sheetSchoolName.value) ? sheetSchoolName.value.trim() : 'GNPS';
   const cls = sheetClassSelect ? sheetClassSelect.value : 'Class';
@@ -5529,12 +5529,25 @@ function exportSyllabusSheetToPdf() {
     syllabusSheetPaper.classList.add('hide-unselected');
     syllabusSheetPaper.classList.add('is-pdf-exporting');
 
+    // Give browser layout engine time to reflow into fixed 760px A4 CBSE layout
+    await new Promise(resolve => setTimeout(resolve, 160));
+
     const opt = {
       margin: [6, 6, 6, 6],
       filename: cleanFileName,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, logging: false },
-      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        letterRendering: true,
+        windowWidth: 800
+      },
+      jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak: {
+        mode: ['avoid-all', 'css', 'legacy'],
+        avoid: ['.paper-part-section', '.paper-syllabus-table tr', '.paper-signatures-row', '.paper-instructions-box', '.cbse-table tr']
+      }
     };
 
     html2pdf().set(opt).from(syllabusSheetPaper).save().then(() => {

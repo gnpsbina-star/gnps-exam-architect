@@ -1914,53 +1914,52 @@ optgroup option {
 }
 
 .paper-ch-item {
-  font-size: 0.84rem !important;
+  font-size: 9.5pt !important;
   color: #000000 !important;
   display: flex;
   align-items: center;
-  gap: 6px !important;
+  gap: 5px !important;
   cursor: pointer;
   user-select: none;
-  padding: 2px 5px !important;
-  border-radius: 4px;
-  line-height: 1.45 !important;
-  transition: background 0.15s ease, opacity 0.15s ease;
+  padding: 1px 3px !important;
+  border-radius: 2px;
+  line-height: 1.3 !important;
+  transition: background 0.15s ease;
 }
 
 .paper-ch-item:hover {
-  background: rgba(15, 23, 42, 0.06);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .paper-ch-title {
   color: #000000 !important;
-  font-size: 0.84rem !important;
-  font-weight: 500 !important;
-  line-height: 1.45 !important;
+  font-size: 9.5pt !important;
+  font-weight: normal !important;
+  line-height: 1.3 !important;
 }
 
 .paper-ch-item.is-unselected {
-  color: #0f172a !important;
-  opacity: 1 !important;
-  text-decoration: none !important;
+  color: #64748b !important;
+  opacity: 0.55 !important;
 }
 
 .paper-ch-item.is-unselected .paper-ch-title,
 .paper-ch-item.is-unselected .paper-ch-badge {
-  color: #0f172a !important;
-  text-decoration: none !important;
+  color: #64748b !important;
 }
 
 .paper-ch-item.is-selected {
-  background: rgba(2, 132, 199, 0.08);
+  background: transparent;
 }
 
 .paper-ch-item.is-selected .paper-ch-title {
-  font-weight: 700 !important;
-  color: #0369a1 !important;
+  font-weight: bold !important;
+  color: #000000 !important;
 }
 
 .paper-ch-item.is-selected .paper-ch-badge {
-  color: #0284c7 !important;
+  font-weight: bold !important;
+  color: #000000 !important;
 }
 
 /* Blank Writing Area for Special Subjects (General Knowledge, Robotics) */
@@ -1998,14 +1997,200 @@ optgroup option {
 .student-syllabus-paper.hide-unselected .is-unselected,
 .student-syllabus-paper.hide-unselected .sheet-inline-cb,
 .student-syllabus-paper.hide-unselected .paper-subj-actions,
-.student-syllabus-paper.hide-unselected .paper-no-selection-notice,
-.student-syllabus-paper.is-pdf-exporting .is-unselected,
+.student-syllabus-paper.hide-unselected .paper-no-selection-notice {
+  display: none !important;
+}
+
+/* ==========================================================================
+   STRICT CBSE BOARD QUESTION PAPER STYLING FOR PDF EXPORT
+   ========================================================================== */
+.student-syllabus-paper.is-pdf-exporting,
+.student-syllabus-paper.is-pdf-exporting * {
+  font-family: 'Times New Roman', Times, 'Noto Serif Devanagari', 'Mangal', serif !important;
+  color: #000000 !important;
+  box-sizing: border-box !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting {
+  width: 760px !important;
+  max-width: 760px !important;
+  min-width: 760px !important;
+  margin: 0 auto !important;
+  padding: 12px 18px !important;
+  background: #ffffff !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  font-size: 9.5pt !important;
+  line-height: 1.25 !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .no-print,
 .student-syllabus-paper.is-pdf-exporting .sheet-inline-cb,
 .student-syllabus-paper.is-pdf-exporting .paper-subj-actions,
 .student-syllabus-paper.is-pdf-exporting .paper-no-selection-notice,
 .student-syllabus-paper.is-pdf-exporting .sheet-subj-date-input,
-.student-syllabus-paper.is-pdf-exporting .paper-subj-no-date {
+.student-syllabus-paper.is-pdf-exporting .paper-subj-no-date,
+.student-syllabus-paper.is-pdf-exporting .is-unselected {
   display: none !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .syllabus-paper-header {
+  border-bottom: 2px solid #000000 !important;
+  padding-bottom: 4px !important;
+  margin-bottom: 8px !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-school-title {
+  font-size: 15pt !important;
+  font-weight: bold !important;
+  margin-bottom: 2px !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-doc-subtitle {
+  font-size: 11pt !important;
+  font-weight: bold !important;
+  margin-bottom: 2px !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-session-tag {
+  font-size: 9.5pt !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-meta-table {
+  border: 1px solid #000000 !important;
+  background: #ffffff !important;
+  margin-bottom: 8px !important;
+  font-size: 9.5pt !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-meta-cell {
+  border-right: 1px solid #000000 !important;
+  padding: 3px 5px !important;
+  font-size: 9.5pt !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-instructions-box {
+  border: 1px solid #000000 !important;
+  background: #ffffff !important;
+  padding: 5px 8px !important;
+  margin-bottom: 8px !important;
+  border-radius: 0 !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-instructions-heading {
+  font-size: 9.5pt !important;
+  font-weight: bold !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-instructions-list {
+  font-size: 9pt !important;
+  line-height: 1.25 !important;
+  padding-left: 16px !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-part-section {
+  border: 1px solid #000000 !important;
+  margin-bottom: 8px !important;
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-part-banner {
+  background: #f2f2f2 !important;
+  color: #000000 !important;
+  border-bottom: 1px solid #000000 !important;
+  padding: 4px 8px !important;
+  font-size: 10pt !important;
+  font-weight: bold !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-part-badge {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+  font-size: 8.5pt !important;
+  font-weight: bold !important;
+  padding: 1px 4px !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-window-notice {
+  background: #ffffff !important;
+  color: #000000 !important;
+  border-bottom: 1px solid #000000 !important;
+  padding: 3px 8px !important;
+  font-size: 9pt !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-syllabus-table {
+  border: 1px solid #000000 !important;
+  border-collapse: collapse !important;
+  margin-bottom: 0 !important;
+  width: 100% !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-syllabus-table th {
+  background: #f2f2f2 !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+  font-size: 9.5pt !important;
+  font-weight: bold !important;
+  padding: 3px 5px !important;
+  text-align: left !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-syllabus-table td {
+  border: 1px solid #000000 !important;
+  color: #000000 !important;
+  font-size: 9.5pt !important;
+  padding: 3px 5px !important;
+  line-height: 1.25 !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-syllabus-table tr {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-ch-item,
+.student-syllabus-paper.is-pdf-exporting .paper-topic-item,
+.student-syllabus-paper.is-pdf-exporting .paper-lab-item,
+.student-syllabus-paper.is-pdf-exporting .sea-activity-item {
+  background: transparent !important;
+  border: none !important;
+  padding: 1px 0 !important;
+  margin: 0 0 2px 0 !important;
+  display: flex !important;
+  align-items: baseline !important;
+  gap: 4px !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-ch-title,
+.student-syllabus-paper.is-pdf-exporting .paper-topic-title,
+.student-syllabus-paper.is-pdf-exporting .paper-lab-title,
+.student-syllabus-paper.is-pdf-exporting .sea-activity-title {
+  color: #000000 !important;
+  font-size: 9.5pt !important;
+  font-weight: normal !important;
+  line-height: 1.25 !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-ch-badge,
+.student-syllabus-paper.is-pdf-exporting .paper-lab-badge,
+.student-syllabus-paper.is-pdf-exporting .sea-badge {
+  color: #000000 !important;
+  background: transparent !important;
+  border: none !important;
+  font-size: 9.5pt !important;
+  font-weight: bold !important;
+  padding: 0 !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-subj-title {
+  font-size: 10pt !important;
+  font-weight: bold !important;
+  color: #000000 !important;
+  text-transform: uppercase !important;
 }
 
 .student-syllabus-paper.is-pdf-exporting .paper-subj-date-badge {
@@ -2013,31 +2198,64 @@ optgroup option {
   background: transparent !important;
   color: #000000 !important;
   padding: 0 !important;
-  font-size: 0.76rem !important;
-  font-weight: 700 !important;
+  font-size: 9pt !important;
+  font-weight: bold !important;
   margin-top: 2px !important;
   display: block !important;
 }
 
+.student-syllabus-paper.is-pdf-exporting .paper-chapter-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 2px 8px !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-robotics-table {
+  border: 1px solid #000000 !important;
+  border-collapse: collapse !important;
+  width: 100% !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-robotics-table th,
+.student-syllabus-paper.is-pdf-exporting .paper-robotics-table td {
+  border: 1px solid #000000 !important;
+  padding: 2px 4px !important;
+  font-size: 8.5pt !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .paper-signatures-row {
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
+  margin-top: 14px !important;
+  padding-top: 4px !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .sig-img-slot {
+  height: 38px !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .principal-sig-img {
+  max-height: 36px !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .sig-line {
+  border-top: 1px solid #000000 !important;
+  margin-bottom: 2px !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .sig-title {
+  font-size: 9pt !important;
+  font-weight: bold !important;
+  color: #000000 !important;
+}
+
 .student-syllabus-paper.hide-unselected .paper-ch-item,
 .student-syllabus-paper.hide-unselected .paper-topic-item,
-.student-syllabus-paper.hide-unselected .paper-lab-item,
-.student-syllabus-paper.is-pdf-exporting .paper-ch-item,
-.student-syllabus-paper.is-pdf-exporting .paper-topic-item,
-.student-syllabus-paper.is-pdf-exporting .paper-lab-item {
+.student-syllabus-paper.hide-unselected .paper-lab-item {
   cursor: default !important;
   opacity: 1 !important;
   color: #000000 !important;
   text-decoration: none !important;
-}
-
-.student-syllabus-paper.hide-unselected .paper-ch-item:hover,
-.student-syllabus-paper.hide-unselected .paper-topic-item:hover,
-.student-syllabus-paper.hide-unselected .paper-lab-item:hover,
-.student-syllabus-paper.is-pdf-exporting .paper-ch-item:hover,
-.student-syllabus-paper.is-pdf-exporting .paper-topic-item:hover,
-.student-syllabus-paper.is-pdf-exporting .paper-lab-item:hover {
-  background: transparent !important;
 }
 
 .paper-bullet-dot {
