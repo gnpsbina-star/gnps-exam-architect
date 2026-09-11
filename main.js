@@ -1793,7 +1793,7 @@ function getSubjectSelectionForSheet(cls, subjName) {
     return saved.checked;
   }
 
-  // Default to ALL items UNCHECKED for this subject on initial load
+  // Default to ALL prescribed items CHECKED for this subject on initial load
   const flatItems = getFlatItemsForSubject(cls, subjName);
   const allVals = new Set();
   flatItems.forEach(it => {
@@ -1801,8 +1801,8 @@ function getSubjectSelectionForSheet(cls, subjName) {
     if (it.secKey) allVals.add(`${it.secKey}: ${it.value}`);
   });
   sheetSelectionStore[key] = {
-    checked: new Set(),
-    unchecked: allVals,
+    checked: allVals,
+    unchecked: new Set(),
     initialized: true
   };
   return sheetSelectionStore[key].checked;
@@ -4687,8 +4687,8 @@ function handleInlineCheckboxChange(cb) {
       if (it.secKey) allVals.add(`${it.secKey}: ${it.value}`);
     });
     sheetSelectionStore[key] = {
-      checked: new Set(),
-      unchecked: allVals,
+      checked: allVals,
+      unchecked: new Set(),
       initialized: true
     };
   }
@@ -5038,10 +5038,15 @@ function renderSyllabusSheetPaper() {
         ? `<div class="paper-subj-date-badge"><span class="no-print">📅 </span><span class="paper-date-label">Date: </span>${formatExamDate(subjDate)}</div>`
         : `<div class="paper-subj-no-date no-print">📅 Set Exam Date</div>`;
 
+      const hasContent = (contentHtml && contentHtml.trim().length > 0);
+      const displayContent = (checkedCount === 0 && !hasContent)
+        ? `<div style="font-style: italic; font-size: 9pt; color: #000000; padding: 2px 0;">Complete Prescribed Syllabus</div>`
+        : contentHtml;
+
       part1RowsHtml += `
-        <tr class="paper-subject-row ${checkedCount === 0 ? 'is-unselected' : ''}">
-          <td class="paper-row-sno" style="text-align: center; font-weight: 800; font-size: 0.82rem; color: #000000; width: 45px;">${p1Sno++}</td>
-          <td style="width: 155px; vertical-align: top;">
+        <tr class="paper-subject-row">
+          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${p1Sno++}</td>
+          <td style="width: 140px; vertical-align: top;">
             <div class="paper-subj-title">${subjName}</div>
             <div class="paper-subj-date-container">
               <input type="date" class="sheet-subj-date-input no-print" data-subject="${subjName}" value="${subjDate}" title="Set Exam Date for ${subjName}">
@@ -5053,7 +5058,7 @@ function renderSyllabusSheetPaper() {
             </div>
           </td>
           <td>
-            ${contentHtml}
+            ${displayContent}
           </td>
         </tr>
       `;
@@ -5088,34 +5093,29 @@ function renderSyllabusSheetPaper() {
         `;
       });
 
-      const isRowActive = checkedCount > 0;
+      const hasActs = actsHtml.trim().length > 0;
+      const displayActs = (checkedCount === 0 && !hasActs)
+        ? `<div style="font-style: italic; font-size: 8.5pt; color: #000000;">Prescribed CBSE Internal Assessment Activities</div>`
+        : actsHtml;
 
       part2RowsHtml += `
-        <tr class="paper-subject-row ${!isRowActive ? 'is-unselected' : ''}">
-          <td class="paper-row-sno" style="text-align: center; font-weight: 800; font-size: 0.82rem; color: #000000; width: 45px;">${p2Sno++}</td>
-          <td style="width: 155px; vertical-align: top;">
+        <tr class="paper-subject-row">
+          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${p2Sno++}</td>
+          <td style="width: 140px; vertical-align: top;">
             <div class="paper-subj-title">${item.subject}</div>
-            <div style="font-size: 8pt; color: #333333; font-style: italic; margin-top: 1px;">${item.domain}</div>
-            <div style="margin-top: 4px; font-size: 8pt; line-height: 1.25;">
+            <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${item.domain}</div>
+            <div style="margin-top: 3px; font-size: 8pt; line-height: 1.25;">
               <div><strong>Window:</strong> <span class="sea-range-date-text">${formatDateRange(seaDateFrom, seaDateTo)}</span></div>
-              <div style="color: #444444; font-size: 7.5pt; margin-top: 1px;">• Regular subject periods</div>
+              <div style="color: #333333; font-size: 7.5pt; margin-top: 1px;">• Regular periods</div>
             </div>
-            <div class="paper-subj-actions no-print" style="margin-top: 6px;">
+            <div class="paper-subj-actions no-print" style="margin-top: 4px;">
               <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${seaSubjKey}" title="Select all ${item.subject} SEA">All</button>
               <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${seaSubjKey}" title="Clear all ${item.subject} SEA">Clear</button>
             </div>
           </td>
           <td>
             <div style="display: flex; flex-direction: column; gap: 2px;">
-              ${actsHtml}
-              <div style="margin-top: 6px; padding-top: 6px; border-top: 1px solid #e2e8f0;">
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.68rem; color: #64748b; font-weight: 600; margin-bottom: 4px;">
-                  <span>Teacher's Specific Activity Notes / Student Batches:</span>
-                  <span style="font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.5px; background: #f1f5f9; padding: 1px 5px; border-radius: 3px; font-weight: 800; color: #94a3b8;">Teacher Writing Area</span>
-                </div>
-                <div class="paper-ruled-line-dashed" style="height: 16px;"></div>
-                <div class="paper-ruled-line-dashed" style="height: 16px;"></div>
-              </div>
+              ${displayActs}
             </div>
           </td>
         </tr>
@@ -5189,19 +5189,18 @@ function renderSyllabusSheetPaper() {
           }
         }
 
-        const isRobActive = robCheckedCount > 0;
         part3RowsHtml += `
-          <tr class="paper-subject-row ${!isRobActive ? 'is-unselected' : ''}">
-            <td class="paper-row-sno" style="text-align: center; font-weight: 800; font-size: 0.82rem; color: #000000; width: 45px;">${p3Sno++}</td>
-            <td style="width: 155px; vertical-align: top;">
+          <tr class="paper-subject-row">
+            <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${p3Sno++}</td>
+            <td style="width: 140px; vertical-align: top;">
               <div class="paper-subj-title">${subjName}</div>
-              <div style="font-size: 8pt; color: #333333; font-style: italic; margin-top: 1px;">${item.subtitle}</div>
-              <div style="font-size: 7.5pt; color: #555555; margin-top: 1px;">${item.book}</div>
-              <div style="margin-top: 4px; font-size: 8pt; line-height: 1.25;">
+              <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${item.subtitle}</div>
+              <div style="font-size: 7.5pt; color: #333333; margin-top: 1px;">${item.book}</div>
+              <div style="margin-top: 3px; font-size: 8pt; line-height: 1.25;">
                 <div><strong>Window:</strong> <span class="cosch-range-date-text">${formatDateRange(coSchDateFrom, coSchDateTo)}</span></div>
-                <div style="color: #444444; font-size: 7.5pt; margin-top: 1px;">• Regular class periods</div>
+                <div style="color: #333333; font-size: 7.5pt; margin-top: 1px;">• Class periods</div>
               </div>
-              <div class="paper-subj-actions no-print" style="margin-top: 6px;">
+              <div class="paper-subj-actions no-print" style="margin-top: 4px;">
                 <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${subjName}" title="Select ${subjName}">All</button>
                 <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${subjName}" title="Clear ${subjName}">Clear</button>
               </div>
@@ -5224,34 +5223,29 @@ function renderSyllabusSheetPaper() {
           </tr>
         `;
       } else {
-        // Music, Art & Craft, Yoga (Blank Ruled Lines for Teachers)
+        // Music, Art & Craft, Yoga
         const isIncluded = !!(checkedSet && (checkedSet.has('__included__') || checkedSet.has(subjName)));
         part3RowsHtml += `
           <tr class="paper-subject-row ${!isIncluded ? 'is-unselected' : ''}">
-            <td class="paper-row-sno" style="text-align: center; font-weight: 800; font-size: 0.82rem; color: #000000; width: 45px;">${p3Sno++}</td>
-            <td style="width: 155px; vertical-align: top;">
+            <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${p3Sno++}</td>
+            <td style="width: 140px; vertical-align: top;">
               <div class="paper-subj-title">${subjName}</div>
-              <div style="font-size: 8pt; color: #333333; font-style: italic; margin-top: 1px;">${item.subtitle}</div>
-              <div style="font-size: 7.5pt; color: #555555; margin-top: 1px;">${item.book}</div>
-              <div style="margin-top: 4px; font-size: 8pt; line-height: 1.25;">
+              <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${item.subtitle}</div>
+              <div style="font-size: 7.5pt; color: #333333; margin-top: 1px;">${item.book}</div>
+              <div style="margin-top: 3px; font-size: 8pt; line-height: 1.25;">
                 <div><strong>Window:</strong> <span class="cosch-range-date-text">${formatDateRange(coSchDateFrom, coSchDateTo)}</span></div>
-                <div style="color: #444444; font-size: 7.5pt; margin-top: 1px;">• Regular class periods</div>
+                <div style="color: #333333; font-size: 7.5pt; margin-top: 1px;">• Class periods</div>
               </div>
             </td>
             <td>
               <div class="paper-blank-portion-wrapper">
-                <label class="paper-ch-item ${isIncluded ? 'is-selected' : 'is-unselected'}" data-subject="${subjName}" style="margin-bottom: 6px;">
+                <label class="paper-ch-item ${isIncluded ? 'is-selected' : 'is-unselected'}" data-subject="${subjName}" style="margin-bottom: 4px;">
                   <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="__included__" ${isIncluded ? 'checked' : ''}>
-                  <span style="font-weight: 700; color: #0f172a; font-size: 0.78rem;">Include in Examination Circular (Blank Writing Space for Teacher):</span>
+                  <span style="font-weight: bold; color: #000000; font-size: 9pt;">${item.prompt}</span>
                 </label>
-                <div style="border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px 12px; background: #ffffff;">
-                  <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.70rem; color: #475569; font-weight: 600; margin-bottom: 6px;">
-                    <span>${item.prompt}:</span>
-                    <span style="font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.5px; background: #f1f5f9; padding: 1px 6px; border-radius: 3px; font-weight: 800; color: #64748b;">Teacher Writing Space</span>
-                  </div>
-                  <div class="paper-ruled-line-dashed"></div>
-                  <div class="paper-ruled-line-dashed"></div>
-                  <div class="paper-ruled-line-dashed"></div>
+                <div style="border: 1px solid #000000; padding: 4px 6px; background: #ffffff;">
+                  <div class="paper-ruled-line-dashed" style="height: 14px;"></div>
+                  <div class="paper-ruled-line-dashed" style="height: 14px;"></div>
                 </div>
               </div>
             </td>
@@ -5262,13 +5256,12 @@ function renderSyllabusSheetPaper() {
 
     const instructionsHtml = includeInstructions ? `
       <div class="paper-instructions-box">
-        <div class="paper-instructions-heading">GENERAL INSTRUCTIONS FOR STUDENTS & PARENTS:</div>
+        <div class="paper-instructions-heading">GENERAL INSTRUCTIONS:</div>
         <ol class="paper-instructions-list">
-          <li><strong>Part 1 (Scholastic Written Examination):</strong> Formal pen-paper exams will be conducted strictly as per the single dates scheduled above. Reporting to the examination hall on time is mandatory. Late arrival will not be accommodated.</li>
-          <li><strong>Part 2 (Subject Enrichment Activities - SEA):</strong> Mandatory CBSE 5-mark activities (ASL for languages, Math Lab activities, Science experiment demonstrations, and SST Map/Project work) will be evaluated on any date between <span style="text-decoration: underline; font-weight: 900;">${formatDateRange(seaDateFrom, seaDateTo)}</span> during regular subject periods.</li>
-          <li><strong>Part 3 (Co-Scholastic Assessments):</strong> Internal practical evaluations for <strong>Robotics, Music, Art & Craft, and Yoga</strong> will be taken on any date between <span style="text-decoration: underline; font-weight: 900;">${formatDateRange(coSchDateFrom, coSchDateTo)}</span> during regular class periods.</li>
-          <li><strong>Compulsory Full-Day Schooling:</strong> For both <strong>Part 2</strong> and <strong>Part 3</strong> assessment windows, the school will conduct <strong>regular full-day working hours</strong>. No half-days, early gate passes, or leaves will be entertained. Attendance is strictly compulsory.</li>
-          <li><strong>Practical Files & Materials:</strong> Students must carry their own complete supplies (practical journals, art colors/brushes, lab coats/materials, geometry sets, and ASL speech notes) on their designated period days. No borrowing will be allowed.</li>
+          <li><strong>Part 1 (Scholastic Written Examinations):</strong> Pen-paper exams will be conducted on scheduled dates. Timely reporting is compulsory.</li>
+          <li><strong>Part 2 (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between <u>${formatDateRange(seaDateFrom, seaDateTo)}</u> in regular subject periods.</li>
+          <li><strong>Part 3 (Co-Scholastic Assessments):</strong> Robotics, Music, Art & Craft, and Yoga evaluations are conducted between <u>${formatDateRange(coSchDateFrom, coSchDateTo)}</u> during class periods.</li>
+          <li><strong>Compulsory Attendance & Materials:</strong> Full-day attendance is compulsory. Students must carry complete practical files, journals, and stationery.</li>
         </ol>
       </div>
     ` : '';
@@ -5427,10 +5420,15 @@ function renderSyllabusSheetPaper() {
       ? `<div class="paper-subj-date-badge"><span class="no-print">📅 </span><span class="paper-date-label">Date: </span>${formatExamDate(subjDate)}</div>`
       : `<div class="paper-subj-no-date no-print">📅 Set Exam Date</div>`;
 
+    const hasContent = (contentHtml && contentHtml.trim().length > 0);
+    const displayContent = (checkedCount === 0 && !hasContent)
+      ? `<div style="font-style: italic; font-size: 9pt; color: #000000; padding: 2px 0;">Complete Prescribed Syllabus</div>`
+      : contentHtml;
+
     tableRowsHtml += `
-      <tr class="paper-subject-row ${checkedCount === 0 ? 'is-unselected' : ''}">
-        <td class="paper-row-sno" style="text-align: center; font-weight: 800; font-size: 0.85rem; color: #000000; width: 35px;">${rowSno}</td>
-        <td style="width: 145px; vertical-align: top;">
+      <tr class="paper-subject-row">
+        <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${rowSno}</td>
+        <td style="width: 140px; vertical-align: top;">
           <div class="paper-subj-title">${subjName}</div>
           <div class="paper-subj-date-container">
             <input type="date" class="sheet-subj-date-input no-print" data-subject="${subjName}" value="${subjDate}" title="Set Exam Date for ${subjName}">
@@ -5442,7 +5440,7 @@ function renderSyllabusSheetPaper() {
           </div>
         </td>
         <td>
-          ${contentHtml}
+          ${displayContent}
         </td>
       </tr>
     `;
@@ -5512,6 +5510,23 @@ function renderSyllabusSheetPaper() {
   `;
 }
 
+async function triggerPrintSyllabusSheet() {
+  if (!syllabusSheetPaper) return;
+  const wasAlreadyHiding = syllabusSheetPaper.classList.contains('hide-unselected');
+  syllabusSheetPaper.classList.add('hide-unselected');
+  syllabusSheetPaper.classList.add('is-pdf-exporting');
+
+  await new Promise(resolve => setTimeout(resolve, 150));
+  window.print();
+
+  setTimeout(() => {
+    syllabusSheetPaper.classList.remove('is-pdf-exporting');
+    if (!wasAlreadyHiding && (!sheetHideUncheckedToggle || !sheetHideUncheckedToggle.checked)) {
+      syllabusSheetPaper.classList.remove('hide-unselected');
+    }
+  }, 1000);
+}
+
 async function exportSyllabusSheetToPdf() {
   if (!syllabusSheetPaper) return;
   const school = (sheetSchoolName && sheetSchoolName.value) ? sheetSchoolName.value.trim() : 'GNPS';
@@ -5524,16 +5539,21 @@ async function exportSyllabusSheetToPdf() {
     exportPdfSheetBtn.disabled = true;
     exportPdfSheetBtn.innerHTML = '<span>⏳ Generating PDF...</span>';
 
+    // Reset scroll positions so html2canvas doesn't capture blank offset
+    if (syllabusSheetModal) syllabusSheetModal.scrollTop = 0;
+    const scrollWrapper = document.querySelector('.sheet-preview-scroll-wrapper');
+    if (scrollWrapper) scrollWrapper.scrollTop = 0;
+
     // Strictly apply hide-unselected and is-pdf-exporting so checkboxes & unselected items are completely stripped from PDF
     const wasAlreadyHiding = syllabusSheetPaper.classList.contains('hide-unselected');
     syllabusSheetPaper.classList.add('hide-unselected');
     syllabusSheetPaper.classList.add('is-pdf-exporting');
 
-    // Give browser layout engine time to reflow into fixed 760px A4 CBSE layout
-    await new Promise(resolve => setTimeout(resolve, 160));
+    // Give browser layout engine time to reflow into fixed 745px A4 CBSE layout
+    await new Promise(resolve => setTimeout(resolve, 200));
 
     const opt = {
-      margin: [6, 6, 6, 6],
+      margin: [5, 5, 5, 5],
       filename: cleanFileName,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: {
@@ -5541,34 +5561,32 @@ async function exportSyllabusSheetToPdf() {
         useCORS: true,
         logging: false,
         letterRendering: true,
-        windowWidth: 800
+        scrollX: 0,
+        scrollY: 0,
+        windowWidth: 745
       },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       pagebreak: {
-        mode: ['avoid-all', 'css', 'legacy'],
-        avoid: ['.paper-part-section', '.paper-syllabus-table tr', '.paper-signatures-row', '.paper-instructions-box', '.cbse-table tr']
+        mode: ['css', 'legacy'],
+        avoid: ['tr', '.paper-signatures-row', '.paper-instructions-box']
       }
     };
 
-    html2pdf().set(opt).from(syllabusSheetPaper).save().then(() => {
+    try {
+      await html2pdf().set(opt).from(syllabusSheetPaper).save();
+    } catch (err) {
+      console.error('html2pdf error, falling back to print:', err);
+      triggerPrintSyllabusSheet();
+    } finally {
       exportPdfSheetBtn.innerHTML = origHtml;
       exportPdfSheetBtn.disabled = false;
       syllabusSheetPaper.classList.remove('is-pdf-exporting');
       if (!wasAlreadyHiding && (!sheetHideUncheckedToggle || !sheetHideUncheckedToggle.checked)) {
         syllabusSheetPaper.classList.remove('hide-unselected');
       }
-    }).catch(err => {
-      console.error('html2pdf error:', err);
-      exportPdfSheetBtn.innerHTML = origHtml;
-      exportPdfSheetBtn.disabled = false;
-      syllabusSheetPaper.classList.remove('is-pdf-exporting');
-      if (!wasAlreadyHiding && (!sheetHideUncheckedToggle || !sheetHideUncheckedToggle.checked)) {
-        syllabusSheetPaper.classList.remove('hide-unselected');
-      }
-      window.print();
-    });
+    }
   } else {
-    window.print();
+    triggerPrintSyllabusSheet();
   }
 }
 
@@ -5934,7 +5952,7 @@ if (maximizeSyllabusSheetModalBtn) {
   });
 }
 if (printSheetBtn) {
-  printSheetBtn.addEventListener('click', () => window.print());
+  printSheetBtn.addEventListener('click', triggerPrintSyllabusSheet);
 }
 if (exportPdfSheetBtn) {
   exportPdfSheetBtn.addEventListener('click', exportSyllabusSheetToPdf);

@@ -2012,11 +2012,11 @@ optgroup option {
 }
 
 .student-syllabus-paper.is-pdf-exporting {
-  width: 760px !important;
-  max-width: 760px !important;
-  min-width: 760px !important;
+  width: 745px !important;
+  max-width: 745px !important;
+  min-width: 745px !important;
   margin: 0 auto !important;
-  padding: 12px 18px !important;
+  padding: 8px 12px !important;
   background: #ffffff !important;
   box-shadow: none !important;
   border: none !important;
@@ -2037,71 +2037,71 @@ optgroup option {
 
 .student-syllabus-paper.is-pdf-exporting .syllabus-paper-header {
   border-bottom: 2px solid #000000 !important;
-  padding-bottom: 4px !important;
-  margin-bottom: 8px !important;
+  padding-bottom: 3px !important;
+  margin-bottom: 6px !important;
 }
 
 .student-syllabus-paper.is-pdf-exporting .paper-school-title {
-  font-size: 15pt !important;
+  font-size: 14pt !important;
   font-weight: bold !important;
   margin-bottom: 2px !important;
 }
 
 .student-syllabus-paper.is-pdf-exporting .paper-doc-subtitle {
-  font-size: 11pt !important;
+  font-size: 10.5pt !important;
   font-weight: bold !important;
   margin-bottom: 2px !important;
 }
 
 .student-syllabus-paper.is-pdf-exporting .paper-session-tag {
-  font-size: 9.5pt !important;
+  font-size: 9pt !important;
 }
 
 .student-syllabus-paper.is-pdf-exporting .paper-meta-table {
   border: 1px solid #000000 !important;
   background: #ffffff !important;
-  margin-bottom: 8px !important;
-  font-size: 9.5pt !important;
+  margin-bottom: 6px !important;
+  font-size: 9pt !important;
 }
 
 .student-syllabus-paper.is-pdf-exporting .paper-meta-cell {
   border-right: 1px solid #000000 !important;
-  padding: 3px 5px !important;
-  font-size: 9.5pt !important;
+  padding: 2px 4px !important;
+  font-size: 9pt !important;
 }
 
 .student-syllabus-paper.is-pdf-exporting .paper-instructions-box {
   border: 1px solid #000000 !important;
   background: #ffffff !important;
-  padding: 5px 8px !important;
-  margin-bottom: 8px !important;
+  padding: 4px 6px !important;
+  margin-bottom: 6px !important;
   border-radius: 0 !important;
+  page-break-inside: avoid !important;
+  break-inside: avoid !important;
 }
 
 .student-syllabus-paper.is-pdf-exporting .paper-instructions-heading {
-  font-size: 9.5pt !important;
+  font-size: 9pt !important;
   font-weight: bold !important;
 }
 
 .student-syllabus-paper.is-pdf-exporting .paper-instructions-list {
-  font-size: 9pt !important;
-  line-height: 1.25 !important;
-  padding-left: 16px !important;
+  font-size: 8.5pt !important;
+  line-height: 1.2 !important;
+  padding-left: 14px !important;
 }
 
 .student-syllabus-paper.is-pdf-exporting .paper-part-section {
   border: 1px solid #000000 !important;
-  margin-bottom: 8px !important;
-  page-break-inside: avoid !important;
-  break-inside: avoid !important;
+  margin-bottom: 6px !important;
 }
 
 .student-syllabus-paper.is-pdf-exporting .paper-part-banner {
   background: #f2f2f2 !important;
   color: #000000 !important;
   border-bottom: 1px solid #000000 !important;
-  padding: 4px 8px !important;
-  font-size: 10pt !important;
+  padding: 3px 6px !important;
+  font-size: 9.5pt !important;
   font-weight: bold !important;
 }
 
@@ -2332,23 +2332,23 @@ optgroup option {
 }
 
 .paper-topic-item.is-selected {
-  background: rgba(2, 132, 199, 0.08);
+  background: transparent;
 }
 
 .paper-topic-item.is-selected .paper-topic-title {
-  font-weight: 700 !important;
-  color: #0369a1 !important;
+  font-weight: bold !important;
+  color: #000000 !important;
 }
 
 .paper-ch-badge {
-  font-weight: 800;
-  color: #0f172a !important;
+  font-weight: bold;
+  color: #000000 !important;
   font-size: 0.84rem;
   white-space: nowrap;
 }
 
 .paper-section-block {
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .paper-section-block:last-child {
@@ -2356,17 +2356,17 @@ optgroup option {
 }
 
 .paper-section-title {
-  font-weight: 800;
-  font-size: 0.82rem;
-  color: #0f172a;
+  font-weight: bold;
+  font-size: 8.5pt;
+  color: #000000;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  border-left: 4px solid #0f172a;
-  padding: 3px 8px;
-  border-radius: 4px;
-  margin-bottom: 0.45rem;
+  letter-spacing: 0.3px;
+  background: #f2f2f2;
+  border: 1px solid #000000;
+  border-left: 3px solid #000000;
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin-bottom: 0.35rem;
   display: inline-block;
 }
 
@@ -2480,56 +2480,56 @@ optgroup option {
 }
 
 .paper-lab-badge {
-  font-weight: 800;
-  color: #1d4ed8;
-  font-size: 0.76rem;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  border-radius: 3px;
-  padding: 1px 5px;
+  font-weight: bold;
+  color: #000000;
+  font-size: 8pt;
+  background: transparent;
+  border: 1px solid #000000;
+  border-radius: 2px;
+  padding: 1px 4px;
   white-space: nowrap;
   flex-shrink: 0;
   margin-top: 1px;
 }
 
 .paper-lab-title {
-  color: #0f172a;
-  font-size: 0.80rem;
-  font-weight: 500;
-  line-height: 1.4;
+  color: #000000;
+  font-size: 8.5pt;
+  font-weight: normal;
+  line-height: 1.3;
 }
 
 .paper-lab-item.is-unselected {
   opacity: 1 !important;
   text-decoration: none !important;
-  color: #0f172a !important;
+  color: #000000 !important;
 }
 
 .paper-lab-item.is-unselected .paper-lab-title {
-  color: #0f172a !important;
+  color: #000000 !important;
   text-decoration: none !important;
 }
 
 .paper-lab-item.is-unselected .paper-lab-badge {
-  color: #0f172a !important;
-  background: #f1f5f9 !important;
-  border-color: #cbd5e1 !important;
+  color: #000000 !important;
+  background: transparent !important;
+  border-color: #000000 !important;
   text-decoration: none !important;
 }
 
 .paper-lab-item.is-selected {
-  background: rgba(2, 132, 199, 0.08);
+  background: transparent;
 }
 
 .paper-lab-item.is-selected .paper-lab-title {
-  font-weight: 600 !important;
-  color: #0369a1 !important;
+  font-weight: bold !important;
+  color: #000000 !important;
 }
 
 .paper-lab-item.is-selected .paper-lab-badge {
-  background: #0284c7 !important;
-  color: #ffffff !important;
-  border-color: #0284c7 !important;
+  background: #f2f2f2 !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
 }
 
 .paper-no-lab-text {
@@ -2873,6 +2873,8 @@ optgroup option {
   .no-print,
   .sheet-inline-cb,
   .paper-subj-actions,
+  .sheet-subj-date-input,
+  .paper-subj-no-date,
   .is-unselected,
   .paper-no-selection-notice {
     display: none !important;
@@ -2915,7 +2917,7 @@ optgroup option {
 
   .paper-part-section {
     border: 1px solid #000000 !important;
-    page-break-inside: avoid !important;
+    margin-bottom: 6px !important;
   }
 
   .paper-part-banner {
@@ -2939,12 +2941,15 @@ optgroup option {
     color: #000000 !important;
   }
 
-  .paper-syllabus-table tr {
+  .paper-syllabus-table tr,
+  .paper-robotics-table tr {
     page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 
   .paper-signatures-row {
     page-break-inside: avoid !important;
+    break-inside: avoid !important;
   }
 }
 
