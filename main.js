@@ -5035,7 +5035,7 @@ function renderSyllabusSheetPaper() {
 
       const subjDate = (sheetSubjectDates[cls] && sheetSubjectDates[cls][subjName]) ? sheetSubjectDates[cls][subjName] : '';
       const dateBadgeHtml = subjDate
-        ? `<div class="paper-subj-date-badge">📅 ${formatExamDate(subjDate)}</div>`
+        ? `<div class="paper-subj-date-badge"><span class="no-print">📅 </span><span class="paper-date-label">Date: </span>${formatExamDate(subjDate)}</div>`
         : `<div class="paper-subj-no-date no-print">📅 Set Exam Date</div>`;
 
       part1RowsHtml += `
@@ -5095,13 +5095,10 @@ function renderSyllabusSheetPaper() {
           <td class="paper-row-sno" style="text-align: center; font-weight: 800; font-size: 0.82rem; color: #000000; width: 45px;">${p2Sno++}</td>
           <td style="width: 155px; vertical-align: top;">
             <div class="paper-subj-title">${item.subject}</div>
-            <div style="font-size: 0.72rem; color: #065f46; font-weight: 700; margin-top: 1px;">${item.domain}</div>
-            <div style="margin-top: 8px; padding: 6px; background: #ecfdf5; border: 1px solid #6ee7b7; border-radius: 4px; font-size: 0.68rem; line-height: 1.35;">
-              <div style="font-weight: 800; color: #064e3b; display: flex; align-items: center; gap: 4px;">
-                <span>📅</span> <span>Window:</span> <strong class="sea-range-date-text" style="color: #022c22;">${formatDateRange(seaDateFrom, seaDateTo)}</strong>
-              </div>
-              <div style="color: #047857; font-size: 0.64rem; margin-top: 2px;">• Evaluated on any date during regular periods</div>
-              <div class="paper-full-day-pill" style="margin-top: 4px; display: inline-block;">⏰ Full Working Day</div>
+            <div style="font-size: 8pt; color: #333333; font-style: italic; margin-top: 1px;">${item.domain}</div>
+            <div style="margin-top: 4px; font-size: 8pt; line-height: 1.25;">
+              <div><strong>Window:</strong> <span class="sea-range-date-text">${formatDateRange(seaDateFrom, seaDateTo)}</span></div>
+              <div style="color: #444444; font-size: 7.5pt; margin-top: 1px;">• Regular subject periods</div>
             </div>
             <div class="paper-subj-actions no-print" style="margin-top: 6px;">
               <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${seaSubjKey}" title="Select all ${item.subject} SEA">All</button>
@@ -5198,14 +5195,11 @@ function renderSyllabusSheetPaper() {
             <td class="paper-row-sno" style="text-align: center; font-weight: 800; font-size: 0.82rem; color: #000000; width: 45px;">${p3Sno++}</td>
             <td style="width: 155px; vertical-align: top;">
               <div class="paper-subj-title">${subjName}</div>
-              <div style="font-size: 0.72rem; color: #0369a1; font-weight: 700; margin-top: 1px;">${item.subtitle}</div>
-              <div style="font-size: 0.68rem; color: #64748b; font-weight: 500; margin-top: 2px;">${item.book}</div>
-              <div style="margin-top: 8px; padding: 6px; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 4px; font-size: 0.68rem; line-height: 1.35;">
-                <div style="font-weight: 800; color: #78350f; display: flex; align-items: center; gap: 4px;">
-                  <span>📅</span> <span>Window:</span> <strong class="cosch-range-date-text" style="color: #451a03;">${formatDateRange(coSchDateFrom, coSchDateTo)}</strong>
-                </div>
-                <div style="color: #92400e; font-size: 0.64rem; margin-top: 2px;">• Conducted on any date during regular periods</div>
-                <div class="paper-full-day-pill" style="margin-top: 4px; display: inline-block;">⏰ Full Working Day</div>
+              <div style="font-size: 8pt; color: #333333; font-style: italic; margin-top: 1px;">${item.subtitle}</div>
+              <div style="font-size: 7.5pt; color: #555555; margin-top: 1px;">${item.book}</div>
+              <div style="margin-top: 4px; font-size: 8pt; line-height: 1.25;">
+                <div><strong>Window:</strong> <span class="cosch-range-date-text">${formatDateRange(coSchDateFrom, coSchDateTo)}</span></div>
+                <div style="color: #444444; font-size: 7.5pt; margin-top: 1px;">• Regular class periods</div>
               </div>
               <div class="paper-subj-actions no-print" style="margin-top: 6px;">
                 <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${subjName}" title="Select ${subjName}">All</button>
@@ -5237,14 +5231,11 @@ function renderSyllabusSheetPaper() {
             <td class="paper-row-sno" style="text-align: center; font-weight: 800; font-size: 0.82rem; color: #000000; width: 45px;">${p3Sno++}</td>
             <td style="width: 155px; vertical-align: top;">
               <div class="paper-subj-title">${subjName}</div>
-              <div style="font-size: 0.72rem; color: #4338ca; font-weight: 700; margin-top: 1px;">${item.subtitle}</div>
-              <div style="font-size: 0.68rem; color: #64748b; font-weight: 500; margin-top: 2px;">${item.book}</div>
-              <div style="margin-top: 8px; padding: 6px; background: #fffbeb; border: 1px solid #fcd34d; border-radius: 4px; font-size: 0.68rem; line-height: 1.35;">
-                <div style="font-weight: 800; color: #78350f; display: flex; align-items: center; gap: 4px;">
-                  <span>📅</span> <span>Window:</span> <strong class="cosch-range-date-text" style="color: #451a03;">${formatDateRange(coSchDateFrom, coSchDateTo)}</strong>
-                </div>
-                <div style="color: #92400e; font-size: 0.64rem; margin-top: 2px;">• Conducted on any date during regular periods</div>
-                <div class="paper-full-day-pill" style="margin-top: 4px; display: inline-block;">⏰ Full Working Day</div>
+              <div style="font-size: 8pt; color: #333333; font-style: italic; margin-top: 1px;">${item.subtitle}</div>
+              <div style="font-size: 7.5pt; color: #555555; margin-top: 1px;">${item.book}</div>
+              <div style="margin-top: 4px; font-size: 8pt; line-height: 1.25;">
+                <div><strong>Window:</strong> <span class="cosch-range-date-text">${formatDateRange(coSchDateFrom, coSchDateTo)}</span></div>
+                <div style="color: #444444; font-size: 7.5pt; margin-top: 1px;">• Regular class periods</div>
               </div>
             </td>
             <td>
@@ -5306,15 +5297,15 @@ function renderSyllabusSheetPaper() {
             <span class="paper-part-badge paper-part-badge-scholastic">PART 1</span>
             <span>SCHOLASTIC SUBJECTS (Written Pen-Paper Examination)</span>
           </div>
-          <div style="font-size: 0.72rem; font-weight: 700; color: #93c5fd;">
-            📅 Fixed Single Exam Dates &bull; 80 Marks &bull; Duration: 2.5–3 Hours
+          <div style="font-size: 8.5pt; font-weight: normal; font-style: italic;">
+            [80 Marks &bull; Duration: 2.5–3 Hours &bull; Fixed Date Sheet]
           </div>
         </div>
         <table class="paper-syllabus-table">
           <thead>
             <tr>
-              <th style="width: 45px; text-align: center;">S.No.</th>
-              <th style="width: 155px;">Subject & Exam Date</th>
+              <th style="width: 35px; text-align: center;">S.No.</th>
+              <th style="width: 145px;">Subject & Exam Date</th>
               <th>Prescribed Examination Portion & Detailed Topics</th>
             </tr>
           </thead>
@@ -5329,28 +5320,28 @@ function renderSyllabusSheetPaper() {
         <div class="paper-part-banner paper-part-banner-sea">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="paper-part-badge paper-part-badge-sea">PART 2</span>
-            <span>SUBJECT ENRICHMENT ACTIVITIES (SEA - 5 Marks Internal Assessment)</span>
+            <span>SUBJECT ENRICHMENT ACTIVITIES (SEA — 5 MARKS INTERNAL ASSESSMENT)</span>
           </div>
-          <div style="font-size: 0.72rem; font-weight: 700; color: #a7f3d0;">
-            Mandatory for All Scholastic Subjects &bull; Evaluated in Class Periods
+          <div style="font-size: 8.5pt; font-weight: normal; font-style: italic;">
+            [Mandatory Assessment &bull; Evaluated in Regular Class Periods]
           </div>
         </div>
         <div class="paper-window-notice paper-window-notice-sea">
-          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <span>📅</span> <span>Assessment Window:</span>
-            <span class="sea-range-date-text" style="font-weight: 900; background: #ffffff; padding: 2px 7px; border-radius: 4px; border: 1px solid #10b981; color: #064e3b;">${formatDateRange(seaDateFrom, seaDateTo)}</span>
-            <span style="color: #64748b; font-weight: 500;">(Evaluated on any date within this window during regular subject periods)</span>
+          <div>
+            <strong>Assessment Window:</strong>
+            <span class="sea-range-date-text" style="font-weight: bold; padding: 0 4px;">${formatDateRange(seaDateFrom, seaDateTo)}</span>
+            <span style="font-size: 8.5pt; color: #444444;">(Evaluated during regular subject periods)</span>
           </div>
           <div class="paper-full-day-pill">
-            <span>⏰</span> <span>Full Working Day (Regular Hours)</span>
+            Full Working Day (Regular Hours)
           </div>
         </div>
         <table class="paper-syllabus-table">
           <thead>
             <tr>
-              <th style="width: 45px; text-align: center;">S.No.</th>
-              <th style="width: 155px;">Scholastic Subject & Focus Area</th>
-              <th>Prescribed Enrichment Activities & Teacher Writing Area</th>
+              <th style="width: 35px; text-align: center;">S.No.</th>
+              <th style="width: 145px;">Scholastic Subject</th>
+              <th>Prescribed 5-Mark Enrichment Activities & Practical Rubrics</th>
             </tr>
           </thead>
           <tbody>
@@ -5364,27 +5355,27 @@ function renderSyllabusSheetPaper() {
         <div class="paper-part-banner paper-part-banner-cosch">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="paper-part-badge paper-part-badge-cosch">PART 3</span>
-            <span>CO-SCHOLASTIC ACTIVITIES (Internal Skills & Practical Assessment)</span>
+            <span>CO-SCHOLASTIC ACTIVITIES (INTERNAL SKILLS & PRACTICAL ASSESSMENT)</span>
           </div>
-          <div style="font-size: 0.72rem; font-weight: 700; color: #fde68a;">
-            Graded on 5-Point Scale (A to E) &bull; Evaluated in Class Periods
+          <div style="font-size: 8.5pt; font-weight: normal; font-style: italic;">
+            [Graded on 5-Point Scale (A to E) &bull; Evaluated in Regular Periods]
           </div>
         </div>
         <div class="paper-window-notice paper-window-notice-cosch">
-          <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-            <span>📅</span> <span>Assessment Window:</span>
-            <span class="cosch-range-date-text" style="font-weight: 900; background: #ffffff; padding: 2px 7px; border-radius: 4px; border: 1px solid #f59e0b; color: #78350f;">${formatDateRange(coSchDateFrom, coSchDateTo)}</span>
-            <span style="color: #64748b; font-weight: 500;">(Conducted on any date within this window during regular subject periods)</span>
+          <div>
+            <strong>Assessment Window:</strong>
+            <span class="cosch-range-date-text" style="font-weight: bold; padding: 0 4px;">${formatDateRange(coSchDateFrom, coSchDateTo)}</span>
+            <span style="font-size: 8.5pt; color: #444444;">(Conducted during regular class periods)</span>
           </div>
           <div class="paper-full-day-pill">
-            <span>⏰</span> <span>Full Working Day (Regular Hours)</span>
+            Full Working Day (Regular Hours)
           </div>
         </div>
         <table class="paper-syllabus-table">
           <thead>
             <tr>
-              <th style="width: 45px; text-align: center;">S.No.</th>
-              <th style="width: 155px;">Activity & Prescribed Book</th>
+              <th style="width: 35px; text-align: center;">S.No.</th>
+              <th style="width: 145px;">Activity & Prescribed Book</th>
               <th>Evaluation Criteria & Practical Portion</th>
             </tr>
           </thead>
@@ -5433,12 +5424,12 @@ function renderSyllabusSheetPaper() {
 
     const subjDate = (sheetSubjectDates[cls] && sheetSubjectDates[cls][subjName]) ? sheetSubjectDates[cls][subjName] : '';
     const dateBadgeHtml = subjDate
-      ? `<div class="paper-subj-date-badge">📅 ${formatExamDate(subjDate)}</div>`
+      ? `<div class="paper-subj-date-badge"><span class="no-print">📅 </span><span class="paper-date-label">Date: </span>${formatExamDate(subjDate)}</div>`
       : `<div class="paper-subj-no-date no-print">📅 Set Exam Date</div>`;
 
     tableRowsHtml += `
       <tr class="paper-subject-row ${checkedCount === 0 ? 'is-unselected' : ''}">
-        <td class="paper-row-sno" style="text-align: center; font-weight: 800; font-size: 0.85rem; color: #000000; width: 45px;">${rowSno}</td>
+        <td class="paper-row-sno" style="text-align: center; font-weight: 800; font-size: 0.85rem; color: #000000; width: 35px;">${rowSno}</td>
         <td style="width: 145px; vertical-align: top;">
           <div class="paper-subj-title">${subjName}</div>
           <div class="paper-subj-date-container">
@@ -5489,7 +5480,7 @@ function renderSyllabusSheetPaper() {
     <table class="paper-syllabus-table">
       <thead>
         <tr>
-          <th style="width: 45px; text-align: center;">S.No.</th>
+          <th style="width: 35px; text-align: center;">S.No.</th>
           <th style="width: 145px;">Subject & Exam Date</th>
           <th>Prescribed Examination Portion & Chapter Breakdown</th>
         </tr>
@@ -5539,7 +5530,7 @@ function exportSyllabusSheetToPdf() {
     syllabusSheetPaper.classList.add('is-pdf-exporting');
 
     const opt = {
-      margin: [8, 8, 8, 8],
+      margin: [6, 6, 6, 6],
       filename: cleanFileName,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true, logging: false },

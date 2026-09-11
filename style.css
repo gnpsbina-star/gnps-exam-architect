@@ -1699,16 +1699,17 @@ optgroup option {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Printable Paper Sheet */
+/* Printable Paper Sheet - Official CBSE Board Question Paper Standard */
 .student-syllabus-paper {
   width: 100% !important;
-  max-width: 1150px !important;
+  max-width: 1080px !important;
   background: #ffffff !important;
   color: #000000 !important;
-  padding: 1.4rem 1.8rem !important;
+  padding: 1.2rem 1.6rem !important;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5) !important;
-  border-radius: 6px !important;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Kohinoor Devanagari', 'Noto Sans Devanagari', 'Mangal', sans-serif !important;
+  border-radius: 4px !important;
+  font-family: 'Times New Roman', Times, 'Noto Serif Devanagari', 'Mangal', serif !important;
+  line-height: 1.3 !important;
   height: fit-content !important;
 }
 
@@ -1720,13 +1721,14 @@ optgroup option {
 .syllabus-paper-header {
   text-align: center;
   border-bottom: 2px solid #000000 !important;
-  padding-bottom: 0.45rem;
-  margin-bottom: 0.55rem;
+  padding-bottom: 0.35rem;
+  margin-bottom: 0.5rem;
 }
 
 .paper-school-title {
-  font-size: 1.35rem !important;
-  font-weight: 900 !important;
+  font-family: 'Times New Roman', Times, serif !important;
+  font-size: 15pt !important;
+  font-weight: bold !important;
   letter-spacing: 0.5px !important;
   color: #000000 !important;
   text-transform: uppercase !important;
@@ -1734,36 +1736,41 @@ optgroup option {
 }
 
 .paper-doc-subtitle {
-  font-size: 0.95rem !important;
-  font-weight: 800 !important;
-  color: #0f172a !important;
+  font-family: 'Times New Roman', Times, serif !important;
+  font-size: 11pt !important;
+  font-weight: bold !important;
+  color: #000000 !important;
   letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
   margin-bottom: 0.15rem !important;
 }
 
 .paper-session-tag {
-  font-size: 0.78rem !important;
-  font-weight: 700 !important;
-  color: #1e293b !important;
+  font-family: 'Times New Roman', Times, serif !important;
+  font-size: 9.5pt !important;
+  font-weight: normal !important;
+  color: #000000 !important;
   text-transform: uppercase !important;
-  letter-spacing: 1px !important;
+  letter-spacing: 0.8px !important;
 }
 
 .paper-meta-table {
   display: grid;
   grid-template-columns: repeat(5, 1fr) !important;
-  border: 1.5px solid #000000 !important;
-  background: #f8fafc !important;
-  margin-bottom: 0.65rem !important;
+  border: 1px solid #000000 !important;
+  background: #ffffff !important;
+  margin-bottom: 0.5rem !important;
   text-align: center;
+  font-size: 9.5pt !important;
+  font-family: 'Times New Roman', Times, serif !important;
 }
 
 .paper-meta-cell {
-  padding: 0.35rem 0.45rem !important;
-  font-size: 0.80rem !important;
-  border-right: 1.5px solid #000000 !important;
+  padding: 0.25rem 0.35rem !important;
+  font-size: 9.5pt !important;
+  border-right: 1px solid #000000 !important;
   color: #000000 !important;
-  font-weight: 600 !important;
+  font-weight: normal !important;
 }
 
 .paper-meta-cell:last-child {
@@ -1772,22 +1779,23 @@ optgroup option {
 
 .paper-meta-cell strong {
   color: #000000 !important;
-  font-weight: 800 !important;
+  font-weight: bold !important;
 }
 
 .paper-instructions-box {
-  border: 1.5px solid #0f172a !important;
-  border-left: 5px solid #0284c7 !important;
-  background: #f8fafc !important;
-  padding: 0.4rem 0.75rem !important;
-  margin-bottom: 0.65rem !important;
-  border-radius: 4px;
+  border: 1px solid #000000 !important;
+  border-left: 1px solid #000000 !important;
+  background: #ffffff !important;
+  padding: 0.35rem 0.65rem !important;
+  margin-bottom: 0.55rem !important;
+  border-radius: 0 !important;
+  font-family: 'Times New Roman', Times, serif !important;
 }
 
 .paper-instructions-heading {
-  font-size: 0.76rem !important;
-  font-weight: 900 !important;
-  color: #0f172a !important;
+  font-size: 9.5pt !important;
+  font-weight: bold !important;
+  color: #000000 !important;
   text-transform: uppercase !important;
   margin-bottom: 0.15rem !important;
 }
@@ -1795,10 +1803,10 @@ optgroup option {
 .paper-instructions-list {
   margin: 0;
   padding-left: 1.15rem;
-  font-size: 0.78rem !important;
-  line-height: 1.38 !important;
+  font-size: 9pt !important;
+  line-height: 1.25 !important;
   color: #000000 !important;
-  font-weight: 500 !important;
+  font-weight: normal !important;
 }
 
 .paper-instructions-list li {
@@ -1808,34 +1816,38 @@ optgroup option {
 .paper-syllabus-table {
   width: 100% !important;
   border-collapse: collapse !important;
-  margin-bottom: 1.25rem !important;
-  border: 1.5px solid #000000 !important;
+  margin-bottom: 0.75rem !important;
+  border: 1px solid #000000 !important;
+  font-family: 'Times New Roman', Times, 'Noto Serif Devanagari', 'Mangal', serif !important;
+  font-size: 9.5pt !important;
 }
 
 .paper-syllabus-table th {
-  background: #0f172a !important;
-  color: #ffffff !important;
-  padding: 0.42rem 0.65rem !important;
-  font-size: 0.82rem !important;
-  font-weight: 800 !important;
+  background: #f2f2f2 !important;
+  color: #000000 !important;
+  padding: 0.28rem 0.45rem !important;
+  font-size: 9.5pt !important;
+  font-weight: bold !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.5px !important;
-  border: 1.5px solid #000000 !important;
+  letter-spacing: 0.3px !important;
+  border: 1px solid #000000 !important;
+  text-align: left !important;
 }
 
 .paper-syllabus-table td {
-  border: 1.5px solid #334155 !important;
-  padding: 0.42rem 0.65rem !important;
-  font-size: 0.82rem !important;
-  line-height: 1.35 !important;
+  border: 1px solid #000000 !important;
+  padding: 0.28rem 0.45rem !important;
+  font-size: 9.5pt !important;
+  line-height: 1.25 !important;
   vertical-align: top !important;
   color: #000000 !important;
 }
 
 .paper-subj-title {
-  font-weight: 700 !important;
-  font-size: 0.86rem !important;
+  font-weight: bold !important;
+  font-size: 10pt !important;
   color: #000000 !important;
+  text-transform: uppercase !important;
   letter-spacing: 0.2px;
 }
 
@@ -2402,10 +2414,10 @@ optgroup option {
 }
 
 .paper-part-section {
-  margin-bottom: 1.25rem;
-  border: 2px solid #0f172a;
-  border-radius: 6px;
-  overflow: hidden;
+  margin-bottom: 0.65rem;
+  border: 1px solid #000000;
+  border-radius: 0;
+  overflow: visible;
   page-break-inside: avoid;
 }
 
@@ -2413,130 +2425,132 @@ optgroup option {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 6px 12px;
-  color: #ffffff;
-  font-weight: 800;
-  font-size: 0.82rem;
+  padding: 4px 8px;
+  color: #000000 !important;
+  background: #f2f2f2 !important;
+  border-bottom: 1px solid #000000;
+  font-weight: bold;
+  font-size: 10pt;
+  font-family: 'Times New Roman', Times, serif;
+  text-transform: uppercase;
   letter-spacing: 0.3px;
 }
 
-.paper-part-banner-scholastic {
-  background: #0f172a;
-}
-
-.paper-part-banner-cosch {
-  background: #78350f;
-}
-
+.paper-part-banner-scholastic,
+.paper-part-banner-cosch,
 .paper-part-banner-sea {
-  background: #064e3b;
+  background: #f2f2f2 !important;
+  color: #000000 !important;
 }
 
 .paper-part-badge {
-  font-size: 0.68rem;
-  font-weight: 900;
-  padding: 1.5px 6px;
-  border-radius: 3px;
+  font-size: 8.5pt;
+  font-weight: bold;
+  padding: 1px 5px;
+  border-radius: 2px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border: 1px solid #000000;
+  background: #ffffff !important;
+  color: #000000 !important;
 }
 
-.paper-part-badge-scholastic {
-  background: #3b82f6;
-  color: #ffffff;
-}
-
-.paper-part-badge-cosch {
-  background: #f59e0b;
-  color: #0f172a;
-}
-
+.paper-part-badge-scholastic,
+.paper-part-badge-cosch,
 .paper-part-badge-sea {
-  background: #34d399;
-  color: #064e3b;
+  background: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
 }
 
 .paper-window-notice {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 12px;
-  font-size: 0.74rem;
-  font-weight: 700;
-  border-bottom: 2px solid #0f172a;
+  padding: 3px 8px;
+  font-size: 9pt;
+  font-weight: normal;
+  border-bottom: 1px solid #000000;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-family: 'Times New Roman', Times, serif;
 }
 
-.paper-window-notice-cosch {
-  background: #fffbeb;
-  color: #78350f;
-}
-
+.paper-window-notice-cosch,
 .paper-window-notice-sea {
-  background: #ecfdf5;
-  color: #064e3b;
+  background: #ffffff !important;
+  color: #000000 !important;
+}
+
+.sea-range-date-text,
+.cosch-range-date-text {
+  border: none !important;
+  background: transparent !important;
+  color: #000000 !important;
+  font-weight: bold !important;
+  padding: 0 !important;
 }
 
 .paper-full-day-pill {
-  background: #d1fae5;
-  color: #065f46;
-  border: 1px solid #6ee7b7;
-  font-size: 0.68rem;
-  font-weight: 800;
-  padding: 2px 7px;
-  border-radius: 4px;
+  background: transparent !important;
+  color: #000000 !important;
+  border: none !important;
+  font-size: 8.5pt !important;
+  font-weight: bold !important;
+  padding: 0 !important;
   white-space: nowrap;
 }
 
 .paper-ruled-line-dashed {
-  border-bottom: 1.5px dashed #94a3b8;
-  height: 18px;
+  border-bottom: 1px dashed #666666;
+  height: 14px;
   width: 100%;
 }
 
 .sea-activity-item {
   display: flex;
   align-items: flex-start;
-  gap: 6px;
-  padding: 2.5px 5px;
-  border-radius: 4px;
-  line-height: 1.35;
-  margin-bottom: 3px;
+  gap: 5px;
+  padding: 1.5px 3px;
+  border-radius: 2px;
+  line-height: 1.25;
+  margin-bottom: 2px;
   cursor: pointer;
   user-select: none;
-  transition: background 0.15s ease;
+  font-family: 'Times New Roman', Times, serif;
 }
 
 .sea-activity-item:hover {
-  background: rgba(15, 23, 42, 0.05);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .sea-badge {
-  font-weight: 800;
-  font-size: 0.72rem;
-  border-radius: 3px;
-  padding: 1px 5px;
+  font-weight: bold;
+  font-size: 8.5pt;
+  border-radius: 2px;
+  padding: 0 4px;
   white-space: nowrap;
   flex-shrink: 0;
   margin-top: 1px;
-  background: #ecfdf5;
-  color: #065f46;
-  border: 1px solid #a7f3d0;
+  background: transparent;
+  color: #000000;
+  border: 1px solid #000000;
 }
 
 .sea-activity-title {
-  color: #0f172a;
-  font-size: 0.78rem;
-  font-weight: 500;
-  line-height: 1.35;
+  color: #000000;
+  font-size: 9pt;
+  font-weight: normal;
+  line-height: 1.25;
 }
 
 .sea-activity-item.is-selected {
-  background: rgba(5, 150, 105, 0.08);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .sea-activity-item.is-selected .sea-activity-title {
-  font-weight: 700 !important;
-  color: #047857 !important;
+  font-weight: bold !important;
+  color: #000000 !important;
 }
 
 .student-syllabus-paper.hide-unselected .sea-activity-item.is-unselected,
@@ -2548,57 +2562,58 @@ optgroup option {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-top: 1.5rem;
-  padding-top: 0.5rem;
+  margin-top: 1.2rem;
+  padding-top: 0.35rem;
   page-break-inside: avoid;
 }
 
 .sig-block {
   text-align: center;
-  width: 185px;
+  width: 170px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
 
 .sig-img-slot {
-  height: 85px;
+  height: 42px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  margin-bottom: 4px;
+  margin-bottom: 2px;
 }
 
 .principal-sig-img {
-  max-height: 82px;
-  max-width: 170px;
+  max-height: 40px;
+  max-width: 150px;
   object-fit: contain;
   display: block;
   mix-blend-mode: multiply;
-  transition: transform 0.2s ease;
 }
 
 .sig-line {
-  border-top: 2px solid #000000 !important;
-  margin-bottom: 0.35rem;
+  border-top: 1px solid #000000 !important;
+  margin-bottom: 0.25rem;
 }
 
 .sig-title {
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 9.5pt;
+  font-weight: bold;
   color: #000000;
   text-transform: uppercase;
 }
 
-/* Print Specific Rules */
+/* Print Specific Rules - Official CBSE Question Paper Formatting */
 @media print {
   @page {
     size: A4 portrait;
-    margin: 8mm;
+    margin: 6mm 8mm;
   }
 
   body {
     background: #ffffff !important;
+    font-family: 'Times New Roman', Times, 'Noto Serif Devanagari', 'Mangal', serif !important;
   }
 
   body * {
@@ -2657,8 +2672,8 @@ optgroup option {
     background: transparent !important;
     color: #000000 !important;
     padding: 0 !important;
-    font-size: 0.76rem !important;
-    font-weight: 700 !important;
+    font-size: 9pt !important;
+    font-weight: bold !important;
     margin-top: 2px !important;
     display: block !important;
   }
@@ -2675,6 +2690,35 @@ optgroup option {
     padding: 0 !important;
     max-width: 100% !important;
     border-radius: 0 !important;
+    font-family: 'Times New Roman', Times, 'Noto Serif Devanagari', 'Mangal', serif !important;
+    font-size: 9.5pt !important;
+    line-height: 1.25 !important;
+  }
+
+  .paper-part-section {
+    border: 1px solid #000000 !important;
+    page-break-inside: avoid !important;
+  }
+
+  .paper-part-banner {
+    background: #f2f2f2 !important;
+    color: #000000 !important;
+    border-bottom: 1px solid #000000 !important;
+  }
+
+  .paper-syllabus-table {
+    border: 1px solid #000000 !important;
+  }
+
+  .paper-syllabus-table th {
+    background: #f2f2f2 !important;
+    color: #000000 !important;
+    border: 1px solid #000000 !important;
+  }
+
+  .paper-syllabus-table td {
+    border: 1px solid #000000 !important;
+    color: #000000 !important;
   }
 
   .paper-syllabus-table tr {
