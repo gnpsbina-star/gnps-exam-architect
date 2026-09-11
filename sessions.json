@@ -1,0 +1,30 @@
+{
+  "925f4a161038eb1e0f0895099c820db2f453d96f90e491d5342a58ed7d997315": {
+    "user_id": 1,
+    "username": "admin",
+    "name": "Super Administrator",
+    "role": "super_admin",
+    "expires_at": 1789717182.862964
+  },
+  "b9f8e690dacfd831f2e94dec742782b057afcde282326c8d96afbffc6f009849": {
+    "user_id": 1,
+    "username": "admin",
+    "name": "Super Administrator",
+    "role": "super_admin",
+    "expires_at": 1789717362.054111
+  },
+  "e2efb1b6bb4c56aa0e3ba16f3ef6ed1b4dfa03b1c08b443de2f3ce1eb2e20f43": {
+    "user_id": 1,
+    "username": "admin",
+    "name": "Super Administrator",
+    "role": "super_admin",
+    "expires_at": 1789717416.0629508
+  },
+  "491ef32fcba444dd568fba58346d750ec7d31e1ed78b766fd7f6d8b99dc691cf": {
+    "user_id": 1,
+    "username": "admin",
+    "name": "Super Administrator",
+    "role": "super_admin",
+    "expires_at": 1789718183.4881222
+  }
+}
