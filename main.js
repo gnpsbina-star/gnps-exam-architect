@@ -2319,8 +2319,9 @@ deleteCustomSubjectBtn.addEventListener('click', async () => {
 });
 
 // Fetch Latest CBSE Syllabus Button Handler
-fetchCbseSyllabusBtn.addEventListener('click', async () => {
-  const selectedClass = classSelect.value;
+if (fetchCbseSyllabusBtn) {
+  fetchCbseSyllabusBtn.addEventListener('click', async () => {
+    const selectedClass = classSelect.value;
   const selectedSubject = subjectSelect.value;
   
   if (!selectedClass) {
@@ -2377,6 +2378,7 @@ fetchCbseSyllabusBtn.addEventListener('click', async () => {
     fetchCbseSyllabusBtn.disabled = false;
   }
 });
+}
 
 // Fetch Latest CBSE Blueprint Button Handler
 const fetchCbseBlueprintBtn = document.getElementById('fetchCbseBlueprintBtn');
