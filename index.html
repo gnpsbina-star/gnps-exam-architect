@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GNPS Exam Architect</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css?v=38" />
+    <link rel="stylesheet" href="./style.css?v=50" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   </head>
@@ -139,7 +139,7 @@
                 <div class="form-row" style="margin-bottom: 0;">
                   <div class="form-group" style="margin-bottom: 0;">
                     <label for="duration">Time Duration</label>
-                    <input type="text" id="duration" placeholder="e.g. 3 Hrs" required>
+                    <input type="text" id="duration" placeholder="e.g. 180 Mins" required>
                   </div>
                   
                   <div class="form-group" style="margin-bottom: 0;">
@@ -365,7 +365,43 @@
             </div>
           </div>
 
+          <!-- Class & Exam Selectors (Integrated into 1st Ribbon) -->
+          <div class="ribbon-1-selectors">
+            <div class="sheet-inline-control">
+              <label for="sheetClassSelect" class="sheet-inline-label">Class:</label>
+              <select id="sheetClassSelect" class="sheet-select-compact">
+                <!-- Populated dynamically: Class 6, 7, 8, 9, 10, 11, 12 -->
+              </select>
+            </div>
+
+            <div class="sheet-inline-control">
+              <label for="sheetExamSelect" class="sheet-inline-label">Exam:</label>
+              <select id="sheetExamSelect" class="sheet-select-compact">
+                <!-- Populated dynamically: Unit Test I, II, PA I, Half Yearly, Annual, etc. -->
+              </select>
+              <input type="text" id="sheetCustomExamInput" placeholder="Custom exam title..." style="display: none; width: 120px; font-size: 0.78rem; padding: 0.22rem 0.45rem; background: #1e293b; border: 1px solid #38bdf8; border-radius: 4px; color: #fff;">
+            </div>
+          </div>
+
           <div class="syllabus-sheet-header-actions">
+            <!-- Document View Options -->
+            <label class="sheet-check-label" style="font-size: 0.76rem; cursor: pointer;">
+              <input type="checkbox" id="sheetIncludeInstructions" checked>
+              <span>Instructions</span>
+            </label>
+
+            <label class="sheet-check-label" style="font-size: 0.76rem; cursor: pointer;">
+              <input type="checkbox" id="sheetIncludeSubtopics">
+              <span>Subtopics</span>
+            </label>
+
+            <label class="sheet-check-label" style="font-size: 0.76rem; cursor: pointer;">
+              <input type="checkbox" id="sheetIncludePrincipalSig" checked>
+              <span>Principal Signature</span>
+            </label>
+
+            <div class="sheet-ribbon-divider"></div>
+
             <!-- Export Actions -->
             <button type="button" id="printSheetBtn" class="sheet-btn-action sheet-btn-print">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
@@ -392,73 +428,101 @@
           </div>
         </div>
 
-        <!-- Ribbon 2: Exam Parameters & Options (Strictly Single Line) -->
-        <div class="sheet-controls-panel">
+        <!-- Ribbon 2: Dedicated Header Settings for Part 1, Part 2 & Part 3 (Middle School Classes 6-8) -->
+        <div id="sheetMiddleSettingsPanel" class="ribbon-settings-panel">
+          <!-- PART 1 HEADER SETTINGS (Strictly Single Line) -->
+          <div class="part-setting-row part1-setting-row">
+            <span class="part-tag-badge part1-tag">PART 1 HEADER</span>
+            <div class="part-setting-field">
+              <strong>Time Allowed:</strong>
+              <input type="text" id="sheetPart1Time" class="input-custom" value="180 Mins" style="width: 74px;">
+              <span class="field-sublabel">(GK &amp; Robotics:</span>
+              <input type="text" id="sheetPart1TimeGkRobo" class="input-custom" value="1.5–2 Hrs" style="width: 64px;">
+              <span class="field-sublabel">)</span>
+            </div>
+            <div class="field-divider"></div>
+            <div class="part-setting-field">
+              <strong>Maximum Marks:</strong>
+              <input type="text" id="sheetPart1Marks" class="input-custom" value="80" style="width: 28px; text-align: center;">
+              <span class="field-sublabel">Marks</span>
+              <span class="field-sublabel">(GK &amp; Robotics:</span>
+              <input type="text" id="sheetPart1MarksGkRobo" class="input-custom" value="40" style="width: 28px; text-align: center;">
+              <span class="field-sublabel">Marks)</span>
+            </div>
+            <div class="field-divider"></div>
+            <div class="part-setting-field">
+              <strong>School Timings:</strong>
+              <span class="field-sublabel">(</span>
+              <input type="text" id="sheetPart1TimingStart" class="input-custom" value="07:30 AM" style="width: 68px;" title="Part 1 Start Timing">
+              <span class="field-sublabel">–</span>
+              <input type="text" id="sheetPart1TimingEnd" class="input-custom" value="02:30 PM" style="width: 68px;" title="Part 1 End Timing">
+              <span class="field-sublabel">)</span>
+            </div>
+          </div>
+
+          <!-- PART 2 HEADER SETTINGS -->
+          <div class="part-setting-row part2-setting-row">
+            <span class="part-tag-badge part2-tag">PART 2 HEADER</span>
+            <div class="part-setting-field">
+              <strong>Maximum Marks:</strong>
+              <input type="text" id="sheetPart2Marks" class="input-custom" value="5 Marks (Internal)" style="width: 125px;">
+            </div>
+            <div class="field-divider"></div>
+            <div class="part-setting-field">
+              <strong>Date:</strong>
+              <span class="field-sublabel">From:</span>
+              <input type="date" id="sheetSEADateFrom" class="input-custom input-date" value="2026-02-02">
+              <span class="field-sublabel">To:</span>
+              <input type="date" id="sheetSEADateTo" class="input-custom input-date" value="2026-02-06">
+            </div>
+            <div class="field-divider"></div>
+            <div class="part-setting-field">
+              <strong>School Timings:</strong>
+              <span class="field-sublabel">(</span>
+              <input type="text" id="sheetPart2TimingStart" class="input-custom" value="07:30 AM" style="width: 68px;" title="Part 2 Start Timing">
+              <span class="field-sublabel">–</span>
+              <input type="text" id="sheetPart2TimingEnd" class="input-custom" value="02:30 PM" style="width: 68px;" title="Part 2 End Timing">
+              <span class="field-sublabel">)</span>
+            </div>
+          </div>
+
+          <!-- PART 3 HEADER SETTINGS -->
+          <div class="part-setting-row part3-setting-row">
+            <span class="part-tag-badge part3-tag">PART 3 HEADER</span>
+            <div class="part-setting-field">
+              <strong>Date:</strong>
+              <span class="field-sublabel">From:</span>
+              <input type="date" id="sheetCoSchDateFrom" class="input-custom input-date" value="2026-02-09">
+              <span class="field-sublabel">To:</span>
+              <input type="date" id="sheetCoSchDateTo" class="input-custom input-date" value="2026-02-13">
+            </div>
+            <div class="field-divider"></div>
+            <div class="part-setting-field">
+              <strong>School Timings:</strong>
+              <span class="field-sublabel">(</span>
+              <input type="text" id="sheetPart3TimingStart" class="input-custom" value="07:30 AM" style="width: 68px;" title="Part 3 Start Timing">
+              <span class="field-sublabel">–</span>
+              <input type="text" id="sheetPart3TimingEnd" class="input-custom" value="02:30 PM" style="width: 68px;" title="Part 3 End Timing">
+              <span class="field-sublabel">)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ribbon for Non-Middle School Classes (Class 9-12) -->
+        <div id="sheetGeneralControlsPanel" class="sheet-controls-panel" style="display: none;">
           <div class="sheet-controls-row-inputs">
-            <div class="sheet-inline-control">
-              <label for="sheetClassSelect" class="sheet-inline-label">Class:</label>
-              <select id="sheetClassSelect" class="sheet-select-compact">
-                <!-- Populated dynamically: Class 6, 7, 8, 9, 10, 11, 12 -->
-              </select>
-            </div>
-
-            <div class="sheet-inline-control">
-              <label for="sheetExamSelect" class="sheet-inline-label">Exam:</label>
-              <select id="sheetExamSelect" class="sheet-select-compact">
-                <!-- Populated dynamically: Unit Test I, II, PA I, Half Yearly, Annual, etc. -->
-              </select>
-              <input type="text" id="sheetCustomExamInput" placeholder="Custom exam title..." style="display: none; width: 120px; font-size: 0.78rem; padding: 0.22rem 0.45rem; background: #1e293b; border: 1px solid #38bdf8; border-radius: 4px; color: #fff;">
-            </div>
-
             <div class="sheet-inline-control">
               <label for="sheetMaxMarks" class="sheet-inline-label">Marks:</label>
               <input type="text" id="sheetMaxMarks" value="80 Marks" class="sheet-input-compact sheet-input-marks" title="Max Marks">
             </div>
-
             <div class="sheet-inline-control">
               <label for="sheetDuration" class="sheet-inline-label">Time:</label>
-              <input type="text" id="sheetDuration" value="3 Hrs" class="sheet-input-compact sheet-input-duration" title="Allowed Time Duration">
+              <input type="text" id="sheetDuration" value="180 Mins" class="sheet-input-compact sheet-input-duration" title="Allowed Time Duration">
             </div>
-
             <div class="sheet-inline-control">
               <label for="sheetSchoolTiming" class="sheet-inline-label">Timings:</label>
               <input type="text" id="sheetSchoolTiming" value="07:30 AM – 02:30 PM" class="sheet-input-compact sheet-input-timing" title="School Timings">
             </div>
-
-            <div class="sheet-ribbon-divider"></div>
-
-            <label class="sheet-check-label" style="font-size: 0.78rem; cursor: pointer;">
-              <input type="checkbox" id="sheetIncludeInstructions" checked>
-              <span>Instructions</span>
-            </label>
-
-            <label class="sheet-check-label" style="font-size: 0.78rem; cursor: pointer;">
-              <input type="checkbox" id="sheetIncludeSubtopics">
-              <span>Subtopics</span>
-            </label>
-
-            <label class="sheet-check-label" style="font-size: 0.78rem; cursor: pointer;">
-              <input type="checkbox" id="sheetIncludePrincipalSig" checked>
-              <span>Principal Signature</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Ribbon 3: Part 2 & Part 3 Assessment Windows (Middle School Classes 6-8) -->
-        <div id="sheetWindowsPanel" class="sheet-windows-panel">
-          <div class="sheet-window-group sheet-window-sea">
-            <span class="sheet-window-tag">🧪 Part 2 (SEA Window):</span>
-            <label class="sheet-window-label">From: <input type="date" id="sheetSEADateFrom" value="2026-02-02" class="sheet-window-date-input"></label>
-            <span class="sheet-window-arrow">→</span>
-            <label class="sheet-window-label">To: <input type="date" id="sheetSEADateTo" value="2026-02-06" class="sheet-window-date-input"></label>
-            <span class="sheet-full-day-badge">⏰ Full Working Day</span>
-          </div>
-          <div class="sheet-window-group sheet-window-cosch">
-            <span class="sheet-window-tag">🎨 Part 3 (Co-Scholastic Window):</span>
-            <label class="sheet-window-label">From: <input type="date" id="sheetCoSchDateFrom" value="2026-02-09" class="sheet-window-date-input"></label>
-            <span class="sheet-window-arrow">→</span>
-            <label class="sheet-window-label">To: <input type="date" id="sheetCoSchDateTo" value="2026-02-13" class="sheet-window-date-input"></label>
-            <span class="sheet-full-day-badge">⏰ Full Working Day</span>
           </div>
         </div>
 
@@ -687,6 +751,6 @@
       </div>
     </div>
 
-    <script type="module" src="./main.js?v=176"></script>
+    <script type="module" src="./main.js?v=197"></script>
   </body>
 </html>

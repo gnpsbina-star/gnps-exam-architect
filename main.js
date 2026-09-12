@@ -309,7 +309,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   const subLower = subjectName.toLowerCase();
   const isSkill = (subLower.startsWith("it (") || subLower.includes(" it (") || subLower.includes("it 402") || subLower.includes("it 802")) || subLower.includes("information tech") || subLower.includes("artificial") || subLower.includes("retail") || subLower.includes("data science") || subLower.includes("fashion") || subLower.includes("web app") || subLower.includes("yoga");
 
-  const defaultDuration = (marks <= 25 ? "45 Min" : (marks <= 45 ? "90 Min" : (marks <= 50 && isSkill ? "2 Hrs" : "3 Hrs")));
+  const defaultDuration = (marks <= 25 ? "45 Minutes" : (marks <= 45 ? "90 Mins" : (marks <= 50 && isSkill ? "120 Mins" : "180 Mins")));
   const duration = durationVal || defaultDuration;
 
   let sections = [];
@@ -1347,9 +1347,21 @@ function syncWorksheetDynamicScaling() {
   renderWorksheetBlueprintView(exam);
 }
 
+export function getExamDefaultDuration(examName) {
+  if (!examName) return "180 Mins";
+  const exLower = examName.toLowerCase().trim();
+  if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+    return "45 Minutes";
+  }
+  if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+    return "90 Mins";
+  }
+  return "180 Mins";
+}
+
 // Centralized helper to determine standard CBSE marks and duration for examinations
 function getExamDefaultDetails(className, subjectName, examName) {
-  if (!examName) return { marks: 80, duration: "3 Hrs" };
+  if (!examName) return { marks: 80, duration: "180 Mins" };
 
   const exLower = examName.toLowerCase().trim();
   const subLower = (subjectName || '').toLowerCase().trim();
@@ -1367,26 +1379,26 @@ function getExamDefaultDetails(className, subjectName, examName) {
     subLower.includes("geography") || subLower.includes("psychology")
   );
 
-  // 1. Unit Tests: 45 Min (20 Marks standard)
-  if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.startsWith("ut")) {
-    return { marks: 20, duration: "45 Min" };
+  // 1. Unit Tests: 45 Minutes (20 Marks standard)
+  if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+    return { marks: 20, duration: "45 Minutes" };
   }
 
-  // 2. Periodic Assessments (PA I, PA II, PT): 90 Min
-  if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa")) {
-    return { marks: 40, duration: "90 Min" };
+  // 2. Periodic Assessments (PA I, PA II, PT): 90 Mins
+  if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+    return { marks: 40, duration: "90 Mins" };
   }
 
-  // 3. Other Examinations (Mid Term Examination, Half Yearly, Term II, Pre-Board, Annual, Final): 3 Hrs (or 2 Hrs for skill)
+  // 3. Other Examinations (Mid Term Examination, Half Yearly, Term II, Pre-Board, Annual, Final): 180 Mins
   let fullMarks = 80;
-  let fullDuration = "3 Hrs";
+  let fullDuration = "180 Mins";
 
   if (isSkill) {
     fullMarks = 50;
-    fullDuration = "2 Hrs";
+    fullDuration = "120 Mins";
   } else if (isSeniorSciencePractical) {
     fullMarks = 70;
-    fullDuration = "3 Hrs";
+    fullDuration = "180 Mins";
   }
 
   return { marks: fullMarks, duration: fullDuration };
@@ -1486,9 +1498,27 @@ function toggleReadingSections() {
   }
 }
 
-examNameSelect.addEventListener('change', () => { updateExamDetails(); updateExamBlueprint(); toggleReadingSections(); });
-marksInput.addEventListener('input', () => { updateExamBlueprint(); toggleReadingSections(); });
-durationInput.addEventListener('input', updateExamBlueprint);
+examNameSelect.addEventListener('change', () => {
+  updateExamDetails();
+  updateExamBlueprint();
+  toggleReadingSections();
+  if (typeof syncSyllabusSheetFromPromptModule === 'function') {
+    syncSyllabusSheetFromPromptModule();
+  }
+});
+marksInput.addEventListener('input', () => {
+  updateExamBlueprint();
+  toggleReadingSections();
+  if (typeof syncSyllabusSheetFromPromptModule === 'function') {
+    syncSyllabusSheetFromPromptModule();
+  }
+});
+durationInput.addEventListener('input', () => {
+  updateExamBlueprint();
+  if (typeof syncSyllabusSheetFromPromptModule === 'function') {
+    syncSyllabusSheetFromPromptModule();
+  }
+});
 difficultySelect.addEventListener('change', updateExamBlueprint);
 
 function populateSubjectsDropdown(selectedClass, defaultSelectSubject = null) {
@@ -1568,6 +1598,9 @@ classSelect.addEventListener('change', (e) => {
   
   populateSubjectsDropdown(selectedClass);
   updateExamBlueprint();
+  if (typeof syncSyllabusSheetFromPromptModule === 'function') {
+    syncSyllabusSheetFromPromptModule();
+  }
 });
 
 // Helper to determine the official prescribed textbook name
@@ -1597,7 +1630,7 @@ function getPrescribedBookName(className, subjectName) {
     if (sub.includes("english") && sub.includes("r2")) return "Communicative English Reader (CBSE)";
     if (sub.includes("english")) return "Poorvi (Grade 7) (NCERT)";
     if (sub.includes("hindi")) return "Vasant Part-2 & Bal Mahabharat Katha (NCERT)";
-    if (sub.includes("sanskrit")) return "Ruchira Part-2 (NCERT)";
+    if (sub.includes("sanskrit")) return "Deepakam (दीपकम्) (NCERT)";
     if (sub.includes("general knowledge") || sub === "gk") return "General Knowledge (School Curriculum)";
     if (sub.includes("robotics") || sub.includes("ai")) return "AI & Robotics (School Curriculum)";
   }
@@ -3559,7 +3592,7 @@ ${blueprintPromptText}
     }
   }
 
-  if (subjectName === "Sanskrit") {
+  if (subjectName.includes("Sanskrit")) {
     const limits = {
       "Class 6": "1 Passage (approx. 40-50 words, 4-5 simple sentences)",
       "Class 7": "1 Passage (approx. 50-60 words)",
@@ -4045,17 +4078,6 @@ function setupWorksheetScalingEventListeners() {
   });
 }
 
-// Run Init immediately
-initClassDropdown();
-loadCustomSubjects();
-renderMasterPromptWindow();
-setupWorksheetScalingEventListeners();
-
-const sessionBadge = document.getElementById('sessionBadge');
-if (sessionBadge) {
-  sessionBadge.textContent = `Session ${getCurrentAcademicSession()}`;
-}
-
 // ==========================================================================
 // STUDENT EXAMINATION SYLLABUS SHEET GENERATOR (ALL SUBJECTS)
 // ==========================================================================
@@ -4085,11 +4107,35 @@ const sheetSEADateTo = document.getElementById('sheetSEADateTo');
 const sheetCoSchDateFrom = document.getElementById('sheetCoSchDateFrom');
 const sheetCoSchDateTo = document.getElementById('sheetCoSchDateTo');
 const sheetWindowsPanel = document.getElementById('sheetWindowsPanel');
+const sheetMiddleSettingsPanel = document.getElementById('sheetMiddleSettingsPanel');
+const sheetGeneralControlsPanel = document.getElementById('sheetGeneralControlsPanel');
+const sheetPart1Time = document.getElementById('sheetPart1Time');
+const sheetPart1TimeGkRobo = document.getElementById('sheetPart1TimeGkRobo');
+const sheetPart1Marks = document.getElementById('sheetPart1Marks');
+const sheetPart1MarksGkRobo = document.getElementById('sheetPart1MarksGkRobo');
+const sheetPart1TimingStart = document.getElementById('sheetPart1TimingStart');
+const sheetPart1TimingEnd = document.getElementById('sheetPart1TimingEnd');
+const sheetPart2Marks = document.getElementById('sheetPart2Marks');
+const sheetPart2TimingStart = document.getElementById('sheetPart2TimingStart');
+const sheetPart2TimingEnd = document.getElementById('sheetPart2TimingEnd');
+const sheetPart3TimingStart = document.getElementById('sheetPart3TimingStart');
+const sheetPart3TimingEnd = document.getElementById('sheetPart3TimingEnd');
 
 let coSchExamDateFrom = '2026-02-09';
 let coSchExamDateTo = '2026-02-13';
 let seaExamDateFrom = '2026-02-02';
 let seaExamDateTo = '2026-02-06';
+
+// Run Init immediately
+initClassDropdown();
+loadCustomSubjects();
+renderMasterPromptWindow();
+setupWorksheetScalingEventListeners();
+
+const sessionBadge = document.getElementById('sessionBadge');
+if (sessionBadge) {
+  sessionBadge.textContent = `Session ${getCurrentAcademicSession()}`;
+}
 
 export function formatShortDate(dateStr) {
   if (!dateStr) return '';
@@ -4183,14 +4229,6 @@ export const cbseSEAData = {
         "SST Activity 2: Timeline Chart Construction: Visual chronology of major prehistoric eras (Paleolithic, Mesolithic, Neolithic).",
         "SST Activity 3: Local Self-Government Project: Portfolio or model explaining the structure and functions of a Gram Panchayat."
       ]
-    },
-    {
-      subject: "General Knowledge",
-      domain: "Current Affairs Viva & Interactive Rapid-Fire Quiz Bowl",
-      activities: [
-        "GK Activity 1: Rapid-Fire Quiz on National Heritage, Wildlife Sanctuaries, States & Capitals of India.",
-        "GK Activity 2: Current Affairs & Scientific Frontiers Portfolio: News clippings scrap file and 2-minute oral viva presentation."
-      ]
     }
   ],
   "Class 7": [
@@ -4246,14 +4284,6 @@ export const cbseSEAData = {
         "SST Activity 1: Historical Map of India: Locating major capitals of the Delhi Sultanate and Mughal Empire (Delhi, Agra, Daulatabad, Lahore).",
         "SST Activity 2: Disaster Management Project: Preparedness guide and infographic poster on Cyclones, Earthquakes, or Floods.",
         "SST Activity 3: Case Study Portfolio on Gender Equality and Wage Parity in organized vs unorganized sectors."
-      ]
-    },
-    {
-      subject: "General Knowledge",
-      domain: "Current Affairs Viva & Global Knowledge Portfolio",
-      activities: [
-        "GK Activity 1: Current Affairs Viva: Global summits, Nobel Prize winners, and environmental treaties (UN COP).",
-        "GK Activity 2: Interactive Quiz on Indian Space Missions (Chandrayaan, Aditya-L1, Gaganyaan) and landmark Indian scientists."
       ]
     }
   ],
@@ -4311,20 +4341,11 @@ export const cbseSEAData = {
         "SST Activity 2: Constitutional Rights & Judicial Structure: Mock Parliament / Mock Court case study portfolio on Fundamental Rights.",
         "SST Activity 3: Sustainable Agriculture & Resource Conservation Project: Analytical comparison of Organic Farming vs Intensive Farming."
       ]
-    },
-    {
-      subject: "General Knowledge",
-      domain: "Current Affairs Viva & Geopolitics Quiz Bowl",
-      activities: [
-        "GK Activity 1: Viva on Indian Constitutional Governance, Supreme Court landmark rulings, and fundamental civic duties.",
-        "GK Activity 2: Current Affairs Mastery 2025-26: Global geopolitical shifts, international sports triumphs, and technological breakthroughs."
-      ]
     }
   ]
 };
 
 export const coScholasticSubjects = [
-  { key: "Robotics", name: "Robotics", subtitle: "AI & Robotics", book: "AI & Robotics (School Curriculum)" },
   { key: "Music", name: "Music", subtitle: "Vocal & Instrumental", book: "School Music Curriculum", prompt: "Subject Teacher's Handwritten Syllabus, Raagas & Songs" },
   { key: "Art & Craft", name: "Art & Craft", subtitle: "Visual Arts & Creative Craft", book: "Visual Arts Curriculum", prompt: "Subject Teacher's Handwritten Drawing Themes, Materials & Crafts" },
   { key: "Yoga", name: "Yoga", subtitle: "Asanas, Pranayama & Fitness", book: "Physical & Health Education", prompt: "Subject Teacher's Handwritten Asanas, Surya Namaskar & Fitness Evaluation" }
@@ -4483,6 +4504,90 @@ function initSheetClassDropdown() {
   });
 }
 
+export function syncSyllabusSheetFromPromptModule() {
+  const sheetClass = document.getElementById('sheetClassSelect');
+  const sheetBadge = document.getElementById('sheetClassBadge');
+  const sheetExam = document.getElementById('sheetExamSelect');
+  const sheetMarks = document.getElementById('sheetMaxMarks');
+  const sheetP1Marks = document.getElementById('sheetPart1Marks');
+  const sheetP1MarksGkRobo = document.getElementById('sheetPart1MarksGkRobo');
+  const sheetDur = document.getElementById('sheetDuration');
+  const sheetP1Time = document.getElementById('sheetPart1Time');
+
+  if (!sheetExam) return;
+
+  const mainClass = (classSelect && classSelect.value) ? classSelect.value : 'Class 8';
+  if (sheetClass && sheetClass.value !== mainClass) {
+    sheetClass.value = mainClass;
+  }
+  if (sheetBadge) {
+    sheetBadge.textContent = mainClass;
+  }
+
+  // Populate sheet exam dropdown if needed
+  if (!sheetExam.options || sheetExam.options.length === 0) {
+    populateSheetExamDropdown(mainClass);
+  }
+
+  const mainExam = (examNameSelect && examNameSelect.value && !isWorksheetMode(examNameSelect.value)) ? examNameSelect.value : '';
+  if (mainExam) {
+    let matched = false;
+    for (let opt of sheetExam.options) {
+      if (matchExamOption(opt.value, mainExam)) {
+        sheetExam.value = opt.value;
+        matched = true;
+        break;
+      }
+    }
+  }
+
+  // Synchronize Maximum Marks directly from Prompt Generation Module
+  const mainMarks = (marksInput && marksInput.value) ? marksInput.value.trim() : '';
+  const selectedOpt = sheetExam.options[sheetExam.selectedIndex];
+  const optMarks = selectedOpt ? (selectedOpt.dataset?.marks || selectedOpt.getAttribute('data-marks')) : null;
+  const resolvedMarks = (mainMarks && !isNaN(parseInt(mainMarks, 10)))
+    ? (mainMarks.toLowerCase().includes('mark') ? mainMarks : `${parseInt(mainMarks, 10)} Marks`)
+    : (optMarks || '80 Marks');
+
+  if (sheetMarks) {
+    sheetMarks.value = resolvedMarks;
+  }
+  if (sheetP1Marks) {
+    const numMarks = parseInt(resolvedMarks, 10);
+    if (!isNaN(numMarks)) {
+      sheetP1Marks.value = numMarks;
+      if (sheetP1MarksGkRobo) {
+        sheetP1MarksGkRobo.value = Math.round(numMarks / 2);
+      }
+    }
+  }
+
+  // Synchronize Time Duration directly from Prompt Generation Module
+  const mainDuration = (durationInput && durationInput.value) ? durationInput.value.trim() : '';
+  const optDuration = selectedOpt ? (selectedOpt.dataset?.duration || selectedOpt.getAttribute('data-duration')) : null;
+  const examDuration = (mainDuration && !mainDuration.toLowerCase().includes('self-paced'))
+    ? mainDuration
+    : (optDuration || getExamDefaultDuration(sheetExam.value) || '180 Mins');
+
+  if (sheetDur) {
+    sheetDur.value = examDuration;
+  }
+  if (sheetP1Time) {
+    sheetP1Time.value = examDuration;
+  }
+
+  // Re-render paper if modal is currently open and visible
+  const modal = document.getElementById('syllabusSheetModal');
+  if (modal && !modal.classList.contains('hidden') && modal.style.display !== 'none') {
+    if (typeof renderSyllabusSheetPaper === 'function') {
+      renderSyllabusSheetPaper();
+    }
+  }
+}
+if (typeof window !== 'undefined') {
+  window.syncSyllabusSheetFromPromptModule = syncSyllabusSheetFromPromptModule;
+}
+
 function openSyllabusSheetModal() {
   const modal = document.getElementById('syllabusSheetModal') || syllabusSheetModal;
   if (!modal) return;
@@ -4495,57 +4600,15 @@ function openSyllabusSheetModal() {
   try {
     initSheetClassDropdown();
 
-    // 2. Fetch Class directly from Main Panel
+    // 2. Fetch Class & Exam options directly from Main Panel
     const mainClass = (classSelect && classSelect.value) ? classSelect.value : 'Class 8';
     if (sheetClassSelect) sheetClassSelect.value = mainClass;
     if (sheetClassBadge) sheetClassBadge.textContent = mainClass;
 
-    // 3. Fetch Exam Name List directly from Main Panel
     populateSheetExamDropdown(mainClass);
 
-    // 4. Fetch Selected Exam Name directly from Main Panel
-    const mainExam = (examNameSelect && examNameSelect.value && !isWorksheetMode(examNameSelect.value)) ? examNameSelect.value : '';
-    let matched = false;
-    if (mainExam && sheetExamSelect) {
-      for (let opt of sheetExamSelect.options) {
-        if (matchExamOption(opt.value, mainExam)) {
-          sheetExamSelect.value = opt.value;
-          matched = true;
-          break;
-        }
-      }
-    }
-
-    if (!matched && sheetExamSelect) {
-      const annualOpt = Array.from(sheetExamSelect.options).find(o => o.value.includes('Annual') || o.value.includes('Term II') || o.value.includes('Final'));
-      if (annualOpt) {
-        sheetExamSelect.value = annualOpt.value;
-      }
-    }
-
-    // 5. Fetch Total Marks directly from Main Panel
-    const mainMarks = (marksInput && marksInput.value) ? marksInput.value.trim() : '';
-    if (sheetMaxMarks) {
-      if (mainMarks && !isNaN(parseInt(mainMarks, 10))) {
-        sheetMaxMarks.value = mainMarks.toLowerCase().includes('mark') ? mainMarks : `${parseInt(mainMarks, 10)} Marks`;
-      } else {
-        const selectedOpt = sheetExamSelect ? sheetExamSelect.options[sheetExamSelect.selectedIndex] : null;
-        const optMarks = selectedOpt ? (selectedOpt.dataset?.marks || selectedOpt.getAttribute('data-marks')) : null;
-        sheetMaxMarks.value = optMarks || '80 Marks';
-      }
-    }
-
-    // 6. Fetch Time Duration directly from Main Panel
-    const mainDuration = (durationInput && durationInput.value) ? durationInput.value.trim() : '';
-    if (sheetDuration) {
-      if (mainDuration && !mainDuration.toLowerCase().includes('self-paced')) {
-        sheetDuration.value = mainDuration;
-      } else {
-        const selectedOpt = sheetExamSelect ? sheetExamSelect.options[sheetExamSelect.selectedIndex] : null;
-        const optDuration = selectedOpt ? (selectedOpt.dataset?.duration || selectedOpt.getAttribute('data-duration')) : null;
-        sheetDuration.value = optDuration || '3 Hrs';
-      }
-    }
+    // 3. Synchronize Exam, Marks, and Duration directly from Prompt Generation Module
+    syncSyllabusSheetFromPromptModule();
 
     if (sheetCustomExamInput) {
       sheetCustomExamInput.style.display = (sheetExamSelect && sheetExamSelect.value === 'custom') ? 'block' : 'none';
@@ -4768,14 +4831,16 @@ function handleSubjectDateChange(inputEl) {
   if (!sheetClassSelect) return;
   const cls = sheetClassSelect.value;
   const subj = inputEl.dataset.subject;
+  const range = inputEl.dataset.range;
   const val = inputEl.value ? inputEl.value.trim() : '';
   if (!sheetSubjectDates[cls]) {
     sheetSubjectDates[cls] = {};
   }
+  const key = range ? `${subj}_${range}` : subj;
   if (val) {
-    sheetSubjectDates[cls][subj] = val;
+    sheetSubjectDates[cls][key] = val;
   } else {
-    delete sheetSubjectDates[cls][subj];
+    delete sheetSubjectDates[cls][key];
   }
   renderSyllabusSheetPaper();
 }
@@ -4795,8 +4860,28 @@ function renderSyllabusSheetPaper() {
 
   const isMiddleSchool = ['Class 6', 'Class 7', 'Class 8'].includes(cls);
   if (sheetWindowsPanel) {
-    sheetWindowsPanel.style.display = isMiddleSchool ? 'flex' : 'none';
+    sheetWindowsPanel.style.display = 'none';
   }
+  if (sheetMiddleSettingsPanel) {
+    sheetMiddleSettingsPanel.style.display = isMiddleSchool ? 'flex' : 'none';
+  }
+  if (sheetGeneralControlsPanel) {
+    sheetGeneralControlsPanel.style.display = isMiddleSchool ? 'none' : 'block';
+  }
+
+  const p1Time = (sheetPart1Time && sheetPart1Time.value.trim()) || getExamDefaultDuration(exam);
+  const p1TimeGkRobo = (sheetPart1TimeGkRobo && sheetPart1TimeGkRobo.value.trim()) || '1.5–2 Hrs';
+  const p1Marks = (sheetPart1Marks && sheetPart1Marks.value.trim()) || '80';
+  const p1MarksGkRobo = (sheetPart1MarksGkRobo && sheetPart1MarksGkRobo.value.trim()) || '40';
+  const p1TimingStart = (sheetPart1TimingStart && sheetPart1TimingStart.value.trim()) || '07:30 AM';
+  const p1TimingEnd = (sheetPart1TimingEnd && sheetPart1TimingEnd.value.trim()) || '02:30 PM';
+
+  const p2Marks = (sheetPart2Marks && sheetPart2Marks.value.trim()) || '5 Marks (Internal)';
+  const p2TimingStart = (sheetPart2TimingStart && sheetPart2TimingStart.value.trim()) || '07:30 AM';
+  const p2TimingEnd = (sheetPart2TimingEnd && sheetPart2TimingEnd.value.trim()) || '02:30 PM';
+
+  const p3TimingStart = (sheetPart3TimingStart && sheetPart3TimingStart.value.trim()) || '07:30 AM';
+  const p3TimingEnd = (sheetPart3TimingEnd && sheetPart3TimingEnd.value.trim()) || '02:30 PM';
 
   const coSchDateFrom = (sheetCoSchDateFrom && sheetCoSchDateFrom.value) ? sheetCoSchDateFrom.value : coSchExamDateFrom;
   const coSchDateTo = (sheetCoSchDateTo && sheetCoSchDateTo.value) ? sheetCoSchDateTo.value : coSchExamDateTo;
@@ -4827,7 +4912,9 @@ function renderSyllabusSheetPaper() {
       'Mathematics': '2026-02-23',
       'Science': '2026-02-25',
       'Social Science': '2026-02-27',
-      'General Knowledge': '2026-03-02'
+      'General Knowledge': '2026-03-02',
+      'Robotics_from': '2026-03-02',
+      'Robotics_to': '2026-03-06'
     };
     for (const [sName, sDate] of Object.entries(defaultDates)) {
       if (!sheetSubjectDates[cls][sName]) {
@@ -4841,8 +4928,12 @@ function renderSyllabusSheetPaper() {
 
   // Sort subjects by exam date in ascending chronological order (earliest first)
   subjectEntries.sort(([subjA], [subjB]) => {
-    const dateA = (sheetSubjectDates[cls] && sheetSubjectDates[cls][subjA]) ? sheetSubjectDates[cls][subjA].trim() : '';
-    const dateB = (sheetSubjectDates[cls] && sheetSubjectDates[cls][subjB]) ? sheetSubjectDates[cls][subjB].trim() : '';
+    const isRoboA = /robotics|computer/i.test(subjA);
+    const isRoboB = /robotics|computer/i.test(subjB);
+    const rawDateA = sheetSubjectDates[cls] ? (sheetSubjectDates[cls][subjA] || (isRoboA ? (sheetSubjectDates[cls]['Robotics_from'] || '2026-03-02') : '')) : '';
+    const rawDateB = sheetSubjectDates[cls] ? (sheetSubjectDates[cls][subjB] || (isRoboB ? (sheetSubjectDates[cls]['Robotics_from'] || '2026-03-02') : '')) : '';
+    const dateA = rawDateA ? rawDateA.trim() : '';
+    const dateB = rawDateB ? rawDateB.trim() : '';
     if (dateA && dateB) {
       if (dateA !== dateB) return dateA.localeCompare(dateB);
       return 0;
@@ -4852,167 +4943,541 @@ function renderSyllabusSheetPaper() {
     return 0;
   });
 
+  // Preserve open state of chapter customization details across live re-renders
+  const openDetailsKeys = new Set();
+  if (syllabusSheetPaper) {
+    syllabusSheetPaper.querySelectorAll('details.sheet-ch-customizer[open]').forEach(el => {
+      const s = el.getAttribute('data-subject');
+      const sec = el.getAttribute('data-section') || '';
+      if (s) openDetailsKeys.add(`${s}::${sec}`);
+    });
+  }
+
+  // Helper to format chapter sequences (e.g. Chapter 1 to Chapter 5, Chapter 8 & Chapter 9)
+  function buildChapterSequenceString(selectedItems, totalItemsCount) {
+    if (!selectedItems || selectedItems.length === 0) {
+      return { text: 'No chapters selected', count: 0, isAll: false };
+    }
+
+    const numericItems = selectedItems.filter(it => it.num !== null);
+
+    if (numericItems.length === 0) {
+      const titles = selectedItems.map(it => it.title || it.raw);
+      let text = '';
+      if (titles.length === 1) text = titles[0];
+      else if (titles.length === 2) text = `${titles[0]} & ${titles[1]}`;
+      else text = titles.slice(0, -1).join(', ') + ' & ' + titles[titles.length - 1];
+      return { text, count: selectedItems.length, isAll: selectedItems.length === totalItemsCount };
+    }
+
+    numericItems.sort((a, b) => a.num - b.num);
+
+    const prefix = numericItems[0].prefix || 'Chapter';
+    const isHindi = prefix === 'पाठ' || prefix === 'अध्याय';
+    const toWord = isHindi ? 'से' : 'to';
+    const andWord = isHindi ? 'व' : '&';
+
+    if (numericItems.length === 1) {
+      return { text: `${prefix} ${numericItems[0].num}`, count: 1, isAll: totalItemsCount === 1 };
+    }
+
+    if (numericItems.length === 2) {
+      return { text: `${prefix} ${numericItems[0].num} ${andWord} ${prefix} ${numericItems[1].num}`, count: 2, isAll: totalItemsCount === 2 };
+    }
+
+    const ranges = [];
+    let currentRange = [numericItems[0]];
+
+    for (let i = 1; i < numericItems.length; i++) {
+      const prev = numericItems[i - 1];
+      const curr = numericItems[i];
+      if (curr.num === prev.num + 1) {
+        currentRange.push(curr);
+      } else {
+        ranges.push(currentRange);
+        currentRange = [curr];
+      }
+    }
+    ranges.push(currentRange);
+
+    const rangeStrings = ranges.map(range => {
+      if (range.length === 1) {
+        return `${prefix} ${range[0].num}`;
+      } else if (range.length === 2) {
+        return `${prefix} ${range[0].num} ${andWord} ${prefix} ${range[1].num}`;
+      } else {
+        const start = range[0].num;
+        const end = range[range.length - 1].num;
+        return `${prefix} ${start} ${toWord} ${prefix} ${end}`;
+      }
+    });
+
+    let resultStr = rangeStrings.join(', ');
+    const isAll = numericItems.length === totalItemsCount && totalItemsCount >= 3;
+    if (isAll) {
+      resultStr += isHindi ? ' (सम्पूर्ण पाठ्यक्रम)' : (prefix === 'Lab' ? ' (Complete Practical Portion)' : ' (Complete Syllabus)');
+    }
+
+    return { text: resultStr, count: selectedItems.length, isAll };
+  }
+
+  function parseChapterItem(item, secKey = '', checkedSet = null) {
+    const rawStr = typeof item === 'string' ? item : (item.name || item.title || String(item));
+    const isChecked = !checkedSet || checkedSet.has(rawStr) || (secKey && (checkedSet.has(`${secKey}: ${rawStr}`) || checkedSet.has(`${secKey} -> ${rawStr}`)));
+    const m = rawStr.match(/^(?:Chapter|Unit|पाठ|अध्याय|Lesson|Lab\s*Q?|Q)\s*(\d+)\s*[:.\-]?\s*(.*)$/i);
+    let prefix = 'Chapter';
+    let num = null;
+    let title = rawStr;
+    if (m) {
+      if (/^पाठ/i.test(m[0])) prefix = 'पाठ';
+      else if (/^अध्याय/i.test(m[0])) prefix = 'अध्याय';
+      else if (/^Unit/i.test(m[0])) prefix = 'Unit';
+      else if (/^Lab/i.test(m[0])) prefix = 'Lab';
+      num = parseInt(m[1], 10);
+      title = m[2].trim();
+    } else {
+      title = rawStr.replace(/^\d+[\.\)]\s*/, '').trim();
+    }
+    return { raw: rawStr, num, prefix, title, isChecked, secKey };
+  }
+
   // Helper to render standard portion HTML for a subject
   function renderSubjectPortionContent(subjName, subjSyllabus, checkedSet) {
     let contentHtml = '';
     let checkedCount = 0;
     const isLang = /english|hindi|sanskrit|french|german|spanish|urdu/i.test(subjName);
-    const isKeysAreChapters = typeof subjSyllabus === 'object' && !Array.isArray(subjSyllabus) && Object.keys(subjSyllabus).some(k => /^(Chapter|Unit)\s*\d+/i.test(k));
+    const isGk = /general knowledge|gk/i.test(subjName);
+    const isMath = /mathematics|math/i.test(subjName);
+    const isSci = /science/i.test(subjName);
+    const isSst = /social science|social studies|sst/i.test(subjName);
+    const isRobo = /robotics|computer/i.test(subjName);
 
-    if (isKeysAreChapters && !isLang) {
-      let itemsHtml = '<div class="paper-chapter-grid">';
-      for (const [chTitle, subList] of Object.entries(subjSyllabus)) {
-        const isChecked = !!(checkedSet && (
-          checkedSet.has(chTitle) ||
-          (Array.isArray(subList) && subList.some(sub => checkedSet.has(`${chTitle} -> ${sub}`) || checkedSet.has(sub)))
-        ));
-        if (isChecked) checkedCount++;
+    // 1. GENERAL KNOWLEDGE
+    if (isGk) {
+      const items = Array.isArray(subjSyllabus) ? subjSyllabus : Object.keys(subjSyllabus || {});
+      const parsed = items.map(it => parseChapterItem(it, '', checkedSet));
+      const selected = parsed.filter(it => it.isChecked);
+      checkedCount = selected.length;
 
-        const match = chTitle.match(/^(Chapter|Unit)\s*(\d+)\s*:\s*(.*)$/i);
-        const badge = match ? `Ch. ${match[2]}:` : '•';
-        const labelText = match ? match[3] : chTitle;
+      const seq = buildChapterSequenceString(selected, items.length);
 
-        itemsHtml += `
-          <label class="paper-ch-item ${isChecked ? 'is-selected' : 'is-unselected'}" data-subject="${subjName}" title="${isChecked ? 'Click to exclude' : 'Click to include'}">
-            <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="${chTitle.replace(/"/g, '&quot;')}" ${isChecked ? 'checked' : ''}>
-            <span class="paper-ch-badge">${badge}</span>
-            <span class="paper-ch-title">${labelText}</span>
-          </label>
-        `;
-      }
-      itemsHtml += '</div>';
-      contentHtml = itemsHtml;
-    } else if (Array.isArray(subjSyllabus)) {
-      let itemsHtml = '<div class="paper-chapter-grid">';
-      subjSyllabus.forEach(ch => {
-        const title = typeof ch === 'string' ? ch : ch.name || String(ch);
-        const isChecked = !!(checkedSet && checkedSet.has(title));
-        if (isChecked) checkedCount++;
-
-        const match = title.match(/^(Chapter|Unit)\s*(\d+)\s*:\s*(.*)$/i);
-        const badge = match ? `Ch. ${match[2]}:` : '•';
-        const labelText = match ? match[3] : title;
-
-        itemsHtml += `
-          <label class="paper-ch-item ${isChecked ? 'is-selected' : 'is-unselected'}" data-subject="${subjName}" title="${isChecked ? 'Click to exclude' : 'Click to include'}">
-            <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="${title.replace(/"/g, '&quot;')}" ${isChecked ? 'checked' : ''}>
-            <span class="paper-ch-badge">${badge}</span>
-            <span class="paper-ch-title">${labelText}</span>
-          </label>
-        `;
-      });
-      itemsHtml += '</div>';
-      contentHtml = itemsHtml;
-    } else if (typeof subjSyllabus === 'object' && subjSyllabus !== null) {
-      const sectionBlocks = [];
-      for (const [secKey, secVal] of Object.entries(subjSyllabus)) {
-        const isSkillSec = isLang && isLanguageSkillSection(secKey);
-        if (Array.isArray(secVal)) {
-          let secCheckedCount = 0;
-          const areChapters = secVal.some(it => /^(Chapter|Unit|पाठ|अध्याय|Lab\s*Q?|Q)\s*\d+/i.test(typeof it === 'string' ? it : it.name || ''));
-          let itemsHtml = (areChapters && !isSkillSec) ? '<div class="paper-chapter-grid">' : '<div class="paper-topic-list">';
-
-          secVal.forEach(ch => {
-            const title = typeof ch === 'string' ? ch : ch.name || String(ch);
-            const isChecked = !!(checkedSet && (checkedSet.has(title) || checkedSet.has(`${secKey}: ${title}`)));
-            if (isChecked) {
-              secCheckedCount++;
-              checkedCount++;
-            }
-
-            if (areChapters && !isSkillSec) {
-              const match = title.match(/^(Chapter|Unit|पाठ|अध्याय|Lab\s*Q?|Q)\s*(\d+)\s*:\s*(.*)$/i);
-              let badge = '•';
-              if (match) {
-                if (/^(पाठ|अध्याय)/i.test(match[1])) {
-                  badge = `${match[1]} ${match[2]}:`;
-                } else if (/^Lab\s*Q/i.test(match[1])) {
-                  badge = `Lab Q${match[2]}:`;
-                } else if (/^Lab/i.test(match[1])) {
-                  badge = `Lab ${match[2]}:`;
-                } else if (/^Q/i.test(match[1])) {
-                  badge = `Q${match[2]}:`;
-                } else {
-                  badge = `Ch. ${match[2]}:`;
-                }
-              }
-              const labelText = match ? match[3] : title;
-
-              itemsHtml += `
-                <label class="paper-ch-item ${isChecked ? 'is-selected' : 'is-unselected'}" data-subject="${subjName}" data-section="${secKey}" title="${isChecked ? 'Click to exclude' : 'Click to include'}">
-                  <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="${secKey}" data-val="${title.replace(/"/g, '&quot;')}" ${isChecked ? 'checked' : ''}>
-                  <span class="paper-ch-badge">${badge}</span>
-                  <span class="paper-ch-title">${labelText}</span>
-                </label>
-              `;
-            } else {
-              itemsHtml += `
-                <label class="paper-topic-item ${isChecked ? 'is-selected' : 'is-unselected'}" data-subject="${subjName}" data-section="${secKey}" title="${isChecked ? 'Click to exclude' : 'Click to include'}">
-                  <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="${secKey}" data-val="${title.replace(/"/g, '&quot;')}" ${isChecked ? 'checked' : ''}>
-                  <span class="paper-bullet-dot">•</span>
-                  <span class="paper-topic-title">${title}</span>
-                </label>
-              `;
-            }
-          });
-
-          itemsHtml += '</div>';
-          sectionBlocks.push(`
-            <div class="paper-section-block ${secCheckedCount === 0 ? 'is-unselected' : ''}">
-              <div class="paper-section-title">${secKey}</div>
-              ${itemsHtml}
+      contentHtml = `
+        <div class="portion-inline-text">
+          <!-- Print/PDF output -->
+          <div class="portion-print-summary">
+            <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45;">
+              Prescribed Syllabus: ${seq.text}
             </div>
-          `);
-        } else if (typeof secVal === 'object' && secVal !== null) {
-          let secCheckedCount = 0;
-          let topicItemsHtml = '<div class="paper-topic-list">';
-
-          for (const [topName, subtopicsList] of Object.entries(secVal)) {
-            let checkedSubs = [];
-            if (checkedSet && Array.isArray(subtopicsList)) {
-              checkedSubs = subtopicsList.filter(sub => {
-                return checkedSet.has(`${topName} -> ${sub}`) || checkedSet.has(sub) || checkedSet.has(`${secKey}: ${sub}`);
-              });
-            }
-
-            const isChecked = !!(checkedSet && (checkedSet.has(topName) || checkedSet.has(`${secKey}: ${topName}`) || checkedSubs.length > 0));
-            if (isChecked) {
-              secCheckedCount++;
-              checkedCount++;
-            }
-
-            let subsHtml = '';
-            if (isSkillSec && includeSubtopics && Array.isArray(subtopicsList) && subtopicsList.length > 0) {
-              const subsDisplay = (checkedSubs.length > 0 && checkedSubs.length < subtopicsList.length)
-                ? `Focus: ${checkedSubs.join(', ')}`
-                : subtopicsList.join(', ');
-              subsHtml = `<div class="paper-grammar-subtext">${subsDisplay}</div>`;
-            }
-
-            topicItemsHtml += `
-              <label class="paper-topic-item ${isChecked ? 'is-selected' : 'is-unselected'}" data-subject="${subjName}" data-section="${secKey}" title="${isChecked ? 'Click to exclude' : 'Click to include'}">
-                <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="${secKey}" data-val="${topName.replace(/"/g, '&quot;')}" ${isChecked ? 'checked' : ''}>
-                <div>
-                  <span class="paper-grammar-topic-title"><span class="paper-bullet-dot">•</span> ${topName}</span>
-                  ${subsHtml}
-                </div>
-              </label>
-            `;
-          }
-
-          topicItemsHtml += '</div>';
-          sectionBlocks.push(`
-            <div class="paper-section-block ${secCheckedCount === 0 ? 'is-unselected' : ''}">
-              <div class="paper-section-title">${secKey}</div>
-              ${topicItemsHtml}
+          </div>
+          <!-- On-screen view: only checkboxes -->
+          <div class="portion-screen-selector">
+            <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}">
+              ${parsed.map(it => `
+                <label class="sheet-ch-customizer-item">
+                  <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
+                  <span>${it.raw}</span>
+                </label>
+              `).join('')}
             </div>
-          `);
-        }
-      }
-      contentHtml = sectionBlocks.join('');
+          </div>
+        </div>
+      `;
+      return { contentHtml, checkedCount };
     }
 
-    return { contentHtml, checkedCount };
+    // 2. MATHEMATICS
+    if (isMath) {
+      const rawList = Array.isArray(subjSyllabus) ? subjSyllabus : Object.keys(subjSyllabus || {});
+      const parsed = rawList.map(it => parseChapterItem(it, '', checkedSet));
+      const selected = parsed.filter(it => it.isChecked);
+      checkedCount = selected.length;
+
+      const seq = buildChapterSequenceString(selected, rawList.length);
+
+      contentHtml = `
+        <div class="portion-inline-text">
+          <span class="portion-sec-title">Prescribed NCERT Chapters:</span><br>
+          <!-- Print/PDF output -->
+          <div class="portion-print-summary">
+            <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45; margin-top: 2px;">
+              ${seq.text}
+            </div>
+          </div>
+          <!-- On-screen view: only checkboxes -->
+          <div class="portion-screen-selector">
+            <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}">
+              ${parsed.map(it => `
+                <label class="sheet-ch-customizer-item">
+                  <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
+                  <span>${it.raw}</span>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+
+        </div>
+      `;
+      return { contentHtml, checkedCount };
+    }
+
+    // 3. SCIENCE
+    if (isSci && typeof subjSyllabus === 'object' && !Array.isArray(subjSyllabus)) {
+      const isChapterKeys = Object.keys(subjSyllabus).some(k => /^(Chapter|Unit)\s*\d+/i.test(k));
+      if (isChapterKeys) {
+        const rawList = Object.keys(subjSyllabus);
+        const parsed = rawList.map(k => {
+          const subList = subjSyllabus[k];
+          const isChecked = !checkedSet || (
+            checkedSet.has(k) ||
+            (Array.isArray(subList) && subList.some(sub => checkedSet.has(`${k} -> ${sub}`) || checkedSet.has(sub)))
+          );
+          const m = k.match(/^(?:Chapter|Unit)\s*(\d+)\s*[:.\-]?\s*(.*)$/i);
+          return {
+            raw: k,
+            num: m ? parseInt(m[1], 10) : null,
+            prefix: 'Chapter',
+            title: m ? m[2].trim() : k,
+            isChecked
+          };
+        });
+        const selected = parsed.filter(it => it.isChecked);
+        checkedCount = selected.length;
+
+        const seq = buildChapterSequenceString(selected, rawList.length);
+
+        contentHtml = `
+          <div class="portion-inline-text">
+            <span class="portion-sec-title">Prescribed NCERT Chapters:</span><br>
+            <!-- Print/PDF output -->
+            <div class="portion-print-summary">
+              <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45; margin-top: 2px;">
+                ${seq.text}
+              </div>
+            </div>
+            <!-- On-screen view: only checkboxes -->
+            <div class="portion-screen-selector">
+              <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}">
+                ${parsed.map(it => `
+                  <label class="sheet-ch-customizer-item">
+                    <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
+                    <span>${it.raw}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+
+          </div>
+        `;
+        return { contentHtml, checkedCount };
+      }
+    }
+
+    // 4. SOCIAL SCIENCE
+    if (isSst && typeof subjSyllabus === 'object' && !Array.isArray(subjSyllabus)) {
+      const themes = Object.entries(subjSyllabus);
+      let totalSstChapters = 0;
+      let selectedSstChapters = 0;
+      const themeDataList = [];
+
+      themes.forEach(([themeKey, chList]) => {
+        const list = Array.isArray(chList) ? chList : Object.keys(chList || {});
+        totalSstChapters += list.length;
+        const parsed = list.map(ch => parseChapterItem(ch, themeKey, checkedSet));
+        const selected = parsed.filter(it => it.isChecked);
+        selectedSstChapters += selected.length;
+        const seq = buildChapterSequenceString(selected, list.length);
+        themeDataList.push({
+          themeKey,
+          parsed,
+          selected,
+          seqText: seq.text,
+          isAllSelected: selected.length === list.length
+        });
+      });
+
+      checkedCount = selectedSstChapters;
+      const isAllSst = selectedSstChapters === totalSstChapters && totalSstChapters > 0;
+
+      let themesSummaryHtml = '';
+      if (isAllSst && themeDataList.length >= 4) {
+        themesSummaryHtml = `
+          <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45;">
+            Theme A to Theme E: Chapter 1 to Chapter 14 (Complete Prescribed Syllabus)
+          </div>
+          <div style="margin-top: 4px; font-size: 9.5pt; color: #000000; line-height: 1.4;">
+            <div>&bull; <strong>Theme A (Land & People):</strong> Chapter 1 & Chapter 8</div>
+            <div>&bull; <strong>Theme B (Tapestry of the Past):</strong> Chapter 2 to Chapter 4, Chapter 9</div>
+            <div>&bull; <strong>Theme C (Cultural Heritage):</strong> Chapter 10 & Chapter 11</div>
+            <div>&bull; <strong>Theme D (Governance & Democracy):</strong> Chapter 5 & Chapter 6, Chapter 12 & Chapter 13</div>
+            <div>&bull; <strong>Theme E (Economic Life):</strong> Chapter 7, Chapter 14 & Chapter 15</div>
+            <div>&bull; <strong>Map Work:</strong> Identification and labelling on Outline Political Map of India (Major 1857 Revolt centers, Soil types, Agricultural crops, and Iron/Steel plants).</div>
+          </div>
+        `;
+      } else {
+        themesSummaryHtml = `
+          <div class="portion-inline-text">
+            ${themeDataList.filter(t => t.selected.length > 0).map(t => `
+              <div><span class="portion-sec-title">${t.themeKey}:</span> <span style="font-weight: bold;">${t.seqText}</span></div>
+            `).join('')}
+            <div style="margin-top: 3px; font-size: 9pt; color: #333333;">&bull; <strong>Map Work:</strong> Identification and labelling on Outline Political Map of India.</div>
+          </div>
+        `;
+      }
+
+      contentHtml = `
+        <div class="portion-inline-text">
+          <!-- Print/PDF output -->
+          <div class="portion-print-summary">
+            ${themesSummaryHtml}
+          </div>
+          <!-- On-screen view: organized theme checkboxes -->
+          <div class="portion-screen-selector">
+            ${themeDataList.map(t => `
+              <div style="margin-bottom: 6px;">
+                <div style="font-weight: 600; font-size: 9pt; color: #1e293b; margin-top: 3px;">${t.themeKey}:</div>
+                <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}" data-section="${t.themeKey}">
+                  ${t.parsed.map(it => `
+                    <label class="sheet-ch-customizer-item">
+                      <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="${t.themeKey}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
+                      <span>${it.raw}</span>
+                    </label>
+                  `).join('')}
+                </div>
+              </div>
+            `).join('')}
+            <div style="margin-top: 3px; font-size: 9pt; color: #475569;">&bull; <strong>Map Work:</strong> Identification and labelling on Outline Political Map of India.</div>
+          </div>
+        </div>
+      `;
+      return { contentHtml, checkedCount };
+    }
+
+    // 5. LANGUAGE SUBJECTS (English, Hindi, Sanskrit)
+    if (isLang && typeof subjSyllabus === 'object' && !Array.isArray(subjSyllabus)) {
+      const allSecKeys = Object.keys(subjSyllabus);
+      const litKeys = allSecKeys.filter(k => /literature|poorvi|honeydew|beehive|first flight|moments|footprints|it so happened/i.test(k));
+      const shouldAggregateLit = litKeys.length > 1;
+      const nonLitKeys = shouldAggregateLit ? allSecKeys.filter(k => !litKeys.includes(k)) : allSecKeys;
+
+      const sectionBlocks = [];
+
+      // A. Standard non-literature sections (Reading, Writing, Grammar, or standard book)
+      nonLitKeys.forEach(secKey => {
+        const secVal = subjSyllabus[secKey];
+        const rawItems = Array.isArray(secVal) ? secVal : Object.keys(secVal || {});
+        const parsed = rawItems.map(it => parseChapterItem(it, secKey, checkedSet));
+        const selected = parsed.filter(it => it.isChecked);
+        if (selected.length > 0) checkedCount += selected.length;
+
+        const seq = buildChapterSequenceString(selected, rawItems.length);
+        const isBookSection = /पाठ्यपुस्तक|मल्हार|दीपकम्|reader|textbook/i.test(secKey);
+
+        sectionBlocks.push(`
+          <div class="paper-section-block ${selected.length === 0 ? 'is-unselected' : ''}" style="margin-bottom: 4px;">
+            <div>
+              <span class="portion-sec-title">${secKey}:</span>
+              <!-- Print/PDF output -->
+              <span class="portion-print-summary" style="${isBookSection ? 'font-weight: bold;' : ''}"> ${seq.text}</span>
+            </div>
+            <!-- On-screen view: only checkboxes -->
+            <div class="portion-screen-selector">
+              <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}" data-section="${secKey}">
+                ${parsed.map(it => `
+                  <label class="sheet-ch-customizer-item">
+                    <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="${secKey}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
+                    <span>${it.raw}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `);
+      });
+
+      // B. Aggregated English Literature sections (Poorvi / Honeydew across all units)
+      if (shouldAggregateLit) {
+        const allLitItems = [];
+        litKeys.forEach(secKey => {
+          const secVal = subjSyllabus[secKey];
+          if (Array.isArray(secVal)) {
+            secVal.forEach(ch => allLitItems.push(parseChapterItem(ch, secKey, checkedSet)));
+          }
+        });
+
+        const selectedLit = allLitItems.filter(it => it.isChecked);
+        if (selectedLit.length > 0) checkedCount += selectedLit.length;
+
+        const seq = buildChapterSequenceString(selectedLit, allLitItems.length);
+        const bookMatch = litKeys[0].match(/Literature\s*-\s*([^(\n]+)/i);
+        const bookName = bookMatch ? bookMatch[1].trim() : 'Poorvi';
+        const unifiedLitTitle = `Section C: Literature — ${bookName} (Prose & Poetry)`;
+
+        sectionBlocks.push(`
+          <div class="paper-section-block ${selectedLit.length === 0 ? 'is-unselected' : ''}" style="margin-bottom: 4px;">
+            <div>
+              <span class="portion-sec-title">${unifiedLitTitle}:</span>
+              <!-- Print/PDF output -->
+              <span class="portion-print-summary" style="font-weight: bold;"> ${seq.text}</span>
+            </div>
+            <!-- On-screen view: only checkboxes -->
+            <div class="portion-screen-selector">
+              <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}" data-section="literature">
+                ${allLitItems.map(it => `
+                  <label class="sheet-ch-customizer-item">
+                    <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="${it.secKey}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
+                    <span>${it.raw}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `);
+      }
+
+      contentHtml = `<div class="portion-inline-text">${sectionBlocks.join('')}</div>`;
+      return { contentHtml, checkedCount };
+    }
+
+    // 6. ROBOTICS / COMPUTER
+    if (isRobo) {
+      let theoryRawList = [];
+      let practicalRawList = [];
+
+      if (typeof subjSyllabus === 'object' && subjSyllabus !== null && !Array.isArray(subjSyllabus)) {
+        theoryRawList = Object.keys(subjSyllabus);
+        for (const [chKey, labs] of Object.entries(subjSyllabus)) {
+          if (Array.isArray(labs)) {
+            labs.forEach(lab => {
+              if (typeof lab === 'string' && lab.trim().length > 0) {
+                practicalRawList.push(lab.trim());
+              }
+            });
+          }
+        }
+      } else if (Array.isArray(subjSyllabus)) {
+        subjSyllabus.forEach(it => {
+          const str = typeof it === 'string' ? it : (it.name || String(it));
+          if (/^Lab/i.test(str)) practicalRawList.push(str);
+          else theoryRawList.push(str);
+        });
+      }
+
+      // Theory items
+      const theoryParsed = theoryRawList.map(it => parseChapterItem(it, 'theory', checkedSet));
+      const theorySelected = theoryParsed.filter(it => it.isChecked);
+      const theorySeq = buildChapterSequenceString(theorySelected, theoryRawList.length);
+
+      // Practical / Lab items
+      const labParsed = practicalRawList.map(it => parseChapterItem(it, 'practical', checkedSet));
+      const labSelected = labParsed.filter(it => it.isChecked);
+      const labSeq = buildChapterSequenceString(labSelected, practicalRawList.length);
+
+      checkedCount = theorySelected.length + labSelected.length;
+
+      contentHtml = `
+        <div class="portion-inline-text">
+          <div class="paper-section-block ${theorySelected.length === 0 ? 'is-unselected' : ''}" style="margin-bottom: 6px;">
+            <span class="portion-sec-title">Theory Portion:</span>
+            <div class="portion-print-summary" style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45; margin-top: 2px;">
+              ${theorySeq.text}
+            </div>
+            <div class="portion-screen-selector">
+              <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}" data-section="theory">
+                ${theoryParsed.map(it => `
+                  <label class="sheet-ch-customizer-item" title="${it.raw.replace(/"/g, '&quot;')}">
+                    <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="theory" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
+                    <span>${it.raw}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+
+          <div class="paper-section-block ${labSelected.length === 0 ? 'is-unselected' : ''}" style="margin-top: 6px;">
+            <span class="portion-sec-title">Practical / Lab Portion:</span>
+            <div class="portion-print-summary" style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45; margin-top: 2px;">
+              ${labSeq.text}
+            </div>
+            <div class="portion-screen-selector">
+              <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}" data-section="practical">
+                ${labParsed.map(it => `
+                  <label class="sheet-ch-customizer-item" title="${it.raw.replace(/"/g, '&quot;')}">
+                    <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="practical" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
+                    <span>${it.raw}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      return { contentHtml, checkedCount };
+    }
+
+    // 7. GENERIC FALLBACK (High school electives or other subjects)
+    if (Array.isArray(subjSyllabus)) {
+      const parsed = subjSyllabus.map(it => parseChapterItem(it, '', checkedSet));
+      const selected = parsed.filter(it => it.isChecked);
+      checkedCount = selected.length;
+      const seq = buildChapterSequenceString(selected, subjSyllabus.length);
+
+      contentHtml = `
+        <div class="portion-inline-text">
+          <!-- Print/PDF output -->
+          <div class="portion-print-summary">
+            <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45;">
+              ${seq.text}
+            </div>
+          </div>
+          <!-- On-screen view: only checkboxes -->
+          <div class="portion-screen-selector">
+            <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}">
+              ${parsed.map(it => `
+                <label class="sheet-ch-customizer-item">
+                  <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
+                  <span>${it.raw}</span>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+      return { contentHtml, checkedCount };
+    } else if (typeof subjSyllabus === 'object' && subjSyllabus !== null) {
+      const secBlocks = [];
+      for (const [secKey, secVal] of Object.entries(subjSyllabus)) {
+        const rawList = Array.isArray(secVal) ? secVal : Object.keys(secVal || {});
+        const parsed = rawList.map(it => parseChapterItem(it, secKey, checkedSet));
+        const selected = parsed.filter(it => it.isChecked);
+        if (selected.length > 0) checkedCount += selected.length;
+        const seq = buildChapterSequenceString(selected, rawList.length);
+
+        secBlocks.push(`
+          <div class="paper-section-block ${selected.length === 0 ? 'is-unselected' : ''}" style="margin-bottom: 4px;">
+            <div>
+              <span class="portion-sec-title">${secKey}:</span>
+              <!-- Print/PDF output -->
+              <span class="portion-print-summary"> ${seq.text}</span>
+            </div>
+            <!-- On-screen view: only checkboxes -->
+            <div class="portion-screen-selector">
+              <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}" data-section="${secKey}">
+                ${parsed.map(it => `
+                  <label class="sheet-ch-customizer-item">
+                    <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="${secKey}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
+                    <span>${it.raw}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+        `);
+      }
+      contentHtml = `<div class="portion-inline-text">${secBlocks.join('')}</div>`;
+      return { contentHtml, checkedCount };
+    }
+
+    return { contentHtml: '<div style="font-style: italic; font-size: 9.5pt; color: #000000;">Complete Prescribed Syllabus</div>', checkedCount: 0 };
   }
 
   // --------------------------------------------------------------------------
@@ -5022,7 +5487,7 @@ function renderSyllabusSheetPaper() {
     // 1. PART 1: Scholastic Subjects (Written Pen-Paper Exams)
     const scholasticEntries = subjectEntries.filter(([sName]) => {
       const sLow = sName.toLowerCase();
-      return !sLow.includes('robotics') && !sLow.includes('music') && !sLow.includes('art') && !sLow.includes('yoga');
+      return !sLow.includes('music') && !sLow.includes('art') && !sLow.includes('yoga');
     });
 
     let part1RowsHtml = '';
@@ -5033,25 +5498,67 @@ function renderSyllabusSheetPaper() {
       const checkedSet = getSubjectSelectionForSheet(cls, subjName);
       const { contentHtml, checkedCount } = renderSubjectPortionContent(subjName, subjSyllabus, checkedSet);
 
-      const subjDate = (sheetSubjectDates[cls] && sheetSubjectDates[cls][subjName]) ? sheetSubjectDates[cls][subjName] : '';
-      const dateBadgeHtml = subjDate
-        ? `<div class="paper-subj-date-badge"><span class="no-print">📅 </span><span class="paper-date-label">Date: </span>${formatExamDate(subjDate)}</div>`
-        : `<div class="paper-subj-no-date no-print">📅 Set Exam Date</div>`;
+      const isRobo = /robotics|computer/i.test(subjName);
+      let dateContainerHtml = '';
+
+      if (isRobo) {
+        const roboFrom = (sheetSubjectDates[cls] && sheetSubjectDates[cls]['Robotics_from']) ? sheetSubjectDates[cls]['Robotics_from'] : '2026-03-02';
+        const roboTo = (sheetSubjectDates[cls] && sheetSubjectDates[cls]['Robotics_to']) ? sheetSubjectDates[cls]['Robotics_to'] : '2026-03-06';
+        const fromFormatted = formatShortDate(roboFrom) || '02 Mar 2026';
+        const toFormatted = formatShortDate(roboTo) || '06 Mar 2026';
+
+        dateContainerHtml = `
+          <div class="paper-subj-date-container">
+            <div class="no-print" style="margin-bottom: 3px; font-size: 7.5pt; color: #475569;">
+              <div style="display: flex; gap: 3px; align-items: center; margin-bottom: 2px;">
+                <span style="width: 28px;">From:</span>
+                <input type="date" class="sheet-subj-date-input no-print" data-subject="${subjName}" data-range="from" value="${roboFrom}" title="Start Date">
+              </div>
+              <div style="display: flex; gap: 3px; align-items: center;">
+                <span style="width: 28px;">To:</span>
+                <input type="date" class="sheet-subj-date-input no-print" data-subject="${subjName}" data-range="to" value="${roboTo}" title="End Date">
+              </div>
+            </div>
+            <div class="paper-subj-date-badge" style="white-space: normal; text-align: left;">
+              <span class="no-print">📅 </span><span class="paper-date-label">Date: </span>${fromFormatted} – ${toFormatted}
+              <div style="font-size: 7.5pt; font-weight: normal; color: #222222; margin-top: 2px; line-height: 1.25;">
+                (Exam will be taken during regular school days within this date range)
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        const subjDate = (sheetSubjectDates[cls] && sheetSubjectDates[cls][subjName]) ? sheetSubjectDates[cls][subjName] : '';
+        const dateBadgeHtml = subjDate
+          ? `<div class="paper-subj-date-badge"><span class="no-print">📅 </span><span class="paper-date-label">Date: </span>${formatExamDate(subjDate)}</div>`
+          : `<div class="paper-subj-no-date no-print">📅 Set Exam Date</div>`;
+
+        dateContainerHtml = `
+          <div class="paper-subj-date-container">
+            <input type="date" class="sheet-subj-date-input no-print" data-subject="${subjName}" value="${subjDate}" title="Set Exam Date for ${subjName}">
+            ${dateBadgeHtml}
+          </div>
+        `;
+      }
 
       const hasContent = (contentHtml && contentHtml.trim().length > 0);
       const displayContent = (checkedCount === 0 && !hasContent)
         ? `<div style="font-style: italic; font-size: 9pt; color: #000000; padding: 2px 0;">Complete Prescribed Syllabus</div>`
         : contentHtml;
 
+      const currentRowNum = p1Sno++;
+      const isPage1End = (currentRowNum === 4 && scholasticEntries.length >= 7) || (currentRowNum === 3 && scholasticEntries.length < 7 && scholasticEntries.length >= 5);
+
+      const isHalfMarks = isRobo || subjName.toLowerCase().includes('general knowledge') || subjName.toLowerCase().includes('gk');
+      const marksVal = isHalfMarks ? '40 Marks' : (sheetMaxMarks ? sheetMaxMarks.value.trim() : '80 Marks');
+      const marksBadgeHtml = `<span class="subj-marks-badge">${marksVal}</span>`;
+
       part1RowsHtml += `
-        <tr class="paper-subject-row">
-          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${p1Sno++}</td>
+        <tr class="paper-subject-row ${isPage1End ? 'paper-part1-page1-end' : ''}">
+          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${currentRowNum}</td>
           <td style="width: 140px; vertical-align: top;">
-            <div class="paper-subj-title">${subjName}</div>
-            <div class="paper-subj-date-container">
-              <input type="date" class="sheet-subj-date-input no-print" data-subject="${subjName}" value="${subjDate}" title="Set Exam Date for ${subjName}">
-              ${dateBadgeHtml}
-            </div>
+            <div class="paper-subj-title">${subjName} ${marksBadgeHtml}</div>
+            ${dateContainerHtml}
             <div class="paper-subj-actions no-print">
               <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${subjName}" title="Select ${subjName}">All</button>
               <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${subjName}" title="Clear ${subjName}">Clear</button>
@@ -5099,22 +5606,18 @@ function renderSyllabusSheetPaper() {
         : actsHtml;
 
       part2RowsHtml += `
-        <tr class="paper-subject-row">
-          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${p2Sno++}</td>
-          <td style="width: 140px; vertical-align: top;">
+        <tr class="paper-subject-row paper-part2-row">
+          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 12px 4px;">${p2Sno++}</td>
+          <td style="width: 140px; vertical-align: top; padding: 12px 8px;">
             <div class="paper-subj-title">${item.subject}</div>
             <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${item.domain}</div>
-            <div style="margin-top: 3px; font-size: 8pt; line-height: 1.25;">
-              <div><strong>Window:</strong> <span class="sea-range-date-text">${formatDateRange(seaDateFrom, seaDateTo)}</span></div>
-              <div style="color: #333333; font-size: 7.5pt; margin-top: 1px;">• Regular periods</div>
-            </div>
             <div class="paper-subj-actions no-print" style="margin-top: 4px;">
               <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${seaSubjKey}" title="Select all ${item.subject} SEA">All</button>
               <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${seaSubjKey}" title="Clear all ${item.subject} SEA">Clear</button>
             </div>
           </td>
-          <td>
-            <div style="display: flex; flex-direction: column; gap: 2px;">
+          <td style="padding: 12px 8px; vertical-align: top;">
+            <div style="display: flex; flex-direction: column; gap: 6px;">
               ${displayActs}
             </div>
           </td>
@@ -5130,137 +5633,38 @@ function renderSyllabusSheetPaper() {
       const subjName = item.name;
       const checkedSet = getSubjectSelectionForSheet(cls, subjName);
 
-      if (item.key === 'Robotics') {
-        const robSyllabus = cbseData[cls] ? cbseData[cls]['Robotics'] : null;
-        let robCheckedCount = 0;
-        let robRowsHtml = '';
-
-        if (robSyllabus && typeof robSyllabus === 'object') {
-          for (const [chTitle, labs] of Object.entries(robSyllabus)) {
-            const isChChecked = !!(checkedSet && checkedSet.has(chTitle));
-            if (isChChecked) robCheckedCount++;
-
-            const match = chTitle.match(/^(Chapter|Unit)\s*(\d+)\s*:\s*(.*)$/i);
-            const badge = match ? `Ch. ${match[2]}:` : '•';
-            const labelText = match ? match[3] : chTitle;
-
-            const chCellHtml = `
-              <label class="paper-ch-item ${isChChecked ? 'is-selected' : 'is-unselected'}" data-subject="${subjName}" title="${isChChecked ? 'Click to exclude chapter' : 'Click to include chapter'}">
-                <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="${chTitle.replace(/"/g, '&quot;')}" ${isChChecked ? 'checked' : ''}>
-                <span class="paper-ch-badge">${badge}</span>
-                <span class="paper-ch-title">${labelText}</span>
+      const isIncluded = !!(checkedSet && (checkedSet.has('__included__') || checkedSet.has(subjName)));
+      part3RowsHtml += `
+        <tr class="paper-subject-row ${!isIncluded ? 'is-unselected' : ''}">
+          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 10px 4px;">${p3Sno++}</td>
+          <td style="width: 140px; vertical-align: top; padding: 10px 8px;">
+            <div class="paper-subj-title">${subjName}</div>
+            <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${item.subtitle}</div>
+            <div style="font-size: 7.5pt; color: #333333; margin-top: 1px;">${item.book}</div>
+            <div class="paper-subj-actions no-print" style="margin-top: 4px;">
+              <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${subjName}" title="Select ${subjName}">All</button>
+              <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${subjName}" title="Clear ${subjName}">Clear</button>
+            </div>
+          </td>
+          <td style="height: 130px; min-height: 130px; vertical-align: top; padding: 10px 8px;">
+            <div class="portion-screen-selector no-print" style="margin-bottom: 4px;">
+              <label class="sheet-ch-customizer-item no-print" style="display: inline-flex; width: auto; padding: 2px 6px; cursor: pointer;">
+                <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="__included__" ${isIncluded ? 'checked' : ''}>
+                <span style="font-size: 8.5pt;">Include in circular</span>
               </label>
-            `;
-
-            let labCellHtml = '';
-            let hasCheckedLab = false;
-            const labList = Array.isArray(labs) ? labs : [];
-
-            if (labList.length === 0) {
-              labCellHtml = `<span class="paper-no-lab-text">— (No Lab Session in textbook)</span>`;
-            } else {
-              labList.forEach(lab => {
-                const isLabChecked = !!(checkedSet && (checkedSet.has(lab) || checkedSet.has(`${chTitle} -> ${lab}`)));
-                if (isLabChecked) {
-                  robCheckedCount++;
-                  hasCheckedLab = true;
-                }
-                const labMatch = lab.match(/^(Lab\s*\d+)\s*:\s*(.*)$/i);
-                const labBadge = labMatch ? `${labMatch[1]}:` : '•';
-                const labText = labMatch ? labMatch[2] : lab;
-
-                labCellHtml += `
-                  <label class="paper-lab-item ${isLabChecked ? 'is-selected' : 'is-unselected'}" data-subject="${subjName}" title="${isLabChecked ? 'Click to exclude lab activity' : 'Click to include lab activity'}">
-                    <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="${lab.replace(/"/g, '&quot;')}" ${isLabChecked ? 'checked' : ''}>
-                    <span class="paper-lab-badge">${labBadge}</span>
-                    <span class="paper-lab-title">${labText}</span>
-                  </label>
-                `;
-              });
-            }
-
-            const isRowActive = isChChecked || hasCheckedLab;
-            robRowsHtml += `
-              <tr class="robotics-row ${isRowActive ? 'row-has-selected' : 'row-all-unselected is-unselected'}">
-                <td class="robotics-ch-cell">${chCellHtml}</td>
-                <td class="robotics-lab-cell">${labCellHtml}</td>
-              </tr>
-            `;
-          }
-        }
-
-        part3RowsHtml += `
-          <tr class="paper-subject-row">
-            <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${p3Sno++}</td>
-            <td style="width: 140px; vertical-align: top;">
-              <div class="paper-subj-title">${subjName}</div>
-              <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${item.subtitle}</div>
-              <div style="font-size: 7.5pt; color: #333333; margin-top: 1px;">${item.book}</div>
-              <div style="margin-top: 3px; font-size: 8pt; line-height: 1.25;">
-                <div><strong>Window:</strong> <span class="cosch-range-date-text">${formatDateRange(coSchDateFrom, coSchDateTo)}</span></div>
-                <div style="color: #333333; font-size: 7.5pt; margin-top: 1px;">• Class periods</div>
-              </div>
-              <div class="paper-subj-actions no-print" style="margin-top: 4px;">
-                <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${subjName}" title="Select ${subjName}">All</button>
-                <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${subjName}" title="Clear ${subjName}">Clear</button>
-              </div>
-            </td>
-            <td>
-              <div class="paper-robotics-table-wrap">
-                <table class="paper-robotics-table">
-                  <thead>
-                    <tr>
-                      <th class="robotics-ch-cell">Chapter / Theory</th>
-                      <th class="robotics-lab-cell">Related Practical / Lab Activities</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    ${robRowsHtml}
-                  </tbody>
-                </table>
-              </div>
-            </td>
-          </tr>
-        `;
-      } else {
-        // Music, Art & Craft, Yoga
-        const isIncluded = !!(checkedSet && (checkedSet.has('__included__') || checkedSet.has(subjName)));
-        part3RowsHtml += `
-          <tr class="paper-subject-row ${!isIncluded ? 'is-unselected' : ''}">
-            <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${p3Sno++}</td>
-            <td style="width: 140px; vertical-align: top;">
-              <div class="paper-subj-title">${subjName}</div>
-              <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${item.subtitle}</div>
-              <div style="font-size: 7.5pt; color: #333333; margin-top: 1px;">${item.book}</div>
-              <div style="margin-top: 3px; font-size: 8pt; line-height: 1.25;">
-                <div><strong>Window:</strong> <span class="cosch-range-date-text">${formatDateRange(coSchDateFrom, coSchDateTo)}</span></div>
-                <div style="color: #333333; font-size: 7.5pt; margin-top: 1px;">• Class periods</div>
-              </div>
-            </td>
-            <td>
-              <div class="paper-blank-portion-wrapper">
-                <label class="paper-ch-item ${isIncluded ? 'is-selected' : 'is-unselected'}" data-subject="${subjName}" style="margin-bottom: 4px;">
-                  <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="__included__" ${isIncluded ? 'checked' : ''}>
-                  <span style="font-weight: bold; color: #000000; font-size: 9pt;">${item.prompt}</span>
-                </label>
-                <div style="border: 1px solid #000000; padding: 4px 6px; background: #ffffff;">
-                  <div class="paper-ruled-line-dashed" style="height: 14px;"></div>
-                  <div class="paper-ruled-line-dashed" style="height: 14px;"></div>
-                </div>
-              </div>
-            </td>
-          </tr>
-        `;
-      }
+            </div>
+          </td>
+        </tr>
+      `;
     });
 
     const instructionsHtml = includeInstructions ? `
       <div class="paper-instructions-box">
-        <div class="paper-instructions-heading">GENERAL INSTRUCTIONS:</div>
+        <div class="paper-instructions-heading" style="text-decoration: none !important;">GENERAL INSTRUCTIONS:</div>
         <ol class="paper-instructions-list">
           <li><strong>Part 1 (Scholastic Written Examinations):</strong> Pen-paper exams will be conducted on scheduled dates. Timely reporting is compulsory.</li>
-          <li><strong>Part 2 (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between <u>${formatDateRange(seaDateFrom, seaDateTo)}</u> in regular subject periods.</li>
-          <li><strong>Part 3 (Co-Scholastic Assessments):</strong> Robotics, Music, Art & Craft, and Yoga evaluations are conducted between <u>${formatDateRange(coSchDateFrom, coSchDateTo)}</u> during class periods.</li>
+          <li><strong>Part 2 (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between ${formatDateRange(seaDateFrom, seaDateTo)} in regular subject periods.</li>
+          <li><strong>Part 3 (Co-Scholastic Assessments):</strong> Music, Art & Craft, and Yoga evaluations are conducted between ${formatDateRange(coSchDateFrom, coSchDateTo)} during class periods.</li>
           <li><strong>Compulsory Attendance & Materials:</strong> Full-day attendance is compulsory. Students must carry complete practical files, journals, and stationery.</li>
         </ol>
       </div>
@@ -5276,23 +5680,22 @@ function renderSyllabusSheetPaper() {
       <div class="paper-meta-table">
         <div class="paper-meta-cell"><strong>CLASS:</strong> ${cls}</div>
         <div class="paper-meta-cell"><strong>EXAMINATION:</strong> ${exam}</div>
-        <div class="paper-meta-cell"><strong>TIME ALLOWED:</strong> ${duration}</div>
-        <div class="paper-meta-cell"><strong>MAXIMUM MARKS:</strong> ${marks}</div>
-        <div class="paper-meta-cell"><strong>SCHOOL TIMINGS:</strong> ${schoolTiming}</div>
       </div>
 
       ${instructionsHtml}
 
       <!-- PART 1: SCHOLASTIC SUBJECTS -->
-      <div class="paper-part-section">
+      <div class="paper-part-section paper-part-section-scholastic">
         <div class="paper-part-banner paper-part-banner-scholastic">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="paper-part-badge paper-part-badge-scholastic">PART 1</span>
             <span>SCHOLASTIC SUBJECTS (Written Pen-Paper Examination)</span>
           </div>
-          <div style="font-size: 8.5pt; font-weight: normal; font-style: italic;">
-            [80 Marks &bull; Duration: 2.5–3 Hours &bull; Fixed Date Sheet]
-          </div>
+        </div>
+        <div class="paper-part-meta-strip paper-part-meta-strip-3col">
+          <div class="part-meta-cell"><strong>TIME ALLOWED:</strong> ${p1Time} (GK &amp; Robotics: ${p1TimeGkRobo})</div>
+          <div class="part-meta-cell"><strong>MAXIMUM MARKS:</strong> ${p1Marks} Marks (GK &amp; Robotics: ${p1MarksGkRobo} Marks)</div>
+          <div class="part-meta-cell"><strong>SCHOOL TIMINGS:</strong> (${p1TimingStart} – ${p1TimingEnd})</div>
         </div>
         <table class="paper-syllabus-table">
           <thead>
@@ -5309,25 +5712,17 @@ function renderSyllabusSheetPaper() {
       </div>
 
       <!-- PART 2: SUBJECT ENRICHMENT ACTIVITIES (SEA) -->
-      <div class="paper-part-section">
+      <div class="paper-part-section paper-part-section-sea">
         <div class="paper-part-banner paper-part-banner-sea">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="paper-part-badge paper-part-badge-sea">PART 2</span>
             <span>SUBJECT ENRICHMENT ACTIVITIES (SEA — 5 MARKS INTERNAL ASSESSMENT)</span>
           </div>
-          <div style="font-size: 8.5pt; font-weight: normal; font-style: italic;">
-            [Mandatory Assessment &bull; Evaluated in Regular Class Periods]
-          </div>
         </div>
-        <div class="paper-window-notice paper-window-notice-sea">
-          <div>
-            <strong>Assessment Window:</strong>
-            <span class="sea-range-date-text" style="font-weight: bold; padding: 0 4px;">${formatDateRange(seaDateFrom, seaDateTo)}</span>
-            <span style="font-size: 8.5pt; color: #444444;">(Evaluated during regular subject periods)</span>
-          </div>
-          <div class="paper-full-day-pill">
-            Full Working Day (Regular Hours)
-          </div>
+        <div class="paper-part-meta-strip paper-part-meta-strip-3col">
+          <div class="part-meta-cell"><strong>MAXIMUM MARKS:</strong> ${p2Marks}</div>
+          <div class="part-meta-cell"><strong>DATE:</strong> From: ${formatExamDate(seaDateFrom)} TO ${formatExamDate(seaDateTo)}</div>
+          <div class="part-meta-cell"><strong>SCHOOL TIMINGS:</strong> (${p2TimingStart} – ${p2TimingEnd})</div>
         </div>
         <table class="paper-syllabus-table">
           <thead>
@@ -5344,25 +5739,16 @@ function renderSyllabusSheetPaper() {
       </div>
 
       <!-- PART 3: CO-SCHOLASTIC ACTIVITIES -->
-      <div class="paper-part-section">
+      <div class="paper-part-section paper-part-section-cosch">
         <div class="paper-part-banner paper-part-banner-cosch">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="paper-part-badge paper-part-badge-cosch">PART 3</span>
             <span>CO-SCHOLASTIC ACTIVITIES (INTERNAL SKILLS & PRACTICAL ASSESSMENT)</span>
           </div>
-          <div style="font-size: 8.5pt; font-weight: normal; font-style: italic;">
-            [Graded on 5-Point Scale (A to E) &bull; Evaluated in Regular Periods]
-          </div>
         </div>
-        <div class="paper-window-notice paper-window-notice-cosch">
-          <div>
-            <strong>Assessment Window:</strong>
-            <span class="cosch-range-date-text" style="font-weight: bold; padding: 0 4px;">${formatDateRange(coSchDateFrom, coSchDateTo)}</span>
-            <span style="font-size: 8.5pt; color: #444444;">(Conducted during regular class periods)</span>
-          </div>
-          <div class="paper-full-day-pill">
-            Full Working Day (Regular Hours)
-          </div>
+        <div class="paper-part-meta-strip paper-part-meta-strip-2col">
+          <div class="part-meta-cell"><strong>DATE:</strong> From: ${formatExamDate(coSchDateFrom)} TO ${formatExamDate(coSchDateTo)}</div>
+          <div class="part-meta-cell"><strong>SCHOOL TIMINGS:</strong> (${p3TimingStart} – ${p3TimingEnd})</div>
         </div>
         <table class="paper-syllabus-table">
           <thead>
@@ -5448,7 +5834,7 @@ function renderSyllabusSheetPaper() {
 
   const instructionsHtml = includeInstructions ? `
     <div class="paper-instructions-box">
-      <div class="paper-instructions-heading">GENERAL INSTRUCTIONS FOR STUDENTS:</div>
+      <div class="paper-instructions-heading" style="text-decoration: none !important;">GENERAL INSTRUCTIONS FOR STUDENTS:</div>
       <ol class="paper-instructions-list">
         <li><strong>In-Depth Study Required:</strong> Do not rely solely on chapter-end exercises; read the entire chapter thoroughly for deep conceptual questions.</li>
         <li><strong>Strict Attendance:</strong> No half-days are permitted, and absolutely no re-examinations will be conducted for absentees.</li>
@@ -5521,6 +5907,17 @@ async function triggerPrintSyllabusSheet() {
   clone.classList.add('hide-unselected');
   clone.style.cssText = 'width: 100% !important; max-width: 750px !important; margin: 0 auto !important; padding: 8px 12px !important; background: #ffffff !important; box-sizing: border-box !important; display: block !important;';
 
+  // Strip all screen-only controls, buttons, checkboxes, and selectors from the print clone
+  clone.querySelectorAll('.no-print, .portion-screen-selector, .sheet-topic-selector-grid, .paper-subj-actions, .sheet-ch-customizer').forEach(el => el.remove());
+
+  // Clean up trailing commas on the clone for the last visible item in each inline flow
+  clone.querySelectorAll('.paper-inline-chapter-flow, .paper-topic-list').forEach(container => {
+    const visibleCommas = container.querySelectorAll('.is-selected .paper-item-comma');
+    if (visibleCommas.length > 0) {
+      visibleCommas[visibleCommas.length - 1].style.display = 'none';
+    }
+  });
+
   stage.appendChild(clone);
   document.body.appendChild(stage);
 
@@ -5555,6 +5952,17 @@ async function exportSyllabusSheetToPdf() {
     clone.classList.add('is-pdf-exporting');
     clone.classList.add('hide-unselected');
     clone.style.cssText = 'width: 750px !important; min-width: 750px !important; max-width: 750px !important; margin: 0 !important; padding: 8px 12px !important; background: #ffffff !important; box-sizing: border-box !important; display: block !important;';
+
+    // Strip all screen-only controls, buttons, checkboxes, and selectors from the PDF clone
+    clone.querySelectorAll('.no-print, .portion-screen-selector, .sheet-topic-selector-grid, .paper-subj-actions, .sheet-ch-customizer').forEach(el => el.remove());
+
+    // Clean up trailing commas on the clone for the last visible item in each inline flow
+    clone.querySelectorAll('.paper-inline-chapter-flow, .paper-topic-list').forEach(container => {
+      const visibleCommas = container.querySelectorAll('.is-selected .paper-item-comma');
+      if (visibleCommas.length > 0) {
+        visibleCommas[visibleCommas.length - 1].style.display = 'none';
+      }
+    });
 
     stage.appendChild(clone);
     document.body.appendChild(stage);
@@ -5806,46 +6214,8 @@ if (sheetClassSelect) {
     populateSheetExamDropdown(newCls);
     if (sheetCustomExamInput) sheetCustomExamInput.style.display = 'none';
 
-    // 3. Pre-select active exam matching Main Panel
-    const mainExam = (examNameSelect && examNameSelect.value && !isWorksheetMode(examNameSelect.value)) ? examNameSelect.value : '';
-    let matched = false;
-    if (mainExam && sheetExamSelect) {
-      for (let opt of sheetExamSelect.options) {
-        if (matchExamOption(opt.value, mainExam)) {
-          sheetExamSelect.value = opt.value;
-          matched = true;
-          break;
-        }
-      }
-    }
-    if (!matched && sheetExamSelect && sheetExamSelect.options.length > 0) {
-      const annualOpt = Array.from(sheetExamSelect.options).find(o => o.value.includes('Annual') || o.value.includes('Final')) || sheetExamSelect.options[0];
-      if (annualOpt) sheetExamSelect.value = annualOpt.value;
-    }
-
-    // 4. Fetch Total Marks from Main Panel
-    const mainMarks = (marksInput && marksInput.value) ? marksInput.value.trim() : '';
-    if (sheetMaxMarks) {
-      if (mainMarks && !isNaN(parseInt(mainMarks, 10))) {
-        sheetMaxMarks.value = mainMarks.toLowerCase().includes('mark') ? mainMarks : `${parseInt(mainMarks, 10)} Marks`;
-      } else {
-        const selectedOpt = sheetExamSelect ? sheetExamSelect.options[sheetExamSelect.selectedIndex] : null;
-        const optMarks = selectedOpt ? (selectedOpt.dataset?.marks || selectedOpt.getAttribute('data-marks')) : null;
-        sheetMaxMarks.value = optMarks || '80 Marks';
-      }
-    }
-
-    // 5. Fetch Time Duration from Main Panel
-    const mainDuration = (durationInput && durationInput.value) ? durationInput.value.trim() : '';
-    if (sheetDuration) {
-      if (mainDuration && !mainDuration.toLowerCase().includes('self-paced')) {
-        sheetDuration.value = mainDuration;
-      } else {
-        const selectedOpt = sheetExamSelect ? sheetExamSelect.options[sheetExamSelect.selectedIndex] : null;
-        const optDuration = selectedOpt ? (selectedOpt.dataset?.duration || selectedOpt.getAttribute('data-duration')) : null;
-        sheetDuration.value = optDuration || '3 Hrs';
-      }
-    }
+    // 3. Synchronize all settings directly from Prompt Generation Module
+    syncSyllabusSheetFromPromptModule();
 
     renderSyllabusSheetPaper();
   });
@@ -5862,26 +6232,30 @@ if (sheetExamSelect) {
       if (sheetCustomExamInput) {
         sheetCustomExamInput.style.display = 'none';
       }
-      const selectedOpt = sheetExamSelect.options[sheetExamSelect.selectedIndex];
-      const optMarks = selectedOpt ? (selectedOpt.dataset?.marks || selectedOpt.getAttribute('data-marks')) : null;
-      if (optMarks && sheetMaxMarks) {
-        sheetMaxMarks.value = optMarks;
-      }
-      const optDuration = selectedOpt ? (selectedOpt.dataset?.duration || selectedOpt.getAttribute('data-duration')) : null;
-      if (optDuration && sheetDuration) {
-        sheetDuration.value = optDuration;
-      }
-      // Also synchronize main panel exam selection
+      // Synchronize with main panel exam selection
       if (examNameSelect) {
-        const matchingOpt = Array.from(examNameSelect.options).find(o => o.value === sheetExamSelect.value);
+        let matchingOpt = Array.from(examNameSelect.options).find(o => o.value === sheetExamSelect.value);
+        if (!matchingOpt) {
+          matchingOpt = Array.from(examNameSelect.options).find(o => matchExamOption(o.value, sheetExamSelect.value));
+        }
         if (matchingOpt && examNameSelect.value !== matchingOpt.value) {
           examNameSelect.value = matchingOpt.value;
           updateExamDetails();
           updateExamBlueprint();
         }
       }
+      syncSyllabusSheetFromPromptModule();
     }
     renderSyllabusSheetPaper();
+  });
+}
+
+if (sheetPart1Marks) {
+  sheetPart1Marks.addEventListener('input', () => {
+    const numMarks = parseInt(sheetPart1Marks.value, 10);
+    if (!isNaN(numMarks) && sheetPart1MarksGkRobo) {
+      sheetPart1MarksGkRobo.value = Math.round(numMarks / 2);
+    }
   });
 }
 
@@ -5907,6 +6281,24 @@ if (sheetIncludePrincipalSig) {
 [sheetSEADateFrom, sheetSEADateTo, sheetCoSchDateFrom, sheetCoSchDateTo].forEach(input => {
   if (input) {
     input.addEventListener('change', renderSyllabusSheetPaper);
+  }
+});
+
+[
+  sheetPart1Time,
+  sheetPart1TimeGkRobo,
+  sheetPart1Marks,
+  sheetPart1MarksGkRobo,
+  sheetPart1TimingStart,
+  sheetPart1TimingEnd,
+  sheetPart2Marks,
+  sheetPart2TimingStart,
+  sheetPart2TimingEnd,
+  sheetPart3TimingStart,
+  sheetPart3TimingEnd
+].forEach(input => {
+  if (input) {
+    input.addEventListener('input', renderSyllabusSheetPaper);
   }
 });
 

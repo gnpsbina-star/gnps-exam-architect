@@ -253,39 +253,39 @@ export const cbseData = {
       ]
     },
     "Sanskrit (R3)": {
-      "खण्डः 'क' : अपठित-अवबोधनम् (Reading Section)": [
-        "1. एकः सरलः अपठितः गद्यांशः (40-60 शब्दाः)",
-        "2. एकपदेन पूर्णवाक्येन च सरल-प्रश्नोत्तराणि"
+      "खण्डः 'क' : अपठित-अवबोधनम् (Section A: Reading Comprehension)": [
+        "1. एकः सरलः अपठित-गद्यांशः (Simple Unseen Passage - 40–60 words)",
+        "2. एकपदेन पूर्णवाक्येन च सरल-प्रश्नोत्तराणि (One-word & Complete Sentence Answers)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम् (Writing Section)": [
-        "1. चित्रवर्णनम् (मञ्जूषायाः साहाय्येन 4-5 वाक्यानि)",
-        "2. सरल-संवाद-पूर्तिः अथवा रिक्तस्थान-पूर्तिः"
+      "खण्डः 'ख' : रचनात्मक-कार्यम् (Section B: Creative Writing)": [
+        "1. चित्रवर्णनम्: मञ्जूषायाः साहाय्येन 4-5 वाक्यानि (Picture Description with Word Bank - 4–5 sentences)",
+        "2. सरल-संवाद-पूर्तिः अथवा रिक्तस्थान-पूर्तिः (Dialogue Completion / Fill in the Blanks)"
       ],
-      "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Applied Grammar)": [
-        "1. वर्णविचारः एवं वर्णसंयोजन-वियोजनम्",
-        "2. शब्दरूपाणि (अकारान्त पुंल्लिङ्ग बालक/राम, आकारान्त स्त्रीलिङ्ग बालिका/लता, अकारान्त नपुंसकलिङ्ग फल/पुष्प)",
-        "3. धातुरूपाणि (लट्लकारः - पठ्, गम्, लिख्, खाद्, भू, अस्)",
-        "4. कारक-परिचयः (प्रथमा, द्वितीया, तृतीया विभक्तयः)",
-        "5. सङ्ख्या (1 तः 20 पर्यन्तम्)",
-        "6. अव्ययपदानि (अत्र, तत्र, कुत्र, अपि, च, न)"
+      "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Section C: Applied Grammar)": [
+        "1. वर्णविचारः एवं वर्णसंयोजन-वियोजनम् (Phonetics, Joining & Splitting of Letters)",
+        "2. शब्दरूपाणि: बालक, लता, फल (Noun Forms: Masculine, Feminine & Neuter)",
+        "3. धातुरूपाणि: लट्लकारः - पठ्, गम्, लिख्, खाद्, भू, अस् (Verb Roots in Present Tense)",
+        "4. कारक-परिचयः: प्रथमा, द्वितीया, तृतीया विभक्तयः (Case Endings: Nominative, Accusative & Instrumental)",
+        "5. सङ्ख्या: 1 तः 20 पर्यन्तम् (Counting / Numbers 1 to 20)",
+        "6. अव्ययपदानि: अत्र, तत्र, कुत्र, अपि, च, न (Indeclinables / Invariables)"
       ],
-      "खण्डः 'घ' : पठित-अवबोधनम् (पाठ्यपुस्तकम् - दीपकम्)": [
-        "पाठ 1: वयं वर्णमालां पठामः",
-        "पाठ 2: संयुक्त-व्यञ्जनानि",
-        "पाठ 3: एषः कः? एषा का? एतत् किम्?",
-        "पाठ 4: अहम् च त्वम् च",
-        "पाठ 5: सङ्ख्यागणना ननु सरला",
-        "पाठ 6: अहम् प्रातः उत्तिष्ठामि",
-        "पाठ 7: शूराः वयम् धीराः वयम्",
-        "पाठ 8: स एव महान् चित्रकारः",
-        "पाठ 9: अतिथिदेवो भव",
-        "पाठ 10: बुद्धिः सर्वार्थसाधिका",
-        "पाठ 11: यः जानाति स पण्डितः",
-        "पाठ 12: त्वम् आपणं गच्छ",
-        "पाठ 13: पृथिव्यां त्रीणि रत्नानि",
-        "पाठ 14: आलस्यं हि मनुष्याणां शरीरस्थो महान् रिपुः",
-        "पाठ 15: माधवस्य प्रियम् अङ्गम्",
-        "पाठ 16: वृक्षाः सत्पुरुषा इव"
+      "खण्डः 'घ' : पठित-अवबोधनम् (Section D: Literature - पाठ्यपुस्तकम् 'दीपकम्')": [
+        "पाठ 1: वयं वर्णमालां पठामः (Vayam Varnamalam Pathaamah - We Read the Alphabet)",
+        "पाठ 2: संयुक्त-व्यञ्जनानि (Sanyukta-Vyanjanani - Conjunct Consonants)",
+        "पाठ 3: एषः कः? एषा का? एतत् किम्? (Eshah Kah? Esha Ka? Etat Kim? - Who / What is This?)",
+        "पाठ 4: अहम् च त्वम् च (Aham Cha Tvam Cha - I and You)",
+        "पाठ 5: सङ्ख्यागणना ननु सरला (Sankhyaganana Nanu Sarala - Counting is Indeed Simple)",
+        "पाठ 6: अहम् प्रातः उत्तिष्ठामि (Aham Pratah Uttishthami - I Wake Up in the Morning)",
+        "पाठ 7: शूराः वयम् धीराः वयम् (Shooraah Vayam Dhirah Vayam - We are Brave, We are Patient)",
+        "पाठ 8: स एव महान् चित्रकारः (Sah Eva Mahan Chitrakarah - He is the Great Painter)",
+        "पाठ 9: अतिथिदेवो भव (Atithidevo Bhava - The Guest is God)",
+        "पाठ 10: बुद्धिः सर्वार्थसाधिका (Buddhih Sarvarthasadhika - Intellect Accomplishes Everything)",
+        "पाठ 11: यः जानाति स पण्डितः (Yah Janati Sah Panditah - He Who Knows is Wise)",
+        "पाठ 12: त्वम् आपणं गच्छ (Tvam Aapanam Gachha - You Go to the Market)",
+        "पाठ 13: पृथिव्यां त्रीणि रत्नानि (Prithivyam Trini Ratnani - Three Jewels on Earth)",
+        "पाठ 14: आलस्यं हि मनुष्याणां शरीरस्थो महान् रिपुः (Aalasyam Hi Manushyanam... - Laziness is Man's Enemy)",
+        "पाठ 15: माधवस्य प्रियम् अङ्गम् (Madhavasya Priyam Angam - Madhava's Favourite Body Part)",
+        "पाठ 16: वृक्षाः सत्पुरुषा इव (Vrikshah Satpurusha Iva - Trees are like Noble Persons)"
       ]
     },
     "General Knowledge": [
@@ -642,38 +642,52 @@ export const cbseData = {
       ]
     },
     "Sanskrit (R3)": {
-      "खण्डः 'क' : अपठित-अवबोधनम् (Reading Section)": [
-        "1. एकः सरलः अपठितः गद्यांशः (60-80 शब्दाः)",
-        "2. एकपदेन पूर्णवाक्येन च अवबोधनात्मक-प्रश्नाः"
+      "खण्डः 'क' : अपठित-अवबोधनम् (Section A: Reading Comprehension)": [
+        "1. एकः सरलः अपठित-गद्यांशः (Simple Unseen Passage - 60–80 words)",
+        "2. एकपदेन पूर्णवाक्येन च अवबोधनात्मक-प्रश्नाः (Short & Full Sentence Comprehension Questions)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम् (Writing Section)": [
-        "1. मञ्जूषायाः साहाय्येन पत्रलेखनम्",
-        "2. चित्रवर्णनम् (मञ्जूषायाः साहाय्येन 5 वाक्यानि)",
-        "3. कथापूर्तिः अथवा संवादलेखनम्"
+      "खण्डः 'ख' : रचनात्मक-कार्यम् (Section B: Creative Writing)": [
+        "1. पत्रलेखनम्: मञ्जूषायाः साहाय्येन (Letter Writing with Word Bank / Manjusha)",
+        "2. चित्रवर्णनम्: मञ्जूषायाः साहाय्येन 5 वाक्यानि (Picture Description in 5 Sentences)",
+        "3. कथापूर्तिः अथवा संवादलेखनम् (Story Completion / Dialogue Writing)"
       ],
-      "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Applied Grammar)": [
-        "1. सन्धि-परिचयः (दीर्घ एवं गुण स्वरसन्धिः)",
-        "2. शब्दरूपाणि (बालक, लता, फल, मुनि, मति, सर्वनाम - अस्मद्, युष्मद्, तत्)",
-        "3. धातुरूपाणि (लट्लकार, लृट्लकार एवं लङ् लकार - पठ्, गम्, नम्, पा, अस्)",
-        "4. कारकम् उपपदविभक्तयः च (द्वितीया, तृतीया, चतुर्थी)",
-        "5. प्रत्ययाः (क्त्वा, ल्यप्, तुमुन्)",
-        "6. सङ्ख्या (1 तः 50 पर्यन्तम्)",
-        "7. अव्ययपदानि एवं अशुद्धि-संशोधनम्"
+      "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Section C: Applied Grammar)": [
+        "1. स्वरसन्धि-परिचयः: दीर्घ एवं गुण (Vowel Sandhi: Dirgha & Guna)",
+        "2. शब्दरूपाणि: बालक, लता, फल, मुनि, मति, अस्मद्, युष्मद्, तत् (Noun & Pronoun Forms)",
+        "3. धातुरूपाणि: लट्, लृट् एवं लङ् लकार - पठ्, गम्, नम्, पा, अस् (Present, Future & Past Tenses)",
+        "4. कारकम् उपपदविभक्तयः च: द्वितीया, तृतीया, चतुर्थी (Cases & Upapada Vibhaktis)",
+        "5. प्रत्ययाः: क्त्वा, ल्यप्, तुमुन् (Suffixes: Ktva, Lyap, Tumun)",
+        "6. सङ्ख्या: 1 तः 50 पर्यन्तम् (Counting / Numbers 1 to 50)",
+        "7. अव्ययपदानि एवं अशुद्धि-संशोधनम् (Indeclinables & Sentence Error Correction)"
       ],
-      "खण्डः 'घ' : पठित-अवबोधनम् (पाठ्यपुस्तकम् - रुचिरा भाग-2)": [
-        "पाठ 1: सुभाषितानि",
-        "पाठ 2: दुर्बुद्धिः विनश्यति",
-        "पाठ 3: स्वावलम्बनम्",
-        "पाठ 4: पण्डिता रमाबाई",
-        "पाठ 5: सदाचारः",
-        "पाठ 6: सङ्कल्पः सिद्धिदायकः",
-        "पाठ 7: त्रिवर्णः ध्वजः",
-        "पाठ 8: अहमपि विद्यालयं गमिष्यामि",
-        "पाठ 9: विश्वबन्धुत्वम्",
-        "पाठ 10: समवायो हि दुर्जयः",
-        "पाठ 11: विद्याधनम्",
-        "पाठ 12: अमृतं संस्कृतम्",
-        "पाठ 13: लालनगीतम्"
+      "खण्डः 'घ' : पठित-अवबोधनम् (Section D: Literature - पाठ्यपुस्तकम् 'दीपकम्')": [
+        "पाठ 1: वन्दे भारतमातरम् (Vande Bharatmataram - Salutations to Mother India)",
+        "पाठ 2: नित्यं पिबामः सुभाषितरसम् (Nityam Pibaamah Subhashitarasam - Drinking the Nectar of Subhashitas)",
+        "पाठ 3: मित्राय नमः (Mitraya Namah - Salutations to the Sun / Friend)",
+        "पाठ 4: न लभ्यते चेत् आम्लं द्राक्षाफलम् (Na Labhyate Chet Aamlam Drakshaphalam - Sour Grapes Fable)",
+        "पाठ 5: सेवा हि परमो धर्मः (Seva Hi Paramo Dharmah - Service is the Supreme Duty)",
+        "पाठ 6: क्रीडाम वयं श्लोकान्त्याक्षरीम् (Kreedaama Vayam Shlokantyaksharim - Let Us Play Shloka Antakshari)",
+        "पाठ 7: ईशावास्यम् इदं सर्वम् (Ishavasyam Idam Sarvam - All This is Pervaded by the Divine)",
+        "पाठ 8: हितं मनोहारि च दुर्लभं वचः (Hitam Manohari Cha Durlabham Vachah - Wholesome & Pleasing Words are Rare)",
+        "पाठ 9: अन्नाद् भवन्ति भूतानि (Annaad Bhavanti Bhootani - From Food All Beings Arise)",
+        "पाठ 10: दशमः कः? (Dashamah Kah? - Who is the Tenth One?)",
+        "पाठ 11: द्वीपेषु रम्यः द्वीपोऽण्डमानः (Dweepeshu Ramyah Dweepo'ndamanah - Beautiful Andaman Islands)",
+        "पाठ 12: वीराङ्गना पन्नाधाया (Veerangana Pannadhaya - Heroic Pannadhaya)"
+      ],
+      "खण्डः 'घ' (वैकल्पिक) : पठित-अवबोधनम् (Section D Alternative: पाठ्यपुस्तकम् 'रुचिरा भाग-2')": [
+        "पाठ 1: सुभाषितानि (Subhashitani - Wise Sayings)",
+        "पाठ 2: दुर्बुद्धिः विनश्यति (Durbuddhih Vinashyati - The Foolish One Perishes)",
+        "पाठ 3: स्वावलम्बनम् (Swavalambanam - Self-Reliance)",
+        "पाठ 4: पण्डिता रमाबाई (Pandita Ramabai - Great Woman Reformer)",
+        "पाठ 5: सदाचारः (Sadacharah - Good Conduct)",
+        "पाठ 6: सङ्कल्पः सिद्धिदायकः (Sankalpah Siddhidayakah - Determination Brings Success)",
+        "पाठ 7: त्रिवर्णः ध्वजः (Trivarnah Dhwajah - The Tricolour Flag)",
+        "पाठ 8: अहमपि विद्यालयं गमिष्यामि (Ahamapi Vidyalayam Gamishyami - I Too Will Go to School)",
+        "पाठ 9: विश्वबन्धुत्वम् (Vishwabandhutvam - Universal Brotherhood)",
+        "पाठ 10: समवायो हि दुर्जयः (Samavayo Hi Durjayah - Unity is Invincible)",
+        "पाठ 11: विद्याधनम् (Vidyadhanam - The Wealth of Knowledge)",
+        "पाठ 12: अमृतं संस्कृतम् (Amritam Sanskritam - Nectar-like Sanskrit)",
+        "पाठ 13: लालनगीतम् (Lalangeetam - Lullaby / Affectionate Song)"
       ]
     },
     "General Knowledge": [
@@ -1091,42 +1105,42 @@ export const cbseData = {
       ]
     },
     "Sanskrit (R3)": {
-      "खण्डः 'क' : अपठित-अवबोधनम् (Reading Section)": [
-        "1. एकः सरलः अपठितः संस्कृत-गद्यांशः (लगभग 80-100 शब्दाः)",
-        "2. एकपदेन पूर्णवाक्येन च अवबोधनात्मक-प्रश्नोत्तराणि",
-        "3. उपयुक्त-शीर्षक-लेखनम् एवं सरल-भाषिक-कार्यम् (कर्तृ-क्रिया, विशेषण-विशेष्य, विलोम/पर्याय)"
+      "खण्डः 'क' : अपठित-अवबोधनम् (Section A: Reading Comprehension)": [
+        "1. एकः सरलः अपठितः संस्कृत-गद्यांशः (Unseen Sanskrit Passage - 80–100 words)",
+        "2. एकपदेन पूर्णवाक्येन च अवबोधनात्मक-प्रश्नोत्तराणि (Short & Full Sentence Answers)",
+        "3. उपयुक्त-शीर्षक-लेखनम् एवं सरल-भाषिक-कार्यम् (Title & Language Analysis: Subject-Verb, Synonyms/Antonyms)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम् (Writing Section)": [
-        "1. औपचारिकम् / अनौपचारिकं पत्रलेखनम् (मञ्जूषायाः साहाय्येन रिक्तस्थानपूर्तिः)",
-        "2. चित्रवर्णनम् (मञ्जूषायाः साहाय्येन 5 वाक्यानि)",
-        "3. संवाद-लेखनम् अथवा कथापूर्तिः (मञ्जूषायाः साहाय्येन)",
-        "4. सरल-हिन्दी/आङ्ग्ल-वाक्यानां संस्कृते अनुवादः (मञ्जूषा/विकल्पसहितम्)"
+      "खण्डः 'ख' : रचनात्मक-कार्यम् (Section B: Creative Writing)": [
+        "1. औपचारिकम् / अनौपचारिकं पत्रलेखनम्: मञ्जूषासहायतया (Formal / Informal Letter Writing with Word Bank)",
+        "2. चित्रवर्णनम्: मञ्जूषायाः साहाय्येन 5 वाक्यानि (Picture Description in 5 Sentences)",
+        "3. संवाद-लेखनम् अथवा कथापूर्तिः (Dialogue Writing / Story Completion with Word Bank)",
+        "4. सरल-हिन्दी/आङ्ग्ल-वाक्यानां संस्कृते अनुवादः (Hindi / English to Sanskrit Sentence Translation)"
       ],
-      "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Applied Grammar)": [
-        "1. सन्धि-कार्यम् (स्वरसन्धिः - दीर्घ, गुण, वृद्धि, यण्, अयादि)",
-        "2. शब्दरूपाणि (अकारान्त बालक/राम, आकारान्त लता, इकारान्त मुनि, उकारान्त साधु, सर्वनाम - अस्मद्, युष्मद्, तत्, किम्)",
-        "3. धातुरूपाणि (पञ्चसु लकारेषु - लट्, लृट्, लङ्, लोट्, विधिलिङ् - पठ्, गम्, खाद्, लिख्, कृ, अस्)",
-        "4. कारकम् उपपदविभक्तयः च (द्वितीया तः सप्तमी पर्यन्तम्)",
-        "5. प्रत्ययाः (क्त्वा, ल्यप्, तुमुन्, क्त, क्तवतु)",
-        "6. सङ्ख्या (1 तः 100 पर्यन्तम्, 1-4 त्रिषु लिङ्गेषु)",
-        "7. समय-लेखनम् (घटिका-दर्शनम् - सामान्य, सपाद, सार्ध, पादोन)",
-        "8. अव्ययपदानि (अपि, एव, च, तत्र, कुत्र, यदा, तदा, सर्वत्र, शनैः, उच्चैः, सह, विना)",
-        "9. अशुद्धि-संशोधनम् (वचन, लिङ्ग, पुरुष, लकार दृष्ट्या)"
+      "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Section C: Applied Grammar)": [
+        "1. सन्धि-कार्यम्: स्वरसन्धिः - दीर्घ, गुण, वृद्धि, यण्, अयादि (Vowel Sandhi: All 5 Types)",
+        "2. शब्दरूपाणि: बालक, लता, मुनि, साधु, नदी, अस्मद्, युष्मद्, तत्, किम् (Noun & Pronoun Declensions)",
+        "3. धातुरूपाणि: पञ्च लकाराः - लट्, लृट्, लङ्, लोट्, विधिलिङ् - पठ्, गम्, खाद्, लिख्, कृ, अस् (5 Verb Tenses & Moods)",
+        "4. कारकम् उपपदविभक्तयः च: द्वितीया तः सप्तमी पर्यन्तम् (Cases & Upapada Rules: 2nd to 7th Vibhakti)",
+        "5. प्रत्ययाः: क्त्वा, ल्यप्, तुमुन्, क्त, क्तवतु (Participles & Suffixes: Past & Infinitive)",
+        "6. सङ्ख्या: 1 तः 100 पर्यन्तम्, 1-4 त्रिषु लिङ्गेषु (Numbers 1 to 100 & Gender Forms 1 to 4)",
+        "7. समय-लेखनम्: घटिका-दर्शनम् - सामान्य, सपाद, सार्ध, पादोन (Time Telling: Full, Quarter Past, Half Past, Quarter To)",
+        "8. अव्ययपदानि: अपि, एव, च, तत्र, कुत्र, यदा, तदा, सर्वत्र, शनैः, उच्चैः, सह, विना (Essential Indeclinables)",
+        "9. अशुद्धि-संशोधनम्: वचन, लिङ्ग, पुरुष, लकार दृष्ट्या (Grammar Error Correction: Number, Gender, Person & Tense)"
       ],
-      "खण्डः 'घ' : पठित-अवबोधनम् (पाठ्यपुस्तकम् - दीपकम्)": [
-        "पाठ 1: सङ्गच्छध्वं संवदध्वम्",
-        "पाठ 2: अल्पानामपि वस्तूनां संहतिः कार्यसाधिका",
-        "पाठ 3: सुभाषितरसं पीत्वा जीवनं सफलं कुरु",
-        "पाठ 4: प्रणम्यो देशभक्तोऽयं गोपबन्धुर्महामनाः",
-        "पाठ 5: गीता सुगीता कर्तव्या",
-        "पाठ 6: डिजी भारतम्: युगपरिवर्तनम्",
-        "पाठ 7: मञ्जुलमञ्जूषा सुन्दरसुरभाषा",
-        "पाठ 8: पश्यत कोणमैशान्यं भारतस्य मनोहरम्",
-        "पाठ 9: कोऽरुक्? कोऽरुक्? कोऽरुक्?",
-        "पाठ 10: सन्निमित्ते वरं त्यागः (भागः 1)",
-        "पाठ 11: सन्निमित्ते वरं त्यागः (भागः 2)",
-        "पाठ 12: सम्यग्वर्णप्रयोगेण ब्रह्मलोके महीयते",
-        "पाठ 13: वर्णोच्चारण-शिक्षा"
+      "खण्डः 'घ' : पठित-अवबोधनम् (Section D: Literature - पाठ्यपुस्तकम् 'दीपकम्')": [
+        "पाठ 1: सङ्गच्छध्वं संवदध्वम् (Sangachhadhvam Samvadadhvam - Move Together, Speak Together)",
+        "पाठ 2: अल्पानामपि वस्तूनां संहतिः कार्यसाधिका (Alpanamapi Vastunam Samhatih... - Unity of Small Things Achieves Great Goals)",
+        "पाठ 3: सुभाषितरसं पीत्वा जीवनं सफलं कुरु (Subhashitarasam Peetva... - Drink the Nectar of Wise Words)",
+        "पाठ 4: प्रणम्यो देशभक्तोऽयं गोपबन्धुर्महामनाः (Pranamyo Deshbhakto'yam Gopabandhurmahamanah - Salutations to Patriot Gopabandhu)",
+        "पाठ 5: गीता सुगीता कर्तव्या (Geeta Sugeeta Kartavya - The Bhagavad Gita Must Be Sung & Practiced)",
+        "पाठ 6: डिजिभारतम्: युगपरिवर्तनम् (Digi-Bharatam: Yugaparivartanam - Digital India & Era Transformation)",
+        "पाठ 7: मञ्जुलमञ्जूषा सुन्दरसुरभाषा (Manjulamanjoosha Sundarasurabhasha - The Beautiful Treasury of Sanskrit)",
+        "पाठ 8: पश्यत कोणमैशान्यं भारतस्य मनोहरम् (Pashyata Konamaishanyam Bharatasya Manoharam - Behold the Northeast of India)",
+        "पाठ 9: कोऽरुक्? कोऽरुक्? कोऽरुक्? (Ko'ruk? Ko'ruk? Ko'ruk? - Who is Healthy? Ayurvedic Wisdom)",
+        "पाठ 10: सन्निमित्ते वरं त्यागः - भागः 1 (Sannimitte Varam Tyagah: Part 1 - Sacrifice for a Noble Cause)",
+        "पाठ 11: सन्निमित्ते वरं त्यागः - भागः 2 (Sannimitte Varam Tyagah: Part 2 - Sacrifice for a Noble Cause)",
+        "पाठ 12: सम्यग्वर्णप्रयोगेण ब्रह्मलोके महीयते (Samyagvarnaprayogena... - Through Proper Pronunciation One Attains Glory)",
+        "पाठ 13: वर्णोच्चारण-शिक्षा (Varnoccharana-Shiksha - The Science of Vedic & Paninian Articulation)"
       ]
     },
     "General Knowledge": [
