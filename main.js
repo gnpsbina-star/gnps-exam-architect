@@ -2986,7 +2986,7 @@ Because this is an exhaustive ${totalQuestions}-question worksheet with detailed
       \`\`\`
 2.  **PHASE 2 (Upon user replying 'CONTINUE'):**
     ${isSinglePhase ? '' : `- Generate Questions ${phase2Start} to ${totalQuestions} under their respective section banners (${phase2Sections}) in full detail.\n    `}- On a fresh page (\`page-break-before: always;\`), append the complete, verified **CBSE Step-by-Step Marking Scheme & Examiner's Tips** with step mark breakdowns (½M, 1M), underlined mandatory keywords, and student pitfall warnings.
-    - Close all HTML tags (\`</body></html>\`) and execute the Python code to render the consolidated PDF.`;
+    - Close all HTML tags (\`</body></html>\`) and ensure the standalone HTML is completely closed and ready for direct browser preview and printing (\`Ctrl+P\` / \`Cmd+P\` -> Save as PDF).`;
 
     const typologyPromptDetails = typologiesDesc.map(t => {
       let archetypeDesc = "";
@@ -3159,12 +3159,12 @@ You must format the entire worksheet in clean, modern, print-ready HTML and CSS 
 ${(() => {
   const wsDiagramProtocol = buildDiagramProtocol(className, subjectName, totalQuestions, true);
   return wsDiagramProtocol ? wsDiagramProtocol.trim() + '\n\n' : '';
-})()}**MANDATORY PYTHON CODE EXECUTION FOR PDF GENERATION:**
-You MUST write and execute a Python script in your runtime environment to compile this worksheet into a downloadable PDF:
-1. Save the complete standalone styled HTML as \`${worksheetHtmlFileName}\`.
-2. Execute Python code using WeasyPrint (or Google Chrome headless / pdfkit) to render \`${worksheetHtmlFileName}\` into \`${worksheetPdfFileName}\`.
-3. Provide the teacher with a clickable direct download link for \`${worksheetPdfFileName}\` and state: *"You can download your unified PDF by clicking the link above, or open the generated HTML file in any browser and press Ctrl+P (or Cmd+P) -> Save as PDF."*
-4. Ensure the HTML file is 100% self-contained so it can also be opened in any browser and saved as PDF directly via Print (\`Ctrl+P\` -> Save as PDF).`;
+})()}**MANDATORY OUTPUT FORMAT — 100% STANDALONE PRINT-READY HTML/CSS:**
+You MUST output the complete, publication-grade worksheet as a single, self-contained HTML document inside an \`\`\`html \`\`\` code block:
+1. Output complete standalone styled HTML with all typography, diagram SVGs, tables, and CSS embedded in \`<style>\` tags.
+2. **STRICTLY DO NOT write or execute Python scripts, and DO NOT use or require any external tools or libraries.** The worksheet is designed to render directly in the Gemini/ChatGPT browser preview or Canvas.
+3. Include print-ready CSS (\`@page { size: A4 portrait; margin: 15mm; }\`) and a floating print button (\`<button onclick="window.print()" class="no-print" style="position: fixed; top: 16px; right: 16px; padding: 10px 18px; font-weight: bold; background: #0284c7; color: #fff; border: none; border-radius: 8px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">🖨️ Print / Save as PDF</button>\`).
+4. Ensure the HTML renders directly in the browser preview / Canvas, allowing the user to immediately view it and save the exact A4 PDF directly via Print (\`Ctrl+P\` / \`Cmd+P\` -> Save as PDF).`;
 
     return promptText;
   } catch (err) {
@@ -3467,8 +3467,12 @@ ${syllabusText.trim()}
 ${literatureContextText ? '\n\n' + literatureContextText.trim() : ''}
 ${blueprintPromptText}
 
-**CRITICAL CONTENT & MANDATORY PDF FORMATTING GUIDELINES (MUST FOLLOW):**
-1.  **MANDATORY PDF FILE NAMING FORMAT:** You MUST execute code to generate two completely separate PDF files strictly named using the format "${setAFileName}" for Set A and "${setBFileName}" for Set B (e.g. "${setAFileName}" and "${setBFileName}"). Do not combine them into one document.
+**CRITICAL CONTENT & MANDATORY PRINT-READY HTML/CSS GUIDELINES (MUST FOLLOW):**
+1.  **MANDATORY OUTPUT FORMAT — 100% STANDALONE PRINT-READY HTML & CSS:**
+    *   You MUST output the complete question paper directly as valid, self-contained HTML/CSS inside an \`\`\`html \`\`\` code block.
+    *   **STRICTLY DO NOT write or execute Python scripts, and DO NOT use or require any external compiler or CLI tools.** The document is designed to render directly in the browser preview / Gemini Canvas.
+    *   Include BOTH **Set A** and **Set B** in the output, cleanly separated with a distinct page break (\`page-break-before: always;\`) and school header for Set B.
+    *   Embed complete print styling (\`@media print { size: A4 portrait; margin: 19mm; }\`) and include a floating print button (\`<button onclick="window.print()" class="no-print" style="position: fixed; top: 16px; right: 16px; padding: 10px 18px; font-weight: bold; background: #0284c7; color: #fff; border: none; border-radius: 8px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">🖨️ Print / Save as PDF</button>\`) so the user can immediately preview and save as a pixel-perfect CBSE A4 PDF directly from their browser (\`Ctrl+P\` / \`Cmd+P\` -> Save as PDF).
 2.  **Official CBSE Typography & Diagram Styling:** In your HTML/CSS template, you must set the font family to 'Times New Roman' (or 'Mangal / Noto Serif Devanagari / Kruti Dev 010' for Hindi/Sanskrit), 12pt body text, 14pt bold sub-headings / section headers, and 18pt centered bold main header. For any diagram, chart, or graphic, wrap inside '<div class="diagram-container">' with 'text-align: center; margin: 8px auto 12px auto; page-break-inside: avoid;' and a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'.
 3.  **Line Spacing & Margins:** Enforce a strict CSS line-height: 1.25 and standard margins of 19mm (0.75 inches) on all sides ('@page { size: A4 portrait; margin: 19mm; }').
 4.  **Alignment & Footer:** Ensure clean vertical alignment with right-aligned marks (e.g., [1], [2], [3], [5]) matching official board papers. At the bottom of every page, include a clean footer with school name, exam name, and set label format "**GNPS / ${examName.toUpperCase()} / SET A**" (or "**GNPS / ${examName.toUpperCase()} / SET B**" corresponding to the set) on the left margin and Page Numbering (e.g., "**Page 1 of 4**") on the right margin.
