@@ -1716,131 +1716,30 @@ export const cbseData = {
       ]
     },
     "Social Science": {
-      "History": {
-        "Chapter 1: The French Revolution": [
-          "1.1 French Society During the Late Eighteenth Century (Three Estates, Feudal Dues, Tithes, Taille, Old Regime)",
-          "1.2 The Struggle to Survive (Subsistence Crises) and How a Growing Middle Class Envisaged an End to Privileges (Philosophers: Locke, Rousseau, Montesquieu)",
-          "1.3 The Outbreak of the Revolution: Estates General Meeting (5 May 1789), Tennis Court Oath (National Assembly) and Storming of the Bastille (14 July 1789)",
-          "1.4 France Becomes a Constitutional Monarchy: Declaration of the Rights of Man and Citizen, Active vs Passive Citizens, Constitution of 1791",
-          "1.5 France Abolishes Monarchy and Becomes a Republic: War with Prussia/Austria, Marseillaise, Jacobin Club, Sans-Culottes, National Convention (1792)",
-          "1.6 The Reign of Terror (1793-1794): Maximilien Robespierre, Guillotine, Wage and Price Controls, Execution of Robespierre",
-          "1.7 A Directory Rules France (Rise of Napoleon Bonaparte), Did Women have a Revolution? (Olympe de Gouges, Declaration of Rights of Woman)",
-          "1.8 The Abolition of Slavery in French Colonies (Triangle Slave Trade, Final Abolition in 1848) and The Revolution and Everyday Life (Censorship Abolition, Liberty & Equality Legacy)"
-        ],
-        "Chapter 2: Socialism in Europe and the Russian Revolution": [
-          "2.1 The Age of Social Change: Liberals, Radicals and Conservatives Views on Society",
-          "2.2 Industrial Society and Social Change, The Coming of Socialism to Europe (Co-operatives: Robert Owen, Louis Blanc) and Karl Marx / Friedrich Engels (Capitalism vs Communist Society)",
-          "2.3 Support for Socialism (Second International), The Russian Empire in 1914: Economy and Society (Autocracy of Tsar Nicholas II, Peasant Communes / Mir)",
-          "2.4 Socialism in Russia: Russian Social Democratic Workers Party (Bolsheviks - Vladimir Lenin vs Mensheviks - Julius Martov)",
-          "2.5 A Turbulent Time: The 1905 Revolution, Bloody Sunday, Father Gapon, Creation of Duma and The First World War Impact on Russia",
-          "2.6 The February Revolution in Petrograd (1917): Bread Riots, Petrograd Soviet, Abdication of the Tsar and Formation of Provisional Government",
-          "2.7 After February: Lenin's Return and April Theses (War to be Closed, Land to the Peasants, Banks Nationalised)",
-          "2.8 The Revolution of October 1917: Military Revolutionary Committee (Leon Trotsky), Fall of the Winter Palace and Bolshevik Seizure of Power",
-          "2.9 What Changed after October? Land Decree, Industry Nationalisation, Red Army, The Civil War (Bolsheviks 'Reds' vs 'Whites' and 'Greens')",
-          "2.10 Making a Socialist Society: Centralised Planning, Five Year Plans, Rapid Industrial Growth and Stalin's Collectivisation Programme (Kulaks, Kolkhoz, Famine)"
-        ],
-        "Chapter 3: Nazism and the Rise of Hitler": [
-          "3.1 Birth of the Weimar Republic: Defeat in WWI, Abdication of the Kaiser, Democratic Constitution and The Treaty of Versailles (War Guilt Clause, Territorial & Financial Losses)",
-          "3.2 The Effects of the War: Psychological & Financial Impact, Fragility of Weimar Republic (Article 48, Coalition Instability)",
-          "3.3 Political Radicalism and Economic Crises: Spartacist League, Hyperinflation Crisis of 1923, Rupee Depreciation, Dawes Plan",
-          "3.4 The Years of Depression (1929-1932): Wall Street Crash, Industrial Collapse, Mass Unemployment and Radicalisation of Politics",
-          "3.5 Hitler's Rise to Power: Early Life, Nazi Party (NSDAP), Powerful Oratory, Propaganda (Swastika, Ritualised Rallies) and Promise of Employment",
-          "3.6 The Destruction of Democracy: Fire Decree (28 Feb 1933), Enabling Act (3 March 1933: Dictatorship Established), Concentration Camps, Secret Police (Gestapo, SS)",
-          "3.7 Reconstruction: Hjalmar Schacht's Economic Recovery (Volkswagen, Autobahns), Foreign Policy Successes, Blitzkrieg and Invasion of USSR (1941)",
-          "3.8 The Nazi Worldview: Racial Hierarchy (Nordic German Aryans at Top, Jews at Bottom), Lebensraum (Living Space), Racial Utopia in Occupied Poland",
-          "3.9 Youth in Nazi Germany: Schooling under Nazism, Jungvolk, Hitler Youth, The Nazi Cult of Motherhood (Honor Crosses, Eugenics)",
-          "3.10 The Art of Propaganda and The Holocaust: Ghettos, Gas Chambers, Final Solution (Auschwitz), Resistance and Holocaust Memories"
-        ]
-      },
-      "Geography": {
-        "Chapter 1: India - Size and Location": [
-          "1.1 Location: Latitudinal Extent (8°4'N to 37°6'N) and Longitudinal Extent (68°7'E to 97°25'E), Tropic of Cancer (23°30'N)",
-          "1.2 Size: Total Land Mass (3.28 Million sq. km / 2.4% of World Area), Land Boundary (15,200 km) and Coastline (7,516.6 km)",
-          "1.3 Standard Meridian of India (82°30'E Passing through Mirzapur, UP) and Time Difference (2 Hours between Gujarat and Arunachal Pradesh)",
-          "1.4 India and the World: Central Location in Indian Ocean, Strategic Trans-Indian Ocean Routes, Maritime and Land Contacts via Passes",
-          "1.5 India's Neighbours: Northwestern (Pakistan, Afghanistan), Northern (China, Nepal, Bhutan), Eastern (Myanmar, Bangladesh) and Southern Island Neighbours (Sri Lanka - Palk Strait, Maldives)"
-        ],
-        "Chapter 2: Physical Features of India": [
-          "2.1 Major Physiographic Divisions and Theory of Plate Tectonics (Convergent, Divergent, Transform Boundaries, Gondwanaland Splitting)",
-          "2.2 The Himalayan Mountains: Three Parallel Ranges (Himadri / Great Himalayas, Himachal / Lesser Himalayas, Shiwaliks), Regional Divisions (Punjab, Kumaon, Nepal, Assam Himalayas, Purvanchal)",
-          "2.3 The Northern Plains: Formation by Indus, Ganga and Brahmaputra, Bhabar, Terai, Bhangar (Kankar) and Khadar Belts",
-          "2.4 The Peninsular Plateau: Central Highlands, Deccan Plateau, Western Ghats vs Eastern Ghats Comparison",
-          "2.5 The Indian Desert (Thar Desert, Barchans, Luni River), The Coastal Plains (Western Coast: Konkan, Kannad, Malabar; Eastern Coast: Northern Circar, Coromandel) and The Islands (Lakshadweep and Andaman & Nicobar Islands)"
-        ],
-        "Chapter 3: Drainage": [
-          "3.1 Drainage Systems: Drainage Basin, Water Divide and Drainage Patterns (Dendritic, Trellis, Rectangular, Radial)",
-          "3.2 The Himalayan Rivers: The Indus River System (Origins, Tributaries, Indus Waters Treaty 1960)",
-          "3.3 The Ganga River System (Bhagirathi, Alaknanda at Devprayag, Tributaries Yamuna, Ghaghara, Gandak, Kosi, Sundarban Delta) and The Brahmaputra River System (Tsangpo, Majuli Island)",
-          "3.4 The Peninsular Rivers: East-Flowing (Mahanadi, Godavari / Dakshin Ganga, Krishna, Kaveri) vs West-Flowing Rivers (Narmada, Tapi, Rift Valleys)",
-          "3.5 Lakes: Freshwater Lakes (Wular, Dal, Nainital, Loktak) vs Salt Water Lakes (Chilika, Sambhar, Pulicat) and Importance of Lakes",
-          "3.6 Role of Rivers in the Economy and River Pollution / National River Conservation Plan (NRCP)"
-        ],
-        "Chapter 4: Climate": [
-          "4.1 Climate vs Weather, Elements of Climate and Climatic Variations across India",
-          "4.2 Climatic Controls: Latitude, Altitude, Pressure and Wind System, Distance from the Sea (Continentality), Ocean Currents and Relief Features",
-          "4.3 Factors Affecting India's Climate: Latitude, Altitude, Pressure and Winds (Coriolis Force, Jet Streams, Western Cyclonic Disturbances)",
-          "4.4 The Indian Monsoon: Mechanism of Monsoon, Heating of Land/Water, ITCZ Shift, Tibetan Plateau Heating, Southern Oscillation (ENSO / El Nino)",
-          "4.5 The Onset and Withdrawal of the Monsoon: Burst of Monsoon, Arabian Sea Branch vs Bay of Bengal Branch",
-          "4.6 The Seasons: The Cold Weather Season (Winter), The Hot Weather Season (Summer, Loo, Kaal Baisakhi, Mango Showers), The Advancing Monsoon (Rainy Season), The Retreating / Post Monsoon (October Heat)",
-          "4.7 Distribution of Rainfall across India and Monsoon as a Unifying Bond"
-        ]
-      },
-      "Civics": {
-        "Chapter 1: What is Democracy? Why Democracy?": [
-          "1.1 What is Democracy? Simple Definition and Features: Major Decisions by Elected Leaders (Pakistan under Pervez Musharraf - Legal Framework Order)",
-          "1.2 Free and Fair Electoral Competition (China's National People's Congress, Mexico's PRI Domination)",
-          "1.3 One Person, One Vote, One Value (Saudi Arabia, Estonia, Fiji Violations)",
-          "1.4 Rule of Law and Respect for Rights (Zimbabwe under Robert Mugabe / ZANU-PF)",
-          "1.5 Summary of Essential Democratic Features",
-          "1.6 Why Democracy? Arguments Against Democracy (Instability, Lack of Morality, Delay, Corruption, Bad Decisions)",
-          "1.7 Arguments for Democracy: More Accountable, Improves Decision Quality, Provides Method to Deal with Differences, Enhances Citizens' Dignity, Corrects Mistakes (Great Bengal/China Famine Comparison)"
-        ],
-        "Chapter 2: Constitutional Design": [
-          "2.1 Democratic Constitution in South Africa: Apartheid Struggle (Nelson Mandela, ANC, Robben Island), Transition to Democracy (1994) and Drafting of New Constitution",
-          "2.2 Why do we Need a Constitution? Functions of a Constitution (Trust, Framework of Governance, Citizens' Rights, Good Society Aspirations)",
-          "2.3 Making of the Indian Constitution: Difficult Circumstances, Advantages (Freedom Struggle Consensus, Karachi Resolution 1931), Constituent Assembly",
-          "2.4 Drafting Committee (Dr. B.R. Ambedkar), Deliberations, Adoption (26 Nov 1949) and Enforcement (26 Jan 1950)",
-          "2.5 Guiding Values of the Indian Constitution: The Preamble as the Soul of the Constitution (Sovereign, Socialist, Secular, Democratic, Republic, Justice, Liberty, Equality, Fraternity)"
-        ],
-        "Chapter 3: Electoral Politics": [
-          "3.1 Why Elections? Case of Haryana Assembly Elections (Devi Lal, Lok Dal, 'Nyaya Yudh') and Why Democracies Need Elections",
-          "3.2 What Makes an Election Democratic? (Universal Adult Suffrage, Real Choices, Regular Intervals, Free & Fair Choice)",
-          "3.3 Political Competition: Merits (Accountability to People) and Demerits (Factionalism, Dirty Tricks)",
-          "3.4 What is Our System of Elections? Electoral Constituencies (Lok Sabha - 543 Constituencies, Vidhan Sabha)",
-          "3.5 Reserved Constituencies: Scheduled Castes (SC) and Scheduled Tribes (ST) Representation",
-          "3.6 Voters' List (Electoral Roll), Nomination of Candidates (Affidavit, Age, Criminal Disclosure), Election Campaign (Slogans: Garibi Hatao, Save Democracy)",
-          "3.7 Model Code of Conduct, Polling and Counting of Votes (Electronic Voting Machines / EVMs)",
-          "3.8 What Makes Elections in India Democratic? Independent Election Commission (Chief Election Commissioner Powers), High Popular Participation (Voter Turnout Trends), Acceptance of Election Outcomes and Challenges to Free and Fair Elections"
-        ]
-      },
-      "Economics": {
-        "Chapter 1: The Story of Village Palampur": [
-          "1.1 Overview of Palampur: Farm and Non-Farm Activities, Basic Infrastructure (Electricity, Irrigation, Roads, Schools, Healthcare)",
-          "1.2 Organisation of Production: Four Requirements of Production (Land, Labour, Physical Capital: Fixed vs Working Capital, Human Capital)",
-          "1.3 Farming in Palampur: Land is Fixed, Ways to Increase Production from Same Land (Multiple Cropping, Modern Farming Methods: HYV Seeds, Fertilisers, Tube Wells - Green Revolution)",
-          "1.4 Will the Land Sustain? Depletion of Soil Fertility and Groundwater Table",
-          "1.5 Distribution of Land Among Farmers, Who Will Provide the Labour? (Small vs Medium/Large Farmers)",
-          "1.6 The Capital Needed in Farming: Borrowing by Small Farmers at High Interest Rates vs Self-Savings of Large Farmers, Sale of Surplus Farm Products",
-          "1.7 Non-Farm Activities in Palampur: Dairy Farming, Small Scale Manufacturing (Sugarcane Crushing), Shopkeeping and Transport Services"
-        ],
-        "Chapter 2: People as Resource": [
-          "2.1 Overview: Human Capital as an Asset, Economic Activities by Men and Women: Primary, Secondary and Tertiary Sectors",
-          "2.2 Market Activities vs Non-Market Activities, Role of Education: Story of Sakal vs Story of Vilas",
-          "2.3 Quality of Population: Education (Literacy Rates, Sarva Shiksha Abhiyan, Mid-Day Meal Scheme, Navodaya Vidyalayas) and Health (National Health Policy, Life Expectancy, Infant Mortality Rate)",
-          "2.4 Unemployment: Definition, Types of Unemployment in India: Seasonal Unemployment, Disguised Unemployment (Rural) and Educated Unemployment (Urban)",
-          "2.5 Consequences of Unemployment: Wastage of Manpower Resource, Economic Overload, Decline in Quality of Life"
-        ],
-        "Chapter 3: Poverty as a Challenge": [
-          "3.1 Overview and Two Typical Cases of Poverty: Urban Case (Ram Saran) and Rural Case (Lakha Singh)",
-          "3.2 Poverty as Seen by Social Scientists: Social Exclusion and Vulnerability Indicators",
-          "3.3 Poverty Line: Determination in India (Minimum Nutritional Requirement: 2400 Calories Rural / 2100 Calories Urban, Consumption Expenditure by NITI Aayog)",
-          "3.4 Poverty Estimates in India: Decline Trends Across Decades, Vulnerable Groups (Scheduled Castes, Scheduled Tribes, Casual Labourers, Women, Elderly, Female Infants)",
-          "3.5 Inter-State Disparities in Poverty (Bihar and Odisha as Poorest States vs Kerala, Punjab, West Bengal, Andhra Pradesh Success Factors)",
-          "3.6 Global Poverty Scenario: World Bank Criterion ($2.15 per Person per Day), Extreme Poverty Decline in China and East Asia",
-          "3.7 Causes of Poverty in India: Historical Colonial Exploitation, Low Economic Growth, High Population Growth, Unequal Distribution of Land, Debt Traps",
-          "3.8 Anti-Poverty Measures: Promotion of Economic Growth and Targeted Anti-Poverty Programmes: MGNREGA (2005), PMRY, REGP, SGSY, PMGY, AAY and The Challenges Ahead"
-        ]
-      }
+      "History": [
+        "Chapter 1: Understanding Social Science (Part 1)",
+        "Chapter 4: Early Humans and Beginning of Civilisation (Part 1)",
+        "Chapter 5: State and Society up to 1000 CE (Part 1)",
+        "Chapter 12: Resistance and Resilience (1000 CE–1700 CE) (Part 2)",
+        "Chapter 13: India and the World-I (1900 BCE–1200 CE) (Part 2)"
+      ],
+      "Geography": [
+        "Chapter 2: Shaping of the Earth’s Surface (Part 1)",
+        "Chapter 3: Atmosphere and Climate (Part 1)",
+        "Chapter 10: Oceans and Life (Part 2)",
+        "Chapter 11: Life on Earth (Part 2)"
+      ],
+      "Political Science": [
+        "Chapter 6: Democracy (Part 1)",
+        "Chapter 7: Elections (Part 1)",
+        "Chapter 14: Authority (Part 2)"
+      ],
+      "Economics": [
+        "Chapter 8: Building Blocks in Economics (Part 1)",
+        "Chapter 9: The Price Puzzle: What Drives the Market (Part 1)",
+        "Chapter 15: From Ideas to Startups (Part 2)",
+        "Chapter 16: Smart Ways to Manage Your Finances (Part 2)"
+      ]
     },
     "English (R1)": {
       "Section A: Reading Skills": [
