@@ -1616,7 +1616,7 @@ function getPrescribedBookName(className, subjectName) {
     if (sub.includes("math")) return "Ganita Prakash (NCERT)";
     if (sub.includes("english") && sub.includes("r2")) return "Communicative English Reader (CBSE)";
     if (sub.includes("english")) return "Poorvi (Grade 6) (NCERT)";
-    if (sub.includes("hindi")) return "Malhar (मल्हार) (NCERT)";
+    if (sub.includes("hindi")) return "Malhar (मल्हार) & Bal Ramkatha (NCERT)";
     if (sub.includes("sanskrit")) return "Deepakam (दीपकम्) (NCERT)";
     if (sub.includes("general knowledge") || sub === "gk") return "General Knowledge (School Curriculum)";
     if (sub.includes("robotics") || sub.includes("ai")) return "AI & Robotics (School Curriculum)";
@@ -1629,7 +1629,7 @@ function getPrescribedBookName(className, subjectName) {
     if (sub.includes("math")) return "Ganita Prakash (Grade 7) (NCERT)";
     if (sub.includes("english") && sub.includes("r2")) return "Communicative English Reader (CBSE)";
     if (sub.includes("english")) return "Poorvi (Grade 7) (NCERT)";
-    if (sub.includes("hindi")) return "Vasant Part-2 & Bal Mahabharat Katha (NCERT)";
+    if (sub.includes("hindi")) return "Malhar (मल्हार) / Vasant Part-2 & Bal Mahabharat Katha (NCERT)";
     if (sub.includes("sanskrit")) return "Deepakam (दीपकम्) (NCERT)";
     if (sub.includes("general knowledge") || sub === "gk") return "General Knowledge (School Curriculum)";
     if (sub.includes("robotics") || sub.includes("ai")) return "AI & Robotics (School Curriculum)";
@@ -1642,7 +1642,7 @@ function getPrescribedBookName(className, subjectName) {
     if (sub.includes("math")) return "Ganita Prakash (Grade 8) (NCERT)";
     if (sub.includes("english") && sub.includes("r2")) return "Communicative English Reader (CBSE)";
     if (sub.includes("english")) return "Poorvi (Grade 8) (NCERT)";
-    if (sub.includes("hindi")) return "Malhar (मल्हार) (NCERT)";
+    if (sub.includes("hindi")) return "Malhar (मल्हार) / Vasant Part-3 & Bharat Ki Khoj (NCERT)";
     if (sub.includes("sanskrit")) return "Deepakam (दीपकम्) (NCERT)";
     if (sub.includes("computer")) return "Computer Science (School Curriculum)";
     if (sub.includes("general knowledge") || sub === "gk") return "General Knowledge (School Curriculum)";
