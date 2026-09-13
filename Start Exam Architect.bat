@@ -1,4 +1,5 @@
 @echo off
+cd /d "%~dp0"
 echo =========================================
 echo Starting GNPS Exam Architect Server...
 echo Close this command prompt window to stop the app.

@@ -17,8 +17,9 @@ import pypdf
 import auth_service
 
 PORT = int(os.environ.get('PORT', 8000))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://cbseacademic.nic.in/"
-CUSTOM_FILE = "custom_subjects.json"
+CUSTOM_FILE = os.path.join(BASE_DIR, "custom_subjects.json")
 
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
@@ -511,8 +512,9 @@ def fetch_syllabus_from_cbse(cls, subject_name):
 
     # 2. Load data.js verified rationalized curriculum
     try:
-        if os.path.exists('data.js'):
-            with open('data.js', 'r', encoding='utf-8') as df:
+        data_js_path = os.path.join(BASE_DIR, 'data.js')
+        if os.path.exists(data_js_path):
+            with open(data_js_path, 'r', encoding='utf-8') as df:
                 dj_text = df.read()
             dj_cleaned = re.sub(r'^\s*export\s+const\s+cbseData\s*=\s*', '', dj_text)
             dj_cleaned = re.sub(r';\s*$', '', dj_cleaned.strip())
@@ -864,6 +866,20 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
                 ]
             self.send_json(200, {"success": True, "logs": logs})
             return
+
+        # --- Super Admin: Export System Backup ---
+        elif parsed_path.path == '/api/admin/export-backup':
+            token = self.extract_auth_token()
+            is_valid, user = auth_service.verify_session_token(token)
+            if not is_valid or user.get("role") != "super_admin":
+                self.send_json(403, {"error": "Unauthorized. Super Admin privileges required."})
+                return
+            try:
+                backup_data = auth_service.admin_export_backup_data()
+                self.send_json(200, {"success": True, "backup": backup_data})
+            except Exception as e:
+                self.send_json(500, {"error": str(e)})
+            return
         
         elif parsed_path.path == '/api/cbse-subjects':
             cls = query_components.get('class', ['Class 10'])[0]
@@ -1087,6 +1103,25 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             try:
                 auth_service.admin_clear_logs()
                 self.send_json(200, {"success": True, "message": "Audit logs cleared successfully"})
+            except Exception as e:
+                self.send_json(500, {"error": str(e)})
+            return
+
+        # --- Admin: Import System Backup ---
+        elif parsed_path.path == '/api/admin/import-backup':
+            token = self.extract_auth_token()
+            is_valid, user = auth_service.verify_session_token(token)
+            if not is_valid or user.get("role") != "super_admin":
+                self.send_json(403, {"error": "Unauthorized. Super Admin privileges required."})
+                return
+            try:
+                body = self.read_json_body() or {}
+                backup_dict = body.get('backup') or body
+                success, msg = auth_service.admin_import_backup_data(backup_dict)
+                if not success:
+                    self.send_json(400, {"error": msg})
+                    return
+                self.send_json(200, {"success": True, "message": msg, "users": auth_service.admin_get_all_users()})
             except Exception as e:
                 self.send_json(500, {"error": str(e)})
             return

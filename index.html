@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GNPS Exam Architect</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css?v=50" />
+    <link rel="stylesheet" href="./style.css?v=53" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   </head>
@@ -139,7 +139,7 @@
                 <div class="form-row" style="margin-bottom: 0;">
                   <div class="form-group" style="margin-bottom: 0;">
                     <label for="duration">Time Duration</label>
-                    <input type="text" id="duration" placeholder="e.g. 180 Mins" required>
+                    <input type="text" id="duration" placeholder="e.g. 2.5 Hours / 180 Mins" required>
                   </div>
                   
                   <div class="form-group" style="margin-bottom: 0;">
@@ -435,9 +435,9 @@
             <span class="part-tag-badge part1-tag">PART 1 HEADER</span>
             <div class="part-setting-field">
               <strong>Time Allowed:</strong>
-              <input type="text" id="sheetPart1Time" class="input-custom" value="180 Mins" style="width: 74px;">
+              <input type="text" id="sheetPart1Time" class="input-custom" value="2.5 Hours" style="width: 74px;">
               <span class="field-sublabel">(GK &amp; Robotics:</span>
-              <input type="text" id="sheetPart1TimeGkRobo" class="input-custom" value="1.5–2 Hrs" style="width: 64px;">
+              <input type="text" id="sheetPart1TimeGkRobo" class="input-custom" value="45–90 Mins" style="width: 76px;">
               <span class="field-sublabel">)</span>
             </div>
             <div class="field-divider"></div>
@@ -446,7 +446,7 @@
               <input type="text" id="sheetPart1Marks" class="input-custom" value="80" style="width: 28px; text-align: center;">
               <span class="field-sublabel">Marks</span>
               <span class="field-sublabel">(GK &amp; Robotics:</span>
-              <input type="text" id="sheetPart1MarksGkRobo" class="input-custom" value="40" style="width: 28px; text-align: center;">
+              <input type="text" id="sheetPart1MarksGkRobo" class="input-custom" value="20–40" style="width: 48px; text-align: center;">
               <span class="field-sublabel">Marks)</span>
             </div>
             <div class="field-divider"></div>
@@ -633,9 +633,18 @@
               <span>+</span>
               <span>Add Faculty User</span>
             </button>
+            <button type="button" id="adminBackupDataBtn" class="btn-admin-export" onclick="window.exportSystemBackup && window.exportSystemBackup()" title="Download a complete snapshot of all users and audit logs to your PC">
+              <span>💾</span>
+              <span>Backup Data</span>
+            </button>
+            <button type="button" id="adminRestoreDataBtn" class="btn-admin-export" onclick="document.getElementById('adminImportBackupInput').click()" title="Restore users and data from a previously downloaded backup JSON file">
+              <span>📤</span>
+              <span>Restore Backup</span>
+            </button>
+            <input type="file" id="adminImportBackupInput" accept=".json" style="display: none;" onchange="window.handleBackupFileSelect && window.handleBackupFileSelect(event)">
             <button type="button" id="adminExportLogsBtn" class="btn-admin-export" onclick="window.exportAuditLogsToCSV && window.exportAuditLogsToCSV()">
               <span>📥</span>
-              <span>Export Audit Logs (CSV)</span>
+              <span>Export CSV</span>
             </button>
           </div>
         </div>
@@ -716,7 +725,7 @@
           <h3>Add New Faculty User</h3>
           <button type="button" onclick="window.closeNewUserModal && window.closeNewUserModal()">✕</button>
         </div>
-        <form onsubmit="window.handleCreateFacultyUser && window.handleCreateFacultyUser(event)" class="admin-submodal-form">
+        <form onsubmit="event.preventDefault(); window.handleCreateFacultyUser && window.handleCreateFacultyUser(event); return false;" class="admin-submodal-form">
           <div class="admin-form-group">
             <label for="newUserNameInput">Full Name & Designation</label>
             <input type="text" id="newUserNameInput" required placeholder="e.g. S. K. Gupta (TGT Science)">
@@ -751,6 +760,6 @@
       </div>
     </div>
 
-    <script type="module" src="./main.js?v=201"></script>
+    <script type="module" src="./main.js?v=213"></script>
   </body>
 </html>

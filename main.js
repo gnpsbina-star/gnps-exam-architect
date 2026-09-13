@@ -1,4 +1,4 @@
-import { cbseData } from './data.js?v=32';
+import { cbseData } from './data.js?v=33';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
 
@@ -173,7 +173,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_exploration_v9_class8_no_cs';
+      const CURRENT_SYLLABUS_VER = '2026_exam_marks_duration_sync_v14';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -241,6 +241,21 @@ async function loadCustomSubjects() {
         if (existing && typeof existing === 'object' && !Array.isArray(existing) && Array.isArray(chapters)) {
           continue;
         }
+        // Master data.js is the Single Source of Truth for standard curriculum:
+        // If cbseData already has structured writing skills, never overwrite with legacy/flat custom data
+        if (existing && typeof existing === 'object' && typeof chapters === 'object') {
+          const masterWritingKey = Object.keys(existing).find(k => /writing|लेखन|रचनात्मक/i.test(k));
+          const customWritingKey = Object.keys(chapters).find(k => /writing|लेखन|रचनात्मक/i.test(k));
+          if (masterWritingKey && customWritingKey) {
+            const masterVal = existing[masterWritingKey];
+            const customVal = chapters[customWritingKey];
+            if (masterVal && typeof masterVal === 'object' && !Array.isArray(masterVal)) {
+              if (!customVal || Array.isArray(customVal) || !Object.keys(customVal).some(k => /short|लघु/i.test(k))) {
+                chapters[customWritingKey] = masterVal;
+              }
+            }
+          }
+        }
         cbseData[cls][subj] = chapters;
       }
     }
@@ -306,16 +321,39 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
     marks = defaults.marks;
   }
 
-  const subLower = subjectName.toLowerCase();
-  const isSkill = (subLower.startsWith("it (") || subLower.includes(" it (") || subLower.includes("it 402") || subLower.includes("it 802")) || subLower.includes("information tech") || subLower.includes("artificial") || subLower.includes("retail") || subLower.includes("data science") || subLower.includes("fashion") || subLower.includes("web app") || subLower.includes("yoga");
+  const subLower = (subjectName || '').toLowerCase().trim();
+  const isSkill = (subLower.startsWith("it (") || subLower.startsWith("it ") || subLower.includes(" it (") || subLower.includes("it 402") || subLower.includes("it 802")) || 
+                  subLower.includes("information tech") || 
+                  subLower.includes("computer applications") || 
+                  subLower.includes("health care") ||
+                  subLower.includes("artificial") || subLower.includes("retail") || 
+                  subLower.includes("data science") || subLower.includes("fashion") || 
+                  subLower.includes("web app") || subLower.includes("yoga");
+  const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
+  const isGK = isMiddle && (subLower.includes("general knowledge") || subLower.includes("gk"));
+  const isRobo = isMiddle && subLower.includes("robotics");
 
-  const defaultDuration = (marks <= 25 ? "45 Minutes" : (marks <= 45 ? "90 Mins" : (marks <= 50 && isSkill ? "120 Mins" : "180 Mins")));
+  const defaultDuration = isRobo ? (marks <= 10 ? "20 Mins" : "45 Minutes")
+                               : (isGK ? (marks <= 10 ? "20 Mins" : (marks <= 25 ? "45 Mins" : "90 Mins"))
+                               : (isSkill ? (marks <= 0 ? "No Unit Test" : (marks <= 25 ? "60 Mins" : "120 Mins"))
+                               : (marks <= 25 ? "45 Minutes" : (marks <= 45 ? "90 Mins" : (marks <= 50 && isSkill ? "120 Mins" : (isMiddle && marks >= 75 ? "2.5 Hours" : "180 Mins"))))));
   const duration = durationVal || defaultDuration;
+
+  if (isSkill && (marks === 0 || (examName && examName.includes("Unit Test") && marks <= 20))) {
+    return {
+      totalMarks: 0,
+      duration: "No Unit Test",
+      competencyRatio: "N/A",
+      sections: [
+        { name: "CBSE Advisory", type: "No Unit Tests scheduled for Vocational / Skill subjects (Assessments conducted via Periodic Assessment & Annual Board Exams).", count: 0, unitMark: 0, marksPerQ: "—", total: 0, choice: "Not Applicable" }
+      ]
+    };
+  }
 
   let sections = [];
   let competencyRatio = "50%";
 
-  // 1. Unit Test (20 Marks / 45 Min)
+  // 1. Unit Test (20 Marks / 45 Min) or GK/Robo 10M / 20M
   if (marks <= 20 || (examName && examName.includes("Unit Test") && marks <= 20)) {
     if (subLower.includes("english")) {
       const litBook = getCleanLiteratureBookName(className, subjectName);
@@ -377,6 +415,33 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
           { name: "Section D", type: "Long Answer (LA - 100-120 words) / Case-Based Study", count: 1, unitMark: 5, marksPerQ: "5 Marks", total: 5, choice: "100% Internal Choice (LA OR Case Study)" }
         ];
       }
+    } else if (subLower.includes("robotics")) {
+      if (marks <= 10) {
+        sections = [
+          { name: "Section A", type: "Objective & Technical MCQs (Components, Sensors, Pins)", count: 4, unitMark: 1, marksPerQ: "1 Mark", total: 4, choice: "All Compulsory" },
+          { name: "Section B", type: "Short Answer & Circuit Logic (Schematics, Code Blocks)", count: 3, unitMark: 2, marksPerQ: "2 Marks", total: 6, choice: "Internal choice in 1 Q" }
+        ];
+      } else {
+        sections = [
+          { name: "Section A", type: "Objective & Technical MCQs (Circuits, Sensors, Logic)", count: 6, unitMark: 1, marksPerQ: "1 Mark", total: 6, choice: "All Compulsory" },
+          { name: "Section B", type: "Short Answer (Components & Circuit Logic)", count: 3, unitMark: 2, marksPerQ: "2 Marks", total: 6, choice: "Internal choice in 1 Q" },
+          { name: "Section C", type: "Descriptive & Coding / Practical Schematic", count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "Internal choice in both Qs (Algorithm / Wiring)" }
+        ];
+      }
+    } else if (subLower.includes("general knowledge") || subLower.includes("gk")) {
+      if (marks <= 10) {
+        sections = [
+          { name: "Section A", type: "Multiple Choice Questions (Current Affairs & General Trivia)", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "All Compulsory" },
+          { name: "Section B", type: "One-Word Answer / Direct Trivia (Personalities, Monuments, Facts)", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "Direct Identification" }
+        ];
+      } else {
+        // 20 Marks GK (PA or standard 20M Exam)
+        sections = [
+          { name: "Section A", type: "Multiple Choice Questions (Current Affairs, Science & India)", count: 8, unitMark: 1, marksPerQ: "1 Mark", total: 8, choice: "All Compulsory" },
+          { name: "Section B", type: "One-Word Answer / Identification (Personalities, Monuments, Sobriquets)", count: 6, unitMark: 1, marksPerQ: "1 Mark", total: 6, choice: "Direct Identification" },
+          { name: "Section C", type: "Fill in the Blanks & Match Columns / Trivia (Sports, Books, Facts)", count: 6, unitMark: 1, marksPerQ: "1 Mark", total: 6, choice: "All Compulsory" }
+        ];
+      }
     } else {
       sections = [
         { name: "Section A", type: "Multiple Choice Questions (MCQs)", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "Compulsory" },
@@ -414,6 +479,12 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
         { name: "Section B", type: "Very Short Answer (VSA - 30 words)", count: 2, unitMark: 2, marksPerQ: "2 Marks", total: 4, choice: "Internal choice in 1 Q" },
         { name: "Section C", type: "Short Answer (SA - 50 words)", count: 3, unitMark: 3, marksPerQ: "3 Marks", total: 9, choice: "Internal choice in 1 Q" },
         { name: "Section D", type: "Long Answer (LA) / Map Work", count: 1, unitMark: 5, marksPerQ: "5 Marks", total: 5, choice: "100% Internal Choice" }
+      ];
+    } else if (isSkill) {
+      sections = [
+        { name: "Part A", type: "Employability Skills (Objective & Short Answer)", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "Answer 5 out of 6 Qs" },
+        { name: "Part B (I)", type: "Subject Specific Skills (Objective / MCQs)", count: 10, unitMark: 1, marksPerQ: "1 Mark", total: 10, choice: "Answer 10 out of 12 Qs" },
+        { name: "Part B (II)", type: "Subject Specific Skills (Short Answer - 2 Marks)", count: 5, unitMark: 2, marksPerQ: "2 Marks", total: 10, choice: "Answer 5 out of 6 Qs" }
       ];
     } else {
       sections = [
@@ -491,6 +562,13 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
         { name: "Section C", type: "Short Answer (SA - 60 words)", count: 4, unitMark: 3, marksPerQ: "3 Marks", total: 12, choice: "Internal choice in 1 Q" },
         { name: "Section D", type: "Long Answer (LA - 120 words)", count: 2, unitMark: 5, marksPerQ: "5 Marks", total: 10, choice: "Internal choice in 1 Q" },
         { name: "Section E", type: "Case-Based Integrated Study / Map Work", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "3M Case/Source + 1M Map Location" }
+      ];
+    } else if (subLower.includes("general knowledge") || subLower.includes("gk")) {
+      sections = [
+        { name: "Section A", type: "Multiple Choice Questions (Current Affairs, Science & Tech, India)", count: 15, unitMark: 1, marksPerQ: "1 Mark", total: 15, choice: "All Compulsory" },
+        { name: "Section B", type: "One-Word Answer / Identification (Personalities, Monuments, Sobriquets)", count: 10, unitMark: 1, marksPerQ: "1 Mark", total: 10, choice: "Direct Identification" },
+        { name: "Section C", type: "Fill in the Blanks & Match Columns (Sports, Books, Currencies)", count: 10, unitMark: 1, marksPerQ: "1 Mark", total: 10, choice: "All Compulsory" },
+        { name: "Section D", type: "Logical Reasoning & Mental Ability Trivia (Patterns, Series, Analogies)", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "All Compulsory" }
       ];
     } else {
       sections = [
@@ -1347,30 +1425,110 @@ function syncWorksheetDynamicScaling() {
   renderWorksheetBlueprintView(exam);
 }
 
-export function getExamDefaultDuration(examName) {
-  if (!examName) return "180 Mins";
-  const exLower = examName.toLowerCase().trim();
+export function getExamDefaultDuration(examName, className = '', subjectName = '') {
+  const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
+  const subLower = (subjectName || '').toLowerCase().trim();
+  const exLower = (examName || '').toLowerCase().trim();
+  if (isMiddle) {
+    if (subLower.includes('robotics')) {
+      if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut") ||
+          exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+        return '20 Mins';
+      }
+      return '45 Minutes';
+    }
+    if (subLower.includes('general knowledge') || subLower.includes('gk')) {
+      if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+        return '20 Mins';
+      }
+      if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+        return '45 Mins';
+      }
+      return '90 Mins';
+    }
+  }
+
+  const isSkill = (subLower.startsWith("it (") || subLower.startsWith("it ") || subLower.includes(" it (") || subLower.includes("it 402") || subLower.includes("it 802")) || 
+                  subLower.includes("information tech") || 
+                  subLower.includes("computer applications") || 
+                  subLower.includes("health care") ||
+                  subLower.includes("artificial") || subLower.includes("retail") || 
+                  subLower.includes("data science") || subLower.includes("fashion") || 
+                  subLower.includes("web app") || subLower.includes("yoga");
+
+  if (isSkill) {
+    if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+      return "No Unit Test";
+    }
+    if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+      return "60 Mins";
+    }
+    return "120 Mins";
+  }
+
   if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
     return "45 Minutes";
   }
   if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
     return "90 Mins";
   }
-  return "180 Mins";
+
+  return isMiddle ? "2.5 Hours" : "180 Mins";
 }
 
 // Centralized helper to determine standard CBSE marks and duration for examinations
 function getExamDefaultDetails(className, subjectName, examName) {
-  if (!examName) return { marks: 80, duration: "180 Mins" };
-
-  const exLower = examName.toLowerCase().trim();
+  const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
   const subLower = (subjectName || '').toLowerCase().trim();
+  const exLower = (examName || '').toLowerCase().trim();
+
+  // Special School Configuration for Middle Wing GK & Robotics (Classes 6 to 8)
+  if (isMiddle) {
+    if (subLower.includes("robotics")) {
+      if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+        return { marks: 10, duration: "20 Mins" };
+      }
+      if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+        return { marks: 10, duration: "20 Mins" };
+      }
+      return { marks: 20, duration: "45 Minutes" };
+    }
+    if (subLower.includes("general knowledge") || subLower.includes("gk")) {
+      if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+        return { marks: 10, duration: "20 Mins" };
+      }
+      if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+        return { marks: 20, duration: "45 Mins" };
+      }
+      return { marks: 40, duration: "90 Mins" };
+    }
+  }
+
+  if (!examName) return { marks: 80, duration: isMiddle ? "2.5 Hours" : "180 Mins" };
+
   const isSenior = (className === 'Class 11' || className === 'Class 12');
 
-  const isSkill = subLower.includes("it (") || subLower.includes("information tech") || 
+  const isSkill = (subLower.startsWith("it (") || subLower.startsWith("it ") || subLower.includes(" it (") || subLower.includes("it 402") || subLower.includes("it 802")) || 
+                  subLower.includes("information tech") || 
+                  subLower.includes("computer applications") || 
+                  subLower.includes("health care") ||
                   subLower.includes("artificial") || subLower.includes("retail") || 
                   subLower.includes("data science") || subLower.includes("fashion") || 
                   subLower.includes("web app") || subLower.includes("yoga");
+
+  // Vocational / Skill subjects (Healthcare, Computer Applications, IT, etc.):
+  // - No Unit Tests
+  // - PA is half of 50M Annual = 25 Marks in 60 Mins
+  // - Annual / Pre-Board / Mid-Term / Term II = 50 Marks in 120 Mins
+  if (isSkill) {
+    if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+      return { marks: 0, duration: "No Unit Test" };
+    }
+    if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+      return { marks: 25, duration: "60 Mins" };
+    }
+    return { marks: 50, duration: "120 Mins" };
+  }
 
   const isSeniorSciencePractical = isSenior && (
     subLower.includes("physics") || subLower.includes("chemistry") || 
@@ -1389,14 +1547,11 @@ function getExamDefaultDetails(className, subjectName, examName) {
     return { marks: 40, duration: "90 Mins" };
   }
 
-  // 3. Other Examinations (Mid Term Examination, Half Yearly, Term II, Pre-Board, Annual, Final): 180 Mins
+  // 3. Other Examinations (Mid Term Examination, Half Yearly, Term II, Pre-Board, Annual, Final): 2.5 Hours for 6-8, 180 Mins for 9-12
   let fullMarks = 80;
-  let fullDuration = "180 Mins";
+  let fullDuration = isMiddle ? "2.5 Hours" : "180 Mins";
 
-  if (isSkill) {
-    fullMarks = 50;
-    fullDuration = "120 Mins";
-  } else if (isSeniorSciencePractical) {
+  if (isSeniorSciencePractical) {
     fullMarks = 70;
     fullDuration = "180 Mins";
   }
@@ -1809,6 +1964,61 @@ function restoreMainPanelSyllabusState(cls, subj) {
     }
   });
 
+  document.querySelectorAll('.writing-subgroup-block').forEach(block => {
+    const badge = block.querySelector('.writing-group-badge');
+    const childCbs = Array.from(block.querySelectorAll('.writing-topic-cb'));
+    if (childCbs.length > 0) {
+      const checkedCount = childCbs.filter(c => c.checked).length;
+      if (badge) {
+        if (checkedCount > 0) {
+          badge.textContent = `${checkedCount} / ${childCbs.length} Selected`;
+          badge.classList.add('has-selected');
+        } else {
+          badge.textContent = `${childCbs.length} Topics`;
+          badge.classList.remove('has-selected');
+        }
+      }
+      childCbs.forEach(cb => {
+        const chip = cb.closest('.writing-topic-chip');
+        if (chip) {
+          if (cb.checked) chip.classList.add('is-checked');
+          else chip.classList.remove('is-checked');
+        }
+      });
+    }
+  });
+
+  document.querySelectorAll('.writing-subgroup-card').forEach(card => {
+    const parentCb = card.querySelector('.writing-group-cb');
+    const badge = card.querySelector('.subtopic-count-badge');
+    const childCbs = Array.from(card.querySelectorAll('.writing-topic-cb'));
+    if (parentCb && childCbs.length > 0) {
+      const checkedCount = childCbs.filter(c => c.checked).length;
+      if (checkedCount === childCbs.length) {
+        parentCb.checked = true;
+        parentCb.indeterminate = false;
+        if (badge) {
+          badge.textContent = `${childCbs.length} / ${childCbs.length} Selected`;
+          badge.classList.add('has-selected');
+        }
+      } else if (checkedCount > 0) {
+        parentCb.checked = false;
+        parentCb.indeterminate = true;
+        if (badge) {
+          badge.textContent = `${checkedCount} / ${childCbs.length} Selected`;
+          badge.classList.add('has-selected');
+        }
+      } else {
+        parentCb.checked = false;
+        parentCb.indeterminate = false;
+        if (badge) {
+          badge.textContent = `${childCbs.length} Topics`;
+          badge.classList.remove('has-selected');
+        }
+      }
+    }
+  });
+
   // Update Select All checkbox
   const selectAllCb = document.getElementById('selectAllChapters');
   if (selectAllCb) {
@@ -1824,6 +2034,17 @@ function getSubjectSelectionForSheet(cls, subjName) {
   const saved = sheetSelectionStore[key];
   if (saved && saved.initialized) {
     return saved.checked;
+  }
+
+  // Inherit active selections from Prompt Generation module if available (Unidirectional Sync)
+  const promptSaved = syllabusSelectionStore[key];
+  if (promptSaved && promptSaved.initialized && promptSaved.checked.size > 0) {
+    sheetSelectionStore[key] = {
+      checked: new Set(promptSaved.checked),
+      unchecked: new Set(promptSaved.unchecked),
+      initialized: true
+    };
+    return sheetSelectionStore[key].checked;
   }
 
   // Default to ALL prescribed items CHECKED for this subject on initial load
@@ -2169,6 +2390,99 @@ function renderSyllabusChecklist(syllabusData) {
     targetContainer.appendChild(group);
   };
 
+  const renderWritingSectionBlock = (sectionKey, groupsObj, targetContainer) => {
+    const card = document.createElement('div');
+    card.className = 'writing-section-card';
+
+    const header = document.createElement('div');
+    header.className = 'writing-section-header';
+    header.textContent = sectionKey;
+    card.appendChild(header);
+
+    for (const [groupName, topics] of Object.entries(groupsObj)) {
+      if (!Array.isArray(topics) || topics.length === 0) continue;
+
+      const block = document.createElement('div');
+      block.className = 'writing-subgroup-block';
+
+      const titleRow = document.createElement('div');
+      titleRow.className = 'writing-subgroup-title';
+
+      const titleText = document.createElement('span');
+      titleText.className = 'writing-title-text';
+      titleText.textContent = groupName.endsWith(':') ? groupName : `${groupName}:`;
+
+      const badge = document.createElement('span');
+      badge.className = 'writing-group-badge';
+      badge.textContent = `${topics.length} Topics`;
+      badge.title = 'Click to toggle all topics in this group';
+
+      titleRow.appendChild(titleText);
+      titleRow.appendChild(badge);
+      block.appendChild(titleRow);
+
+      const row = document.createElement('div');
+      row.className = 'writing-topics-row';
+
+      const childCbs = [];
+
+      topics.forEach((topic) => {
+        const chip = document.createElement('label');
+        chip.className = 'writing-topic-chip';
+
+        const cbId = `wr-cb-${globalCbIndex++}`;
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.className = 'chapter-cb writing-topic-cb';
+        cb.value = `${groupName} -> ${topic}`;
+        cb.id = cbId;
+
+        const topicSpan = document.createElement('span');
+        topicSpan.textContent = topic;
+
+        chip.appendChild(cb);
+        chip.appendChild(topicSpan);
+        row.appendChild(chip);
+        childCbs.push(cb);
+
+        cb.addEventListener('change', () => {
+          if (cb.checked) chip.classList.add('is-checked');
+          else chip.classList.remove('is-checked');
+
+          const checkedCount = childCbs.filter(c => c.checked).length;
+          if (checkedCount > 0) {
+            badge.textContent = `${checkedCount} / ${childCbs.length} Selected`;
+            badge.classList.add('has-selected');
+          } else {
+            badge.textContent = `${childCbs.length} Topics`;
+            badge.classList.remove('has-selected');
+          }
+        });
+      });
+
+      badge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const allChecked = childCbs.every(c => c.checked);
+        const newState = !allChecked;
+        childCbs.forEach(cb => {
+          if (cb.checked !== newState) {
+            cb.checked = newState;
+            cb.dispatchEvent(new Event('change'));
+          }
+        });
+        saveActiveMainPanelSyllabusState();
+        if (typeof renderSyllabusSheetPaper === 'function') {
+          renderSyllabusSheetPaper();
+        }
+      });
+
+      block.appendChild(row);
+      card.appendChild(block);
+    }
+
+    targetContainer.appendChild(card);
+  };
+
   if (Array.isArray(syllabusData)) {
     syllabusData.forEach((chapter, idx) => createCheckbox(chapter, idx + 1));
   } else if (typeof syllabusData === 'object' && syllabusData !== null) {
@@ -2207,28 +2521,34 @@ function renderSyllabusChecklist(syllabusData) {
         const hideWeightage = isReadingSection || key.toLowerCase().includes("writing") || key.includes("लेखन") || key.includes("रचनात्मक");
         value.forEach((chapter, idx) => createCheckbox(chapter, idx + 1, isReadingSection, hideWeightage));
       } else if (typeof value === 'object' && value !== null) {
-        const sectionHeader = document.createElement('div');
-        sectionHeader.textContent = key;
-        sectionHeader.style.color = '#0f172a';
-        sectionHeader.style.fontWeight = '800';
-        sectionHeader.style.fontSize = '0.84rem';
-        sectionHeader.style.textTransform = 'uppercase';
-        sectionHeader.style.letterSpacing = '0.5px';
-        sectionHeader.style.marginTop = '1.25rem';
-        sectionHeader.style.marginBottom = '0.4rem';
-        sectionHeader.style.padding = '0.4rem 0.65rem';
-        sectionHeader.style.background = '#f1f5f9';
-        sectionHeader.style.borderRadius = '6px';
-        sectionHeader.style.borderLeft = '4px solid #0284c7';
-        sectionHeader.style.border = '1px solid #cbd5e1';
-        sectionHeader.style.borderLeftWidth = '4px';
-        syllabusContainer.appendChild(sectionHeader);
+        const isWritingSection = key.toLowerCase().includes("writing") || key.includes("लेखन") || key.includes("रचनात्मक");
 
-        for (const [topicName, subtopics] of Object.entries(value)) {
-          if (Array.isArray(subtopics)) {
-            renderChapterWithSubtopics(topicName, subtopics, syllabusContainer);
-          } else {
-            createCheckbox(topicName);
+        if (isWritingSection) {
+          renderWritingSectionBlock(key, value, syllabusContainer);
+        } else {
+          const sectionHeader = document.createElement('div');
+          sectionHeader.textContent = key;
+          sectionHeader.style.color = '#0f172a';
+          sectionHeader.style.fontWeight = '800';
+          sectionHeader.style.fontSize = '0.84rem';
+          sectionHeader.style.textTransform = 'uppercase';
+          sectionHeader.style.letterSpacing = '0.5px';
+          sectionHeader.style.marginTop = '1.25rem';
+          sectionHeader.style.marginBottom = '0.4rem';
+          sectionHeader.style.padding = '0.4rem 0.65rem';
+          sectionHeader.style.background = '#f1f5f9';
+          sectionHeader.style.borderRadius = '6px';
+          sectionHeader.style.borderLeft = '4px solid #0284c7';
+          sectionHeader.style.border = '1px solid #cbd5e1';
+          sectionHeader.style.borderLeftWidth = '4px';
+          syllabusContainer.appendChild(sectionHeader);
+
+          for (const [topicName, subtopics] of Object.entries(value)) {
+            if (Array.isArray(subtopics)) {
+              renderChapterWithSubtopics(topicName, subtopics, syllabusContainer);
+            } else {
+              createCheckbox(topicName);
+            }
           }
         }
       }
@@ -2236,7 +2556,7 @@ function renderSyllabusChecklist(syllabusData) {
   }
   
   const allChapterCbs = document.querySelectorAll('.chapter-cb');
-  const allParentCbs = document.querySelectorAll('.chapter-parent-cb, .topic-group-cb');
+  const allParentCbs = document.querySelectorAll('.chapter-parent-cb, .topic-group-cb, .writing-group-cb');
 
   // Restore previously saved checklist state if any, else save initial state
   restoreMainPanelSyllabusState(currentClass, currentSubject);
@@ -2315,6 +2635,9 @@ subjectSelect.addEventListener('change', (e) => {
   }
 
   updateExamBlueprint();
+  if (typeof syncSyllabusSheetFromPromptModule === 'function') {
+    syncSyllabusSheetFromPromptModule();
+  }
 });
 
 // Delete Custom Subject Handler
@@ -3559,7 +3882,14 @@ ${blueprintPromptText}
 
     const selectedWritingTopics = selectedChaptersData
       .map(c => c.name)
-      .filter(n => n.toLowerCase().includes("writing") || n.toLowerCase().includes("notice") || n.toLowerCase().includes("letter") || n.toLowerCase().includes("diary") || n.toLowerCase().includes("story") || n.toLowerCase().includes("paragraph") || n.toLowerCase().includes("article") || n.toLowerCase().includes("speech") || n.toLowerCase().includes("message") || n.toLowerCase().includes("email"));
+      .filter(n => {
+        const lower = n.toLowerCase();
+        return lower.includes("writing") || lower.includes("notice") || lower.includes("letter") || lower.includes("diary") ||
+               lower.includes("story") || lower.includes("paragraph") || lower.includes("article") || lower.includes("speech") ||
+               lower.includes("message") || lower.includes("email") || lower.includes("invitation") ||
+               n.includes("लेखन") || n.includes("अनुच्छेद") || n.includes("पत्र") || n.includes("संवाद") ||
+               n.includes("रचनात्मक") || n.includes("चित्रवर्णन") || n.includes("सूक्ति") || n.includes("कथा") || n.includes("विज्ञापन");
+      });
 
     if (selectedWritingTopics.length > 0) {
       promptText += `\n\n**CRITICAL MANDATORY WRITING SKILLS CONFINEMENT RULE:**\n` +
@@ -3649,6 +3979,70 @@ Anchor the passages in timeless human values:
       promptText += `\n14. **Social Science Unit Test Map Skill Rule:** Since Geography/History map-related chapters are in the syllabus, provide an internal choice in Section D: Option (A) Pure 5M Long Answer Question OR Option (B) 4M Analytical Question + 1M Map Location/Identification Question from the prescribed CBSE map syllabus.`;
     } else {
       promptText += `\n14. **Social Science Unit Test Map Skill Rule:** Since the selected syllabus comprises Civics/Economics (or non-map units), allocate all 20 marks strictly to conceptual, objective, and analytical questions (NO Map Work).`;
+    }
+  }
+
+  const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
+  if (isMiddle && subLower.includes("robotics")) {
+    const isPA = (examName || '').includes("PA") || (examName || '').toLowerCase().includes("periodic");
+    if (marks <= 10) {
+      if (isPA) {
+        promptText += `\n\n**ROBOTICS PERIODIC ASSESSMENT SPECIFICATIONS (10 MARKS WRITTEN THEORY / 20 MINS):**
+* **Assessment Scheme:**
+  - Written Theory Paper: 10 Marks (Time Allowed: 20 Minutes)
+  - Hands-on Lab Assessment: 10 Marks (Conducted during regular school time in the Robotics Lab)
+  - Total Weightage: 20 Marks
+* Formulate strictly the **10-Mark Student Written Theory Question Paper** for this 20-minute sitting.
+* Structure the paper into 2 crisp sections:
+  - Section A: Objective & Technical MCQs (4 Marks) on components, sensors (LDR, ultrasonic, IR), and pins.
+  - Section B: Short Answer & Circuit Logic (6 Marks) on block code logic, connections, and basic schematic functions.`;
+      } else {
+        // Unit Test
+        promptText += `\n\n**ROBOTICS UNIT TEST SPECIFICATIONS (10 MARKS WRITTEN THEORY / 20 MINS):**
+* **Assessment Scheme:**
+  - Written Theory Paper: 10 Marks (Time Allowed: 20 Minutes)
+  - Practical Component: None (No lab practical for Unit Tests; 100% written assessment)
+  - Total Weightage: 10 Marks
+* Formulate strictly the **10-Mark Student Written Theory Question Paper** for this 20-minute sitting.
+* Structure the paper into 2 crisp sections:
+  - Section A: Objective & Technical MCQs (4 Marks) on components, sensors, and pins.
+  - Section B: Short Answer & Circuit Logic (6 Marks) on block code logic and circuit connections.`;
+      }
+    } else {
+      promptText += `\n\n**ROBOTICS EXAMINATION SPECIFICATIONS (20 MARKS WRITTEN THEORY / 45 MINS):**
+* **Assessment Scheme:**
+  - Written Theory Paper: 20 Marks (Time Allowed: 45 Minutes)
+  - Hands-on Practical / Project Assessment: 20 Marks (Conducted during regular school time in the Robotics Lab)
+  - Total Weightage: 40 Marks
+* Formulate strictly the **20-Mark Student Written Theory Question Paper** for this 45-minute sitting.
+* Structure the paper into clean sections:
+  - Section A: Objective & Technical MCQs (6 Marks) on circuit components, sensors (LDR, ultrasonic, moisture), and block coding logic.
+  - Section B: Short Answer Questions (6 Marks) on circuit logic, Arduino pins/functions, and conditional statements.
+  - Section C: Descriptive & Coding / Circuit Schematics (8 Marks) with internal choice (e.g. block code algorithm, Tinkercad circuit wiring).`;
+    }
+  }
+
+  if (isMiddle && (subLower.includes("general knowledge") || subLower.includes("gk"))) {
+    promptText += `\n\n**GENERAL KNOWLEDGE EXAMINATION SPECIFICATIONS (${marks} MARKS WRITTEN THEORY / ${duration}):**
+* Strictly frame an engaging, intellectually stimulating 100% objective paper for ${marks} Marks, paced for ${duration}.`;
+    if (marks <= 10) {
+      promptText += `
+* Structure the paper into 2 crisp, cleanly demarcated sections:
+  - Section A: Multiple Choice Questions (5 Marks - Current Affairs, Science & Trivia)
+  - Section B: One-Word Answer / Identification / Direct Trivia (5 Marks - Personalities, Monuments, Facts)`;
+    } else if (marks <= 20) {
+      promptText += `
+* Structure the paper into 3 crisp, cleanly demarcated sections:
+  - Section A: Multiple Choice Questions (8 Marks - Current Affairs, Science & Tech, India)
+  - Section B: One-Word Answer / Identification (6 Marks - Personalities, Monuments, Sobriquets)
+  - Section C: Fill in the Blanks & Match Columns / Trivia (6 Marks - Sports, Books, Currencies)`;
+    } else {
+      promptText += `
+* Structure the paper into 4 crisp, cleanly demarcated sections:
+  - Section A: Multiple Choice Questions (15 Marks - Current Affairs, Science & Tech, India & World)
+  - Section B: One-Word Answer / Identification (10 Marks - Famous Personalities, Monuments, Sobriquets)
+  - Section C: Fill in the Blanks & Match the Columns (10 Marks - Sports, Books & Authors, Currencies)
+  - Section D: Logical Reasoning & Mental Ability Trivia (5 Marks - Patterns, Series, Analogies)`;
     }
   }
 
@@ -4361,6 +4755,41 @@ let sheetSelectedPortions = {};
 // Tracks exam dates per class and subject: { [cls]: { [subject]: 'YYYY-MM-DD' } }
 let sheetSubjectDates = {};
 
+// Tracks subject inclusion per class and subject: { [cls]: { [subjectKey]: boolean } }
+let sheetSubjectInclusions = {};
+
+function isSubjectIncludedInSheet(cls, subjKey) {
+  if (!sheetSubjectInclusions[cls]) {
+    sheetSubjectInclusions[cls] = {};
+  }
+  if (sheetSubjectInclusions[cls][subjKey] === undefined) {
+    return true; // Default to INCLUDED
+  }
+  return sheetSubjectInclusions[cls][subjKey];
+}
+
+function setSubjectIncludedInSheet(cls, subjKey, included) {
+  if (!sheetSubjectInclusions[cls]) {
+    sheetSubjectInclusions[cls] = {};
+  }
+  sheetSubjectInclusions[cls][subjKey] = !!included;
+}
+
+export const coScholasticCriteriaMap = {
+  "Music": "Sursadhana (alankars in Bilawal thaat), singing of Patriotic / Community Song with correct rhythm, knowledge of basic Taals (Teentaal, Keharwa) with hand claps (Taali/Khali), and active choir participation.",
+  "Art & Craft": "Perspective drawing, landscape painting with water/poster colors, Indian folk art (Madhubani / Warli design), composition balance, color shading technique, and neatness of Art Portfolio file.",
+  "Yoga": "Demonstration of Suryanamaskar (12 steps with breathing coordination), standing/sitting asanas (Tadasana, Vrikshasana, Bhujangasana, Paschimottanasana), Pranayama (Anulom-Vilom, Kapalbhati), physical stamina, and sportsmanship."
+};
+
+function getCoScholasticCriteria(subjName) {
+  for (const [k, v] of Object.entries(coScholasticCriteriaMap)) {
+    if (subjName.toLowerCase().includes(k.toLowerCase())) {
+      return v;
+    }
+  }
+  return "Prescribed theoretical understanding, hands-on skill practice, portfolio maintenance, and active classroom participation.";
+}
+
 function formatExamDate(dateStr) {
   if (!dateStr) return '';
   const parts = dateStr.split('-');
@@ -4508,15 +4937,67 @@ function initSheetClassDropdown() {
   });
 }
 
+export function autoUpdateSheetHeaderControls() {
+  const sheetClass = document.getElementById('sheetClassSelect');
+  const cls = (sheetClass && sheetClass.value) ? sheetClass.value : 'Class 8';
+  const exam = getSelectedSheetExamName();
+  const isMiddle = ['Class 6', 'Class 7', 'Class 8'].includes(cls);
+  const exLower = (exam || '').toLowerCase().trim();
+  const isUT = /unit\s*test|ut\s*[-_–—]?[iv1-5]/i.test(exLower);
+  const isPA = /periodic\s*test|periodic\s*assessment|\bpa\b|pt\s*[-_–—]?[1-2]/i.test(exLower);
+
+  const sheetMarks = document.getElementById('sheetMaxMarks');
+  const sheetDur = document.getElementById('sheetDuration');
+  const sheetP1Marks = document.getElementById('sheetPart1Marks');
+  const sheetP1MarksGkRobo = document.getElementById('sheetPart1MarksGkRobo');
+  const sheetP1Time = document.getElementById('sheetPart1Time');
+  const sheetP1TimeGkRobo = document.getElementById('sheetPart1TimeGkRobo');
+
+  if (isMiddle) {
+    if (sheetP1Marks) {
+      sheetP1Marks.value = isUT ? '20' : (isPA ? '40' : '80');
+    }
+    if (sheetP1Time) {
+      sheetP1Time.value = isUT ? '45 Minutes' : (isPA ? '90 Mins' : '2.5 Hours');
+    }
+    if (sheetP1MarksGkRobo) {
+      sheetP1MarksGkRobo.value = isUT ? '10' : (isPA ? '10–20' : '20–40');
+    }
+    if (sheetP1TimeGkRobo) {
+      sheetP1TimeGkRobo.value = isUT ? '20 Mins' : (isPA ? '20–45 Mins' : '45–90 Mins');
+    }
+    if (sheetMarks) {
+      sheetMarks.value = isUT ? '20 Marks' : (isPA ? '40 Marks' : '80 Marks');
+    }
+    if (sheetDur) {
+      sheetDur.value = isUT ? '45 Minutes' : (isPA ? '90 Mins' : '2.5 Hours');
+    }
+  } else {
+    // Classes 9 to 12
+    const currentSubject = (subjectSelect && subjectSelect.value) ? subjectSelect.value : '';
+    const def = getExamDefaultDetails(cls, currentSubject, exam);
+    if (sheetMarks) {
+      sheetMarks.value = `${def.marks} Marks`;
+    }
+    if (sheetDur) {
+      sheetDur.value = def.duration;
+    }
+    if (sheetP1Marks) {
+      sheetP1Marks.value = `${def.marks}`;
+    }
+    if (sheetP1Time) {
+      sheetP1Time.value = def.duration;
+    }
+  }
+}
+if (typeof window !== 'undefined') {
+  window.autoUpdateSheetHeaderControls = autoUpdateSheetHeaderControls;
+}
+
 export function syncSyllabusSheetFromPromptModule() {
   const sheetClass = document.getElementById('sheetClassSelect');
   const sheetBadge = document.getElementById('sheetClassBadge');
   const sheetExam = document.getElementById('sheetExamSelect');
-  const sheetMarks = document.getElementById('sheetMaxMarks');
-  const sheetP1Marks = document.getElementById('sheetPart1Marks');
-  const sheetP1MarksGkRobo = document.getElementById('sheetPart1MarksGkRobo');
-  const sheetDur = document.getElementById('sheetDuration');
-  const sheetP1Time = document.getElementById('sheetPart1Time');
 
   if (!sheetExam) return;
 
@@ -4545,40 +5026,8 @@ export function syncSyllabusSheetFromPromptModule() {
     }
   }
 
-  // Synchronize Maximum Marks directly from Prompt Generation Module
-  const mainMarks = (marksInput && marksInput.value) ? marksInput.value.trim() : '';
-  const selectedOpt = sheetExam.options[sheetExam.selectedIndex];
-  const optMarks = selectedOpt ? (selectedOpt.dataset?.marks || selectedOpt.getAttribute('data-marks')) : null;
-  const resolvedMarks = (mainMarks && !isNaN(parseInt(mainMarks, 10)))
-    ? (mainMarks.toLowerCase().includes('mark') ? mainMarks : `${parseInt(mainMarks, 10)} Marks`)
-    : (optMarks || '80 Marks');
-
-  if (sheetMarks) {
-    sheetMarks.value = resolvedMarks;
-  }
-  if (sheetP1Marks) {
-    const numMarks = parseInt(resolvedMarks, 10);
-    if (!isNaN(numMarks)) {
-      sheetP1Marks.value = numMarks;
-      if (sheetP1MarksGkRobo) {
-        sheetP1MarksGkRobo.value = Math.round(numMarks / 2);
-      }
-    }
-  }
-
-  // Synchronize Time Duration directly from Prompt Generation Module
-  const mainDuration = (durationInput && durationInput.value) ? durationInput.value.trim() : '';
-  const optDuration = selectedOpt ? (selectedOpt.dataset?.duration || selectedOpt.getAttribute('data-duration')) : null;
-  const examDuration = (mainDuration && !mainDuration.toLowerCase().includes('self-paced'))
-    ? mainDuration
-    : (optDuration || getExamDefaultDuration(sheetExam.value) || '180 Mins');
-
-  if (sheetDur) {
-    sheetDur.value = examDuration;
-  }
-  if (sheetP1Time) {
-    sheetP1Time.value = examDuration;
-  }
+  // Auto-set the calibrated Maximum Marks and Time Allowed into sheet header controls
+  autoUpdateSheetHeaderControls();
 
   // Re-render paper if modal is currently open and visible
   const modal = document.getElementById('syllabusSheetModal');
@@ -4741,6 +5190,7 @@ function handleInlineCheckboxChange(cb) {
   const subj = cb.dataset?.subject || cb.getAttribute('data-subject');
   const val = cb.dataset?.val || cb.getAttribute('data-val');
   const sec = cb.dataset?.section || cb.getAttribute('data-section') || '';
+  const subGroup = cb.dataset?.subgroup || cb.getAttribute('data-subgroup') || '';
   if (!subj || !val) return;
   const isChecked = cb.checked;
   const key = `${cls}::${subj}`;
@@ -4765,6 +5215,9 @@ function handleInlineCheckboxChange(cb) {
   const relatedValues = new Set([val]);
   if (sec) {
     relatedValues.add(`${sec}: ${val}`);
+  }
+  if (subGroup) {
+    relatedValues.add(`${subGroup} -> ${val}`);
   }
   if (!isRobotics) {
     flatItems.forEach(it => {
@@ -4849,20 +5302,28 @@ function handleSubjectDateChange(inputEl) {
   renderSyllabusSheetPaper();
 }
 
+function handleSubjectInclusionChange(cb) {
+  if (!sheetClassSelect) return;
+  const cls = sheetClassSelect.value;
+  const subj = cb.dataset?.subject || cb.getAttribute('data-subject');
+  if (!subj) return;
+  setSubjectIncludedInSheet(cls, subj, cb.checked);
+  renderSyllabusSheetPaper();
+}
+
 function renderSyllabusSheetPaper() {
   if (!syllabusSheetPaper || !sheetClassSelect) return;
 
   const school = (sheetSchoolName && sheetSchoolName.value) ? sheetSchoolName.value.trim() : 'GOMTI NANDAN PUBLIC SCHOOL';
   const cls = sheetClassSelect.value;
+  const isMiddleSchool = ['Class 6', 'Class 7', 'Class 8'].includes(cls);
   const exam = getSelectedSheetExamName();
   const marks = (sheetMaxMarks && sheetMaxMarks.value) ? sheetMaxMarks.value.trim() : '80 Marks';
-  const duration = (sheetDuration && sheetDuration.value) ? sheetDuration.value.trim() : '3 Hrs';
+  const duration = (sheetDuration && sheetDuration.value) ? sheetDuration.value.trim() : (isMiddleSchool ? '2.5 Hours' : '3 Hrs');
   const includeInstructions = sheetIncludeInstructions ? sheetIncludeInstructions.checked : true;
   const includeSubtopics = sheetIncludeSubtopics ? sheetIncludeSubtopics.checked : false;
   const includePrincipalSig = sheetIncludePrincipalSig ? sheetIncludePrincipalSig.checked : true;
   const session = getCurrentAcademicSession();
-
-  const isMiddleSchool = ['Class 6', 'Class 7', 'Class 8'].includes(cls);
   if (sheetWindowsPanel) {
     sheetWindowsPanel.style.display = 'none';
   }
@@ -5268,6 +5729,74 @@ function renderSyllabusSheetPaper() {
       // A. Standard non-literature sections (Reading, Writing, Grammar, or standard book)
       nonLitKeys.forEach(secKey => {
         const secVal = subjSyllabus[secKey];
+        const isWritingSection = /writing|लेखन|रचनात्मक/i.test(secKey);
+        const isNestedGroup = typeof secVal === 'object' && !Array.isArray(secVal) && secVal !== null;
+
+        if (isWritingSection && isNestedGroup) {
+          let subgroupSummaries = [];
+          let subgroupSelectors = [];
+          let hasAnySubgroupSelected = false;
+
+          for (const [subGroupName, subGroupTopics] of Object.entries(secVal)) {
+            const rawItems = Array.isArray(subGroupTopics) ? subGroupTopics : Object.keys(subGroupTopics || {});
+            const parsed = rawItems.map(it => {
+              const isChecked = !checkedSet || (
+                checkedSet.has(it) ||
+                checkedSet.has(`${subGroupName} -> ${it}`) ||
+                checkedSet.has(`${secKey}: ${it}`)
+              );
+              return {
+                raw: it,
+                title: it,
+                isChecked
+              };
+            });
+            const selected = parsed.filter(it => it.isChecked);
+            if (selected.length > 0) {
+              checkedCount += selected.length;
+              hasAnySubgroupSelected = true;
+            }
+            const seq = buildChapterSequenceString(selected, rawItems.length);
+
+            subgroupSummaries.push(`
+              <div style="margin-top: 2px; line-height: 1.35; font-size: 9pt;">
+                &bull; <strong>${subGroupName.endsWith(':') ? subGroupName.slice(0, -1) : subGroupName}:</strong> ${seq.text}
+              </div>
+            `);
+
+            subgroupSelectors.push(`
+              <div style="margin-top: 4px; margin-bottom: 6px;">
+                <div style="font-weight: 700; font-size: 8.5pt; color: #1e293b; margin-bottom: 3px;">${subGroupName.endsWith(':') ? subGroupName : subGroupName + ':'}</div>
+                <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}" data-section="${secKey}" data-subgroup="${subGroupName}">
+                  ${parsed.map(it => `
+                    <label class="sheet-ch-customizer-item">
+                      <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="${secKey}" data-subgroup="${subGroupName}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
+                      <span>${it.raw}</span>
+                    </label>
+                  `).join('')}
+                </div>
+              </div>
+            `);
+          }
+
+          sectionBlocks.push(`
+            <div class="paper-section-block ${!hasAnySubgroupSelected ? 'is-unselected' : ''}" style="margin-bottom: 4px;">
+              <div>
+                <span class="portion-sec-title">${secKey}:</span>
+                <!-- Print/PDF output -->
+                <div class="portion-print-summary" style="margin-top: 2px;">
+                  ${subgroupSummaries.join('')}
+                </div>
+              </div>
+              <!-- On-screen view: organized sub-group checkboxes -->
+              <div class="portion-screen-selector">
+                ${subgroupSelectors.join('')}
+              </div>
+            </div>
+          `);
+          return;
+        }
+
         const rawItems = Array.isArray(secVal) ? secVal : Object.keys(secVal || {});
         const parsed = rawItems.map(it => parseChapterItem(it, secKey, checkedSet));
         const selected = parsed.filter(it => it.isChecked);
@@ -5549,16 +6078,34 @@ function renderSyllabusSheetPaper() {
       const displayContent = (checkedCount === 0 && !hasContent)
         ? `<div style="font-style: italic; font-size: 9pt; color: #000000; padding: 2px 0;">Complete Prescribed Syllabus</div>`
         : contentHtml;
-
-      const currentRowNum = p1Sno++;
+      const isIncluded = isSubjectIncludedInSheet(cls, subjName);
+      const currentRowNum = isIncluded ? p1Sno++ : '—';
       const isPage1End = (currentRowNum === 4 && scholasticEntries.length >= 7) || (currentRowNum === 3 && scholasticEntries.length < 7 && scholasticEntries.length >= 5);
 
-      const isHalfMarks = isRobo || subjName.toLowerCase().includes('general knowledge') || subjName.toLowerCase().includes('gk');
-      const marksVal = isHalfMarks ? '40 Marks' : (sheetMaxMarks ? sheetMaxMarks.value.trim() : '80 Marks');
-      const marksBadgeHtml = `<span class="subj-marks-badge">${marksVal}</span>`;
+      const def = getExamDefaultDetails(cls, subjName, exam);
+      const isUT = /unit\s*test|ut\s*[-_–—]?[iv1-5]/i.test(exam);
+      const isGK = subjName.toLowerCase().includes('general knowledge') || subjName.toLowerCase().includes('gk');
+      let subjectMarks = def.marks;
+      if (!isRobo && !isGK && sheetPart1Marks && sheetPart1Marks.value.trim() && !isNaN(parseInt(sheetPart1Marks.value, 10))) {
+        subjectMarks = parseInt(sheetPart1Marks.value, 10);
+      }
+      let marksBadgeText = `${subjectMarks} Marks`;
+      if (isRobo && !isUT) {
+        marksBadgeText += ` (+${def.marks} Lab)`;
+      }
+      const marksBadgeHtml = `<span class="subj-marks-badge">${marksBadgeText}</span>`;
+
+      const includeCheckboxHtml = `
+        <div class="sheet-include-subject-wrapper no-print">
+          <label class="sheet-subject-include-label ${!isIncluded ? 'is-excluded' : ''}" title="${isIncluded ? 'Uncheck to exclude from circular' : 'Check to include in circular'}">
+            <input type="checkbox" class="sheet-subject-include-cb no-print" data-subject="${subjName}" ${isIncluded ? 'checked' : ''}>
+            <span>Include in circular</span>
+          </label>
+        </div>
+      `;
 
       part1RowsHtml += `
-        <tr class="paper-subject-row ${isPage1End ? 'paper-part1-page1-end' : ''}">
+        <tr class="paper-subject-row ${!isIncluded ? 'is-subject-excluded is-unselected' : ''} ${isPage1End ? 'paper-part1-page1-end' : ''}">
           <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${currentRowNum}</td>
           <td style="width: 140px; vertical-align: top;">
             <div class="paper-subj-title">${subjName} ${marksBadgeHtml}</div>
@@ -5567,6 +6114,7 @@ function renderSyllabusSheetPaper() {
               <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${subjName}" title="Select ${subjName}">All</button>
               <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${subjName}" title="Clear ${subjName}">Clear</button>
             </div>
+            ${includeCheckboxHtml}
           </td>
           <td>
             ${displayContent}
@@ -5583,6 +6131,8 @@ function renderSyllabusSheetPaper() {
     seaList.forEach(item => {
       const seaSubjKey = `SEA: ${item.subject}`;
       const checkedSet = getSubjectSelectionForSheet(cls, seaSubjKey);
+      const isIncluded = isSubjectIncludedInSheet(cls, seaSubjKey);
+      const currentRowNum = isIncluded ? p2Sno++ : '—';
 
       let actsHtml = '';
       let checkedCount = 0;
@@ -5609,9 +6159,18 @@ function renderSyllabusSheetPaper() {
         ? `<div style="font-style: italic; font-size: 8.5pt; color: #000000;">Prescribed CBSE Internal Assessment Activities</div>`
         : actsHtml;
 
+      const includeCheckboxHtml = `
+        <div class="sheet-include-subject-wrapper no-print" style="margin-top: 6px;">
+          <label class="sheet-subject-include-label ${!isIncluded ? 'is-excluded' : ''}" title="${isIncluded ? 'Uncheck to exclude from circular' : 'Check to include in circular'}">
+            <input type="checkbox" class="sheet-subject-include-cb no-print" data-subject="${seaSubjKey}" ${isIncluded ? 'checked' : ''}>
+            <span>Include in circular</span>
+          </label>
+        </div>
+      `;
+
       part2RowsHtml += `
-        <tr class="paper-subject-row paper-part2-row">
-          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 12px 4px;">${p2Sno++}</td>
+        <tr class="paper-subject-row paper-part2-row ${!isIncluded ? 'is-subject-excluded is-unselected' : ''}">
+          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 12px 4px;">${currentRowNum}</td>
           <td style="width: 140px; vertical-align: top; padding: 12px 8px;">
             <div class="paper-subj-title">${item.subject}</div>
             <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${item.domain}</div>
@@ -5619,6 +6178,7 @@ function renderSyllabusSheetPaper() {
               <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${seaSubjKey}" title="Select all ${item.subject} SEA">All</button>
               <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${seaSubjKey}" title="Clear all ${item.subject} SEA">Clear</button>
             </div>
+            ${includeCheckboxHtml}
           </td>
           <td style="padding: 12px 8px; vertical-align: top;">
             <div style="display: flex; flex-direction: column; gap: 6px;">
@@ -5635,27 +6195,33 @@ function renderSyllabusSheetPaper() {
 
     coScholasticSubjects.forEach(item => {
       const subjName = item.name;
-      const checkedSet = getSubjectSelectionForSheet(cls, subjName);
+      const isIncluded = isSubjectIncludedInSheet(cls, subjName);
+      const currentRowNum = isIncluded ? p3Sno++ : '—';
 
-      const isIncluded = !!(checkedSet && (checkedSet.has('__included__') || checkedSet.has(subjName)));
+      const includeCheckboxHtml = `
+        <div class="sheet-include-subject-wrapper no-print" style="margin-top: 6px;">
+          <label class="sheet-subject-include-label ${!isIncluded ? 'is-excluded' : ''}" title="${isIncluded ? 'Uncheck to exclude from circular' : 'Check to include in circular'}">
+            <input type="checkbox" class="sheet-subject-include-cb no-print" data-subject="${subjName}" ${isIncluded ? 'checked' : ''}>
+            <span>Include in circular</span>
+          </label>
+        </div>
+      `;
+
       part3RowsHtml += `
-        <tr class="paper-subject-row ${!isIncluded ? 'is-unselected' : ''}">
-          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 10px 4px;">${p3Sno++}</td>
+        <tr class="paper-subject-row ${!isIncluded ? 'is-subject-excluded is-unselected' : ''}">
+          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 10px 4px;">${currentRowNum}</td>
           <td style="width: 140px; vertical-align: top; padding: 10px 8px;">
             <div class="paper-subj-title">${subjName}</div>
             <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${item.subtitle}</div>
             <div style="font-size: 7.5pt; color: #333333; margin-top: 1px;">${item.book}</div>
-            <div class="paper-subj-actions no-print" style="margin-top: 4px;">
-              <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${subjName}" title="Select ${subjName}">All</button>
-              <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${subjName}" title="Clear ${subjName}">Clear</button>
-            </div>
+            ${includeCheckboxHtml}
           </td>
-          <td style="height: 130px; min-height: 130px; vertical-align: top; padding: 10px 8px;">
-            <div class="portion-screen-selector no-print" style="margin-bottom: 4px;">
-              <label class="sheet-ch-customizer-item no-print" style="display: inline-flex; width: auto; padding: 2px 6px; cursor: pointer;">
-                <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-val="__included__" ${isIncluded ? 'checked' : ''}>
-                <span style="font-size: 8.5pt;">Include in circular</span>
-              </label>
+          <td style="min-height: 100px; vertical-align: top; padding: 10px 8px;">
+            <div style="font-size: 8.5pt; color: #000000; line-height: 1.45;">
+              <strong>Evaluation Criteria:</strong> ${getCoScholasticCriteria(subjName)}
+            </div>
+            <div style="font-size: 8pt; color: #555555; font-style: italic; margin-top: 6px;">
+              (${item.prompt})
             </div>
           </td>
         </tr>
@@ -5802,8 +6368,8 @@ function renderSyllabusSheetPaper() {
     const checkedSet = getSubjectSelectionForSheet(cls, subjName);
     const { contentHtml, checkedCount } = renderSubjectPortionContent(subjName, subjSyllabus, checkedSet);
 
-    const isRowSelected = checkedCount > 0;
-    const rowSno = isRowSelected ? visibleRowIndex++ : (index + 1);
+    const isIncluded = isSubjectIncludedInSheet(cls, subjName);
+    const rowSno = isIncluded ? visibleRowIndex++ : '—';
 
     const subjDate = (sheetSubjectDates[cls] && sheetSubjectDates[cls][subjName]) ? sheetSubjectDates[cls][subjName] : '';
     const dateBadgeHtml = subjDate
@@ -5815,11 +6381,30 @@ function renderSyllabusSheetPaper() {
       ? `<div style="font-style: italic; font-size: 9pt; color: #000000; padding: 2px 0;">Complete Prescribed Syllabus</div>`
       : contentHtml;
 
+    const includeCheckboxHtml = `
+      <div class="sheet-include-subject-wrapper no-print" style="margin-top: 6px;">
+        <label class="sheet-subject-include-label ${!isIncluded ? 'is-excluded' : ''}" title="${isIncluded ? 'Uncheck to exclude from circular' : 'Check to include in circular'}">
+          <input type="checkbox" class="sheet-subject-include-cb no-print" data-subject="${subjName}" ${isIncluded ? 'checked' : ''}>
+          <span>Include in circular</span>
+        </label>
+      </div>
+    `;
+
+    const def = getExamDefaultDetails(cls, subjName, exam);
+    let marksBadgeHtml = '';
+    if (def) {
+      if (def.marks > 0) {
+        marksBadgeHtml = `<span class="subj-marks-badge">${def.marks} Marks</span>`;
+      } else if (def.duration === 'No Unit Test') {
+        marksBadgeHtml = `<span class="subj-marks-badge is-no-ut">No Unit Test</span>`;
+      }
+    }
+
     tableRowsHtml += `
-      <tr class="paper-subject-row">
+      <tr class="paper-subject-row ${!isIncluded ? 'is-subject-excluded is-unselected' : ''}">
         <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${rowSno}</td>
         <td style="width: 140px; vertical-align: top;">
-          <div class="paper-subj-title">${subjName}</div>
+          <div class="paper-subj-title">${subjName} ${marksBadgeHtml}</div>
           <div class="paper-subj-date-container">
             <input type="date" class="sheet-subj-date-input no-print" data-subject="${subjName}" value="${subjDate}" title="Set Exam Date for ${subjName}">
             ${dateBadgeHtml}
@@ -5828,6 +6413,7 @@ function renderSyllabusSheetPaper() {
             <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${subjName}" title="Select ${subjName}">All</button>
             <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${subjName}" title="Clear ${subjName}">Clear</button>
           </div>
+          ${includeCheckboxHtml}
         </td>
         <td>
           ${displayContent}
@@ -5968,6 +6554,26 @@ async function exportSyllabusSheetToPdf() {
       }
     });
 
+    // Remove all excluded subject rows from print output
+    clone.querySelectorAll('tr.is-subject-excluded').forEach(r => r.remove());
+
+    // Renumber remaining visible rows in each table strictly sequentially (1, 2, 3...)
+    clone.querySelectorAll('.paper-syllabus-table').forEach(table => {
+      let sno = 1;
+      table.querySelectorAll('tbody tr.paper-subject-row').forEach(row => {
+        const snoCell = row.querySelector('.paper-row-sno');
+        if (snoCell) snoCell.textContent = sno++;
+      });
+    });
+
+    // Remove any empty sections where all subject rows were excluded
+    clone.querySelectorAll('.paper-part-section').forEach(section => {
+      const remainingRows = section.querySelectorAll('tbody tr.paper-subject-row');
+      if (remainingRows.length === 0) {
+        section.remove();
+      }
+    });
+
     stage.appendChild(clone);
     document.body.appendChild(stage);
 
@@ -6012,12 +6618,12 @@ function exportSyllabusSheetToExcel() {
   if (!sheetClassSelect) return;
   const school = (sheetSchoolName && sheetSchoolName.value) ? sheetSchoolName.value.trim() : 'GOMTI NANDAN PUBLIC SCHOOL';
   const cls = sheetClassSelect.value;
+  const isMiddleSchool = ['Class 6', 'Class 7', 'Class 8'].includes(cls);
   const exam = getSelectedSheetExamName();
   const marks = (sheetMaxMarks && sheetMaxMarks.value) ? sheetMaxMarks.value.trim() : '80 Marks';
-  const duration = (sheetDuration && sheetDuration.value) ? sheetDuration.value.trim() : '3 Hrs';
+  const duration = (sheetDuration && sheetDuration.value) ? sheetDuration.value.trim() : (isMiddleSchool ? '2.5 Hours' : '3 Hrs');
   const schoolTiming = (sheetSchoolTiming && sheetSchoolTiming.value) ? sheetSchoolTiming.value.trim() : '07:30 AM – 02:30 PM';
   const session = getCurrentAcademicSession();
-  const isMiddleSchool = ['Class 6', 'Class 7', 'Class 8'].includes(cls);
 
   const subjectsData = getSheetSubjectsData(cls);
   const subjectEntries = Object.entries(subjectsData);
@@ -6048,6 +6654,7 @@ function exportSyllabusSheetToExcel() {
   let rowCount = 1;
 
   for (const [subjName, subjSyllabus] of subjectEntries) {
+    if (!isSubjectIncludedInSheet(cls, subjName)) continue;
     const checkedSet = getSubjectSelectionForSheet(cls, subjName);
     const subjDate = (sheetSubjectDates[cls] && sheetSubjectDates[cls][subjName]) ? formatExamDate(sheetSubjectDates[cls][subjName]) : '';
     const isBlankSubject = (subjName.toLowerCase().includes('general knowledge') || subjName.toLowerCase().includes('robotics')) && (!subjSyllabus || (Array.isArray(subjSyllabus) && subjSyllabus.length === 0) || (typeof subjSyllabus === 'object' && Object.keys(subjSyllabus).length === 0));
@@ -6134,14 +6741,19 @@ function exportSyllabusSheetToExcel() {
                 return checkedSet.has(`${topName} -> ${sub}`) || checkedSet.has(sub) || checkedSet.has(`${secKey}: ${sub}`);
               });
             }
-            const isParentChecked = !!(checkedSet && (checkedSet.has(topName) || checkedSet.has(`${secKey}: ${topName}`) || checkedSubs.length > 0));
+            const isWritingSubGroup = /short writing|long writing|लघु लेखन|दीर्घ लेखन|लघु रचनात्मक|दीर्घ रचनात्मक/i.test(topName);
+            const isParentChecked = !checkedSet || (checkedSet.has(topName) || checkedSet.has(`${secKey}: ${topName}`) || checkedSubs.length > 0);
             if (isParentChecked) {
+              const effectiveTopics = checkedSubs.length > 0 ? checkedSubs : (Array.isArray(subtopicsList) ? subtopicsList : []);
               const subsStr = (isSkillSec && includeSubtopics)
                 ? (checkedSubs.length > 0 ? checkedSubs.join('; ') : (Array.isArray(subtopicsList) ? subtopicsList.join('; ') : ''))
                 : '';
+              const chapterCol = (!includeSubtopics && isWritingSubGroup && effectiveTopics.length > 0)
+                ? `${topName}: ${effectiveTopics.join(', ')}`
+                : topName;
               csv += includeSubtopics
-                ? `"${rowCount++}","${subjDate}","${subjName}","${secKey.replace(/"/g, '""')}","${topName.replace(/"/g, '""')}","${subsStr.replace(/"/g, '""')}"\n`
-                : `"${rowCount++}","${subjDate}","${subjName}","${secKey.replace(/"/g, '""')}","${topName.replace(/"/g, '""')}"\n`;
+                ? `"${rowCount++}","${subjDate}","${subjName}","${secKey.replace(/"/g, '""')}","${chapterCol.replace(/"/g, '""')}","${subsStr.replace(/"/g, '""')}"\n`
+                : `"${rowCount++}","${subjDate}","${subjName}","${secKey.replace(/"/g, '""')}","${chapterCol.replace(/"/g, '""')}"\n`;
             }
           }
         }
@@ -6159,6 +6771,7 @@ function exportSyllabusSheetToExcel() {
     const seaList = cbseSEAData[cls] || [];
     seaList.forEach(item => {
       const seaSubjKey = `SEA: ${item.subject}`;
+      if (!isSubjectIncludedInSheet(cls, seaSubjKey)) return;
       const checkedSet = getSubjectSelectionForSheet(cls, seaSubjKey);
       if (checkedSet) {
         item.activities.forEach(act => {
@@ -6173,6 +6786,7 @@ function exportSyllabusSheetToExcel() {
 
     // Add Part 3: Co-Scholastic subjects
     ['Music', 'Art & Craft', 'Yoga'].forEach(subjName => {
+      if (!isSubjectIncludedInSheet(cls, subjName)) return;
       const checkedSet = getSubjectSelectionForSheet(cls, subjName);
       if (checkedSet && (checkedSet.has('__included__') || checkedSet.has(subjName))) {
         csv += includeSubtopics
@@ -6312,6 +6926,9 @@ if (sheetIncludePrincipalSig) {
 // Inline checkbox and quick actions delegation on syllabusSheetPaper
 if (syllabusSheetPaper) {
   syllabusSheetPaper.addEventListener('change', (e) => {
+    if (e.target && e.target.classList.contains('sheet-subject-include-cb')) {
+      handleSubjectInclusionChange(e.target);
+    }
     if (e.target && e.target.classList.contains('sheet-inline-cb')) {
       handleInlineCheckboxChange(e.target);
     }
@@ -6990,6 +7607,85 @@ async function clearAuditLogs() {
   }
 }
 
+// 10. System Backup & Restore
+async function exportSystemBackup() {
+  if (!authToken) return;
+  try {
+    const res = await fetch('/api/admin/export-backup', {
+      headers: {
+        'Authorization': `Bearer ${authToken}`,
+        'X-Auth-Token': authToken
+      }
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      const backupJson = JSON.stringify(data.backup || {}, null, 2);
+      const blob = new Blob([backupJson], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `GNPS_Exam_Architect_Backup_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } else {
+      const errData = await res.json().catch(() => ({}));
+      alert(errData.error || 'Failed to export backup.');
+    }
+  } catch (err) {
+    console.error('Export backup error:', err);
+    alert('Network error while exporting backup.');
+  }
+}
+
+async function handleBackupFileSelect(event) {
+  const file = event.target.files?.[0];
+  if (!file) return;
+
+  // Reset input so same file can be selected again if needed
+  event.target.value = '';
+
+  if (!confirm(`Are you sure you want to restore data from backup file "${file.name}"? This will import and merge all faculty accounts.`)) {
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = async (e) => {
+    try {
+      const backupData = JSON.parse(e.target.result);
+      if (!backupData || !Array.isArray(backupData.users)) {
+        alert('Invalid backup file! It does not contain valid user records.');
+        return;
+      }
+
+      const res = await fetch('/api/admin/import-backup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+          'X-Auth-Token': authToken
+        },
+        body: JSON.stringify({ backup: backupData })
+      });
+
+      const resData = await res.json();
+      if (res.ok) {
+        alert(resData.message || 'System data restored successfully!');
+        await loadAdminUsers();
+        if (activeAdminTab === 'logs') await loadAdminLogs();
+      } else {
+        alert(resData.error || 'Failed to import backup.');
+      }
+    } catch (parseErr) {
+      console.error('Error parsing backup file:', parseErr);
+      alert('Failed to parse backup JSON file. Please ensure it is a valid backup file.');
+    }
+  };
+  reader.readAsText(file);
+}
+
 // Bind to window for HTML event handlers
 window.handleAuthLogin = handleAuthLogin;
 window.handleAuthLogout = handleAuthLogout;
@@ -7007,6 +7703,8 @@ window.filterAdminUsers = filterAdminUsers;
 window.filterAdminLogs = filterAdminLogs;
 window.exportAuditLogsToCSV = exportAuditLogsToCSV;
 window.clearAuditLogs = clearAuditLogs;
+window.exportSystemBackup = exportSystemBackup;
+window.handleBackupFileSelect = handleBackupFileSelect;
 
 // Close modals on backdrop click
 if (adminControlModal) {

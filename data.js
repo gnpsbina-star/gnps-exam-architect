@@ -146,13 +146,19 @@ export const cbseData = {
         "1. Unseen Factual / Discursive Comprehension Passage (approx. 150-200 words)",
         "2. Unseen Case-based / Informative Passage with simple data (approx. 100-150 words)"
       ],
-      "Section B: Writing Skills": [
-        "1. Notice Writing (50 words)",
-        "2. Informal Letter Writing (80-100 words)",
-        "3. Paragraph / Descriptive Writing (80-100 words)",
-        "4. Story Writing (from outline/cues, 80-100 words)",
-        "5. Message Writing / Dialogue Completion (50 words)"
-      ],
+      "Section B: Writing Skills": {
+        "Short Writing (Up to 50 words)": [
+          "Notice Writing (School events, competitions, lost & found)",
+          "Message Writing (Telephonic message relay & brief reminders)",
+          "Dialogue Completion (Everyday situations)"
+        ],
+        "Long Writing (80-100 words)": [
+          "Formal Letter Writing (Application to Principal for leave / permission)",
+          "Informal Letter Writing (To family, relatives, and friends)",
+          "Paragraph / Descriptive Writing (Person, place, or event)",
+          "Story Writing (From given outline / verbal cues with moral)"
+        ]
+      },
       "Section B: Applied Grammar": {
         "Nouns & Noun Types": [
           "Common & Proper Nouns",
@@ -282,22 +288,35 @@ export const cbseData = {
         "पाठ 11: लंका विजय",
         "पाठ 12: राम का राज्याभिषेक"
       ],
-      "खण्ड 'घ' : रचनात्मक लेखन": [
-        "1. अनुच्छेद लेखन (समसामयिक / व्यावहारिक विषय, 80-100 शब्द)",
-        "2. पत्र लेखन (औपचारिक एवं अनौपचारिक, 80-100 शब्द)",
-        "3. संवाद लेखन (50-60 शब्द)",
-        "4. चित्र-वर्णन (4-5 वाक्य)"
-      ]
+      "खण्ड 'घ' : रचनात्मक लेखन": {
+        "लघु लेखन (30–50 शब्द)": [
+          "संवाद लेखन (दी गई परिस्थिति पर 3-4 सरल वार्तालाप)",
+          "संदेश लेखन (शुभकामना एवं पर्व-त्योहार)",
+          "सूचना लेखन (विद्यालयी सूचना, बॉक्स प्रारूप)"
+        ],
+        "दीर्घ लेखन (60–80 शब्द)": [
+          "अनुच्छेद लेखन (मेरा विद्यालय, मेरा प्रिय त्योहार, प्रकृति)",
+          "पत्र लेखन (प्रधानाचार्य को प्रार्थना पत्र / मित्र को बधाई पत्र)",
+          "चित्र-वर्णन (दिए गए चित्र पर 5-6 क्रमबद्ध वाक्य)"
+        ]
+      }
     },
     "Sanskrit (R3)": {
       "खण्डः 'क' : अपठित-अवबोधनम् (Section A: Reading Comprehension)": [
         "1. एकः सरलः अपठित-गद्यांशः (Simple Unseen Passage - 40–60 words)",
         "2. एकपदेन पूर्णवाक्येन च सरल-प्रश्नोत्तराणि (One-word & Complete Sentence Answers)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम् (Section B: Creative Writing)": [
-        "1. चित्रवर्णनम्: मञ्जूषायाः साहाय्येन 4-5 वाक्यानि (Picture Description with Word Bank - 4–5 sentences)",
-        "2. सरल-संवाद-पूर्तिः अथवा रिक्तस्थान-पूर्तिः (Dialogue Completion / Fill in the Blanks)"
-      ],
+      "खण्डः 'ख' : रचनात्मक-कार्यम् (Creative Writing)": {
+        "लघु रचनात्मक-कार्यम् (20–30 शब्द)": [
+          "संस्कृतानुवादः (3-4 सरल हिन्दी वाक्यानां संस्कृतेन अनुवादः)",
+          "संवादलेखनम् (मञ्जूषा सहायतया रिक्त स्थान पूर्तिः)"
+        ],
+        "दीर्घ रचनात्मक-कार्यम् (40–50 शब्द)": [
+          "पत्रलेखनम्: मञ्जूषायाः साहाय्येन (Letter Writing with Word Bank)",
+          "चित्रवर्णनम् (मञ्जूषा सहायतया 4-5 पूर्ण वाक्यानि)",
+          "कथापूर्तिः (मञ्जूषा सहायतया नीतिपरक कथा)"
+        ]
+      },
       "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Section C: Applied Grammar)": [
         "1. वर्णविचारः एवं वर्णसंयोजन-वियोजनम् (Phonetics, Joining & Splitting of Letters)",
         "2. शब्दरूपाणि: बालक, लता, फल (Noun Forms: Masculine, Feminine & Neuter)",
@@ -562,14 +581,20 @@ export const cbseData = {
         "1. Unseen Factual / Discursive Comprehension Passage (approx. 200-250 words)",
         "2. Unseen Case-based / Informative Passage with data/table (approx. 150-200 words)"
       ],
-      "Section B: Writing Skills": [
-        "1. Notice Writing (50 words)",
-        "2. Formal Letter Writing (Application / Letter to Principal, 100-120 words)",
-        "3. Informal Letter Writing (100-120 words)",
-        "4. Diary Entry (80-100 words)",
-        "5. Story Writing (from verbal outline/prompts, 100-120 words)",
-        "6. Descriptive Paragraph Writing (100-120 words)"
-      ],
+      "Section B: Writing Skills": {
+        "Short Writing (Up to 50 words)": [
+          "Notice Writing (Competitions, tour/excursion, lost & found)",
+          "Message Writing (Relaying urgent telephonic messages)",
+          "Dialogue Completion (Conversational exchanges)"
+        ],
+        "Long Writing (80-100 words)": [
+          "Formal Letter Writing (Application to Principal / Librarian)",
+          "Informal Letter Writing (Sharing experiences, invitations)",
+          "Story Writing (From verbal outline/prompts with title & moral)",
+          "Descriptive Paragraph Writing (Event, personality, or place)",
+          "Diary Entry (Personal reflections on memorable events)"
+        ]
+      },
       "Section B: Applied Grammar": {
         "The Sentence & Clause Structure": [
           "Subject, Predicate, Direct & Indirect Objects, Subject Complement",
@@ -709,23 +734,35 @@ export const cbseData = {
       "खण्ड 'ग' (पूरक पुस्तक) : बाल महाभारत कथा": [
         "पाठ 1: बाल महाभारत कथा (शांतनु से युधिष्ठिर के राज्याभिषेक तक संक्षिप्त कथा)"
       ],
-      "खण्ड 'घ' : रचनात्मक लेखन": [
-        "1. अनुच्छेद लेखन (समसामयिक / वैचारिक विषय, 100-120 शब्द)",
-        "2. पत्र लेखन (औपचारिक / अनौपचारिक, 100-120 शब्द)",
-        "3. संवाद लेखन (60-80 शब्द)",
-        "4. सूचना लेखन / विज्ञापन निर्माण"
-      ]
+      "खण्ड 'घ' : रचनात्मक लेखन": {
+        "लघु लेखन (40–50 शब्द)": [
+          "संवाद लेखन (दो मित्रों/दुकानदार के बीच रोचक संवाद)",
+          "सूचना लेखन (विद्यालयी सूचना, बॉक्स प्रारूप)",
+          "विज्ञापन निर्माण (सरल उत्पाद/सेवा का आकर्षक विज्ञापन)"
+        ],
+        "दीर्घ लेखन (80–100 शब्द)": [
+          "अनुच्छेद लेखन (समसामयिक / वैचारिक विषय, संकेत बिंदु आधारित)",
+          "पत्र लेखन (औपचारिक शिकायती पत्र / अनौपचारिक पत्र)",
+          "चित्र-वर्णन (चित्र देखकर 8-10 वाक्यों का सुगठित विवरण)"
+        ]
+      }
     },
     "Sanskrit (R3)": {
       "खण्डः 'क' : अपठित-अवबोधनम् (Section A: Reading Comprehension)": [
         "1. एकः सरलः अपठित-गद्यांशः (Simple Unseen Passage - 60–80 words)",
         "2. एकपदेन पूर्णवाक्येन च अवबोधनात्मक-प्रश्नाः (Short & Full Sentence Comprehension Questions)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम् (Section B: Creative Writing)": [
-        "1. पत्रलेखनम्: मञ्जूषायाः साहाय्येन (Letter Writing with Word Bank / Manjusha)",
-        "2. चित्रवर्णनम्: मञ्जूषायाः साहाय्येन 5 वाक्यानि (Picture Description in 5 Sentences)",
-        "3. कथापूर्तिः अथवा संवादलेखनम् (Story Completion / Dialogue Writing)"
-      ],
+      "खण्डः 'ख' : रचनात्मक-कार्यम् (Creative Writing)": {
+        "लघु रचनात्मक-कार्यम् (20–30 शब्द)": [
+          "संस्कृतानुवादः (4-5 सरल हिन्दी वाक्यानां संस्कृतेन अनुवादः)",
+          "संवादलेखनम् (मञ्जूषा सहायतया रिक्त स्थान पूर्तिः)"
+        ],
+        "दीर्घ रचनात्मक-कार्यम् (40–50 शब्द)": [
+          "पत्रलेखनम्: मञ्जूषायाः साहाय्येन (Letter Writing with Word Bank)",
+          "चित्रवर्णनम्: मञ्जूषायाः साहाय्येन 5 वाक्यानि (Picture Description in 5 Sentences)",
+          "कथापूर्तिः (मञ्जूषा सहायतया प्रेरक कथा पूर्तिः)"
+        ]
+      },
       "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Section C: Applied Grammar)": [
         "1. स्वरसन्धि-परिचयः: दीर्घ एवं गुण (Vowel Sandhi: Dirgha & Guna)",
         "2. शब्दरूपाणि: बालक, लता, फल, मुनि, मति, अस्मद्, युष्मद्, तत् (Noun & Pronoun Forms)",
@@ -1019,49 +1056,20 @@ export const cbseData = {
         "2. Unseen Case-based / Informative Passage with visual/tabular data (approx. 200-250 words)"
       ],
       "Section B: Writing Skills": {
-        "Notice Writing (50 words)": [
-          "School Events & Competitions (Cultural fest, sports meet, exhibitions, annual day)",
-          "Lost & Found / Excursions & General Info (Lost articles, museum visit, library rules, tours)"
+        "Short Writing (Up to 50 words)": [
+          "Notice Writing (School events, competitions, appeals, lost & found)",
+          "Message Writing (Telephonic message relay & informational memo)",
+          "Email Writing (Informal to friend / Semi-formal to teacher)"
         ],
-        "Diary Entry (100-120 words)": [
-          "Personal Emotional Reflection (Overcoming a challenge, excitement before an exam, moral dilemma)",
-          "Event / Incident Impression (Memorable family trip, helping someone in need, festive celebration)"
-        ],
-        "Message Writing (50 words)": [
-          "Telephonic Message Relay (Relaying urgent information from a phone call for an absent person)",
-          "Informational Memo / Reminder (Brief note leaving instructions or schedule change before leaving)"
-        ],
-        "Email Writing (50 words)": [
-          "Informal Email to Friend / Relative (Inviting for holidays, congratulating on achievements)",
-          "Semi-Formal Email to Teacher / Club Head (Project query, requesting permission or club membership)"
-        ],
-        "Formal Letter: Letter to Principal (100-120 words)": [
-          "Applications for Leave, Absence & Fee Concession (Medical leave, family function, financial aid)",
-          "School Facilities & Permissions (Requesting library books, sports equipment, organizing events)"
-        ],
-        "Formal Letter: Letter to Editor & Authorities (100-120 words)": [
-          "Letter to Editor on Civic Issues (Reckless driving, open garbage, stray animals, noise pollution)",
-          "Official Letter of Complaint & Enquiry (Defective books/goods, municipal service issue, course enquiry)"
-        ],
-        "Informal Letter Writing (100-120 words)": [
-          "Invitations & Celebrations (Inviting friends/cousins for vacation, birthday or festival)",
-          "Advisory & Sharing Experiences (Advising on health/screen time, sharing hostel or trip experience)"
-        ],
-        "Story Writing (100-120 words)": [
-          "Story from Given Outline / Verbal Cues (Developing plot, engaging title and moral from key points)",
-          "Story Starting with Given Opening Line (Continuing an imaginative, adventurous, or moral narrative)"
-        ],
-        "Descriptive / Analytical Paragraph (100-120 words)": [
-          "Descriptive Paragraph on Person, Place or Event (Role model, historic monument, sports day)",
-          "Analytical Paragraph on Visual / Chart Data (Interpreting a bar chart/pie chart on student trends or environment)"
-        ],
-        "Article Writing (120-150 words)": [
-          "Social, Health & Environmental Themes (Clean India Mission, dangers of junk food, saving water)",
-          "Education, Technology & Youth (AI in schools, digital detox, importance of reading, value education)"
-        ],
-        "Speech Writing (120-150 words)": [
-          "Morning Assembly Addresses (Importance of discipline, time management, kindness & empathy)",
-          "Awareness & Motivational Speeches (Say no to plastic, road safety rules, overcoming exam stress)"
+        "Long Writing (100-120 words)": [
+          "Formal Letter Writing: Letter to Principal (Leave, absence, facilities)",
+          "Formal Letter Writing: Letter to Editor & Authorities (Civic issues, complaints)",
+          "Informal Letter Writing (Invitations, advice, sharing experiences)",
+          "Story Writing (From given outline / verbal cues or opening line)",
+          "Descriptive / Analytical Paragraph (Person, place, or visual chart data)",
+          "Diary Entry (Personal emotional reflection on challenging situations)",
+          "Article Writing (Social, environmental, and educational themes)",
+          "Speech Writing (Morning assembly addresses & awareness speeches)"
         ]
       },
       "Section B: Applied Grammar": {
@@ -1193,12 +1201,18 @@ export const cbseData = {
       "खण्ड 'ग' (पूरक पुस्तक) : भारत की खोज": [
         "पाठ 1: भारत की खोज (अहमदनगर का किला, तलाश, सिंधु घाटी सभ्यता, युगों का दौर, नयी समस्याएँ आदि)"
       ],
-      "खण्ड 'घ' : रचनात्मक लेखन": [
-        "1. अनुच्छेद लेखन (समसामयिक / व्यावहारिक विषय, 100-120 शब्द)",
-        "2. पत्र लेखन (औपचारिक / अनौपचारिक, 100-120 शब्द)",
-        "3. संवाद लेखन अथवा लघुकथा लेखन (80-100 शब्द)",
-        "4. सूचना लेखन / विज्ञापन लेखन (50-60 शब्द)"
-      ]
+      "खण्ड 'घ' : रचनात्मक लेखन": {
+        "लघु लेखन (40–50 शब्द)": [
+          "सूचना लेखन (विद्यालय एवं सार्वजनिक सूचना, बॉक्स प्रारूप)",
+          "विज्ञापन लेखन (आकर्षक स्लोगन, चित्र एवं संपर्क सहित)",
+          "संवाद लेखन (समसामयिक विषय पर 50-60 शब्द)"
+        ],
+        "दीर्घ लेखन (100–120 शब्द)": [
+          "अनुच्छेद लेखन (व्यावहारिक/सामाजिक विषय, 3 संकेत बिंदु आधारित)",
+          "पत्र लेखन (संपादक के नाम पत्र, शिकायती पत्र, अनौपचारिक पत्र)",
+          "लघुकथा लेखन (शीर्षक व नैतिक सीख सहित)"
+        ]
+      }
     },
     "Sanskrit (R3)": {
       "खण्डः 'क' : अपठित-अवबोधनम् (Section A: Reading Comprehension)": [
@@ -1206,12 +1220,17 @@ export const cbseData = {
         "2. एकपदेन पूर्णवाक्येन च अवबोधनात्मक-प्रश्नोत्तराणि (Short & Full Sentence Answers)",
         "3. उपयुक्त-शीर्षक-लेखनम् एवं सरल-भाषिक-कार्यम् (Title & Language Analysis: Subject-Verb, Synonyms/Antonyms)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम् (Section B: Creative Writing)": [
-        "1. औपचारिकम् / अनौपचारिकं पत्रलेखनम्: मञ्जूषासहायतया (Formal / Informal Letter Writing with Word Bank)",
-        "2. चित्रवर्णनम्: मञ्जूषायाः साहाय्येन 5 वाक्यानि (Picture Description in 5 Sentences)",
-        "3. संवाद-लेखनम् अथवा कथापूर्तिः (Dialogue Writing / Story Completion with Word Bank)",
-        "4. सरल-हिन्दी/आङ्ग्ल-वाक्यानां संस्कृते अनुवादः (Hindi / English to Sanskrit Sentence Translation)"
-      ],
+      "खण्डः 'ख' : रचनात्मक-कार्यम् (Creative Writing)": {
+        "लघु रचनात्मक-कार्यम् (25–35 शब्द)": [
+          "संस्कृतानुवादः (5 सरल वाक्यों का संस्कृत में अनुवाद)",
+          "संवादलेखनम् (मञ्जूषा सहायतया 5 रिक्त स्थानानि)"
+        ],
+        "दीर्घ रचनात्मक-कार्यम् (40–60 शब्द)": [
+          "औपचारिकम् / अनौपचारिकं पत्रलेखनम् (मञ्जूषा सहायतया 10 रिक्त स्थानानि)",
+          "चित्रवर्णनम् (मञ्जूषा सहायतया 5 शुद्ध संस्कृत वाक्यानि)",
+          "अनुच्छेदलेखनम् (दिए गए विषय पर मञ्जूषा सहायतया 5 वाक्यानि)"
+        ]
+      },
       "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Section C: Applied Grammar)": [
         "1. सन्धि-कार्यम्: स्वरसन्धिः - दीर्घ, गुण, वृद्धि, यण्, अयादि (Vowel Sandhi: All 5 Types)",
         "2. शब्दरूपाणि: बालक, लता, मुनि, साधु, नदी, अस्मद्, युष्मद्, तत्, किम् (Noun & Pronoun Declensions)",
@@ -1747,31 +1766,16 @@ export const cbseData = {
         "Case-based Factual Passage (with visual/statistical input, 200-250 words)"
       ],
       "Section B: Writing Skills": {
-        "Descriptive Paragraph (100-120 words)": [
-          "Descriptive Paragraph: Person (Character traits, physical appearance, deeds, inspiration)",
-          "Descriptive Paragraph: Event (School celebration, sports meet, cultural festival, exhibition)",
-          "Descriptive Paragraph: Situation / Place (Market scene, journey experience, historical monument, natural disaster)"
+        "Short Writing (Up to 50 words)": [
+          "Notice Writing in Box Format (School competitions, excursions, lost & found, meetings)",
+          "Telephonic Message Relay & Short Functional Notes"
         ],
-        "Diary Entry (100-120 words)": [
-          "Emotional Reflections & Introspection (Overcoming fears, joy of achievement, moral dilemmas, regret)",
-          "Memorable Incident / Experience (Unforgettable journey, helping a stranger, unexpected encounter)"
-        ],
-        "Story Writing (100-120 words)": [
-          "Story Writing from Given Outline / Verbal Cues (Plot development, characterization, engaging title, moral resolution)",
-          "Story Writing Starting with Given Opening Line (Narrative progression, suspense/conflict, satisfying climax)"
-        ],
-        "Formal Letter Writing (100-120 words)": [
-          "Letter to the Principal (Application for leave, fee concession, requesting modern sports/library facilities)",
-          "Letter to the Editor (Civic problems, cleanliness, stray animal menace, road safety, youth digital habits)",
-          "Letter of Complaint & Inquiry (Defective goods/services, library book orders, municipal sanitation issues)"
-        ],
-        "Informal Letter Writing (100-120 words)": [
-          "Letter to Friends & Relatives (Inviting for vacations, congratulating on achievement, sharing festival joy)",
-          "Advisory & Personal Sharing (Encouraging healthy habits, managing exam stress, sharing hostel experience)"
-        ],
-        "Short Functional Writing: Notice & Message (50 words)": [
-          "Notice Writing in Box Format (School competitions, excursions, lost & found, meeting announcements)",
-          "Telephonic Message Relay & Dialogue Writing (Recording urgent telephonic conversations accurately)"
+        "Long Writing (100-120 words)": [
+          "Descriptive Paragraph Writing (Person, place, event, or situation from cues)",
+          "Story Writing (From given outline, title, or opening line with moral/climax)",
+          "Diary Entry (First-person emotional reflection & memorable experiences)",
+          "Formal Letter Writing (Letter to Principal / Letter to Editor / Complaint & Inquiry)",
+          "Informal Letter Writing (Letters to friends & relatives, advice & invitations)"
         ]
       },
       "Section B: Grammar": {
@@ -1867,22 +1871,37 @@ export const cbseData = {
         "पाठ 4: झाँसी की रानी (सुभद्रा कुमारी चौहान)",
         "पाठ 5: घर की याद (भवानी प्रसाद मिश्र)"
       ],
-      "खण्ड घ : रचनात्मक लेखन": [
-        "1. अनुच्छेद लेखन (समसामयिक/व्यावहारिक विषय, संकेत-बिंदु आधारित, लगभग 100 शब्द)",
-        "2. अनौपचारिक पत्र लेखन (लगभग 100 शब्द, विकल्प सहित)",
-        "3. संवाद लेखन (लगभग 80 शब्द, विकल्प सहित)",
-        "4. चित्र पर आधारित लेखन / चित्र-वर्णन (लगभग 80 शब्द, बिना विकल्प)"
-      ]
+      "खण्ड घ : रचनात्मक लेखन": {
+        "लघु लेखन (40–50 शब्द)": [
+          "सूचना लेखन (औपचारिक विद्यालयी सूचना, बॉक्स प्रारूप)",
+          "संवाद लेखन (दी गई परिस्थिति पर शिष्ट एवं स्वाभाविक संवाद)",
+          "विज्ञापन लेखन (उत्पाद/सेवा का स्लोगन सहित आकर्षक विज्ञापन)",
+          "संदेश लेखन (शुभकामना, पर्व-त्योहार अथवा राष्ट्रीय दिवस)"
+        ],
+        "दीर्घ लेखन (100–120 शब्द)": [
+          "अनुच्छेद लेखन (समसामयिक/व्यावहारिक विषय, 3 संकेत-बिंदु आधारित)",
+          "पत्र लेखन (औपचारिक पत्र - संपादक/अधिकारी / अनौपचारिक पत्र)",
+          "चित्र पर आधारित लेखन / चित्र-वर्णन (सुगठित विवरणात्मक आलेख)",
+          "लघुकथा लेखन अथवा ई-मेल लेखन (मानक प्रारूप सहित)"
+        ]
+      }
     },
     "Sanskrit (R3)": {
       "खण्डः 'क' : अपठित-अवबोधनम्": [
         "1. एकः सरलः अपठित-गद्यांशः (80-100 शब्दाः, एकपदेन, पूर्णवाक्येन, शीर्षकम्, भाषिककार्यम्)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम्": [
-        "1. औपचारिकं / अनौपचारिकं पत्रलेखनम् (मञ्जूषासहायतया)",
-        "2. चित्रवर्णनम् अथवा अनुच्छेदलेखनम् (मञ्जूषासहायतया 5 वाक्यानि)",
-        "3. हिन्दी/आङ्ग्ल वाक्यानां संस्कृते सरल-अनुवादः (5 वाक्यानि)"
-      ],
+      "खण्डः 'ख' : रचनात्मक-कार्यम्": {
+        "लघु रचनात्मक-कार्यम् (30–40 शब्द)": [
+          "संस्कृतानुवादः (5 सरल हिन्दी/आङ्गल वाक्यानां संस्कृतेन अनुवादः)",
+          "संवादलेखनम् (मञ्जूषा सहायतया संवाद पूर्तिः)"
+        ],
+        "दीर्घ रचनात्मक-कार्यम् (50–80 शब्द)": [
+          "औपचारिकं / अनौपचारिकं पत्रलेखनम् (मञ्जूषासहायतया 10 रिक्त स्थानानि)",
+          "चित्रवर्णनम् (मञ्जूषा सहायतया 5 पूर्ण संस्कृत वाक्यानि)",
+          "अनुच्छेदलेखनम् (दिए गए विषय पर मञ्जूषा सहायतया 5 वाक्यानि)",
+          "कथापूर्तिः (मञ्जूषासहायतया कथायाः रिक्त स्थानानि)"
+        ]
+      },
       "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम्": [
         "1. सन्धिः (स्वर - दीर्घ, गुण, वृद्धि, यण, अयादि; व्यञ्जन - जश्त्व, परसवर्ण)",
         "2. शब्दरूपाणि (बालक, लता, फल, मुनि, मति, नदी, साधु, अस्मद्, युष्मद्, तत्, किम्)",
@@ -2491,10 +2510,18 @@ export const cbseData = {
         "1. Discursive Passage (approx. 400-450 words)",
         "2. Case-based Factual Passage with visual input/data (approx. 200-250 words)"
       ],
-      "Section B : Writing Skills": [
-        "1. Formal Letter Writing (Editor / Complaint / Inquiry / Order)",
-        "2. Analytical Paragraph Writing (based on chart/graph/data/clues)"
-      ],
+      "Section B : Writing Skills": {
+        "Short Writing (Up to 50 words)": [
+          "Notice Writing (Unit Tests & Internal Periodic Assessments)",
+          "Formal / Informal Message Relay"
+        ],
+        "Long Writing (100-120 words)": [
+          "Formal Letter Writing: Letter to the Editor (Civic, social, or environmental issues)",
+          "Formal Letter Writing: Letter of Complaint (Defective goods, civic amenities, poor service)",
+          "Formal Letter Writing: Letter of Inquiry & Placing / Cancelling Orders",
+          "Analytical Paragraph Writing (Interpreting data, chart, graph, map, or research clues)"
+        ]
+      },
       "Section B : Applied Grammar": [
         "1. Tenses",
         "2. Modals",
@@ -2571,23 +2598,32 @@ export const cbseData = {
         "2. सपनों के-से दिन (गुरदयाल सिंह)",
         "3. टोपी शुक्ला (राही मासूम रज़ा)"
       ],
-      "खण्ड ङ : रचनात्मक लेखन": [
-        "1. अनुच्छेद लेखन (समसामयिक एवं व्यावहारिक विषयों पर, 120 शब्द)",
-        "2. औपचारिक पत्र लेखन",
-        "3. सूचना लेखन (Notice Writing)",
-        "4. विज्ञापन लेखन (Advertisement Writing)",
-        "5. लघुकथा लेखन अथवा ई-मेल लेखन"
-      ]
+      "खण्ड ङ : रचनात्मक लेखन": {
+        "लघु लेखन (40–50 शब्द)": [
+          "सूचना लेखन (विद्यालय एवं सार्वजनिक सूचना, बॉक्स प्रारूप)",
+          "विज्ञापन लेखन (उत्पाद, सेवा या सामाजिक चेतना पर सचित्र विज्ञापन)",
+          "संदेश लेखन (शुभकामना, पर्व-त्योहार - Course B)"
+        ],
+        "दीर्घ लेखन (100–120 शब्द)": [
+          "अनुच्छेद लेखन (समसामयिक एवं व्यावहारिक विषयों पर, 3 संकेत बिंदु आधारित)",
+          "औपचारिक पत्र लेखन (प्रधानाचार्य, संपादक, विभागीय अधिकारी)",
+          "लघुकथा लेखन अथवा ई-मेल लेखन (मानक डिजिटल प्रारूप)"
+        ]
+      }
     },
     "Sanskrit (R3)": {
       "खण्डः 'क' : अपठित-अवबोधनम्": [
         "1. एकः सरलः अपठित-गद्यांशः (80-100 शब्दाः, एकपदेन, पूर्णवाक्येन, शीर्षकम्, भाषिककार्यम्)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम्": [
-        "1. औपचारिकं / अनौपचारिकं पत्रलेखनम् (मञ्जूषासहायतया)",
-        "2. चित्रवर्णनम् अथवा अनुच्छेदलेखनम् (मञ्जूषासहायतया 5 वाक्यानि)",
-        "3. हिन्दी/आङ्ग्ल वाक्यानां संस्कृते सरल-अनुवादः (5 वाक्यानि)"
-      ],
+      "खण्डः 'ख' : रचनात्मक-कार्यम्": {
+        "लघु रचनात्मक-कार्यम् (30–40 शब्द)": [
+          "संस्कृतानुवादः (5 हिन्दी/आङ्गल वाक्यानां शुद्ध संस्कृतेन अनुवादः)"
+        ],
+        "दीर्घ रचनात्मक-कार्यम् (50–80 शब्द)": [
+          "औपचारिकं / अनौपचारिकं पत्रलेखनम् (मञ्जूषासहायतया 10 रिक्त स्थानानि)",
+          "चित्रवर्णनम् अथवा अनुच्छेदलेखनम् (मञ्जूषासहायतया 5 शुद्ध संस्कृत वाक्यानि)"
+        ]
+      },
       "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम्": [
         "1. सन्धिः (व्यञ्जन - परसवर्ण, प्रथमवर्णस्य तृतीयवर्णे परिवर्तनम्; विसर्ग - उत्व, रत्व, विसर्गलोप)",
         "2. समासः (तत्पुरुष, कर्मधारय, द्विगु, द्वंद्व, बहुव्रीहि, अव्ययीभाव)",
@@ -3152,12 +3188,17 @@ export const cbseData = {
         "Gap Filling (Tenses & Clauses)",
         "Sentence Re-ordering / Transformation of Sentences"
       ],
-      "Creative Writing Skills": [
-        "Notice Writing (up to 50 words)",
-        "Poster Designing (up to 50 words)",
-        "Speech Writing (120-150 words, based on verbal/visual input)",
-        "Debate Writing (120-150 words, based on verbal/visual input)"
-      ],
+      "Creative Writing Skills": {
+        "Short Writing Tasks (Up to 50 words)": [
+          "Notice Writing (School events, competitions, lost & found, exhibitions)",
+          "Classified Advertisements (Situation Vacant/Wanted, To-Let, For Sale)",
+          "Poster Designing (Social awareness campaigns, cultural & educational events)"
+        ],
+        "Long Writing Tasks (120-150 words)": [
+          "Speech Writing (Morning assembly address, awareness campaign, seminar)",
+          "Debate Writing (For or Against the motion on contemporary topics)"
+        ]
+      },
       "Hornbill (Prose)": [
         "The Portrait of a Lady (Khushwant Singh)",
         "We're Not Afraid to Die... If We Can All Be Together",
@@ -3185,11 +3226,17 @@ export const cbseData = {
         "1. अपठित गद्यांश (लगभग 300 शब्द)",
         "2. अपठित पद्यांश (लगभग 150 शब्द)"
       ],
-      "खण्ड ख : अभिव्यक्ति और माध्यम": [
-        "1. जनसंचार माध्यम (प्रिंट, रेडियो, टीवी, इंटरनेट)",
-        "2. पत्रकारिता के विविध आयाम",
-        "3. डायरी लिखने की कला एवं कथा-पटकथा"
-      ],
+      "खण्ड ख : अभिव्यक्ति और माध्यम (रचनात्मक लेखन)": {
+        "लघु लेखन (30–50 शब्द)": [
+          "जनसंचार माध्यम एवं पत्रकारीय विधाएँ (प्रिंट, रेडियो, टीवी, इंटरनेट)",
+          "पत्रकारिता के विविध आयाम एवं समाचार लेखन प्रक्रिया",
+          "ई-मेल लेखन / डायरी लिखने की कला"
+        ],
+        "दीर्घ लेखन (120–150 शब्द)": [
+          "अप्रत्याशित विषयों पर रचनात्मक लेखन (Creative essay on unseen prompts)",
+          "औपचारिक / कार्यालयी पत्र (कार्यालय ज्ञापन, परिपत्र, संपादकीय पत्र)"
+        ]
+      },
       "खण्ड ग : आरोह भाग-1 (गद्य एवं काव्य)": [
         "नमक का दारोगा (प्रेमचंद)",
         "मियाँ नसीरुद्दीन (कृष्णा सोबती)",
@@ -4026,14 +4073,18 @@ export const cbseData = {
         "Unseen Passage (Factual / Descriptive / Literary, approx. 600-700 words)",
         "Case-based Unseen Passage (with visual/statistical input, approx. 350-400 words)"
       ],
-      "Creative Writing Skills": [
-        "Notice Writing (up to 50 words)",
-        "Formal & Informal Invitations and Replies (up to 50 words)",
-        "Letters: Letter to the Editor (issues of public interest, 120-150 words)",
-        "Letters: Application for a Job with Bio-data / Resume (120-150 words)",
-        "Article Writing (Descriptive & Analytical, 120-150 words)",
-        "Report Writing (Factual description of events/incidents, 120-150 words)"
-      ],
+      "Creative Writing Skills": {
+        "Short Writing Tasks (Up to 50 words)": [
+          "Notice Writing (Strict box format, official announcements, competitions)",
+          "Formal & Informal Invitations and Replies (Cards, letters, acceptance, regret)"
+        ],
+        "Long Writing Tasks (120-150 words)": [
+          "Letter to the Editor (Socio-economic, civic, and national concerns)",
+          "Job Application with Bio-Data / Resume (Covering letter + detailed curriculum vitae)",
+          "Article Writing (Contemporary issues, environmental & youth perspectives)",
+          "Report Writing (Factual description of school events/incidents for magazine/newspaper)"
+        ]
+      },
       "Flamingo (Prose)": [
         "The Last Lesson (Alphonse Daudet)",
         "Lost Spring (Anees Jung)",
@@ -4065,12 +4116,18 @@ export const cbseData = {
         "1. अपठित गद्यांश (लगभग 300 शब्द)",
         "2. अपठित पद्यांश (लगभग 150 शब्द)"
       ],
-      "खण्ड ख : अभिव्यक्ति और माध्यम": [
-        "1. जनसंचार माध्यम (समाचार, फीचर, स्तंभ लेखन)",
-        "2. पत्रकारीय लेखन के विभिन्न रूप और लेखन प्रक्रिया",
-        "3. विशेष लेखन - स्वरूप और प्रकार",
-        "4. व्यावहारिक लेखन (स्ववृत्त / बायोडाटा लेखन एवं ई-मेल लेखन)"
-      ],
+      "खण्ड ख : अभिव्यक्ति और माध्यम (रचनात्मक लेखन)": {
+        "लघु लेखन (30–50 शब्द)": [
+          "जनसंचार माध्यम (समाचार लेखन के 6 ककार, उल्टा पिरामिड शैली)",
+          "पत्रकारीय लेखन के विभिन्न रूप (विशेष रिपोर्ट, फीचर, स्तंभ लेखन)",
+          "विशेष लेखन - स्वरूप और प्रकार"
+        ],
+        "दीर्घ लेखन (120–150 शब्द)": [
+          "अप्रत्याशित विषयों पर रचनात्मक लेखन (समसामयिक चिंतन आधारित मौलिक निबंध)",
+          "स्ववृत्त (Bio-Data / Resume) लेखन एवं रोजगार संबंधी आवेदन पत्र",
+          "औपचारिक / कार्यालयी पत्र (संपादकीय / शिकायती / विभागीय पत्र)"
+        ]
+      },
       "खण्ड ग : आरोह भाग-2 (गद्य एवं काव्य)": [
         "भक्तिन (महादेवी वर्मा)",
         "बाज़ार दर्शन (जैनेंद्र कुमार)",
