@@ -146,13 +146,19 @@
         "1. Unseen Factual / Discursive Comprehension Passage (approx. 150-200 words)",
         "2. Unseen Case-based / Informative Passage with simple data (approx. 100-150 words)"
       ],
-      "Section B: Writing Skills": [
-        "1. Notice Writing (50 words)",
-        "2. Informal Letter Writing (80-100 words)",
-        "3. Paragraph / Descriptive Writing (80-100 words)",
-        "4. Story Writing (from outline/cues, 80-100 words)",
-        "5. Message Writing / Dialogue Completion (50 words)"
-      ],
+      "Section B: Writing Skills": {
+        "Short Writing (Up to 50 words)": [
+          "Notice Writing (School events, competitions, lost & found)",
+          "Message Writing (Telephonic message relay & brief reminders)",
+          "Dialogue Completion (Everyday situations)"
+        ],
+        "Long Writing (80-100 words)": [
+          "Formal Letter Writing (Application to Principal for leave / permission)",
+          "Informal Letter Writing (To family, relatives, and friends)",
+          "Paragraph / Descriptive Writing (Person, place, or event)",
+          "Story Writing (From given outline / verbal cues with moral)"
+        ]
+      },
       "Section B: Applied Grammar": {
         "Nouns & Noun Types": [
           "Common & Proper Nouns",
@@ -282,22 +288,35 @@
         "पाठ 11: लंका विजय",
         "पाठ 12: राम का राज्याभिषेक"
       ],
-      "खण्ड 'घ' : रचनात्मक लेखन": [
-        "1. अनुच्छेद लेखन (समसामयिक / व्यावहारिक विषय, 80-100 शब्द)",
-        "2. पत्र लेखन (औपचारिक एवं अनौपचारिक, 80-100 शब्द)",
-        "3. संवाद लेखन (50-60 शब्द)",
-        "4. चित्र-वर्णन (4-5 वाक्य)"
-      ]
+      "खण्ड 'घ' : रचनात्मक लेखन": {
+        "लघु लेखन (30–50 शब्द)": [
+          "संवाद लेखन (दी गई परिस्थिति पर 3-4 सरल वार्तालाप)",
+          "संदेश लेखन (शुभकामना एवं पर्व-त्योहार)",
+          "सूचना लेखन (विद्यालयी सूचना, बॉक्स प्रारूप)"
+        ],
+        "दीर्घ लेखन (60–80 शब्द)": [
+          "अनुच्छेद लेखन (मेरा विद्यालय, मेरा प्रिय त्योहार, प्रकृति)",
+          "पत्र लेखन (प्रधानाचार्य को प्रार्थना पत्र / मित्र को बधाई पत्र)",
+          "चित्र-वर्णन (दिए गए चित्र पर 5-6 क्रमबद्ध वाक्य)"
+        ]
+      }
     },
     "Sanskrit (R3)": {
       "खण्डः 'क' : अपठित-अवबोधनम् (Section A: Reading Comprehension)": [
         "1. एकः सरलः अपठित-गद्यांशः (Simple Unseen Passage - 40–60 words)",
         "2. एकपदेन पूर्णवाक्येन च सरल-प्रश्नोत्तराणि (One-word & Complete Sentence Answers)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम् (Section B: Creative Writing)": [
-        "1. चित्रवर्णनम्: मञ्जूषायाः साहाय्येन 4-5 वाक्यानि (Picture Description with Word Bank - 4–5 sentences)",
-        "2. सरल-संवाद-पूर्तिः अथवा रिक्तस्थान-पूर्तिः (Dialogue Completion / Fill in the Blanks)"
-      ],
+      "खण्डः 'ख' : रचनात्मक-कार्यम् (Creative Writing)": {
+        "लघु रचनात्मक-कार्यम् (20–30 शब्द)": [
+          "संस्कृतानुवादः (3-4 सरल हिन्दी वाक्यानां संस्कृतेन अनुवादः)",
+          "संवादलेखनम् (मञ्जूषा सहायतया रिक्त स्थान पूर्तिः)"
+        ],
+        "दीर्घ रचनात्मक-कार्यम् (40–50 शब्द)": [
+          "पत्रलेखनम्: मञ्जूषायाः साहाय्येन (Letter Writing with Word Bank)",
+          "चित्रवर्णनम् (मञ्जूषा सहायतया 4-5 पूर्ण वाक्यानि)",
+          "कथापूर्तिः (मञ्जूषा सहायतया नीतिपरक कथा)"
+        ]
+      },
       "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Section C: Applied Grammar)": [
         "1. वर्णविचारः एवं वर्णसंयोजन-वियोजनम् (Phonetics, Joining & Splitting of Letters)",
         "2. शब्दरूपाणि: बालक, लता, फल (Noun Forms: Masculine, Feminine & Neuter)",
@@ -562,14 +581,20 @@
         "1. Unseen Factual / Discursive Comprehension Passage (approx. 200-250 words)",
         "2. Unseen Case-based / Informative Passage with data/table (approx. 150-200 words)"
       ],
-      "Section B: Writing Skills": [
-        "1. Notice Writing (50 words)",
-        "2. Formal Letter Writing (Application / Letter to Principal, 100-120 words)",
-        "3. Informal Letter Writing (100-120 words)",
-        "4. Diary Entry (80-100 words)",
-        "5. Story Writing (from verbal outline/prompts, 100-120 words)",
-        "6. Descriptive Paragraph Writing (100-120 words)"
-      ],
+      "Section B: Writing Skills": {
+        "Short Writing (Up to 50 words)": [
+          "Notice Writing (Competitions, tour/excursion, lost & found)",
+          "Message Writing (Relaying urgent telephonic messages)",
+          "Dialogue Completion (Conversational exchanges)"
+        ],
+        "Long Writing (80-100 words)": [
+          "Formal Letter Writing (Application to Principal / Librarian)",
+          "Informal Letter Writing (Sharing experiences, invitations)",
+          "Story Writing (From verbal outline/prompts with title & moral)",
+          "Descriptive Paragraph Writing (Event, personality, or place)",
+          "Diary Entry (Personal reflections on memorable events)"
+        ]
+      },
       "Section B: Applied Grammar": {
         "The Sentence & Clause Structure": [
           "Subject, Predicate, Direct & Indirect Objects, Subject Complement",
@@ -709,23 +734,35 @@
       "खण्ड 'ग' (पूरक पुस्तक) : बाल महाभारत कथा": [
         "पाठ 1: बाल महाभारत कथा (शांतनु से युधिष्ठिर के राज्याभिषेक तक संक्षिप्त कथा)"
       ],
-      "खण्ड 'घ' : रचनात्मक लेखन": [
-        "1. अनुच्छेद लेखन (समसामयिक / वैचारिक विषय, 100-120 शब्द)",
-        "2. पत्र लेखन (औपचारिक / अनौपचारिक, 100-120 शब्द)",
-        "3. संवाद लेखन (60-80 शब्द)",
-        "4. सूचना लेखन / विज्ञापन निर्माण"
-      ]
+      "खण्ड 'घ' : रचनात्मक लेखन": {
+        "लघु लेखन (40–50 शब्द)": [
+          "संवाद लेखन (दो मित्रों/दुकानदार के बीच रोचक संवाद)",
+          "सूचना लेखन (विद्यालयी सूचना, बॉक्स प्रारूप)",
+          "विज्ञापन निर्माण (सरल उत्पाद/सेवा का आकर्षक विज्ञापन)"
+        ],
+        "दीर्घ लेखन (80–100 शब्द)": [
+          "अनुच्छेद लेखन (समसामयिक / वैचारिक विषय, संकेत बिंदु आधारित)",
+          "पत्र लेखन (औपचारिक शिकायती पत्र / अनौपचारिक पत्र)",
+          "चित्र-वर्णन (चित्र देखकर 8-10 वाक्यों का सुगठित विवरण)"
+        ]
+      }
     },
     "Sanskrit (R3)": {
       "खण्डः 'क' : अपठित-अवबोधनम् (Section A: Reading Comprehension)": [
         "1. एकः सरलः अपठित-गद्यांशः (Simple Unseen Passage - 60–80 words)",
         "2. एकपदेन पूर्णवाक्येन च अवबोधनात्मक-प्रश्नाः (Short & Full Sentence Comprehension Questions)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम् (Section B: Creative Writing)": [
-        "1. पत्रलेखनम्: मञ्जूषायाः साहाय्येन (Letter Writing with Word Bank / Manjusha)",
-        "2. चित्रवर्णनम्: मञ्जूषायाः साहाय्येन 5 वाक्यानि (Picture Description in 5 Sentences)",
-        "3. कथापूर्तिः अथवा संवादलेखनम् (Story Completion / Dialogue Writing)"
-      ],
+      "खण्डः 'ख' : रचनात्मक-कार्यम् (Creative Writing)": {
+        "लघु रचनात्मक-कार्यम् (20–30 शब्द)": [
+          "संस्कृतानुवादः (4-5 सरल हिन्दी वाक्यानां संस्कृतेन अनुवादः)",
+          "संवादलेखनम् (मञ्जूषा सहायतया रिक्त स्थान पूर्तिः)"
+        ],
+        "दीर्घ रचनात्मक-कार्यम् (40–50 शब्द)": [
+          "पत्रलेखनम्: मञ्जूषायाः साहाय्येन (Letter Writing with Word Bank)",
+          "चित्रवर्णनम्: मञ्जूषायाः साहाय्येन 5 वाक्यानि (Picture Description in 5 Sentences)",
+          "कथापूर्तिः (मञ्जूषा सहायतया प्रेरक कथा पूर्तिः)"
+        ]
+      },
       "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Section C: Applied Grammar)": [
         "1. स्वरसन्धि-परिचयः: दीर्घ एवं गुण (Vowel Sandhi: Dirgha & Guna)",
         "2. शब्दरूपाणि: बालक, लता, फल, मुनि, मति, अस्मद्, युष्मद्, तत् (Noun & Pronoun Forms)",
@@ -1019,49 +1056,20 @@
         "2. Unseen Case-based / Informative Passage with visual/tabular data (approx. 200-250 words)"
       ],
       "Section B: Writing Skills": {
-        "Notice Writing (50 words)": [
-          "School Events & Competitions (Cultural fest, sports meet, exhibitions, annual day)",
-          "Lost & Found / Excursions & General Info (Lost articles, museum visit, library rules, tours)"
+        "Short Writing (Up to 50 words)": [
+          "Notice Writing (School events, competitions, appeals, lost & found)",
+          "Message Writing (Telephonic message relay & informational memo)",
+          "Email Writing (Informal to friend / Semi-formal to teacher)"
         ],
-        "Diary Entry (100-120 words)": [
-          "Personal Emotional Reflection (Overcoming a challenge, excitement before an exam, moral dilemma)",
-          "Event / Incident Impression (Memorable family trip, helping someone in need, festive celebration)"
-        ],
-        "Message Writing (50 words)": [
-          "Telephonic Message Relay (Relaying urgent information from a phone call for an absent person)",
-          "Informational Memo / Reminder (Brief note leaving instructions or schedule change before leaving)"
-        ],
-        "Email Writing (50 words)": [
-          "Informal Email to Friend / Relative (Inviting for holidays, congratulating on achievements)",
-          "Semi-Formal Email to Teacher / Club Head (Project query, requesting permission or club membership)"
-        ],
-        "Formal Letter: Letter to Principal (100-120 words)": [
-          "Applications for Leave, Absence & Fee Concession (Medical leave, family function, financial aid)",
-          "School Facilities & Permissions (Requesting library books, sports equipment, organizing events)"
-        ],
-        "Formal Letter: Letter to Editor & Authorities (100-120 words)": [
-          "Letter to Editor on Civic Issues (Reckless driving, open garbage, stray animals, noise pollution)",
-          "Official Letter of Complaint & Enquiry (Defective books/goods, municipal service issue, course enquiry)"
-        ],
-        "Informal Letter Writing (100-120 words)": [
-          "Invitations & Celebrations (Inviting friends/cousins for vacation, birthday or festival)",
-          "Advisory & Sharing Experiences (Advising on health/screen time, sharing hostel or trip experience)"
-        ],
-        "Story Writing (100-120 words)": [
-          "Story from Given Outline / Verbal Cues (Developing plot, engaging title and moral from key points)",
-          "Story Starting with Given Opening Line (Continuing an imaginative, adventurous, or moral narrative)"
-        ],
-        "Descriptive / Analytical Paragraph (100-120 words)": [
-          "Descriptive Paragraph on Person, Place or Event (Role model, historic monument, sports day)",
-          "Analytical Paragraph on Visual / Chart Data (Interpreting a bar chart/pie chart on student trends or environment)"
-        ],
-        "Article Writing (120-150 words)": [
-          "Social, Health & Environmental Themes (Clean India Mission, dangers of junk food, saving water)",
-          "Education, Technology & Youth (AI in schools, digital detox, importance of reading, value education)"
-        ],
-        "Speech Writing (120-150 words)": [
-          "Morning Assembly Addresses (Importance of discipline, time management, kindness & empathy)",
-          "Awareness & Motivational Speeches (Say no to plastic, road safety rules, overcoming exam stress)"
+        "Long Writing (100-120 words)": [
+          "Formal Letter Writing: Letter to Principal (Leave, absence, facilities)",
+          "Formal Letter Writing: Letter to Editor & Authorities (Civic issues, complaints)",
+          "Informal Letter Writing (Invitations, advice, sharing experiences)",
+          "Story Writing (From given outline / verbal cues or opening line)",
+          "Descriptive / Analytical Paragraph (Person, place, or visual chart data)",
+          "Diary Entry (Personal emotional reflection on challenging situations)",
+          "Article Writing (Social, environmental, and educational themes)",
+          "Speech Writing (Morning assembly addresses & awareness speeches)"
         ]
       },
       "Section B: Applied Grammar": {
@@ -1193,12 +1201,18 @@
       "खण्ड 'ग' (पूरक पुस्तक) : भारत की खोज": [
         "पाठ 1: भारत की खोज (अहमदनगर का किला, तलाश, सिंधु घाटी सभ्यता, युगों का दौर, नयी समस्याएँ आदि)"
       ],
-      "खण्ड 'घ' : रचनात्मक लेखन": [
-        "1. अनुच्छेद लेखन (समसामयिक / व्यावहारिक विषय, 100-120 शब्द)",
-        "2. पत्र लेखन (औपचारिक / अनौपचारिक, 100-120 शब्द)",
-        "3. संवाद लेखन अथवा लघुकथा लेखन (80-100 शब्द)",
-        "4. सूचना लेखन / विज्ञापन लेखन (50-60 शब्द)"
-      ]
+      "खण्ड 'घ' : रचनात्मक लेखन": {
+        "लघु लेखन (40–50 शब्द)": [
+          "सूचना लेखन (विद्यालय एवं सार्वजनिक सूचना, बॉक्स प्रारूप)",
+          "विज्ञापन लेखन (आकर्षक स्लोगन, चित्र एवं संपर्क सहित)",
+          "संवाद लेखन (समसामयिक विषय पर 50-60 शब्द)"
+        ],
+        "दीर्घ लेखन (100–120 शब्द)": [
+          "अनुच्छेद लेखन (व्यावहारिक/सामाजिक विषय, 3 संकेत बिंदु आधारित)",
+          "पत्र लेखन (संपादक के नाम पत्र, शिकायती पत्र, अनौपचारिक पत्र)",
+          "लघुकथा लेखन (शीर्षक व नैतिक सीख सहित)"
+        ]
+      }
     },
     "Sanskrit (R3)": {
       "खण्डः 'क' : अपठित-अवबोधनम् (Section A: Reading Comprehension)": [
@@ -1206,12 +1220,17 @@
         "2. एकपदेन पूर्णवाक्येन च अवबोधनात्मक-प्रश्नोत्तराणि (Short & Full Sentence Answers)",
         "3. उपयुक्त-शीर्षक-लेखनम् एवं सरल-भाषिक-कार्यम् (Title & Language Analysis: Subject-Verb, Synonyms/Antonyms)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम् (Section B: Creative Writing)": [
-        "1. औपचारिकम् / अनौपचारिकं पत्रलेखनम्: मञ्जूषासहायतया (Formal / Informal Letter Writing with Word Bank)",
-        "2. चित्रवर्णनम्: मञ्जूषायाः साहाय्येन 5 वाक्यानि (Picture Description in 5 Sentences)",
-        "3. संवाद-लेखनम् अथवा कथापूर्तिः (Dialogue Writing / Story Completion with Word Bank)",
-        "4. सरल-हिन्दी/आङ्ग्ल-वाक्यानां संस्कृते अनुवादः (Hindi / English to Sanskrit Sentence Translation)"
-      ],
+      "खण्डः 'ख' : रचनात्मक-कार्यम् (Creative Writing)": {
+        "लघु रचनात्मक-कार्यम् (25–35 शब्द)": [
+          "संस्कृतानुवादः (5 सरल वाक्यों का संस्कृत में अनुवाद)",
+          "संवादलेखनम् (मञ्जूषा सहायतया 5 रिक्त स्थानानि)"
+        ],
+        "दीर्घ रचनात्मक-कार्यम् (40–60 शब्द)": [
+          "औपचारिकम् / अनौपचारिकं पत्रलेखनम् (मञ्जूषा सहायतया 10 रिक्त स्थानानि)",
+          "चित्रवर्णनम् (मञ्जूषा सहायतया 5 शुद्ध संस्कृत वाक्यानि)",
+          "अनुच्छेदलेखनम् (दिए गए विषय पर मञ्जूषा सहायतया 5 वाक्यानि)"
+        ]
+      },
       "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम् (Section C: Applied Grammar)": [
         "1. सन्धि-कार्यम्: स्वरसन्धिः - दीर्घ, गुण, वृद्धि, यण्, अयादि (Vowel Sandhi: All 5 Types)",
         "2. शब्दरूपाणि: बालक, लता, मुनि, साधु, नदी, अस्मद्, युष्मद्, तत्, किम् (Noun & Pronoun Declensions)",
@@ -1432,278 +1451,6 @@
         "13.6 Sustainable Management of Natural Systems (Conservation strategies, renewable resources, circular economy, climate action)"
       ]
     },
-    "Mathematics": {
-      "Chapter 1: Number Systems": [
-        "1.1 Real Numbers, Rational Numbers and Representation on Number Line",
-        "1.2 Decimal Expansions of Real Numbers (Terminating and Non-Terminating Recurring)",
-        "1.3 Irrational Numbers: Existence and Representation on Number Line (sqrt(2), sqrt(3), sqrt(5))",
-        "1.4 Real Numbers and their Decimal Expansions (Geometric Representation of sqrt(x))",
-        "1.5 Operations on Real Numbers and Rationalising the Denominator",
-        "1.6 Laws of Exponents for Real Numbers with Integral and Rational Powers"
-      ],
-      "Chapter 2: Polynomials": [
-        "2.1 Polynomials in One Variable, Coefficients, Terms, Degree and Classification",
-        "2.2 Zeroes and Roots of a Polynomial & Geometrical Meaning",
-        "2.3 Factor Theorem and Remainder Theorem with Algebraic Applications",
-        "2.4 Factorisation of Quadratic Polynomials (Splitting the Middle Term) and Cubic Polynomials (Factor Theorem)",
-        "2.5 Standard Algebraic Identities [(a+b+c)^2, (a±b)^3, a^3+b^3+c^3-3abc and Conditional Identities]"
-      ],
-      "Chapter 3: Coordinate Geometry": [
-        "3.1 Cartesian Plane, Coordinate Axes (x-axis, y-axis) and Origin (0,0)",
-        "3.2 Abscissa, Ordinate, Signs of Coordinates in Four Quadrants and on Axes",
-        "3.3 Plotting Points in the Cartesian Coordinate Plane"
-      ],
-      "Chapter 4: Linear Equations in Two Variables": [
-        "4.1 Introduction and Standard Form: ax + by + c = 0",
-        "4.2 Solutions of a Linear Equation in Two Variables (Infinitely Many Solutions as Ordered Pairs)",
-        "4.3 Graph of a Linear Equation in Two Variables on Cartesian Plane"
-      ],
-      "Chapter 5: Introduction to Euclid's Geometry": [
-        "5.1 History of Geometry and Euclid's Method of Formalising Mathematics",
-        "5.2 Euclid's Definitions, Seven Axioms and Five Postulates",
-        "5.3 Equivalent Versions of Euclid's Fifth Postulate and Axiom vs Theorem Concept"
-      ],
-      "Chapter 6: Lines and Angles": [
-        "6.1 Basic Terms: Ray, Line Segment, Collinear Points, Acute, Right, Obtuse, Straight and Reflex Angles",
-        "6.2 Pairs of Angles: Adjacent Angles, Linear Pair Axiom and its Converse",
-        "6.3 Vertically Opposite Angles Theorem (Proof and Applications)",
-        "6.4 Parallel Lines and a Transversal (Corresponding, Alternate Interior, and Co-Interior Angles)",
-        "6.5 Lines Parallel to the Same Line and Angle Sum Property of a Triangle (180° and Exterior Angle Theorem)"
-      ],
-      "Chapter 7: Triangles": [
-        "7.1 Congruence of Figures and Congruence of Triangles Concept",
-        "7.2 Criteria for Congruence: SAS Axiom and ASA Theorem (with Proof)",
-        "7.3 AAS Congruence Rule, SSS Criterion and RHS Congruence Criterion",
-        "7.4 Properties of Isosceles Triangles: Angles Opposite to Equal Sides (with Proof) and Converse"
-      ],
-      "Chapter 8: Quadrilaterals": [
-        "8.1 Properties of a Parallelogram (Theorems on Diagonal, Opposite Sides, Angles and Diagonals Bisecting Each Other)",
-        "8.2 Conditions for a Quadrilateral to be a Parallelogram",
-        "8.3 The Mid-Point Theorem (with Proof): Line Segment Joining Mid-Points of Two Sides is Parallel and Half of Third Side",
-        "8.4 Converse of the Mid-Point Theorem"
-      ],
-      "Chapter 9: Circles": [
-        "9.1 Circles and Related Terms: Centre, Radius, Chord, Arc, Sector, Segment",
-        "9.2 Angle Subtended by a Chord at the Centre & Perpendicular from Centre to a Chord",
-        "9.3 Equal Chords and their Distances from the Centre",
-        "9.4 Angle Subtended by an Arc of a Circle at the Centre is Double the Angle at Remaining Part (with Proof)",
-        "9.5 Angles in the Same Segment of a Circle are Equal",
-        "9.6 Cyclic Quadrilaterals: Sum of Opposite Angles is 180° and its Converse"
-      ],
-      "Chapter 10: Heron's Formula": [
-        "10.1 Area of a Triangle using Heron's Formula: Area = sqrt[s(s-a)(s-b)(s-c)], where s = (a+b+c)/2",
-        "10.2 Applications of Heron's Formula in Real-Life Problems Involving Triangular Regions"
-      ],
-      "Chapter 11: Surface Areas and Volumes": [
-        "11.1 Surface Area of Right Circular Cones (Curved Surface Area = pi*r*l, Total Surface Area = pi*r(l+r))",
-        "11.2 Surface Area of Spheres and Hemispheres (Curved and Total Surface Areas: 4*pi*r^2, 2*pi*r^2, 3*pi*r^2)",
-        "11.3 Volume of a Right Circular Cone (V = 1/3 pi*r^2*h)",
-        "11.4 Volume of a Sphere (V = 4/3 pi*r^3) and Hemisphere (V = 2/3 pi*r^3)"
-      ],
-      "Chapter 12: Statistics": [
-        "12.1 Collection and Presentation of Data: Raw Data and Grouped Frequency Distribution Tables",
-        "12.2 Graphical Representation of Data: Bar Graphs",
-        "12.3 Histograms of Uniform Width and Varying Widths (Frequency Density Adjustments)",
-        "12.4 Frequency Polygons"
-      ]
-    },
-    "Social Science": {
-      "History": [
-        "Chapter 1: Understanding Social Science (Part 1)",
-        "Chapter 4: Early Humans and Beginning of Civilisation (Part 1)",
-        "Chapter 5: State and Society up to 1000 CE (Part 1)",
-        "Chapter 12: Resistance and Resilience (1000 CE–1700 CE) (Part 2)",
-        "Chapter 13: India and the World-I (1900 BCE–1200 CE) (Part 2)"
-      ],
-      "Geography": [
-        "Chapter 2: Shaping of the Earth’s Surface (Part 1)",
-        "Chapter 3: Atmosphere and Climate (Part 1)",
-        "Chapter 10: Oceans and Life (Part 2)",
-        "Chapter 11: Life on Earth (Part 2)"
-      ],
-      "Political Science": [
-        "Chapter 6: Democracy (Part 1)",
-        "Chapter 7: Elections (Part 1)",
-        "Chapter 14: Authority (Part 2)"
-      ],
-      "Economics": [
-        "Chapter 8: Building Blocks in Economics (Part 1)",
-        "Chapter 9: The Price Puzzle: What Drives the Market (Part 1)",
-        "Chapter 15: From Ideas to Startups (Part 2)",
-        "Chapter 16: Smart Ways to Manage Your Finances (Part 2)"
-      ]
-    },
-    "English (R1)": {
-      "Section A: Reading Skills": [
-        "Discursive Passage (400-450 words)",
-        "Case-based Factual Passage (with visual/statistical input, 200-250 words)"
-      ],
-      "Section B: Writing Skills": {
-        "Descriptive Paragraph (100-120 words)": [
-          "Descriptive Paragraph: Person (Character traits, physical appearance, deeds, inspiration)",
-          "Descriptive Paragraph: Event (School celebration, sports meet, cultural festival, exhibition)",
-          "Descriptive Paragraph: Situation / Place (Market scene, journey experience, historical monument, natural disaster)"
-        ],
-        "Diary Entry (100-120 words)": [
-          "Emotional Reflections & Introspection (Overcoming fears, joy of achievement, moral dilemmas, regret)",
-          "Memorable Incident / Experience (Unforgettable journey, helping a stranger, unexpected encounter)"
-        ],
-        "Story Writing (100-120 words)": [
-          "Story Writing from Given Outline / Verbal Cues (Plot development, characterization, engaging title, moral resolution)",
-          "Story Writing Starting with Given Opening Line (Narrative progression, suspense/conflict, satisfying climax)"
-        ],
-        "Formal Letter Writing (100-120 words)": [
-          "Letter to the Principal (Application for leave, fee concession, requesting modern sports/library facilities)",
-          "Letter to the Editor (Civic problems, cleanliness, stray animal menace, road safety, youth digital habits)",
-          "Letter of Complaint & Inquiry (Defective goods/services, library book orders, municipal sanitation issues)"
-        ],
-        "Informal Letter Writing (100-120 words)": [
-          "Letter to Friends & Relatives (Inviting for vacations, congratulating on achievement, sharing festival joy)",
-          "Advisory & Personal Sharing (Encouraging healthy habits, managing exam stress, sharing hostel experience)"
-        ],
-        "Short Functional Writing: Notice & Message (50 words)": [
-          "Notice Writing in Box Format (School competitions, excursions, lost & found, meeting announcements)",
-          "Telephonic Message Relay & Dialogue Writing (Recording urgent telephonic conversations accurately)"
-        ]
-      },
-      "Section B: Grammar": {
-        "Tenses": [
-          "Present Tenses: Simple, Continuous, Perfect & Perfect Continuous",
-          "Past Tenses: Simple, Continuous, Perfect & Perfect Continuous",
-          "Future Time Reference: Simple Future, Future Continuous & 'going to' forms",
-          "Sequence of Tenses in Connected Sentences & Contextual Consistency"
-        ],
-        "Modals": [
-          "Modals of Ability, Possibility & Probability (can, could, may, might)",
-          "Modals of Obligation, Duty & Necessity (must, should, ought to, have to)",
-          "Modals of Permission, Requests & Offers (may, can, could, would, shall)",
-          "Semi-Modals & Absence of Obligation (need not, used to, dare, dare not)"
-        ],
-        "Subject-Verb Concord": [
-          "Compound Subjects & Correlative Conjunctions (either...or, neither...nor, not only...but also)",
-          "Parenthetical Phrases & Connectives (as well as, along with, together with, in addition to)",
-          "Indefinite Pronouns Concord (each, every, everyone, someone, nobody, neither, either)",
-          "Collective Nouns, Fixed Quantities, Distances & Sums of Money"
-        ],
-        "Reported Speech (Direct & Indirect)": [
-          "Reporting Statements & Declaratives (Tense backshift, pronoun changes & time/place adverb shifts)",
-          "Reporting Interrogatives: Wh- Questions & Yes/No Questions (if / whether)",
-          "Reporting Imperatives: Commands, Requests, Warnings & Advice (ordered to, requested to, advised to)",
-          "Reporting Exclamations & Wishes (exclaimed with joy/sorrow, prayed, wished)",
-          "Multi-turn Dialogue Reporting in Paragraph Format (CBSE Board format)"
-        ],
-        "Determiners": [
-          "Articles: Definite (the), Indefinite (a, an) & Zero Article rules",
-          "Demonstratives & Possessives (this, that, these, those, my, our, his, their)",
-          "Quantifiers & Numerals (much, many, few/a few/the few, little/a little/the little, several, all)",
-          "Distributives (each, every, either, neither)"
-        ],
-        "Clauses & Sentence Synthesis": [
-          "Noun Clauses (acting as subject, object of transitive verb, or complement)",
-          "Adjective (Relative) Clauses: Defining vs Non-defining relative clauses",
-          "Adverb Clauses: Time, Condition (if/unless), Reason (because/as), Contrast (although/though) & Purpose",
-          "Sentence Synthesis: Combining pairs of sentences into Simple, Compound & Complex"
-        ],
-        "Integrated Grammar (CBSE Pattern)": [
-          "Editing: Identifying and correcting 1 grammatical error per line (Incorrect vs Correct columns)",
-          "Omission: Supplying missing grammatical words (Word Before, Missing Word, Word After)",
-          "Cloze Gap-Filling testing prepositions, conjunctions, determiners & verb forms",
-          "Sentence Reordering: Arranging jumbled words/phrases into meaningful sentences"
-        ]
-      },
-      "Section C: Literature - Kaveri (Prose)": [
-        "Chapter 1: How I Taught My Grandmother to Read (Sudha Murty)",
-        "Chapter 2: The Pot Maker (Temsula Ao)",
-        "Chapter 3: Winds of Change (Gaatha)",
-        "Chapter 4: Vitamin-M (Favourite Stories for Boys)",
-        "Chapter 5: The World of Limitless Possibilities",
-        "Chapter 6: Twin Melodies (Mitra Phukan)",
-        "Chapter 7: Carrier of Words",
-        "Chapter 8: Follow That Dream"
-      ],
-      "Section C: Literature - Kaveri (Poetry)": [
-        "Poem 1: Bharat Our Land (Subramania Bharati)",
-        "Poem 2: Gifts of Grace: Honouring Our Vocations",
-        "Poem 3: Canvas of Soil",
-        "Poem 4: I Cannot Remember My Mother (Rabindranath Tagore)",
-        "Poem 5: Nine Gold Medals (David Roth)",
-        "Poem 6: A Friend Found in Music",
-        "Poem 7: Words",
-        "Poem 8: Believe in Yourself"
-      ]
-    },
-    "Hindi (R2 - Ganga)": {
-      "खण्ड क : अपठित बोध": [
-        "1. अपठित गद्यांश 1 (लगभग 200 शब्द)",
-        "2. अपठित गद्यांश 2 (लगभग 200 शब्द)"
-      ],
-      "खण्ड ख : व्यावहारिक व्याकरण": [
-        "1. शब्द भंडार : समानार्थी शब्द एवं मुहावरे",
-        "2. शब्द-निर्माण : उपसर्ग एवं प्रत्यय",
-        "3. विराम चिह्न",
-        "4. पद एवं अव्यय : संज्ञा, सर्वनाम एवं निपात"
-      ],
-      "खण्ड ग : पाठ्यपुस्तक गंगा (गद्य खंड)": [
-        "पाठ 1: दो बैलों की कथा (प्रेमचंद)",
-        "पाठ 2: क्या लिखूँ? (पदुमलाल पुन्नालाल बख्शी)",
-        "पाठ 3: संवादहीन (शेखर जोशी)",
-        "पाठ 4: ऐसी भी बातें होती हैं - लता मंगेशकर से बातचीत (यतींद्र मिश्र)",
-        "पाठ 5: आखिरी चट्टान तक (मोहन राकेश)",
-        "पाठ 6: रीढ़ की हड्डी (जगदीशचंद्र माथुर)",
-        "पाठ 7: मैं और मेरा देश (कन्हैयालाल मिश्र प्रभाकर)"
-      ],
-      "खण्ड ग : पाठ्यपुस्तक गंगा (काव्य खंड)": [
-        "पद 1: रैदास के पद (रैदास)",
-        "पाठ 2: राम-लक्ष्मण-परशुराम संवाद (तुलसीदास)",
-        "पाठ 3: भारती, जय, विजय करो! (सूर्यकांत त्रिपाठी निराला)",
-        "पाठ 4: झाँसी की रानी (सुभद्रा कुमारी चौहान)",
-        "पाठ 5: घर की याद (भवानी प्रसाद मिश्र)"
-      ],
-      "खण्ड घ : रचनात्मक लेखन": [
-        "1. अनुच्छेद लेखन (समसामयिक/व्यावहारिक विषय, संकेत-बिंदु आधारित, लगभग 100 शब्द)",
-        "2. अनौपचारिक पत्र लेखन (लगभग 100 शब्द, विकल्प सहित)",
-        "3. संवाद लेखन (लगभग 80 शब्द, विकल्प सहित)",
-        "4. चित्र पर आधारित लेखन / चित्र-वर्णन (लगभग 80 शब्द, बिना विकल्प)"
-      ]
-    },
-    "Sanskrit (R3)": {
-      "खण्डः 'क' : अपठित-अवबोधनम्": [
-        "1. एकः सरलः अपठित-गद्यांशः (80-100 शब्दाः, एकपदेन, पूर्णवाक्येन, शीर्षकम्, भाषिककार्यम्)"
-      ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम्": [
-        "1. औपचारिकं / अनौपचारिकं पत्रलेखनम् (मञ्जूषासहायतया)",
-        "2. चित्रवर्णनम् अथवा अनुच्छेदलेखनम् (मञ्जूषासहायतया 5 वाक्यानि)",
-        "3. हिन्दी/आङ्ग्ल वाक्यानां संस्कृते सरल-अनुवादः (5 वाक्यानि)"
-      ],
-      "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम्": [
-        "1. सन्धिः (स्वर - दीर्घ, गुण, वृद्धि, यण, अयादि; व्यञ्जन - जश्त्व, परसवर्ण)",
-        "2. शब्दरूपाणि (बालक, लता, फल, मुनि, मति, नदी, साधु, अस्मद्, युष्मद्, तत्, किम्)",
-        "3. धातुरूपाणि (पठ्, गम्, खाद्, भू, पा, अस्, सेव्, लभ् - लट्, लृट्, लङ्, लोट्, विधिलिङ्)",
-        "4. कारक-उपपदविभक्तयः (द्वितीया, तृतीया, चतुर्थी, पञ्चमी, षष्ठी, सप्तमी)",
-        "5. प्रत्ययाः (क्त्वा, ल्यप्, तुमुन्, क्त, क्तवतु, शतृ, शानच्)",
-        "6. सङ्ख्या (1 तः 100 पर्यन्तम्, 1-4 त्रिषु लिङ्गेषु)",
-        "7. उपसर्गाः (प्र, परा, अप, सम्, अनु, अव, निर्, दुर्, वि, आङ्)",
-        "8. अव्ययपदानि (अत्र, तत्र, कुत्र, यत्र, सर्वत्र, एकदा, कदा, अपि, एव, शनैः, उच्चैः, सहसा, वृथा)"
-      ],
-      "खण्डः 'घ' : पठित-अवबोधनम् (शेमुषी / मणिका)": [
-        "पाठ 1: भारतीवसन्तगीतिः",
-        "पाठ 2: स्वर्णकाकः",
-        "पाठ 3: गोदोहनम्",
-        "पाठ 4: सूक्तिमौक्तिकम्",
-        "पाठ 5: भ्रान्तो बालः",
-        "पाठ 6: लौहतुला",
-        "पाठ 7: सिकतासेतुः",
-        "पाठ 8: जटायोः शौर्यम्",
-        "पाठ 9: पर्यावरणम्",
-        "पाठ 10: वाङ्मनःप्राणस्वरूपम्"
-      ]
-    },
-    "Computer Applications": [
-      "Basics of Information Technology",
-      "Cyber-safety",
-      "Office Tools (Word Processing & Presentation)",
-      "Spreadsheets (Lab Activities & Formatting)"
-    ],
     "Science (Physics)": {
       "Chapter 4: Describing Motion Around Us": [
         "4.1 Frame of Reference, Distance and Displacement (Reference points, vectors and scalars)",
@@ -1911,7 +1658,279 @@
         "13.7 Principles of Prevention (Public hygiene, safe water, immunization programs)",
         "13.8 Immunisation & Vaccination (Vaccines, immunological memory, Pulse Polio program)"
       ]
-    }
+    },
+    "Mathematics": {
+      "Chapter 1: Number Systems": [
+        "1.1 Real Numbers, Rational Numbers and Representation on Number Line",
+        "1.2 Decimal Expansions of Real Numbers (Terminating and Non-Terminating Recurring)",
+        "1.3 Irrational Numbers: Existence and Representation on Number Line (sqrt(2), sqrt(3), sqrt(5))",
+        "1.4 Real Numbers and their Decimal Expansions (Geometric Representation of sqrt(x))",
+        "1.5 Operations on Real Numbers and Rationalising the Denominator",
+        "1.6 Laws of Exponents for Real Numbers with Integral and Rational Powers"
+      ],
+      "Chapter 2: Polynomials": [
+        "2.1 Polynomials in One Variable, Coefficients, Terms, Degree and Classification",
+        "2.2 Zeroes and Roots of a Polynomial & Geometrical Meaning",
+        "2.3 Factor Theorem and Remainder Theorem with Algebraic Applications",
+        "2.4 Factorisation of Quadratic Polynomials (Splitting the Middle Term) and Cubic Polynomials (Factor Theorem)",
+        "2.5 Standard Algebraic Identities [(a+b+c)^2, (a±b)^3, a^3+b^3+c^3-3abc and Conditional Identities]"
+      ],
+      "Chapter 3: Coordinate Geometry": [
+        "3.1 Cartesian Plane, Coordinate Axes (x-axis, y-axis) and Origin (0,0)",
+        "3.2 Abscissa, Ordinate, Signs of Coordinates in Four Quadrants and on Axes",
+        "3.3 Plotting Points in the Cartesian Coordinate Plane"
+      ],
+      "Chapter 4: Linear Equations in Two Variables": [
+        "4.1 Introduction and Standard Form: ax + by + c = 0",
+        "4.2 Solutions of a Linear Equation in Two Variables (Infinitely Many Solutions as Ordered Pairs)",
+        "4.3 Graph of a Linear Equation in Two Variables on Cartesian Plane"
+      ],
+      "Chapter 5: Introduction to Euclid's Geometry": [
+        "5.1 History of Geometry and Euclid's Method of Formalising Mathematics",
+        "5.2 Euclid's Definitions, Seven Axioms and Five Postulates",
+        "5.3 Equivalent Versions of Euclid's Fifth Postulate and Axiom vs Theorem Concept"
+      ],
+      "Chapter 6: Lines and Angles": [
+        "6.1 Basic Terms: Ray, Line Segment, Collinear Points, Acute, Right, Obtuse, Straight and Reflex Angles",
+        "6.2 Pairs of Angles: Adjacent Angles, Linear Pair Axiom and its Converse",
+        "6.3 Vertically Opposite Angles Theorem (Proof and Applications)",
+        "6.4 Parallel Lines and a Transversal (Corresponding, Alternate Interior, and Co-Interior Angles)",
+        "6.5 Lines Parallel to the Same Line and Angle Sum Property of a Triangle (180° and Exterior Angle Theorem)"
+      ],
+      "Chapter 7: Triangles": [
+        "7.1 Congruence of Figures and Congruence of Triangles Concept",
+        "7.2 Criteria for Congruence: SAS Axiom and ASA Theorem (with Proof)",
+        "7.3 AAS Congruence Rule, SSS Criterion and RHS Congruence Criterion",
+        "7.4 Properties of Isosceles Triangles: Angles Opposite to Equal Sides (with Proof) and Converse"
+      ],
+      "Chapter 8: Quadrilaterals": [
+        "8.1 Properties of a Parallelogram (Theorems on Diagonal, Opposite Sides, Angles and Diagonals Bisecting Each Other)",
+        "8.2 Conditions for a Quadrilateral to be a Parallelogram",
+        "8.3 The Mid-Point Theorem (with Proof): Line Segment Joining Mid-Points of Two Sides is Parallel and Half of Third Side",
+        "8.4 Converse of the Mid-Point Theorem"
+      ],
+      "Chapter 9: Circles": [
+        "9.1 Circles and Related Terms: Centre, Radius, Chord, Arc, Sector, Segment",
+        "9.2 Angle Subtended by a Chord at the Centre & Perpendicular from Centre to a Chord",
+        "9.3 Equal Chords and their Distances from the Centre",
+        "9.4 Angle Subtended by an Arc of a Circle at the Centre is Double the Angle at Remaining Part (with Proof)",
+        "9.5 Angles in the Same Segment of a Circle are Equal",
+        "9.6 Cyclic Quadrilaterals: Sum of Opposite Angles is 180° and its Converse"
+      ],
+      "Chapter 10: Heron's Formula": [
+        "10.1 Area of a Triangle using Heron's Formula: Area = sqrt[s(s-a)(s-b)(s-c)], where s = (a+b+c)/2",
+        "10.2 Applications of Heron's Formula in Real-Life Problems Involving Triangular Regions"
+      ],
+      "Chapter 11: Surface Areas and Volumes": [
+        "11.1 Surface Area of Right Circular Cones (Curved Surface Area = pi*r*l, Total Surface Area = pi*r(l+r))",
+        "11.2 Surface Area of Spheres and Hemispheres (Curved and Total Surface Areas: 4*pi*r^2, 2*pi*r^2, 3*pi*r^2)",
+        "11.3 Volume of a Right Circular Cone (V = 1/3 pi*r^2*h)",
+        "11.4 Volume of a Sphere (V = 4/3 pi*r^3) and Hemisphere (V = 2/3 pi*r^3)"
+      ],
+      "Chapter 12: Statistics": [
+        "12.1 Collection and Presentation of Data: Raw Data and Grouped Frequency Distribution Tables",
+        "12.2 Graphical Representation of Data: Bar Graphs",
+        "12.3 Histograms of Uniform Width and Varying Widths (Frequency Density Adjustments)",
+        "12.4 Frequency Polygons"
+      ]
+    },
+    "Social Science": {
+      "History": [
+        "Chapter 1: Understanding Social Science (Part 1)",
+        "Chapter 4: Early Humans and Beginning of Civilisation (Part 1)",
+        "Chapter 5: State and Society up to 1000 CE (Part 1)",
+        "Chapter 12: Resistance and Resilience (1000 CE–1700 CE) (Part 2)",
+        "Chapter 13: India and the World-I (1900 BCE–1200 CE) (Part 2)"
+      ],
+      "Geography": [
+        "Chapter 2: Shaping of the Earth’s Surface (Part 1)",
+        "Chapter 3: Atmosphere and Climate (Part 1)",
+        "Chapter 10: Oceans and Life (Part 2)",
+        "Chapter 11: Life on Earth (Part 2)"
+      ],
+      "Political Science": [
+        "Chapter 6: Democracy (Part 1)",
+        "Chapter 7: Elections (Part 1)",
+        "Chapter 14: Authority (Part 2)"
+      ],
+      "Economics": [
+        "Chapter 8: Building Blocks in Economics (Part 1)",
+        "Chapter 9: The Price Puzzle: What Drives the Market (Part 1)",
+        "Chapter 15: From Ideas to Startups (Part 2)",
+        "Chapter 16: Smart Ways to Manage Your Finances (Part 2)"
+      ]
+    },
+    "English (R1)": {
+      "Section A: Reading Skills": [
+        "Discursive Passage (400-450 words)",
+        "Case-based Factual Passage (with visual/statistical input, 200-250 words)"
+      ],
+      "Section B: Writing Skills": {
+        "Short Writing (Up to 50 words)": [
+          "Notice Writing in Box Format (School competitions, excursions, lost & found, meetings)",
+          "Telephonic Message Relay & Short Functional Notes"
+        ],
+        "Long Writing (100-120 words)": [
+          "Descriptive Paragraph Writing (Person, place, event, or situation from cues)",
+          "Story Writing (From given outline, title, or opening line with moral/climax)",
+          "Diary Entry (First-person emotional reflection & memorable experiences)",
+          "Formal Letter Writing (Letter to Principal / Letter to Editor / Complaint & Inquiry)",
+          "Informal Letter Writing (Letters to friends & relatives, advice & invitations)"
+        ]
+      },
+      "Section B: Grammar": {
+        "Tenses": [
+          "Present Tenses: Simple, Continuous, Perfect & Perfect Continuous",
+          "Past Tenses: Simple, Continuous, Perfect & Perfect Continuous",
+          "Future Time Reference: Simple Future, Future Continuous & 'going to' forms",
+          "Sequence of Tenses in Connected Sentences & Contextual Consistency"
+        ],
+        "Modals": [
+          "Modals of Ability, Possibility & Probability (can, could, may, might)",
+          "Modals of Obligation, Duty & Necessity (must, should, ought to, have to)",
+          "Modals of Permission, Requests & Offers (may, can, could, would, shall)",
+          "Semi-Modals & Absence of Obligation (need not, used to, dare, dare not)"
+        ],
+        "Subject-Verb Concord": [
+          "Compound Subjects & Correlative Conjunctions (either...or, neither...nor, not only...but also)",
+          "Parenthetical Phrases & Connectives (as well as, along with, together with, in addition to)",
+          "Indefinite Pronouns Concord (each, every, everyone, someone, nobody, neither, either)",
+          "Collective Nouns, Fixed Quantities, Distances & Sums of Money"
+        ],
+        "Reported Speech (Direct & Indirect)": [
+          "Reporting Statements & Declaratives (Tense backshift, pronoun changes & time/place adverb shifts)",
+          "Reporting Interrogatives: Wh- Questions & Yes/No Questions (if / whether)",
+          "Reporting Imperatives: Commands, Requests, Warnings & Advice (ordered to, requested to, advised to)",
+          "Reporting Exclamations & Wishes (exclaimed with joy/sorrow, prayed, wished)",
+          "Multi-turn Dialogue Reporting in Paragraph Format (CBSE Board format)"
+        ],
+        "Determiners": [
+          "Articles: Definite (the), Indefinite (a, an) & Zero Article rules",
+          "Demonstratives & Possessives (this, that, these, those, my, our, his, their)",
+          "Quantifiers & Numerals (much, many, few/a few/the few, little/a little/the little, several, all)",
+          "Distributives (each, every, either, neither)"
+        ],
+        "Clauses & Sentence Synthesis": [
+          "Noun Clauses (acting as subject, object of transitive verb, or complement)",
+          "Adjective (Relative) Clauses: Defining vs Non-defining relative clauses",
+          "Adverb Clauses: Time, Condition (if/unless), Reason (because/as), Contrast (although/though) & Purpose",
+          "Sentence Synthesis: Combining pairs of sentences into Simple, Compound & Complex"
+        ],
+        "Integrated Grammar (CBSE Pattern)": [
+          "Editing: Identifying and correcting 1 grammatical error per line (Incorrect vs Correct columns)",
+          "Omission: Supplying missing grammatical words (Word Before, Missing Word, Word After)",
+          "Cloze Gap-Filling testing prepositions, conjunctions, determiners & verb forms",
+          "Sentence Reordering: Arranging jumbled words/phrases into meaningful sentences"
+        ]
+      },
+      "Section C: Literature - Kaveri (Prose)": [
+        "Chapter 1: How I Taught My Grandmother to Read (Sudha Murty)",
+        "Chapter 2: The Pot Maker (Temsula Ao)",
+        "Chapter 3: Winds of Change (Gaatha)",
+        "Chapter 4: Vitamin-M (Favourite Stories for Boys)",
+        "Chapter 5: The World of Limitless Possibilities",
+        "Chapter 6: Twin Melodies (Mitra Phukan)",
+        "Chapter 7: Carrier of Words",
+        "Chapter 8: Follow That Dream"
+      ],
+      "Section C: Literature - Kaveri (Poetry)": [
+        "Poem 1: Bharat Our Land (Subramania Bharati)",
+        "Poem 2: Gifts of Grace: Honouring Our Vocations",
+        "Poem 3: Canvas of Soil",
+        "Poem 4: I Cannot Remember My Mother (Rabindranath Tagore)",
+        "Poem 5: Nine Gold Medals (David Roth)",
+        "Poem 6: A Friend Found in Music",
+        "Poem 7: Words",
+        "Poem 8: Believe in Yourself"
+      ]
+    },
+    "Hindi (R2 - Ganga)": {
+      "खण्ड क : अपठित बोध": [
+        "1. अपठित गद्यांश 1 (लगभग 200 शब्द)",
+        "2. अपठित गद्यांश 2 (लगभग 200 शब्द)"
+      ],
+      "खण्ड ख : व्यावहारिक व्याकरण": [
+        "1. शब्द भंडार : समानार्थी शब्द एवं मुहावरे",
+        "2. शब्द-निर्माण : उपसर्ग एवं प्रत्यय",
+        "3. विराम चिह्न",
+        "4. पद एवं अव्यय : संज्ञा, सर्वनाम एवं निपात"
+      ],
+      "खण्ड ग : पाठ्यपुस्तक गंगा (गद्य खंड)": [
+        "पाठ 1: दो बैलों की कथा (प्रेमचंद)",
+        "पाठ 2: क्या लिखूँ? (पदुमलाल पुन्नालाल बख्शी)",
+        "पाठ 3: संवादहीन (शेखर जोशी)",
+        "पाठ 4: ऐसी भी बातें होती हैं - लता मंगेशकर से बातचीत (यतींद्र मिश्र)",
+        "पाठ 5: आखिरी चट्टान तक (मोहन राकेश)",
+        "पाठ 6: रीढ़ की हड्डी (जगदीशचंद्र माथुर)",
+        "पाठ 7: मैं और मेरा देश (कन्हैयालाल मिश्र प्रभाकर)"
+      ],
+      "खण्ड ग : पाठ्यपुस्तक गंगा (काव्य खंड)": [
+        "पद 1: रैदास के पद (रैदास)",
+        "पाठ 2: राम-लक्ष्मण-परशुराम संवाद (तुलसीदास)",
+        "पाठ 3: भारती, जय, विजय करो! (सूर्यकांत त्रिपाठी निराला)",
+        "पाठ 4: झाँसी की रानी (सुभद्रा कुमारी चौहान)",
+        "पाठ 5: घर की याद (भवानी प्रसाद मिश्र)"
+      ],
+      "खण्ड घ : रचनात्मक लेखन": {
+        "लघु लेखन (40–50 शब्द)": [
+          "सूचना लेखन (औपचारिक विद्यालयी सूचना, बॉक्स प्रारूप)",
+          "संवाद लेखन (दी गई परिस्थिति पर शिष्ट एवं स्वाभाविक संवाद)",
+          "विज्ञापन लेखन (उत्पाद/सेवा का स्लोगन सहित आकर्षक विज्ञापन)",
+          "संदेश लेखन (शुभकामना, पर्व-त्योहार अथवा राष्ट्रीय दिवस)"
+        ],
+        "दीर्घ लेखन (100–120 शब्द)": [
+          "अनुच्छेद लेखन (समसामयिक/व्यावहारिक विषय, 3 संकेत-बिंदु आधारित)",
+          "पत्र लेखन (औपचारिक पत्र - संपादक/अधिकारी / अनौपचारिक पत्र)",
+          "चित्र पर आधारित लेखन / चित्र-वर्णन (सुगठित विवरणात्मक आलेख)",
+          "लघुकथा लेखन अथवा ई-मेल लेखन (मानक प्रारूप सहित)"
+        ]
+      }
+    },
+    "Sanskrit (R3)": {
+      "खण्डः 'क' : अपठित-अवबोधनम्": [
+        "1. एकः सरलः अपठित-गद्यांशः (80-100 शब्दाः, एकपदेन, पूर्णवाक्येन, शीर्षकम्, भाषिककार्यम्)"
+      ],
+      "खण्डः 'ख' : रचनात्मक-कार्यम्": {
+        "लघु रचनात्मक-कार्यम् (30–40 शब्द)": [
+          "संस्कृतानुवादः (5 सरल हिन्दी/आङ्गल वाक्यानां संस्कृतेन अनुवादः)",
+          "संवादलेखनम् (मञ्जूषा सहायतया संवाद पूर्तिः)"
+        ],
+        "दीर्घ रचनात्मक-कार्यम् (50–80 शब्द)": [
+          "औपचारिकं / अनौपचारिकं पत्रलेखनम् (मञ्जूषासहायतया 10 रिक्त स्थानानि)",
+          "चित्रवर्णनम् (मञ्जूषा सहायतया 5 पूर्ण संस्कृत वाक्यानि)",
+          "अनुच्छेदलेखनम् (दिए गए विषय पर मञ्जूषा सहायतया 5 वाक्यानि)",
+          "कथापूर्तिः (मञ्जूषासहायतया कथायाः रिक्त स्थानानि)"
+        ]
+      },
+      "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम्": [
+        "1. सन्धिः (स्वर - दीर्घ, गुण, वृद्धि, यण, अयादि; व्यञ्जन - जश्त्व, परसवर्ण)",
+        "2. शब्दरूपाणि (बालक, लता, फल, मुनि, मति, नदी, साधु, अस्मद्, युष्मद्, तत्, किम्)",
+        "3. धातुरूपाणि (पठ्, गम्, खाद्, भू, पा, अस्, सेव्, लभ् - लट्, लृट्, लङ्, लोट्, विधिलिङ्)",
+        "4. कारक-उपपदविभक्तयः (द्वितीया, तृतीया, चतुर्थी, पञ्चमी, षष्ठी, सप्तमी)",
+        "5. प्रत्ययाः (क्त्वा, ल्यप्, तुमुन्, क्त, क्तवतु, शतृ, शानच्)",
+        "6. सङ्ख्या (1 तः 100 पर्यन्तम्, 1-4 त्रिषु लिङ्गेषु)",
+        "7. उपसर्गाः (प्र, परा, अप, सम्, अनु, अव, निर्, दुर्, वि, आङ्)",
+        "8. अव्ययपदानि (अत्र, तत्र, कुत्र, यत्र, सर्वत्र, एकदा, कदा, अपि, एव, शनैः, उच्चैः, सहसा, वृथा)"
+      ],
+      "खण्डः 'घ' : पठित-अवबोधनम् (शेमुषी / मणिका)": [
+        "पाठ 1: भारतीवसन्तगीतिः",
+        "पाठ 2: स्वर्णकाकः",
+        "पाठ 3: गोदोहनम्",
+        "पाठ 4: सूक्तिमौक्तिकम्",
+        "पाठ 5: भ्रान्तो बालः",
+        "पाठ 6: लौहतुला",
+        "पाठ 7: सिकतासेतुः",
+        "पाठ 8: जटायोः शौर्यम्",
+        "पाठ 9: पर्यावरणम्",
+        "पाठ 10: वाङ्मनःप्राणस्वरूपम्"
+      ]
+    },
+    "Computer Applications": [
+      "Basics of Information Technology",
+      "Cyber-safety",
+      "Office Tools (Word Processing & Presentation)",
+      "Spreadsheets (Lab Activities & Formatting)"
+    ]
   },
   "Class 10": {
     "Science": {
@@ -2030,6 +2049,135 @@
         "12.6 Fleming's Left-Hand Rule and its Application to Force Direction",
         "12.7 Domestic Electric Circuits: Live Wire, Neutral Wire, Earth Wire, Potential Difference (220 V, 50 Hz)",
         "12.8 Role of Earth Wire and Safety Devices: Electric Fuse, Miniature Circuit Breakers (MCB), Overloading and Short-Circuiting"
+      ],
+      "Chapter 13: Our Environment": [
+        "13.1 Ecosystem and its Components: Biotic (Producers, Consumers, Decomposers) and Abiotic Components",
+        "13.2 Food Chains and Food Webs: Trophic Levels and 10% Energy Flow Law (Lindeman's Efficiency)",
+        "13.3 Biological Magnification / Biomagnification of Harmful Chemicals (Pesticides, DDT)",
+        "13.4 How do our Activities Affect the Environment? Ozone Layer Formation and Depletion by Chlorofluorocarbons (CFCs / UNEP Treaty)",
+        "13.5 Waste Disposal Management: Biodegradable and Non-Biodegradable Wastes and Solid Waste Management Practices"
+      ]
+    },
+    "Science (Physics)": {
+      "Chapter 9: Light - Reflection and Refraction": [
+        "9.1 Laws of Reflection of Light & Reflection by Spherical Mirrors (Concave and Convex Mirrors)",
+        "9.2 Center of Curvature, Principal Axis, Focus, Focal Length and Radius of Curvature (R = 2f)",
+        "9.3 Image Formation by Spherical Mirrors: Ray Diagrams for Concave and Convex Mirrors",
+        "9.4 Sign Convention for Reflection by Spherical Mirrors (New Cartesian Sign Convention)",
+        "9.5 Mirror Formula (1/v + 1/u = 1/f) and Magnification (m = -v/u = h'/h) with Numerical Applications",
+        "9.6 Refraction of Light: Cause of Refraction, Laws of Refraction and Snell's Law",
+        "9.7 Refractive Index (Absolute and Relative) and Lateral Displacement through a Glass Slab",
+        "9.8 Refraction by Spherical Lenses (Convex and Concave), Rules for Ray Diagrams and Image Formations",
+        "9.9 Lens Formula (1/v - 1/u = 1/f), Magnification (m = v/u = h'/h) and Power of a Lens (P = 1/f in Dioptres)"
+      ],
+      "Chapter 10: The Human Eye and the Colourful World": [
+        "10.1 Structure and Function of Human Eye (Cornea, Iris, Pupil, Crystalline Lens, Ciliary Muscles, Retina, Blind Spot)",
+        "10.2 Power of Accommodation of the Human Eye and Near Point / Far Point",
+        "10.3 Defects of Vision and their Correction: Myopia (Short-Sightedness), Hypermetropia (Far-Sightedness), Presbyopia and Astigmatism",
+        "10.4 Refraction of Light through a Triangular Glass Prism: Angle of Deviation and Angle of Incidence",
+        "10.5 Dispersion of White Light by a Glass Prism (VIBGYOR), Recombination of Spectrum (Newton's Disc) and Rainbow Formation",
+        "10.6 Atmospheric Refraction: Twinkling of Stars, Apparent Position of Stars, Advanced Sunrise and Delayed Sunset",
+        "10.7 Scattering of Light and Tyndall Effect: Why is the Sky Blue? Why do Clouds Appear White? Colour of Sun at Sunrise and Sunset"
+      ],
+      "Chapter 11: Electricity": [
+        "11.1 Electric Current (I = Q/t), Electric Charge (Q = ne), Electric Circuit and Ammeter",
+        "11.2 Electric Potential and Potential Difference (V = W/Q) and Voltmeter",
+        "11.3 Circuit Diagram Symbols of Key, Cell, Battery, Resistor, Rheostat, Voltmeter, Ammeter",
+        "11.4 Ohm's Law: Mathematical Formulation (V = IR), V-I Characteristic Graph and Resistance",
+        "11.5 Factors on which the Resistance of a Conductor Depends (Length, Cross-Sectional Area, Material Nature, Resistivity rho)",
+        "11.6 Resistance of a System of Resistors: Resistors in Series (R_eq = R1 + R2 + R3) and Advantages/Disadvantages",
+        "11.7 Resistors in Parallel (1/R_eq = 1/R1 + 1/R2 + 1/R3) and Circuit Calculations",
+        "11.8 Heating Effect of Electric Current: Joule's Law of Heating (H = I^2 R t = VIt) and Practical Applications (Electric Iron, Toaster, Fuse)",
+        "11.9 Electric Power: Formulations (P = VI = I^2 R = V^2 / R), Commercial Unit of Electrical Energy (1 kWh = 3.6 x 10^6 J) and Electricity Bill Calculations"
+      ],
+      "Chapter 12: Magnetic Effects of Electric Current": [
+        "12.1 Magnetic Field and Field Lines: Oersted's Experiment, Properties of Magnetic Field Lines",
+        "12.2 Magnetic Field due to a Current-Carrying Straight Conductor & Right-Hand Thumb Rule (Maxwell's Corkscrew Rule)",
+        "12.3 Magnetic Field due to a Current through a Circular Loop and Factors Affecting Field Strength",
+        "12.4 Magnetic Field due to a Current in a Solenoid and Electromagnet vs Permanent Magnet",
+        "12.5 Force on a Current-Carrying Conductor in a Magnetic Field (Ampere's Suggestion) & Factors Affecting Force",
+        "12.6 Fleming's Left-Hand Rule and its Application to Force Direction",
+        "12.7 Domestic Electric Circuits: Live Wire, Neutral Wire, Earth Wire, Potential Difference (220 V, 50 Hz)",
+        "12.8 Role of Earth Wire and Safety Devices: Electric Fuse, Miniature Circuit Breakers (MCB), Overloading and Short-Circuiting"
+      ]
+    },
+    "Science (Chemistry)": {
+      "Chapter 1: Chemical Reactions and Equations": [
+        "1.1 Chemical Reactions, Characteristics & Word Equations",
+        "1.2 Writing and Step-by-Step Balancing of Chemical Equations (Law of Conservation of Mass)",
+        "1.3 Types of Chemical Reactions: Combination, Decomposition (Thermal, Electrolytic, Photolytic)",
+        "1.4 Displacement Reactions and Reactivity Series",
+        "1.5 Double Displacement Reactions and Precipitation Reactions",
+        "1.6 Oxidation and Reduction (Redox Reactions, Oxidising & Reducing Agents)",
+        "1.7 Corrosion and Rancidity: Causes, Effects and Everyday Prevention Methods"
+      ],
+      "Chapter 2: Acids, Bases and Salts": [
+        "2.1 Physical and Chemical Properties of Acids & Bases (Reactions with Metals, Metal Carbonates, Metal Hydrogen Carbonates)",
+        "2.2 Reaction of Acids and Bases with Each Other (Neutralisation) and Reaction with Metallic/Non-Metallic Oxides",
+        "2.3 What do all Acids and all Bases have in Common? (Role of H+ and OH- Ions in Water, Dilution)",
+        "2.4 How Strong are Acid or Base Solutions? pH Scale and Universal Indicator",
+        "2.5 Importance of pH in Everyday Life (Digestive System, Tooth Decay, Plant Growth, Self Defense)",
+        "2.6 Salts: Family of Salts, pH of Salts and Common Salt as a Raw Material for Chemicals",
+        "2.7 Sodium Hydroxide (Chlor-Alkali Process), Bleaching Powder, Baking Soda, Washing Soda and Plaster of Paris (Preparation, Properties, Uses)"
+      ],
+      "Chapter 3: Metals and Non-metals": [
+        "3.1 Physical Properties of Metals and Non-Metals (Malleability, Ductility, Sonority, Conductivity)",
+        "3.2 Chemical Properties of Metals: Reaction with Air/Oxygen, Water, Dilute Acids and Solutions of Other Metal Salts",
+        "3.3 The Reactivity Series and Predicting Reaction Feasibility",
+        "3.4 How do Metals and Non-metals React? Formation and Properties of Ionic Compounds",
+        "3.5 Occurrence of Metals: Minerals, Ores, Gangue, Concentration of Ores",
+        "3.6 Extraction of Metals of Low, Medium (Roasting & Calcination) and High Reactivity (Electrolytic Reduction)",
+        "3.7 Refining of Metals (Electrolytic Refining of Copper) and Corrosion & Prevention (Galvanisation, Alloying)"
+      ],
+      "Chapter 4: Carbon and its Compounds": [
+        "4.1 Bonding in Carbon: Covalent Bonds (Single, Double, Triple Bonds in H2, O2, N2, CH4)",
+        "4.2 Versatile Nature of Carbon: Catenation and Tetravalency",
+        "4.3 Saturated and Unsaturated Carbon Compounds (Alkanes, Alkenes, Alkynes)",
+        "4.4 Chains, Branches, Rings, Structural Isomers and Heteroatoms",
+        "4.5 Functional Groups (Halo, Alcohol, Aldehyde, Ketone, Carboxylic Acid) & Homologous Series",
+        "4.6 IUPAC Nomenclature of Carbon Compounds",
+        "4.7 Chemical Properties of Carbon Compounds: Combustion, Oxidation, Addition and Substitution Reactions",
+        "4.8 Important Carbon Compounds: Ethanol and Ethanoic Acid (Reactions with Sodium, Esterification, Saponification)",
+        "4.9 Soaps and Detergents: Structure of Soap Molecule, Cleansing Action and Micelle Formation"
+      ]
+    },
+    "Science (Biology)": {
+      "Chapter 5: Life Processes": [
+        "5.1 What are Life Processes & Criteria for Life?",
+        "5.2 Autotrophic Nutrition: Photosynthesis, Light & Dark Reactions, Chloroplast, Stomata Opening and Closing",
+        "5.3 Heterotrophic Nutrition: Saprophytic, Parasitic, Holozoic (Amoeba and Paramecium)",
+        "5.4 Nutrition in Human Beings: Alimentary Canal, Digestive Glands, Enzymes and Absorption",
+        "5.5 Respiration: Aerobic vs Anaerobic Respiration, Breakdown of Glucose Pathways, Human Respiratory System & Mechanism of Breathing",
+        "5.6 Transportation in Human Beings: Structure and Functioning of Heart, Double Circulation, Blood Vessels (Arteries, Veins, Capillaries), Platelets and Lymph",
+        "5.7 Transportation in Plants: Transport of Water and Minerals (Xylem, Transpiration Pull) and Translocation of Food (Phloem)",
+        "5.8 Excretion in Human Beings: Human Excretory System, Structure and Mechanism of Urine Formation in Nephron, Dialysis and Excretion in Plants"
+      ],
+      "Chapter 6: Control and Coordination": [
+        "6.1 Animals: Nervous System, Structure of Neuron, Synapse and Nerve Impulse Conduction",
+        "6.2 Reflex Actions and Reflex Arc",
+        "6.3 Human Brain: Structure and Functions of Forebrain, Midbrain, Hindbrain and Spinal Cord Protection",
+        "6.4 Coordination in Plants: Immediate Response to Stimulus (Thigmonasty in Touch-Me-Not)",
+        "6.5 Movement Due to Growth: Phototropism, Geotropism, Chemotropism, Hydrotropism",
+        "6.6 Plant Hormones (Phytohormones): Auxins, Gibberellins, Cytokinins, Abscisic Acid",
+        "6.7 Hormones in Animals: Endocrine Glands, Hormones (Thyroxine, Growth Hormone, Adrenaline, Insulin, Testosterone, Estrogen) and Feedback Mechanism"
+      ],
+      "Chapter 7: How do Organisms Reproduce?": [
+        "7.1 Do Organisms Create Exact Copies of Themselves? Importance of DNA Copying and Variations in Survival",
+        "7.2 Modes of Reproduction Used by Single Organisms: Fission (Binary & Multiple), Fragmentation, Regeneration, Budding",
+        "7.3 Vegetative Propagation (Natural & Artificial: Grafting, Cutting, Layering, Tissue Culture) and Spore Formation",
+        "7.4 Sexual Reproduction in Flowering Plants: Structure of a Flower, Pollination (Self & Cross), Pollen Tube Growth, Double Fertilisation, Seed Formation",
+        "7.5 Reproduction in Human Beings: Puberty, Secondary Sexual Characters, Male Reproductive System (Testes, Vas Deferens, Seminal Vesicles, Prostate)",
+        "7.6 Female Reproductive System: Ovaries, Fallopian Tube, Uterus, Menstrual Cycle and Fertilisation",
+        "7.7 Reproductive Health: Sexually Transmitted Diseases (Bacterial & Viral STDs) and Contraceptive Methods (Barrier, Chemical, IUDs, Surgical)"
+      ],
+      "Chapter 8: Heredity": [
+        "8.1 Accumulation of Variation During Reproduction",
+        "8.2 Heredity: Inherited Traits and Rules for Inheritance of Traits",
+        "8.3 Gregor Johann Mendel's Experiments with Garden Pea (Pisum sativum)",
+        "8.4 Monohybrid Cross: Law of Dominance and Law of Segregation (Phenotypic 3:1, Genotypic 1:2:1)",
+        "8.5 Dihybrid Cross: Law of Independent Assortment (9:3:3:1 Ratio)",
+        "8.6 How do Traits Get Expressed? (DNA -> Gene -> Protein -> Trait)",
+        "8.7 Sex Determination in Human Beings (Autosomes, Allosomes, XX and XY Chromosomes Probability)"
       ],
       "Chapter 13: Our Environment": [
         "13.1 Ecosystem and its Components: Biotic (Producers, Consumers, Decomposers) and Abiotic Components",
@@ -2362,10 +2510,18 @@
         "1. Discursive Passage (approx. 400-450 words)",
         "2. Case-based Factual Passage with visual input/data (approx. 200-250 words)"
       ],
-      "Section B : Writing Skills": [
-        "1. Formal Letter Writing (Editor / Complaint / Inquiry / Order)",
-        "2. Analytical Paragraph Writing (based on chart/graph/data/clues)"
-      ],
+      "Section B : Writing Skills": {
+        "Short Writing (Up to 50 words)": [
+          "Notice Writing (Unit Tests & Internal Periodic Assessments)",
+          "Formal / Informal Message Relay"
+        ],
+        "Long Writing (100-120 words)": [
+          "Formal Letter Writing: Letter to the Editor (Civic, social, or environmental issues)",
+          "Formal Letter Writing: Letter of Complaint (Defective goods, civic amenities, poor service)",
+          "Formal Letter Writing: Letter of Inquiry & Placing / Cancelling Orders",
+          "Analytical Paragraph Writing (Interpreting data, chart, graph, map, or research clues)"
+        ]
+      },
       "Section B : Applied Grammar": [
         "1. Tenses",
         "2. Modals",
@@ -2442,23 +2598,32 @@
         "2. सपनों के-से दिन (गुरदयाल सिंह)",
         "3. टोपी शुक्ला (राही मासूम रज़ा)"
       ],
-      "खण्ड ङ : रचनात्मक लेखन": [
-        "1. अनुच्छेद लेखन (समसामयिक एवं व्यावहारिक विषयों पर, 120 शब्द)",
-        "2. औपचारिक पत्र लेखन",
-        "3. सूचना लेखन (Notice Writing)",
-        "4. विज्ञापन लेखन (Advertisement Writing)",
-        "5. लघुकथा लेखन अथवा ई-मेल लेखन"
-      ]
+      "खण्ड ङ : रचनात्मक लेखन": {
+        "लघु लेखन (40–50 शब्द)": [
+          "सूचना लेखन (विद्यालय एवं सार्वजनिक सूचना, बॉक्स प्रारूप)",
+          "विज्ञापन लेखन (उत्पाद, सेवा या सामाजिक चेतना पर सचित्र विज्ञापन)",
+          "संदेश लेखन (शुभकामना, पर्व-त्योहार - Course B)"
+        ],
+        "दीर्घ लेखन (100–120 शब्द)": [
+          "अनुच्छेद लेखन (समसामयिक एवं व्यावहारिक विषयों पर, 3 संकेत बिंदु आधारित)",
+          "औपचारिक पत्र लेखन (प्रधानाचार्य, संपादक, विभागीय अधिकारी)",
+          "लघुकथा लेखन अथवा ई-मेल लेखन (मानक डिजिटल प्रारूप)"
+        ]
+      }
     },
     "Sanskrit (R3)": {
       "खण्डः 'क' : अपठित-अवबोधनम्": [
         "1. एकः सरलः अपठित-गद्यांशः (80-100 शब्दाः, एकपदेन, पूर्णवाक्येन, शीर्षकम्, भाषिककार्यम्)"
       ],
-      "खण्डः 'ख' : रचनात्मक-कार्यम्": [
-        "1. औपचारिकं / अनौपचारिकं पत्रलेखनम् (मञ्जूषासहायतया)",
-        "2. चित्रवर्णनम् अथवा अनुच्छेदलेखनम् (मञ्जूषासहायतया 5 वाक्यानि)",
-        "3. हिन्दी/आङ्ग्ल वाक्यानां संस्कृते सरल-अनुवादः (5 वाक्यानि)"
-      ],
+      "खण्डः 'ख' : रचनात्मक-कार्यम्": {
+        "लघु रचनात्मक-कार्यम् (30–40 शब्द)": [
+          "संस्कृतानुवादः (5 हिन्दी/आङ्गल वाक्यानां शुद्ध संस्कृतेन अनुवादः)"
+        ],
+        "दीर्घ रचनात्मक-कार्यम् (50–80 शब्द)": [
+          "औपचारिकं / अनौपचारिकं पत्रलेखनम् (मञ्जूषासहायतया 10 रिक्त स्थानानि)",
+          "चित्रवर्णनम् अथवा अनुच्छेदलेखनम् (मञ्जूषासहायतया 5 शुद्ध संस्कृत वाक्यानि)"
+        ]
+      },
       "खण्डः 'ग' : अनुप्रयुक्त-व्याकरणम्": [
         "1. सन्धिः (व्यञ्जन - परसवर्ण, प्रथमवर्णस्य तृतीयवर्णे परिवर्तनम्; विसर्ग - उत्व, रत्व, विसर्गलोप)",
         "2. समासः (तत्पुरुष, कर्मधारय, द्विगु, द्वंद्व, बहुव्रीहि, अव्ययीभाव)",
@@ -3038,12 +3203,17 @@
         "Gap Filling (Tenses & Clauses)",
         "Sentence Re-ordering / Transformation of Sentences"
       ],
-      "Creative Writing Skills": [
-        "Notice Writing (up to 50 words)",
-        "Poster Designing (up to 50 words)",
-        "Speech Writing (120-150 words, based on verbal/visual input)",
-        "Debate Writing (120-150 words, based on verbal/visual input)"
-      ],
+      "Creative Writing Skills": {
+        "Short Writing Tasks (Up to 50 words)": [
+          "Notice Writing (School events, competitions, lost & found, exhibitions)",
+          "Classified Advertisements (Situation Vacant/Wanted, To-Let, For Sale)",
+          "Poster Designing (Social awareness campaigns, cultural & educational events)"
+        ],
+        "Long Writing Tasks (120-150 words)": [
+          "Speech Writing (Morning assembly address, awareness campaign, seminar)",
+          "Debate Writing (For or Against the motion on contemporary topics)"
+        ]
+      },
       "Hornbill (Prose)": [
         "The Portrait of a Lady (Khushwant Singh)",
         "We're Not Afraid to Die... If We Can All Be Together",
@@ -3071,11 +3241,17 @@
         "1. अपठित गद्यांश (लगभग 300 शब्द)",
         "2. अपठित पद्यांश (लगभग 150 शब्द)"
       ],
-      "खण्ड ख : अभिव्यक्ति और माध्यम": [
-        "1. जनसंचार माध्यम (प्रिंट, रेडियो, टीवी, इंटरनेट)",
-        "2. पत्रकारिता के विविध आयाम",
-        "3. डायरी लिखने की कला एवं कथा-पटकथा"
-      ],
+      "खण्ड ख : अभिव्यक्ति और माध्यम (रचनात्मक लेखन)": {
+        "लघु लेखन (30–50 शब्द)": [
+          "जनसंचार माध्यम एवं पत्रकारीय विधाएँ (प्रिंट, रेडियो, टीवी, इंटरनेट)",
+          "पत्रकारिता के विविध आयाम एवं समाचार लेखन प्रक्रिया",
+          "ई-मेल लेखन / डायरी लिखने की कला"
+        ],
+        "दीर्घ लेखन (120–150 शब्द)": [
+          "अप्रत्याशित विषयों पर रचनात्मक लेखन (Creative essay on unseen prompts)",
+          "औपचारिक / कार्यालयी पत्र (कार्यालय ज्ञापन, परिपत्र, संपादकीय पत्र)"
+        ]
+      },
       "खण्ड ग : आरोह भाग-1 (गद्य एवं काव्य)": [
         "नमक का दारोगा (प्रेमचंद)",
         "मियाँ नसीरुद्दीन (कृष्णा सोबती)",
@@ -3912,14 +4088,18 @@
         "Unseen Passage (Factual / Descriptive / Literary, approx. 600-700 words)",
         "Case-based Unseen Passage (with visual/statistical input, approx. 350-400 words)"
       ],
-      "Creative Writing Skills": [
-        "Notice Writing (up to 50 words)",
-        "Formal & Informal Invitations and Replies (up to 50 words)",
-        "Letters: Letter to the Editor (issues of public interest, 120-150 words)",
-        "Letters: Application for a Job with Bio-data / Resume (120-150 words)",
-        "Article Writing (Descriptive & Analytical, 120-150 words)",
-        "Report Writing (Factual description of events/incidents, 120-150 words)"
-      ],
+      "Creative Writing Skills": {
+        "Short Writing Tasks (Up to 50 words)": [
+          "Notice Writing (Strict box format, official announcements, competitions)",
+          "Formal & Informal Invitations and Replies (Cards, letters, acceptance, regret)"
+        ],
+        "Long Writing Tasks (120-150 words)": [
+          "Letter to the Editor (Socio-economic, civic, and national concerns)",
+          "Job Application with Bio-Data / Resume (Covering letter + detailed curriculum vitae)",
+          "Article Writing (Contemporary issues, environmental & youth perspectives)",
+          "Report Writing (Factual description of school events/incidents for magazine/newspaper)"
+        ]
+      },
       "Flamingo (Prose)": [
         "The Last Lesson (Alphonse Daudet)",
         "Lost Spring (Anees Jung)",
@@ -3951,12 +4131,18 @@
         "1. अपठित गद्यांश (लगभग 300 शब्द)",
         "2. अपठित पद्यांश (लगभग 150 शब्द)"
       ],
-      "खण्ड ख : अभिव्यक्ति और माध्यम": [
-        "1. जनसंचार माध्यम (समाचार, फीचर, स्तंभ लेखन)",
-        "2. पत्रकारीय लेखन के विभिन्न रूप और लेखन प्रक्रिया",
-        "3. विशेष लेखन - स्वरूप और प्रकार",
-        "4. व्यावहारिक लेखन (स्ववृत्त / बायोडाटा लेखन एवं ई-मेल लेखन)"
-      ],
+      "खण्ड ख : अभिव्यक्ति और माध्यम (रचनात्मक लेखन)": {
+        "लघु लेखन (30–50 शब्द)": [
+          "जनसंचार माध्यम (समाचार लेखन के 6 ककार, उल्टा पिरामिड शैली)",
+          "पत्रकारीय लेखन के विभिन्न रूप (विशेष रिपोर्ट, फीचर, स्तंभ लेखन)",
+          "विशेष लेखन - स्वरूप और प्रकार"
+        ],
+        "दीर्घ लेखन (120–150 शब्द)": [
+          "अप्रत्याशित विषयों पर रचनात्मक लेखन (समसामयिक चिंतन आधारित मौलिक निबंध)",
+          "स्ववृत्त (Bio-Data / Resume) लेखन एवं रोजगार संबंधी आवेदन पत्र",
+          "औपचारिक / कार्यालयी पत्र (संपादकीय / शिकायती / विभागीय पत्र)"
+        ]
+      },
       "खण्ड ग : आरोह भाग-2 (गद्य एवं काव्य)": [
         "भक्तिन (महादेवी वर्मा)",
         "बाज़ार दर्शन (जैनेंद्र कुमार)",

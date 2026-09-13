@@ -9,9 +9,13 @@ import urllib.parse
 import ipaddress
 import re
 
-USERS_FILE = "users.json"
-LOGS_FILE = "login_logs.json"
-SESSIONS_FILE = "sessions.json"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.environ.get("DATA_DIR", BASE_DIR)
+os.makedirs(DATA_DIR, exist_ok=True)
+
+USERS_FILE = os.path.join(DATA_DIR, "users.json")
+LOGS_FILE = os.path.join(DATA_DIR, "login_logs.json")
+SESSIONS_FILE = os.path.join(DATA_DIR, "sessions.json")
 
 SESSION_TTL_SECONDS = 7 * 24 * 3600  # 7 Days
 MAX_LOG_ENTRIES = 1000
@@ -27,10 +31,27 @@ SESSIONS = {}         # token -> session dict
 # 1. DATA PERSISTENCE & INITIAL SEEDING
 # -------------------------------------------------------------
 
+def _atomic_json_write(filepath, data, max_entries=None):
+    temp_path = f"{filepath}.tmp.{secrets.token_hex(4)}"
+    try:
+        with open(temp_path, 'w', encoding='utf-8') as f:
+            if max_entries is not None:
+                json.dump(data[:max_entries], f, indent=2, ensure_ascii=False)
+            else:
+                json.dump(data, f, indent=2, ensure_ascii=False)
+        os.replace(temp_path, filepath)
+    except Exception as e:
+        print(f"Error writing to {filepath}: {e}")
+        if os.path.exists(temp_path):
+            try:
+                os.remove(temp_path)
+            except Exception:
+                pass
+
 def init_auth_storage():
     """Initializes user storage and seeds default super admin if none exists."""
     global SESSIONS
-    if not os.path.exists(USERS_FILE):
+    if not os.path.exists(USERS_FILE) or os.path.getsize(USERS_FILE) == 0:
         salt, p_hash = hash_password("admin123")
         now_str = datetime.datetime.now(datetime.timezone.utc).astimezone().strftime("%d %b %Y, %I:%M %p")
         initial_users = [
@@ -48,6 +69,26 @@ def init_auth_storage():
         ]
         save_users(initial_users)
         print("Initialized users.json with default Super Admin: 'admin' / 'admin123'")
+    else:
+        # Ensure super_admin exists even in existing users.json
+        existing = get_users()
+        if not any(u.get("role") == "super_admin" for u in existing):
+            salt, p_hash = hash_password("admin123")
+            now_str = datetime.datetime.now(datetime.timezone.utc).astimezone().strftime("%d %b %Y, %I:%M %p")
+            admin_user = {
+                "id": 1,
+                "name": "Super Administrator",
+                "username": "admin",
+                "role": "super_admin",
+                "status": "active",
+                "salt": salt,
+                "password_hash": p_hash,
+                "created_at": now_str,
+                "last_login": "Never"
+            }
+            existing.insert(0, admin_user)
+            save_users(existing)
+            print("Restored default Super Admin to existing users.json")
 
     if not os.path.exists(LOGS_FILE):
         save_logs([])
@@ -73,8 +114,7 @@ def get_users():
     return []
 
 def save_users(users_list):
-    with open(USERS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(users_list, f, indent=2, ensure_ascii=False)
+    _atomic_json_write(USERS_FILE, users_list)
 
 def get_logs():
     if os.path.exists(LOGS_FILE):
@@ -86,15 +126,10 @@ def get_logs():
     return []
 
 def save_logs(logs_list):
-    with open(LOGS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(logs_list[:MAX_LOG_ENTRIES], f, indent=2, ensure_ascii=False)
+    _atomic_json_write(LOGS_FILE, logs_list, max_entries=MAX_LOG_ENTRIES)
 
 def save_sessions():
-    try:
-        with open(SESSIONS_FILE, 'w', encoding='utf-8') as f:
-            json.dump(SESSIONS, f, indent=2)
-    except Exception as e:
-        print(f"Error persisting sessions: {e}")
+    _atomic_json_write(SESSIONS_FILE, SESSIONS)
 
 # -------------------------------------------------------------
 # 2. CRYPTOGRAPHY & PASSWORDS
@@ -497,6 +532,92 @@ def admin_delete_user(user_id):
 def admin_clear_logs():
     save_logs([])
     return True
+
+def admin_export_backup_data():
+    """Returns a full system backup dictionary of users and logs."""
+    return {
+        "version": "1.0",
+        "exported_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "users": get_users(),
+        "login_logs": get_logs()
+    }
+
+def admin_import_backup_data(backup_dict):
+    """
+    Imports and restores users and login logs from backup.
+    Returns (success: bool, message: str)
+    """
+    if not isinstance(backup_dict, dict):
+        return False, "Invalid backup format. Expected JSON object."
+    
+    imported_users = backup_dict.get("users")
+    if not isinstance(imported_users, list) or len(imported_users) == 0:
+        return False, "No valid user records found in backup."
+
+    current_users = get_users()
+    current_usernames = {u["username"].lower(): u for u in current_users}
+
+    imported_count = 0
+    updated_count = 0
+
+    for u in imported_users:
+        if not isinstance(u, dict) or not u.get("username"):
+            continue
+        uname = u["username"].strip().lower()
+        clean_user = {
+            "id": u.get("id") or int(time.time() * 1000) + imported_count,
+            "name": u.get("name", uname),
+            "username": uname,
+            "role": u.get("role", "user"),
+            "status": u.get("status", "active"),
+            "salt": u.get("salt", ""),
+            "password_hash": u.get("password_hash", ""),
+            "created_at": u.get("created_at", "N/A"),
+            "last_login": u.get("last_login", "Never")
+        }
+
+        # If user has no password hash (e.g. plain password imported), generate hash
+        if not clean_user["password_hash"] and u.get("password"):
+            salt, p_hash = hash_password(str(u["password"]))
+            clean_user["salt"] = salt
+            clean_user["password_hash"] = p_hash
+
+        if uname in current_usernames:
+            idx = next(i for i, cur in enumerate(current_users) if cur["username"].lower() == uname)
+            current_users[idx] = clean_user
+            updated_count += 1
+        else:
+            current_users.append(clean_user)
+            imported_count += 1
+
+    # Ensure at least 1 super_admin exists
+    if not any(u.get("role") == "super_admin" for u in current_users):
+        salt, p_hash = hash_password("admin123")
+        current_users.insert(0, {
+            "id": 1,
+            "name": "Super Administrator",
+            "username": "admin",
+            "role": "super_admin",
+            "status": "active",
+            "salt": salt,
+            "password_hash": p_hash,
+            "created_at": "Restored",
+            "last_login": "Never"
+        })
+
+    save_users(current_users)
+
+    # Import logs if available
+    imported_logs = backup_dict.get("login_logs")
+    if isinstance(imported_logs, list) and len(imported_logs) > 0:
+        current_logs = get_logs()
+        existing_ids = {l.get("id") for l in current_logs if l.get("id")}
+        for l in imported_logs:
+            if isinstance(l, dict) and l.get("id") not in existing_ids:
+                current_logs.append(l)
+        save_logs(current_logs)
+
+    return True, f"Successfully restored: {imported_count} new users, {updated_count} updated users."
 
 # Initialize storage on import
 init_auth_storage()

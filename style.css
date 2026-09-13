@@ -1275,6 +1275,125 @@ optgroup option {
 }
 
 /* ==========================================================================
+   WRITING SECTION & HORIZONTAL SUBGROUPS (SHORT WRITING & LONG WRITING)
+   ========================================================================== */
+
+.writing-section-card {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #0284c7;
+  border-radius: 8px;
+  margin-top: 1.25rem;
+  margin-bottom: 0.85rem;
+  padding: 0.85rem 1.1rem 1rem 1.1rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.writing-section-card .writing-section-header {
+  color: #0f172a;
+  font-weight: 800;
+  font-size: 0.86rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding-bottom: 0.55rem;
+  margin-bottom: 0.85rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.writing-subgroup-block {
+  margin-bottom: 0.85rem;
+}
+
+.writing-subgroup-block:last-child {
+  margin-bottom: 0.2rem;
+}
+
+.writing-subgroup-title {
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.45rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.writing-title-text {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.writing-group-badge {
+  font-size: 0.72rem;
+  color: #0369a1;
+  font-weight: 600;
+  background: #e0f2fe;
+  padding: 2px 8px;
+  border-radius: 12px;
+  border: 1px solid #bae6fd;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  user-select: none;
+}
+
+.writing-group-badge:hover {
+  background: #bae6fd;
+}
+
+.writing-group-badge.has-selected {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0369a1;
+}
+
+.writing-topics-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.85rem;
+  padding-left: 0.75rem;
+  align-items: center;
+}
+
+.writing-topic-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.83rem;
+  font-weight: 500;
+  color: #334155;
+  cursor: pointer;
+  background: #f8fafc;
+  padding: 0.32rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.writing-topic-chip:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.writing-topic-chip.is-checked,
+.writing-topic-chip:has(input:checked) {
+  background: #f0f9ff;
+  border-color: #7dd3fc;
+  color: #0369a1;
+  font-weight: 600;
+}
+
+.writing-topic-cb {
+  width: 0.95rem;
+  height: 0.95rem;
+  accent-color: #0284c7;
+  cursor: pointer;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
    STUDENT EXAMINATION SYLLABUS SHEET MODAL & PRINT STYLES
    ========================================================================== */
 
@@ -1936,6 +2055,12 @@ optgroup option {
   text-transform: uppercase;
 }
 
+.subj-marks-badge.is-no-ut {
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+}
+
 /* Doubled row height in Part 2 and Part 3 */
 .paper-part-section-sea .paper-syllabus-table td {
   padding: 12px 8px !important;
@@ -2187,6 +2312,64 @@ optgroup option {
 .student-syllabus-paper.hide-unselected .sheet-inline-cb,
 .student-syllabus-paper.hide-unselected .paper-subj-actions,
 .student-syllabus-paper.hide-unselected .paper-no-selection-notice {
+  display: none !important;
+}
+
+/* Include in Circular Checkbox & Excluded Subject Styling */
+.sheet-include-subject-wrapper {
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+}
+
+.sheet-subject-include-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #1e293b;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  transition: all 0.15s ease;
+}
+
+.sheet-subject-include-label:hover {
+  background: #e2e8f0;
+}
+
+.sheet-subject-include-label.is-excluded {
+  color: #991b1b;
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.sheet-subject-include-cb {
+  accent-color: #0284c7;
+  cursor: pointer;
+  width: 0.85rem;
+  height: 0.85rem;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+tr.paper-subject-row.is-subject-excluded {
+  background-color: #fef2f2 !important;
+  opacity: 0.55;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+tr.paper-subject-row.is-subject-excluded .paper-subj-title {
+  color: #991b1b !important;
+}
+
+.student-syllabus-paper.hide-unselected tr.is-subject-excluded,
+.student-syllabus-paper.is-pdf-exporting tr.is-subject-excluded,
+.student-syllabus-paper.is-pdf-exporting .sheet-include-subject-wrapper {
   display: none !important;
 }
 
@@ -3397,6 +3580,11 @@ div.portion-print-summary {
   .paper-signatures-row {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
+  }
+
+  .paper-syllabus-table tr.is-subject-excluded,
+  .sheet-include-subject-wrapper {
+    display: none !important;
   }
 }
 
