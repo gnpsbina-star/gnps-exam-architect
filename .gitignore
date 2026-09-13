@@ -4,3 +4,9 @@ __pycache__/
 node_modules/
 .chrome_profile/
 scratch/
+
+# Runtime auth/audit data - contains password hashes, live session tokens,
+# and staff PII. Must never be committed.
+users.json
+sessions.json
+login_logs.json

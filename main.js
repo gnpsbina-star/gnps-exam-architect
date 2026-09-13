@@ -5,6 +5,28 @@ import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
 // Persistent Custom Subjects state
 let customSubjectsData = {};
 
+// Reads the stored auth token directly (safe to call before the module-level
+// `authToken`/`safeAuthStorage` bindings further down the file are initialized).
+function getStoredAuthToken() {
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage.getItem('gnps_auth_token')) {
+      return localStorage.getItem('gnps_auth_token');
+    }
+    if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('gnps_auth_token')) {
+      return sessionStorage.getItem('gnps_auth_token');
+    }
+  } catch (e) {}
+  return '';
+}
+
+// Escapes text for safe insertion into innerHTML. Use for any value that
+// originates from user input (usernames, audit log fields, etc.).
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
 // DOM Elements
 const classSelect = document.getElementById('classSelect');
 const subjectSelect = document.getElementById('subjectSelect');
@@ -181,18 +203,7 @@ async function loadCustomSubjects() {
     }
   } catch (e) {}
 
-  try {
-    const res = await fetch(`/api/custom-subjects?_t=${Date.now()}`, { cache: 'no-store' });
-    if (res.ok) {
-      customSubjectsData = await res.json();
-      try {
-        if (typeof localStorage !== 'undefined') {
-          localStorage.setItem('gnps_custom_subjects', JSON.stringify(customSubjectsData));
-        }
-      } catch (e) {}
-    }
-  } catch (err) {
-    console.warn("Using localStorage fallback for custom subjects", err);
+  const loadFromLocalCache = () => {
     try {
       if (typeof localStorage !== 'undefined') {
         const cached = localStorage.getItem('gnps_custom_subjects');
@@ -201,6 +212,29 @@ async function loadCustomSubjects() {
         }
       }
     } catch (e) {}
+  };
+
+  try {
+    const token = getStoredAuthToken();
+    const res = await fetch(`/api/custom-subjects?_t=${Date.now()}`, {
+      cache: 'no-store',
+      headers: token ? { 'Authorization': `Bearer ${token}`, 'X-Auth-Token': token } : {}
+    });
+    if (res.ok) {
+      customSubjectsData = await res.json();
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.setItem('gnps_custom_subjects', JSON.stringify(customSubjectsData));
+        }
+      } catch (e) {}
+    } else {
+      // Not authenticated yet (or session expired) - fall back to whatever was cached
+      // from the last successful load; loadCustomSubjects() re-runs after login.
+      loadFromLocalCache();
+    }
+  } catch (err) {
+    console.warn("Using localStorage fallback for custom subjects", err);
+    loadFromLocalCache();
   }
 
   // Remove school-excluded subjects (English R2, Hindi R1, and Class 8 legacy Computer Science)
@@ -1300,7 +1334,9 @@ async function updateExamBlueprint(forceRecalculate = false) {
 
   const cacheKey = `${className}_${subjectName}`;
   if (!sqpInstructionsCache[cacheKey]) {
-    fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}`)
+    fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}`, {
+      headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
+    })
       .then(res => res.ok ? res.json() : null)
       .then(data => {
         if (data && data.text) {
@@ -2329,7 +2365,7 @@ deleteCustomSubjectBtn.addEventListener('click', async () => {
   try {
     const res = await fetch('/api/custom-subjects', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken },
       body: JSON.stringify({ action: 'delete', class: selectedClass, subject: selectedSubject })
     });
     
@@ -2372,20 +2408,21 @@ if (fetchCbseSyllabusBtn) {
   
   try {
     const res = await fetch(`/api/fetch-syllabus?class=${encodeURIComponent(selectedClass)}&subject=${encodeURIComponent(selectedSubject)}&_t=${Date.now()}`, {
-      cache: 'no-store'
+      cache: 'no-store',
+      headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
     });
     if (!res.ok) throw new Error("Could not fetch syllabus");
-    
+
     const data = await res.json();
     if (data.syllabus && (Array.isArray(data.syllabus) ? data.syllabus.length > 0 : Object.keys(data.syllabus).length > 0)) {
       if (!cbseData[selectedClass]) cbseData[selectedClass] = {};
       cbseData[selectedClass][selectedSubject] = data.syllabus;
       if (!customSubjectsData[selectedClass]) customSubjectsData[selectedClass] = {};
       customSubjectsData[selectedClass][selectedSubject] = data.syllabus;
-      
+
       await fetch('/api/custom-subjects', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken },
         body: JSON.stringify({
           action: 'save',
           class: selectedClass,
@@ -2440,7 +2477,9 @@ if (fetchCbseBlueprintBtn) {
 
     try {
       const cacheKey = `${className}_${subjectName}`;
-      const res = await fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}`);
+      const res = await fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}`, {
+        headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
+      });
       if (res.ok) {
         const data = await res.json();
         if (data && data.text) {
@@ -2529,7 +2568,9 @@ openAddSubjectModalBtn.addEventListener('click', async () => {
   subjectSearchFilter.value = '';
   
   try {
-    const res = await fetch(`/api/cbse-subjects?class=${encodeURIComponent(selectedClass)}`);
+    const res = await fetch(`/api/cbse-subjects?class=${encodeURIComponent(selectedClass)}`, {
+      headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
+    });
     if (!res.ok) throw new Error("Failed to fetch CBSE subjects");
     
     fetchedCbseSubjectsList = await res.json();
@@ -2580,7 +2621,9 @@ async function handleAddSelectedSubject() {
   try {
     let chaptersList = [];
     try {
-      const sylRes = await fetch(`/api/fetch-syllabus?class=${encodeURIComponent(selectedClass)}&subject=${encodeURIComponent(selectedOpt.value)}`);
+      const sylRes = await fetch(`/api/fetch-syllabus?class=${encodeURIComponent(selectedClass)}&subject=${encodeURIComponent(selectedOpt.value)}`, {
+        headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
+      });
       if (sylRes.ok) {
         const sylData = await sylRes.json();
         if (sylData.syllabus && (Array.isArray(sylData.syllabus) ? sylData.syllabus.length > 0 : Object.keys(sylData.syllabus).length > 0)) {
@@ -2602,7 +2645,7 @@ async function handleAddSelectedSubject() {
     
     const res = await fetch('/api/custom-subjects', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken },
       body: JSON.stringify({
         action: 'save',
         class: selectedClass,
@@ -3315,7 +3358,9 @@ export async function buildPromptString(activeBtn) {
   let sqpData = null;
   
   try {
-    const response = await fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}`);
+    const response = await fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}`, {
+      headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
+    });
     if (response.ok) {
       const data = await response.json();
       if (data && (data.general_instructions || data.text)) {
@@ -6537,8 +6582,9 @@ async function handleAuthLogin(event) {
       authCurrentUser = data.user;
 
       safeAuthStorage.setToken(authToken, remember);
+      loadCustomSubjects();
 
-      showLoginAlert('success', `✅ Welcome back, <strong>${data.user.name}</strong>! Unlocking portal...`);
+      showLoginAlert('success', `✅ Welcome back, <strong>${escapeHtml(data.user.name)}</strong>! Unlocking portal...`);
       setTimeout(() => {
         if (passwordInput) passwordInput.value = '';
         updateHeaderAuthUI();
@@ -6683,12 +6729,12 @@ function renderAdminUsersTable(usersList) {
         <td style="font-weight: 700; color: #ffffff;">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span style="width: 24px; height: 24px; border-radius: 6px; background: ${isSuperAdmin ? '#f59e0b' : '#3b82f6'}; color: #000; font-size: 0.70rem; font-weight: 900; display: flex; align-items: center; justify-content: center;">
-              ${(u.name || u.username).charAt(0).toUpperCase()}
+              ${escapeHtml((u.name || u.username).charAt(0).toUpperCase())}
             </span>
-            <span>${u.name}</span>
+            <span>${escapeHtml(u.name)}</span>
           </div>
         </td>
-        <td style="font-family: monospace; color: #94a3b8;">${u.username}</td>
+        <td style="font-family: monospace; color: #94a3b8;">${escapeHtml(u.username)}</td>
         <td>
           <span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: ${isSuperAdmin ? 'rgba(245, 158, 11, 0.2)' : 'rgba(56, 189, 248, 0.2)'}; color: ${isSuperAdmin ? '#fde68a' : '#7dd3fc'}; border: 1px solid ${isSuperAdmin ? 'rgba(245, 158, 11, 0.4)' : 'rgba(56, 189, 248, 0.4)'};">
             ${isSuperAdmin ? '👑 SUPER ADMIN' : '👨‍🏫 FACULTY'}
@@ -6706,11 +6752,11 @@ function renderAdminUsersTable(usersList) {
             ${!isSuperAdmin ? '<span style="font-size: 0.62rem; opacity: 0.75;">(toggle)</span>' : ''}
           </button>
         </td>
-        <td style="color: #94a3b8; font-size: 0.72rem;">${u.last_login || 'Never'}</td>
+        <td style="color: #94a3b8; font-size: 0.72rem;">${escapeHtml(u.last_login || 'Never')}</td>
         <td style="text-align: right;">
           <div style="display: inline-flex; gap: 6px;">
-            <button type="button" onclick="window.handleResetUserPassword(${u.id}, '${u.username}')" class="btn-action-small" title="Reset user password">Reset PW</button>
-            ${!isSuperAdmin ? `<button type="button" onclick="window.handleDeleteUser(${u.id}, '${u.username}')" class="btn-action-danger" title="Delete account">Delete</button>` : ''}
+            <button type="button" onclick="window.handleResetUserPassword(${u.id})" class="btn-action-small" title="Reset user password">Reset PW</button>
+            ${!isSuperAdmin ? `<button type="button" onclick="window.handleDeleteUser(${u.id})" class="btn-action-danger" title="Delete account">Delete</button>` : ''}
           </div>
         </td>
       </tr>
@@ -6794,7 +6840,8 @@ async function handleCreateFacultyUser(event) {
 }
 
 // 7. Reset User Password
-async function handleResetUserPassword(userId, username) {
+async function handleResetUserPassword(userId) {
+  const username = (cachedAdminUsers.find(u => u.id === userId) || {}).username || 'this user';
   const newPass = prompt(`Enter new password for "${username}":`, 'gnps2026');
   if (!newPass) return;
 
@@ -6821,7 +6868,8 @@ async function handleResetUserPassword(userId, username) {
 }
 
 // 8. Delete User
-async function handleDeleteUser(userId, username) {
+async function handleDeleteUser(userId) {
+  const username = (cachedAdminUsers.find(u => u.id === userId) || {}).username || 'this user';
   if (!confirm(`Are you sure you want to permanently delete faculty account "${username}"?`)) return;
 
   try {
@@ -6892,21 +6940,21 @@ function renderAdminLogsTable(logsList) {
 
     return `
       <tr>
-        <td style="font-family: monospace; color: #cbd5e1; font-size: 0.72rem; white-space: nowrap;">${l.timestamp}</td>
+        <td style="font-family: monospace; color: #cbd5e1; font-size: 0.72rem; white-space: nowrap;">${escapeHtml(l.timestamp)}</td>
         <td>
-          <div style="font-weight: 700; color: #ffffff;">${l.name || l.username}</div>
-          <div style="font-family: monospace; font-size: 0.65rem; color: #64748b;">@${l.username}</div>
+          <div style="font-weight: 700; color: #ffffff;">${escapeHtml(l.name || l.username)}</div>
+          <div style="font-family: monospace; font-size: 0.65rem; color: #64748b;">@${escapeHtml(l.username)}</div>
         </td>
         <td>${resultBadge}</td>
-        <td style="font-family: monospace; color: #38bdf8; font-size: 0.72rem;">${l.ip}</td>
+        <td style="font-family: monospace; color: #38bdf8; font-size: 0.72rem;">${escapeHtml(l.ip)}</td>
         <td style="color: #e2e8f0; font-size: 0.72rem;">
           <div style="display: flex; align-items: center; gap: 6px;">
-            <span>💻</span> <span>${l.device || 'Standard Client'}</span>
+            <span>💻</span> <span>${escapeHtml(l.device || 'Standard Client')}</span>
           </div>
         </td>
         <td style="color: #94a3b8; font-size: 0.72rem;">
           <div style="display: flex; align-items: center; gap: 6px;">
-            <span>📍</span> <span>${l.location || 'Local School Network'}</span>
+            <span>📍</span> <span>${escapeHtml(l.location || 'Local School Network')}</span>
           </div>
         </td>
       </tr>
@@ -6950,9 +6998,21 @@ function exportAuditLogsToCSV() {
     return;
   }
 
+  // Escapes a value for a CSV cell and neutralizes leading =,+,-,@ so spreadsheet
+  // apps (Excel/Sheets) never interpret attacker-controlled log fields as formulas.
+  const csvCell = (val) => {
+    let s = String(val ?? '').replace(/"/g, '""');
+    if (/^[=+\-@]/.test(s)) s = `'${s}`;
+    return `"${s}"`;
+  };
+
   let csv = 'Timestamp (IST),Username,Full Name,Role,Login Result,IP Address,Device and Browser,Geographic Location\n';
   cachedAdminLogs.forEach(l => {
-    csv += `"${l.timestamp}","${l.username}","${l.name || l.username}","${l.role || 'user'}","${l.status}","${l.ip}","${(l.device || '').replace(/"/g, '""')}","${(l.location || '').replace(/"/g, '""')}"\n`;
+    csv += [
+      csvCell(l.timestamp), csvCell(l.username), csvCell(l.name || l.username),
+      csvCell(l.role || 'user'), csvCell(l.status), csvCell(l.ip),
+      csvCell(l.device), csvCell(l.location)
+    ].join(',') + '\n';
   });
 
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });

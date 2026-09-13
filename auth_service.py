@@ -114,24 +114,37 @@ def verify_password(password, salt, stored_hash):
 # 3. REAL CLIENT IP, GEOLOCATION & DEVICE PARSING
 # -------------------------------------------------------------
 
+
+# Proxy-forwarded headers (CF-Connecting-IP, X-Forwarded-For, X-Real-IP) are
+# fully client-controlled unless something in front of this process (a CDN or
+# reverse proxy) strips/overwrites them before forwarding the request. Trusting
+# them unconditionally lets any client spoof their IP to bypass rate-limiting
+# and poison the audit log. Only honor them when explicitly deployed behind
+# such a proxy, via TRUST_PROXY_HEADERS=1.
+TRUST_PROXY_HEADERS = os.environ.get('TRUST_PROXY_HEADERS', '0').strip().lower() in ('1', 'true', 'yes')
+
 def get_client_ip(headers, client_address):
     """
-    Extracts true client IP respecting Cloudflare, Nginx, and standard reverse proxies.
+    Extracts the client IP. By default trusts only the direct TCP peer address.
+    When TRUST_PROXY_HEADERS=1 is set (server sits behind a trusted reverse
+    proxy/CDN), honors CF-Connecting-IP / X-Forwarded-For / X-Real-IP instead.
     """
-    cf_ip = headers.get('CF-Connecting-IP')
-    if cf_ip:
-        return cf_ip.strip()
+    if TRUST_PROXY_HEADERS:
+        cf_ip = headers.get('CF-Connecting-IP')
+        if cf_ip:
+            return cf_ip.strip()
 
-    xff = headers.get('X-Forwarded-For')
-    if xff:
-        # First IP in comma-separated list is client IP
-        parts = [p.strip() for p in xff.split(',')]
-        if parts and parts[0]:
-            return parts[0]
+        xff = headers.get('X-Forwarded-For')
+        if xff:
+            parts = [p.strip() for p in xff.split(',') if p.strip()]
+            if parts:
+                # Last entry is the one appended by the nearest trusted proxy hop;
+                # earlier entries can be freely set by the client.
+                return parts[-1]
 
-    real_ip = headers.get('X-Real-IP')
-    if real_ip:
-        return real_ip.strip()
+        real_ip = headers.get('X-Real-IP')
+        if real_ip:
+            return real_ip.strip()
 
     if client_address and len(client_address) > 0:
         return client_address[0]

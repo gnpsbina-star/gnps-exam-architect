@@ -792,6 +792,18 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             return auth_header[7:].strip()
         return self.headers.get('X-Auth-Token', '').strip()
 
+    def require_auth(self):
+        """
+        Verifies the request carries a valid session token.
+        Returns the authenticated user dict, or sends a 401 response and returns None.
+        """
+        token = self.extract_auth_token()
+        is_valid, user = auth_service.verify_session_token(token)
+        if not is_valid:
+            self.send_json(401, {"error": "Authentication required. Please sign in."})
+            return None
+        return user
+
     def send_json(self, status_code, data):
         self.send_response(status_code)
         self.send_header('Content-type', 'application/json')
@@ -866,6 +878,8 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             return
         
         elif parsed_path.path == '/api/cbse-subjects':
+            if not self.require_auth():
+                return
             cls = query_components.get('class', ['Class 10'])[0]
             print(f"API: Fetching all CBSE subjects for {cls}")
             sys.stdout.flush()
@@ -877,6 +891,8 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             return
 
         elif parsed_path.path == '/api/fetch-syllabus':
+            if not self.require_auth():
+                return
             cls = query_components.get('class', [''])[0]
             subject = query_components.get('subject', [''])[0]
             if not cls or not subject:
@@ -892,6 +908,8 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             return
 
         elif parsed_path.path == '/api/custom-subjects':
+            if not self.require_auth():
+                return
             data = get_custom_data()
             self.send_response(200)
             self.send_header('Content-type', 'application/json')
@@ -903,9 +921,11 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             return
 
         elif parsed_path.path == '/api/fetch-sqp':
+            if not self.require_auth():
+                return
             cls = query_components.get('class', [''])[0]
             subject = query_components.get('subject', [''])[0]
-            
+
             if not cls or not subject:
                 self.send_error(400, "Missing class or subject")
                 return
@@ -1092,6 +1112,8 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             return
 
         elif parsed_path.path == '/api/custom-subjects':
+            if not self.require_auth():
+                return
             content_length = int(self.headers.get('Content-Length', 0))
             if content_length == 0:
                 self.send_error(400, "Empty payload")
@@ -1135,6 +1157,8 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             return
 
         elif parsed_path.path == '/api/gemini':
+            if not self.require_auth():
+                return
             content_length = int(self.headers.get('Content-Length', 0))
             if content_length == 0:
                 self.send_error(400, "Empty payload")
