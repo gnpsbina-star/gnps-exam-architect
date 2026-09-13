@@ -1547,9 +1547,9 @@ optgroup option {
   font-size: 0.8rem !important;
   font-weight: 600 !important;
   color: #f1f5f9 !important;
-  width: 420px;
-  max-width: 60vw;
-  min-width: 200px;
+  width: 480px !important;
+  max-width: 70vw !important;
+  min-width: 220px !important;
   letter-spacing: 0.3px;
   box-shadow: none !important;
   margin: 0 !important;
