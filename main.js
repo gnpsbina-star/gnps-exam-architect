@@ -4789,9 +4789,9 @@ export const cbseSEAData = {
 };
 
 export const coScholasticSubjects = [
-  { key: "Music", name: "Music", subtitle: "Vocal & Instrumental", book: "School Music Curriculum", prompt: "Subject Teacher's Handwritten Syllabus, Raagas & Songs" },
-  { key: "Art & Craft", name: "Art & Craft", subtitle: "Visual Arts & Creative Craft", book: "Visual Arts Curriculum", prompt: "Subject Teacher's Handwritten Drawing Themes, Materials & Crafts" },
-  { key: "Yoga", name: "Yoga", subtitle: "Asanas, Pranayama & Fitness", book: "Physical & Health Education", prompt: "Subject Teacher's Handwritten Asanas, Surya Namaskar & Fitness Evaluation" }
+  { key: "Music", name: "Music", subtitle: "Vocal & Instrumental", book: "School Music Curriculum" },
+  { key: "Art & Craft", name: "Art & Craft", subtitle: "Visual Arts & Creative Craft", book: "Visual Arts Curriculum" },
+  { key: "Yoga", name: "Yoga", subtitle: "Asanas, Pranayama & Fitness", book: "Physical & Health Education" }
 ];
 
 // Tracks filtered chapters: { [subject]: Set([chapter1, chapter2]) }
@@ -4820,19 +4820,20 @@ function setSubjectIncludedInSheet(cls, subjKey, included) {
   sheetSubjectInclusions[cls][subjKey] = !!included;
 }
 
-export const coScholasticCriteriaMap = {
-  "Music": "Sursadhana (alankars in Bilawal thaat), singing of Patriotic / Community Song with correct rhythm, knowledge of basic Taals (Teentaal, Keharwa) with hand claps (Taali/Khali), and active choir participation.",
-  "Art & Craft": "Perspective drawing, landscape painting with water/poster colors, Indian folk art (Madhubani / Warli design), composition balance, color shading technique, and neatness of Art Portfolio file.",
-  "Yoga": "Demonstration of Suryanamaskar (12 steps with breathing coordination), standing/sitting asanas (Tadasana, Vrikshasana, Bhujangasana, Paschimottanasana), Pranayama (Anulom-Vilom, Kapalbhati), physical stamina, and sportsmanship."
-};
+// Co-scholastic (Part 3) evaluation criteria, typed in manually by the subject
+// teacher per class. Not persisted anywhere - lives only in this page's memory
+// for the current session: { [cls]: { [subjectName]: text } }
+let sheetCoScholasticCriteria = {};
 
-function getCoScholasticCriteria(subjName) {
-  for (const [k, v] of Object.entries(coScholasticCriteriaMap)) {
-    if (subjName.toLowerCase().includes(k.toLowerCase())) {
-      return v;
-    }
+function getCoScholasticCriteriaText(cls, subjName) {
+  return (sheetCoScholasticCriteria[cls] && sheetCoScholasticCriteria[cls][subjName]) || '';
+}
+
+function setCoScholasticCriteriaText(cls, subjName, text) {
+  if (!sheetCoScholasticCriteria[cls]) {
+    sheetCoScholasticCriteria[cls] = {};
   }
-  return "Prescribed theoretical understanding, hands-on skill practice, portfolio maintenance, and active classroom participation.";
+  sheetCoScholasticCriteria[cls][subjName] = text;
 }
 
 function formatExamDate(dateStr) {
@@ -6263,11 +6264,14 @@ function renderSyllabusSheetPaper() {
           </td>
           <td style="min-height: 100px; vertical-align: top; padding: 10px 8px;">
             <div style="font-size: 8.5pt; color: #000000; line-height: 1.45;">
-              <strong>Evaluation Criteria:</strong> ${getCoScholasticCriteria(subjName)}
+              <strong>Evaluation Criteria:</strong> <span class="paper-coscholastic-criteria-display">${escapeHtml(getCoScholasticCriteriaText(cls, subjName))}</span>
             </div>
-            <div style="font-size: 8pt; color: #555555; font-style: italic; margin-top: 6px;">
-              (${item.prompt})
-            </div>
+            <textarea
+              class="sheet-coscholastic-criteria-input no-print"
+              data-subject="${subjName}"
+              rows="2"
+              placeholder="Type this year's ${subjName} evaluation criteria here..."
+            >${escapeHtml(getCoScholasticCriteriaText(cls, subjName))}</textarea>
           </td>
         </tr>
       `;
@@ -6834,9 +6838,10 @@ function exportSyllabusSheetToExcel() {
       if (!isSubjectIncludedInSheet(cls, subjName)) return;
       const checkedSet = getSubjectSelectionForSheet(cls, subjName);
       if (checkedSet && (checkedSet.has('__included__') || checkedSet.has(subjName))) {
+        const criteria = getCoScholasticCriteriaText(cls, subjName).replace(/"/g, '""');
         csv += includeSubtopics
-          ? `"${rowCount++}","${formatDateRange(coSchDateFrom, coSchDateTo)}","${subjName}","Part 3: Co-Scholastic Activities","(Subject Teacher's Handwritten Syllabus)",""\n`
-          : `"${rowCount++}","${formatDateRange(coSchDateFrom, coSchDateTo)}","${subjName}","Part 3: Co-Scholastic Activities","(Subject Teacher's Handwritten Syllabus)"\n`;
+          ? `"${rowCount++}","${formatDateRange(coSchDateFrom, coSchDateTo)}","${subjName}","Part 3: Co-Scholastic Activities","${criteria}",""\n`
+          : `"${rowCount++}","${formatDateRange(coSchDateFrom, coSchDateTo)}","${subjName}","Part 3: Co-Scholastic Activities","${criteria}"\n`;
       }
     });
   }
@@ -6996,6 +7001,25 @@ if (syllabusSheetPaper) {
       e.stopPropagation();
       handleSubjectClearAll(clearBtn.dataset.subject);
       return;
+    }
+  });
+
+  // Co-scholastic (Part 3) manual evaluation criteria: update state and the
+  // paired print-visible display span directly, without a full re-render,
+  // so the teacher doesn't lose focus/cursor position while typing.
+  syllabusSheetPaper.addEventListener('input', (e) => {
+    if (e.target && e.target.classList.contains('sheet-coscholastic-criteria-input')) {
+      const subjName = e.target.dataset.subject;
+      const cls = sheetClassSelect ? sheetClassSelect.value : '';
+      setCoScholasticCriteriaText(cls, subjName, e.target.value);
+
+      const row = e.target.closest('tr');
+      const display = row ? row.querySelector('.paper-coscholastic-criteria-display') : null;
+      if (display) display.textContent = e.target.value;
+
+      // Auto-grow to fit the typed content
+      e.target.style.height = 'auto';
+      e.target.style.height = `${e.target.scrollHeight}px`;
     }
   });
 }

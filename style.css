@@ -2166,6 +2166,30 @@ optgroup option {
   letter-spacing: 0.2px;
 }
 
+.sheet-coscholastic-criteria-input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 6px;
+  padding: 6px 8px;
+  font-family: inherit;
+  font-size: 9pt;
+  line-height: 1.4;
+  color: #1e293b;
+  background: #f8fafc;
+  border: 1px dashed #94a3b8;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 44px;
+}
+
+.sheet-coscholastic-criteria-input:focus {
+  outline: none;
+  border-style: solid;
+  border-color: #38bdf8;
+  background: #ffffff;
+}
+
 .paper-subj-date-container {
   margin-top: 4px;
   margin-bottom: 5px;
