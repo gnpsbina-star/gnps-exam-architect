@@ -4860,6 +4860,10 @@ function setSubjectIncludedInSheet(cls, subjKey, included) {
   sheetSubjectInclusions[cls][subjKey] = !!included;
 }
 
+// Part 4 (Notebook Completion & Submission) dates, one per class and
+// scholastic subject: { [cls]: { [subject]: 'YYYY-MM-DD' } }
+let sheetNotebookDates = {};
+
 // Co-scholastic (Part 3) evaluation criteria, typed in manually by the subject
 // teacher per class. Not persisted anywhere - lives only in this page's memory
 // for the current session: { [cls]: { [subjectName]: text } }
@@ -5384,6 +5388,22 @@ function handleSubjectDateChange(inputEl) {
     sheetSubjectDates[cls][key] = val;
   } else {
     delete sheetSubjectDates[cls][key];
+  }
+  renderSyllabusSheetPaper();
+}
+
+function handleNotebookDateChange(inputEl) {
+  if (!sheetClassSelect) return;
+  const cls = sheetClassSelect.value;
+  const subj = inputEl.dataset.subject;
+  const val = inputEl.value ? inputEl.value.trim() : '';
+  if (!sheetNotebookDates[cls]) {
+    sheetNotebookDates[cls] = {};
+  }
+  if (val) {
+    sheetNotebookDates[cls][subj] = val;
+  } else {
+    delete sheetNotebookDates[cls][subj];
   }
   renderSyllabusSheetPaper();
 }
@@ -6317,6 +6337,33 @@ function renderSyllabusSheetPaper() {
       `;
     });
 
+    // 4. PART 4: Notebook Completion & Submission (Internal Assessment)
+    // Same scholastic subject list as Part 1 - one submission date per subject.
+    let part4RowsHtml = '';
+    let p4Sno = 1;
+
+    scholasticEntries.forEach(([subjName]) => {
+      if (isSchoolExcludedSubject(subjName)) return;
+
+      const notebookDate = (sheetNotebookDates[cls] && sheetNotebookDates[cls][subjName]) ? sheetNotebookDates[cls][subjName] : '';
+      const notebookDateBadgeHtml = notebookDate
+        ? `<div class="paper-subj-date-badge"><span class="no-print">📅 </span><span class="paper-date-label">Date: </span>${formatExamDate(notebookDate)}</div>`
+        : `<div class="paper-subj-no-date no-print">📅 Set Submission Date</div>`;
+
+      part4RowsHtml += `
+        <tr class="paper-subject-row">
+          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 10px 4px;">${p4Sno++}</td>
+          <td style="padding: 10px 8px;">
+            <div class="paper-subj-title">${subjName}</div>
+          </td>
+          <td style="padding: 10px 8px; text-align: center;">
+            <input type="date" class="sheet-notebook-date-input no-print" data-subject="${subjName}" value="${notebookDate}" title="Notebook Submission Date">
+            ${notebookDateBadgeHtml}
+          </td>
+        </tr>
+      `;
+    });
+
     const instructionsHtml = includeInstructions ? `
       <div class="paper-instructions-box">
         <div class="paper-instructions-heading" style="text-decoration: none !important;">GENERAL INSTRUCTIONS:</div>
@@ -6324,6 +6371,7 @@ function renderSyllabusSheetPaper() {
           <li><strong>Part 1 (Scholastic Written Examinations):</strong> Pen-paper exams will be conducted on scheduled dates. Timely reporting is compulsory.</li>
           <li><strong>Part 2 (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between ${formatDateRange(seaDateFrom, seaDateTo)} in regular subject periods.</li>
           <li><strong>Part 3 (Co-Scholastic Assessments):</strong> Music, Art & Craft, and Yoga evaluations are conducted between ${formatDateRange(coSchDateFrom, coSchDateTo)} during class periods.</li>
+          <li><strong>Part 4 (Notebook Completion & Submission):</strong> Notebooks must be submitted to the respective subject teacher on the date specified against each subject; 5 marks are awarded per the evaluation criteria noted below.</li>
           <li><strong>Compulsory Attendance & Materials:</strong> Full-day attendance is compulsory. Students must carry complete practical files, journals, and stationery.</li>
         </ol>
       </div>
@@ -6419,6 +6467,33 @@ function renderSyllabusSheetPaper() {
           </thead>
           <tbody>
             ${part3RowsHtml}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- PART 4: NOTEBOOK COMPLETION & SUBMISSION -->
+      <div class="paper-part-section">
+        <div class="paper-part-banner">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span class="paper-part-badge">PART 4</span>
+            <span>NOTEBOOK COMPLETION & SUBMISSION (INTERNAL ASSESSMENT)</span>
+          </div>
+        </div>
+        <div class="paper-part-meta-strip" style="grid-template-columns: 1fr !important; text-align: left !important;">
+          <div class="part-meta-cell" style="border-right: none !important;">
+            <strong>Evaluation Criteria (5 Marks):</strong> Regularity &amp; Syllabus Completion (2) — all classwork/homework recorded regularly, entire prescribed syllabus completed, corrections done; Neatness, Upkeep &amp; Presentation (2) — notebook well-maintained, properly covered &amp; labelled, index page maintained, legible handwriting; Overall Discipline (1) — margins, date-wise entries, diagrams/tables neatly done.
+          </div>
+        </div>
+        <table class="paper-syllabus-table">
+          <thead>
+            <tr>
+              <th style="width: 35px; text-align: center;">S.No.</th>
+              <th>Subject</th>
+              <th style="width: 190px; text-align: center;">Notebook Submission Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${part4RowsHtml}
           </tbody>
         </table>
       </div>
@@ -7024,6 +7099,9 @@ if (syllabusSheetPaper) {
     }
     if (e.target && e.target.classList.contains('sheet-subj-date-input')) {
       handleSubjectDateChange(e.target);
+    }
+    if (e.target && e.target.classList.contains('sheet-notebook-date-input')) {
+      handleNotebookDateChange(e.target);
     }
   });
 
