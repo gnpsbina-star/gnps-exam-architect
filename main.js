@@ -27,6 +27,46 @@ function escapeHtml(value) {
   }[c]));
 }
 
+// Declared here (rather than down in the auth/admin section below) because
+// page-init code - e.g. initClassDropdown() synchronously dispatching a
+// 'change' event, which cascades into updateExamBlueprint()'s fetch headers -
+// runs at module load time and referenced `authToken` before its old
+// declaration point, throwing "Cannot access 'authToken' before
+// initialization". Declaring it this early guarantees it's always
+// initialized before anything else in the file can run.
+const safeAuthStorage = {
+  getToken: () => {
+    try {
+      if (typeof localStorage !== 'undefined' && localStorage.getItem('gnps_auth_token')) {
+        return localStorage.getItem('gnps_auth_token');
+      }
+      if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('gnps_auth_token')) {
+        return sessionStorage.getItem('gnps_auth_token');
+      }
+    } catch (e) {}
+    return '';
+  },
+  setToken: (token, remember = true) => {
+    try {
+      if (remember) {
+        if (typeof localStorage !== 'undefined') localStorage.setItem('gnps_auth_token', token);
+        if (typeof sessionStorage !== 'undefined') sessionStorage.removeItem('gnps_auth_token');
+      } else {
+        if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('gnps_auth_token', token);
+        if (typeof localStorage !== 'undefined') localStorage.removeItem('gnps_auth_token');
+      }
+    } catch (e) {}
+  },
+  clearToken: () => {
+    try {
+      if (typeof localStorage !== 'undefined') localStorage.removeItem('gnps_auth_token');
+      if (typeof sessionStorage !== 'undefined') sessionStorage.removeItem('gnps_auth_token');
+    } catch (e) {}
+  }
+};
+
+let authToken = safeAuthStorage.getToken();
+
 // DOM Elements
 const classSelect = document.getElementById('classSelect');
 const subjectSelect = document.getElementById('subjectSelect');
@@ -7059,40 +7099,10 @@ if (syllabusSheetModal) {
 // ==========================================================================
 // INSTITUTIONAL AUTHENTICATION & SUPER ADMIN MANAGEMENT SYSTEM
 // ==========================================================================
-
-const safeAuthStorage = {
-  getToken: () => {
-    try {
-      if (typeof localStorage !== 'undefined' && localStorage.getItem('gnps_auth_token')) {
-        return localStorage.getItem('gnps_auth_token');
-      }
-      if (typeof sessionStorage !== 'undefined' && sessionStorage.getItem('gnps_auth_token')) {
-        return sessionStorage.getItem('gnps_auth_token');
-      }
-    } catch (e) {}
-    return '';
-  },
-  setToken: (token, remember = true) => {
-    try {
-      if (remember) {
-        if (typeof localStorage !== 'undefined') localStorage.setItem('gnps_auth_token', token);
-        if (typeof sessionStorage !== 'undefined') sessionStorage.removeItem('gnps_auth_token');
-      } else {
-        if (typeof sessionStorage !== 'undefined') sessionStorage.setItem('gnps_auth_token', token);
-        if (typeof localStorage !== 'undefined') localStorage.removeItem('gnps_auth_token');
-      }
-    } catch (e) {}
-  },
-  clearToken: () => {
-    try {
-      if (typeof localStorage !== 'undefined') localStorage.removeItem('gnps_auth_token');
-      if (typeof sessionStorage !== 'undefined') sessionStorage.removeItem('gnps_auth_token');
-    } catch (e) {}
-  }
-};
+// (safeAuthStorage / authToken are declared at the top of this file - see
+// the comment there for why.)
 
 let authCurrentUser = null;
-let authToken = safeAuthStorage.getToken();
 let cachedAdminUsers = [];
 let cachedAdminLogs = [];
 let activeAdminTab = 'users';
