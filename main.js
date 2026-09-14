@@ -745,13 +745,14 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   // 8. Standard 80M Board Subjects (Math, Science 9/10, SST 9/10, Accounts, Economics, etc.)
   else {
     const isSecSocial = (className === "Class 9" || className === "Class 10") && (subLower.includes("social") || subLower.includes("sst") || subLower.includes("087"));
-    // Class 6-9 follow the Class 10 board pattern for full-syllabus exams
-    // (this branch is only reached once marks don't match the narrower
-    // Unit Test / Periodic Assessment tiers above, which keep the plain
-    // type-based template since their syllabus scope can't guarantee
-    // coverage across all three disciplines).
-    const isJuniorClass = ["Class 6", "Class 7", "Class 8", "Class 9"].includes(className);
-    const isSecScience = !isSecSocial && (isJuniorClass || className === "Class 10") && subLower.includes("science");
+    // Only Class 9-10 use the Biology/Chemistry/Physics subject-based split -
+    // their NCERT syllabus is genuinely organized into those three
+    // disciplines, matching the real Class 10 board pattern. Class 6-8's
+    // Science syllabus is thematically integrated (e.g. "Beyond Earth",
+    // "Nature's Treasures", "Materials Around Us" don't map cleanly onto
+    // Biology/Chemistry/Physics), so it keeps the plain type-based template
+    // (MCQ/VSA/SA/LA/Case) at every mark tier, including the full exam.
+    const isSecScience = !isSecSocial && (className === "Class 9" || className === "Class 10") && subLower.includes("science");
 
     if (isSecScience) {
       // CBSE's real Class 9/10 Science paper is NOT split into type-based
