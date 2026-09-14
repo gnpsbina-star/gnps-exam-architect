@@ -525,16 +525,6 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
           { name: "Section C", type: "Fill in the Blanks & Match Columns / Trivia (Sports, Books, Facts)", count: 6, unitMark: 1, marksPerQ: "1 Mark", total: 6, choice: "All Compulsory" }
         ];
       }
-    } else if (subLower.includes("science") && !subLower.includes("social")) {
-      // Mirrors the official Class 10 board pattern's subject-based Section
-      // A/B/C (Biology/Chemistry/Physics) principle, scaled down - per
-      // school policy, Class 6-9 Science exams follow the Class 10 board
-      // structure at every mark tier, not just the full 80-mark exam.
-      sections = [
-        { name: "Section A", type: "Biology", count: 4, unitMark: 2.5, marksPerQ: "Mixed (1/3/5 Marks)", total: 10, choice: "2 MCQ (2M) + 1 SA (3M) + 1 LA (5M)" },
-        { name: "Section B", type: "Chemistry", count: 3, unitMark: 1.7, marksPerQ: "Mixed (1/3 Marks)", total: 5, choice: "2 MCQ (2M) + 1 SA (3M)" },
-        { name: "Section C", type: "Physics", count: 3, unitMark: 1.7, marksPerQ: "Mixed (1/3 Marks)", total: 5, choice: "2 MCQ (2M) + 1 SA (3M)" }
-      ];
     } else {
       sections = [
         { name: "Section A", type: "Multiple Choice Questions (MCQs)", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "Compulsory" },
@@ -663,15 +653,6 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
         { name: "Section C", type: "Fill in the Blanks & Match Columns (Sports, Books, Currencies)", count: 10, unitMark: 1, marksPerQ: "1 Mark", total: 10, choice: "All Compulsory" },
         { name: "Section D", type: "Logical Reasoning & Mental Ability Trivia (Patterns, Series, Analogies)", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "All Compulsory" }
       ];
-    } else if (subLower.includes("science") && !subLower.includes("social")) {
-      // Same subject-based (Biology/Chemistry/Physics) principle as the
-      // Class 10 board pattern, scaled to this mark tier - see Unit Test
-      // branch above for the policy rationale.
-      sections = [
-        { name: "Section A", type: "Biology", count: 7, unitMark: 2.3, marksPerQ: "Mixed (1/2/3/4 Marks)", total: 16, choice: "3 MCQ (3M) + 1 VSA (2M) + 1 SA (3M) + 1 LA (4M) + 1 Case-Based (4M)" },
-        { name: "Section B", type: "Chemistry", count: 7, unitMark: 1.7, marksPerQ: "Mixed (1/2/3 Marks)", total: 12, choice: "4 MCQ (4M) + 1 VSA (2M) + 2 SA (6M)" },
-        { name: "Section C", type: "Physics", count: 7, unitMark: 1.7, marksPerQ: "Mixed (1/2/3 Marks)", total: 12, choice: "4 MCQ (4M) + 1 VSA (2M) + 2 SA (6M)" }
-      ];
     } else {
       sections = [
         { name: "Section A", type: "MCQs & Assertion-Reasoning", count: 8, unitMark: 1, marksPerQ: "1 Mark", total: 8, choice: "Compulsory" },
@@ -764,7 +745,13 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   // 8. Standard 80M Board Subjects (Math, Science 9/10, SST 9/10, Accounts, Economics, etc.)
   else {
     const isSecSocial = (className === "Class 9" || className === "Class 10") && (subLower.includes("social") || subLower.includes("sst") || subLower.includes("087"));
-    const isSecScience = !isSecSocial && (className === "Class 9" || className === "Class 10") && subLower.includes("science");
+    // Class 6-9 follow the Class 10 board pattern for full-syllabus exams
+    // (this branch is only reached once marks don't match the narrower
+    // Unit Test / Periodic Assessment tiers above, which keep the plain
+    // type-based template since their syllabus scope can't guarantee
+    // coverage across all three disciplines).
+    const isJuniorClass = ["Class 6", "Class 7", "Class 8", "Class 9"].includes(className);
+    const isSecScience = !isSecSocial && (isJuniorClass || className === "Class 10") && subLower.includes("science");
 
     if (isSecScience) {
       // CBSE's real Class 9/10 Science paper is NOT split into type-based
