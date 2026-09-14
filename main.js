@@ -750,12 +750,16 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
     const isSecScience = !isSecSocial && (className === "Class 9" || className === "Class 10") && subLower.includes("science");
 
     if (isSecScience) {
+      // CBSE's real Class 9/10 Science paper is NOT split into type-based
+      // sections (MCQ/VSA/SA/LA/Case) - it's split into 3 SUBJECT sections
+      // (Biology, Chemistry, Physics), each of which internally contains its
+      // own mix of every question type. Marks per subject match CBSE's
+      // official unit weightage (World of Living + Our Environment = 30,
+      // Chemical Substances = 25, Natural Phenomena + Effects of Current = 25).
       sections = [
-        { name: "Section A", type: "MCQs & Assertion-Reasoning", count: 20, unitMark: 1, marksPerQ: "1 Mark", total: 20, choice: "16 MCQs + 4 Assertion-Reason" },
-        { name: "Section B", type: "Very Short Answer (VSA)", count: 6, unitMark: 2, marksPerQ: "2 Marks", total: 12, choice: "Internal choice in 2 Qs" },
-        { name: "Section C", type: "Short Answer (SA)", count: 7, unitMark: 3, marksPerQ: "3 Marks", total: 21, choice: "Internal choice in 2 Qs" },
-        { name: "Section D", type: "Long Answer (LA)", count: 3, unitMark: 5, marksPerQ: "5 Marks", total: 15, choice: "Internal choice in all 3 Qs" },
-        { name: "Section E", type: "Case-Based / Source Integrated", count: 3, unitMark: 4, marksPerQ: "4 Marks", total: 12, choice: "Internal choice in one sub-part" }
+        { name: "Section A", type: "Biology (World of Living + Our Environment)", count: 15, unitMark: 2, marksPerQ: "Mixed (1/2/3/4/5 Marks)", total: 30, choice: "8 MCQ/Assertion-Reasoning (8M) + 2 VSA (4M) + 3 SA (9M) + 1 LA (5M) + 1 Case-Based (4M)" },
+        { name: "Section B", type: "Chemistry (Chemical Substances - Nature & Behaviour)", count: 12, unitMark: 2.1, marksPerQ: "Mixed (1/2/3/4/5 Marks)", total: 25, choice: "6 MCQ/Assertion-Reasoning (6M) + 2 VSA (4M) + 2 SA (6M) + 1 LA (5M) + 1 Case-Based (4M)" },
+        { name: "Section C", type: "Physics (Natural Phenomena + Effects of Current)", count: 12, unitMark: 2.1, marksPerQ: "Mixed (1/2/3/4/5 Marks)", total: 25, choice: "6 MCQ/Assertion-Reasoning (6M) + 2 VSA (4M) + 2 SA (6M) + 1 LA (5M) + 1 Case-Based (4M)" }
       ];
     } else if (isSecSocial) {
       sections = [
@@ -3860,6 +3864,11 @@ export async function buildPromptString(activeBtn) {
       blueprintPromptText += `*   **${s.name}**: ${s.type} -> ${s.count} Question(s) [${s.marksPerQ} each] = ${s.total} Marks (${s.choice})\n`;
     });
     blueprintPromptText += `\n*(Note: You must construct BOTH Set A and Set B strictly conforming to this exact section layout and question count)*\n`;
+
+    const isCombinedScience = (className === 'Class 9' || className === 'Class 10') && subjectName.toLowerCase().includes('science') && !subjectName.toLowerCase().includes('social');
+    if (isCombinedScience) {
+      blueprintPromptText += `\n**CRITICAL — SECTION MEANING FOR SCIENCE:** Unlike most other subjects, Section A / B / C above are NOT question-type groupings. They are SUBJECT groupings: Section A = Biology questions only, Section B = Chemistry questions only, Section C = Physics questions only. Each section must internally contain its own full mix of MCQs, Assertion-Reasoning, VSA, SA, LA, and Case-Based questions in the exact counts given for that section — do NOT group all MCQs together across subjects, and do NOT create separate Section D/E for question types. This matches the real official CBSE Class 9/10 Science board exam structure.\n`;
+    }
   }
 
   const cleanClass = className.replace(/[^a-zA-Z0-9]/g, '_');
@@ -3907,21 +3916,22 @@ ${blueprintPromptText}
     *   **NCERT Main Textbooks** (in-text experiment activities, highlighted conceptual boxes, and exercise problems).
     *   **CBSE Previous 10 Years Board Papers (PYQs)**.
 8.  **Official CBSE Board Typology Framing & 100% Score Exam Guidelines (NEP 2020 & Latest Board SQP Pattern):**
-    *   **Section A (1-Mark Objective & Assertion-Reasoning):**
+    *(Note: these typology rules apply to every question of the stated mark value, regardless of which lettered Section it physically appears in - some subjects group questions by type (Section A = all 1-mark, etc.), while Class 9/10 Science groups them by subject area instead (Section A = Biology, B = Chemistry, C = Physics), with every question type appearing inside each of those sections. Follow the "Section-wise Question Breakdown" blueprint above for the actual physical layout.)*
+    *   **1-Mark Objective & Assertion-Reasoning Questions:**
         - **Diagnostic MCQs:** Options (a), (b), (c), (d) must feature plausible distractors targeting common student misconceptions documented in CBSE Board Evaluation Reports (e.g., reciprocal lens formula errors, Cartesian sign mistakes in mirror/coordinate geometry, incomplete definitions).
         - **Assertion-Reasoning:** Must strictly follow the official CBSE 4-option rubric:
           *(a) Both Assertion (A) and Reason (R) are true and Reason (R) is the correct explanation of Assertion (A).*
           *(b) Both Assertion (A) and Reason (R) are true, but Reason (R) is NOT the correct explanation of Assertion (A).*
           *(c) Assertion (A) is true, but Reason (R) is false.*
           *(d) Assertion (A) is false, but Reason (R) is true.*
-    *   **Section B (2-Mark Very Short Answer - VSA):**
+    *   **2-Mark Very Short Answer (VSA) Questions:**
         - Word limit: 30–50 words. Formulate questions so students provide **exactly 2 distinct marking points** (1M each or 0.5M × 4), matching official CBSE Marking Scheme value points.
-    *   **Section C (3-Mark Short Answer - SA):**
+    *   **3-Mark Short Answer (SA) Questions:**
         - Word limit: 50–80 words. Formulate questions so answers require **3 distinct step-wise value points** (or a structured 2M + 1M split).
-    *   **Section D (5-Mark Long Answer - LA):**
+    *   **5-Mark Long Answer (LA) Questions:**
         - **CBSE Board Rule:** Never frame an unstructured single 5-mark essay. All 5-mark questions MUST be sub-divided into structured sub-parts (e.g., '(a) [2 Marks] + (b) [2 Marks] + (c) [1 Mark]' or '(a) [3 Marks] + (b) [2 Marks]'), exactly as official CBSE Board SQPs do.
         - **100% Internal Choice:** Provide mandatory internal choice between two questions testing the same chapter and skill level.
-    *   **Section E (4-Mark Case-Based Questions - CBQs):**
+    *   **4-Mark Case-Based Questions (CBQs):**
         - Authentic real-world case/scenario, diagram, or data table from NCERT or CBSE Question Bank followed by:
           - (i) 1 Mark (factual/conceptual)
           - (ii) 1 Mark (analytical/application)
