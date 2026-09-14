@@ -19,7 +19,27 @@ import auth_service
 PORT = int(os.environ.get('PORT', 8000))
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_URL = "https://cbseacademic.nic.in/"
-CUSTOM_FILE = os.path.join(BASE_DIR, "custom_subjects.json")
+
+# Live, admin-editable custom subjects live on the persistent disk (DATA_DIR)
+# so they survive redeploys/restarts, same as users.json/sessions.json in
+# auth_service.py. CUSTOM_FILE_BASELINE is the git-tracked copy shipped with
+# the repo, used only to seed a fresh DATA_DIR the first time.
+DATA_DIR = os.environ.get("DATA_DIR", BASE_DIR)
+os.makedirs(DATA_DIR, exist_ok=True)
+CUSTOM_FILE_BASELINE = os.path.join(BASE_DIR, "custom_subjects.json")
+CUSTOM_FILE = os.path.join(DATA_DIR, "custom_subjects.json")
+
+def _seed_custom_subjects_if_missing():
+    if not os.path.exists(CUSTOM_FILE) and os.path.exists(CUSTOM_FILE_BASELINE):
+        try:
+            with open(CUSTOM_FILE_BASELINE, 'r', encoding='utf-8') as f:
+                baseline = f.read()
+            with open(CUSTOM_FILE, 'w', encoding='utf-8') as f:
+                f.write(baseline)
+        except Exception as e:
+            print(f"Error seeding {CUSTOM_FILE} from baseline: {e}")
+
+_seed_custom_subjects_if_missing()
 
 ctx = ssl.create_default_context()
 ctx.check_hostname = False
@@ -309,8 +329,10 @@ def get_custom_data():
     return {}
 
 def save_custom_data(data):
-    with open(CUSTOM_FILE, 'w', encoding='utf-8') as f:
+    temp_path = f"{CUSTOM_FILE}.tmp.{os.getpid()}"
+    with open(temp_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+    os.replace(temp_path, CUSTOM_FILE)
 
 def extract_text_from_pdf_url(url, is_sqp=True):
     req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
