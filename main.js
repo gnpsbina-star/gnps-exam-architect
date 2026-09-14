@@ -244,7 +244,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_exam_marks_duration_sync_v14';
+      const CURRENT_SYLLABUS_VER = '2026_exam_marks_duration_sync_v15';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
