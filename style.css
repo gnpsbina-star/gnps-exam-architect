@@ -2545,11 +2545,6 @@ tr.paper-subject-row.is-subject-excluded .paper-subj-title {
   margin-bottom: 6px !important;
 }
 
-.student-syllabus-paper.is-pdf-exporting tr.paper-part1-page1-end {
-  page-break-after: always !important;
-  break-after: page !important;
-}
-
 .student-syllabus-paper.is-pdf-exporting .paper-part-section-sea {
   page-break-before: always !important;
   break-before: page !important;

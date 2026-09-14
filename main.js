@@ -4602,9 +4602,7 @@ const sheetWindowsPanel = document.getElementById('sheetWindowsPanel');
 const sheetMiddleSettingsPanel = document.getElementById('sheetMiddleSettingsPanel');
 const sheetGeneralControlsPanel = document.getElementById('sheetGeneralControlsPanel');
 const sheetPart1Time = document.getElementById('sheetPart1Time');
-const sheetPart1TimeGkRobo = document.getElementById('sheetPart1TimeGkRobo');
 const sheetPart1Marks = document.getElementById('sheetPart1Marks');
-const sheetPart1MarksGkRobo = document.getElementById('sheetPart1MarksGkRobo');
 const sheetPart1TimingStart = document.getElementById('sheetPart1TimingStart');
 const sheetPart1TimingEnd = document.getElementById('sheetPart1TimingEnd');
 const sheetPart2Marks = document.getElementById('sheetPart2Marks');
@@ -5306,9 +5304,7 @@ export function autoUpdateSheetHeaderControls() {
   const sheetMarks = document.getElementById('sheetMaxMarks');
   const sheetDur = document.getElementById('sheetDuration');
   const sheetP1Marks = document.getElementById('sheetPart1Marks');
-  const sheetP1MarksGkRobo = document.getElementById('sheetPart1MarksGkRobo');
   const sheetP1Time = document.getElementById('sheetPart1Time');
-  const sheetP1TimeGkRobo = document.getElementById('sheetPart1TimeGkRobo');
 
   if (isMiddle) {
     if (sheetP1Marks) {
@@ -5316,12 +5312,6 @@ export function autoUpdateSheetHeaderControls() {
     }
     if (sheetP1Time) {
       sheetP1Time.value = isUT ? '45 Minutes' : (isPA ? '90 Mins' : '2.5 Hours');
-    }
-    if (sheetP1MarksGkRobo) {
-      sheetP1MarksGkRobo.value = isUT ? '10' : (isPA ? '10–20' : '20–40');
-    }
-    if (sheetP1TimeGkRobo) {
-      sheetP1TimeGkRobo.value = isUT ? '20 Mins' : (isPA ? '20–45 Mins' : '45–90 Mins');
     }
     if (sheetMarks) {
       sheetMarks.value = isUT ? '20 Marks' : (isPA ? '40 Marks' : '80 Marks');
@@ -5739,9 +5729,7 @@ function renderSyllabusSheetPaper() {
   }
 
   const p1Time = (sheetPart1Time && sheetPart1Time.value.trim()) || getExamDefaultDuration(exam);
-  const p1TimeGkRobo = (sheetPart1TimeGkRobo && sheetPart1TimeGkRobo.value.trim()) || '1.5–2 Hrs';
   const p1Marks = (sheetPart1Marks && sheetPart1Marks.value.trim()) || '80';
-  const p1MarksGkRobo = (sheetPart1MarksGkRobo && sheetPart1MarksGkRobo.value.trim()) || '40';
   const p1TimingStart = (sheetPart1TimingStart && sheetPart1TimingStart.value.trim()) || '07:30 AM';
   const p1TimingEnd = (sheetPart1TimingEnd && sheetPart1TimingEnd.value.trim()) || '02:30 PM';
 
@@ -6486,7 +6474,6 @@ function renderSyllabusSheetPaper() {
         : contentHtml;
       const isIncluded = isSubjectIncludedInSheet(cls, subjName);
       const currentRowNum = isIncluded ? p1Sno++ : '—';
-      const isPage1End = (currentRowNum === 4 && scholasticEntries.length >= 7) || (currentRowNum === 3 && scholasticEntries.length < 7 && scholasticEntries.length >= 5);
 
       const def = getExamDefaultDetails(cls, subjName, exam);
       const isUT = /unit\s*test|ut\s*[-_–—]?[iv1-5]/i.test(exam);
@@ -6511,7 +6498,7 @@ function renderSyllabusSheetPaper() {
       `;
 
       part1RowsHtml += `
-        <tr class="paper-subject-row ${!isIncluded ? 'is-subject-excluded is-unselected' : ''} ${isPage1End ? 'paper-part1-page1-end' : ''}">
+        <tr class="paper-subject-row ${!isIncluded ? 'is-subject-excluded is-unselected' : ''}">
           <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${currentRowNum}</td>
           <td style="width: 140px; vertical-align: top;">
             <div class="paper-subj-title">${subjName} ${marksBadgeHtml}</div>
@@ -6611,8 +6598,8 @@ function renderSyllabusSheetPaper() {
           </div>
         </div>
         <div class="paper-part-meta-strip paper-part-meta-strip-3col">
-          <div class="part-meta-cell"><strong>TIME ALLOWED:</strong> ${p1Time} (GK &amp; Robotics: ${p1TimeGkRobo})</div>
-          <div class="part-meta-cell"><strong>MAXIMUM MARKS:</strong> ${p1Marks} Marks (GK &amp; Robotics: ${p1MarksGkRobo} Marks)</div>
+          <div class="part-meta-cell"><strong>TIME ALLOWED:</strong> ${p1Time}</div>
+          <div class="part-meta-cell"><strong>MAXIMUM MARKS:</strong> ${p1Marks} Marks</div>
           <div class="part-meta-cell"><strong>SCHOOL TIMINGS:</strong> (${p1TimingStart} – ${p1TimingEnd})</div>
         </div>
         <table class="paper-syllabus-table">
@@ -7365,15 +7352,6 @@ if (sheetExamSelect) {
   });
 }
 
-if (sheetPart1Marks) {
-  sheetPart1Marks.addEventListener('input', () => {
-    const numMarks = parseInt(sheetPart1Marks.value, 10);
-    if (!isNaN(numMarks) && sheetPart1MarksGkRobo) {
-      sheetPart1MarksGkRobo.value = Math.round(numMarks / 2);
-    }
-  });
-}
-
 if (sheetCustomExamInput) {
   sheetCustomExamInput.addEventListener('input', renderSyllabusSheetPaper);
 }
@@ -7409,9 +7387,7 @@ document.querySelectorAll('.sheet-part-include-cb').forEach(cb => {
 
 [
   sheetPart1Time,
-  sheetPart1TimeGkRobo,
   sheetPart1Marks,
-  sheetPart1MarksGkRobo,
   sheetPart1TimingStart,
   sheetPart1TimingEnd,
   sheetPart2Marks,
