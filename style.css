@@ -2166,7 +2166,8 @@ optgroup option {
   letter-spacing: 0.2px;
 }
 
-.sheet-coscholastic-criteria-input {
+.sheet-coscholastic-criteria-input,
+.sheet-sea-manual-input {
   display: block;
   width: 100%;
   box-sizing: border-box;
@@ -2183,7 +2184,8 @@ optgroup option {
   min-height: 44px;
 }
 
-.sheet-coscholastic-criteria-input:focus {
+.sheet-coscholastic-criteria-input:focus,
+.sheet-sea-manual-input:focus {
   outline: none;
   border-style: solid;
   border-color: #38bdf8;
@@ -2371,6 +2373,10 @@ optgroup option {
   color: #991b1b;
   background: #fee2e2;
   border-color: #fca5a5;
+}
+
+.sheet-part-include-cb {
+  accent-color: #0284c7;
 }
 
 .sheet-subject-include-cb {

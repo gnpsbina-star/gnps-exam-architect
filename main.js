@@ -5,6 +5,15 @@ import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
 // Persistent Custom Subjects state
 let customSubjectsData = {};
 
+// Master per-Part "include in this sheet" toggle, remembered per class:
+// { [cls]: { scholastic: bool, sea: bool, cosch: bool, notebook: bool } }.
+// A part left out here is omitted from the sheet entirely (screen and PDF
+// alike), and the remaining parts renumber to stay sequential. Declared this
+// early because page-init code can reach syllabus-sheet render paths before
+// a later declaration point would have run - see the authToken comment
+// further down for the same class of bug.
+let sheetPartInclusion = {};
+
 // Reads the stored auth token directly (safe to call before the module-level
 // `authToken`/`safeAuthStorage` bindings further down the file are initialized).
 function getStoredAuthToken() {
@@ -4661,7 +4670,6 @@ export const cbseSEAData = {
   "Class 6": [
     {
       subject: "English (R1)",
-      domain: "ASL (Speaking & Listening Skills) & Oral Fluency",
       activities: [
         "ASL 1: Extempore / 1-Minute Speech on themes like 'My Favourite Storybook Character' or 'Conserving Water' (Fluency, Vocabulary & Pronunciation).",
         "ASL 2: Audio Listening Comprehension: Listening to a recorded story and completing an objective response worksheet.",
@@ -4670,7 +4678,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Hindi (R2)",
-      domain: "वाचन एवं श्रवण कौशल (ASL) एवं मौखिक अभिव्यक्ति",
       activities: [
         "गतिविधि 1: आशुभाषण / 'प्रकृति का संरक्षण' अथवा 'मेरा प्रिय त्योहार' विषय पर 2 मिनट का मौखिक वक्तव्य (शुद्ध उच्चारण एवं प्रवाह)।",
         "गतिविधि 2: श्रवण कौशल - शिक्षक द्वारा पढ़े गए प्रेरक प्रसंग को ध्यानपूर्वक सुनकर बहुविकल्पीय प्रश्नों के सही उत्तर चुनना।",
@@ -4679,7 +4686,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Sanskrit (R3)",
-      domain: "संस्कृत-संभाषणम्, श्लोकोच्चारणम् एवं श्रवण कौशलम्",
       activities: [
         "गतिविधि 1: सस्वर श्लोकोच्चारणम् - नीतिश्लोकाः / सुभाषितानि (शुद्ध उच्चारण, स्पष्ट पदच्छेद एवं लय सहित)।",
         "गतिविधि 2: सरल संस्कृत वार्तालापः - 'मम परिचयः' (नाम, कक्षा, विद्यालयः, प्रिय-विषयः) सरल संस्कृत वाक्यों में बोलना।",
@@ -4688,7 +4694,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Mathematics",
-      domain: "Math Lab Practical Activities & Hands-on Investigations",
       activities: [
         "Math Lab 1: Verification of Angle Types (Acute, Right, Obtuse, Straight) and Angle Sum in geometric shapes using paper folding.",
         "Math Lab 2: Hands-on exploration of Factors and Prime Numbers using rectangular grid paper arrays (Eratosthenes Sieve model).",
@@ -4697,7 +4702,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Science",
-      domain: "Laboratory Practical Experiments, Nutrient Testing & Lab Journal",
       activities: [
         "Science Lab 1: Chemical testing for Starch (Dilute Iodine Test) and Fats (Translucent spot test) on common food samples.",
         "Science Lab 2: Assembly of an electric circuit using wires, switch, battery, and bulb to classify objects as Conductors or Insulators.",
@@ -4706,7 +4710,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Social Science",
-      domain: "Map Skill Mastery, Historical Timeline & Project Portfolio",
       activities: [
         "SST Activity 1: Physical Map of India: Marking and labeling major Mountain Ranges (Himalayas, Western Ghats), Rivers & Oceans.",
         "SST Activity 2: Timeline Chart Construction: Visual chronology of major prehistoric eras (Paleolithic, Mesolithic, Neolithic).",
@@ -4717,7 +4720,6 @@ export const cbseSEAData = {
   "Class 7": [
     {
       subject: "English (R1)",
-      domain: "ASL (Speaking & Listening Skills) & Oral Communication",
       activities: [
         "ASL 1: Declamation / Debate on topics: 'Social Media: Boon or Bane' or 'Importance of Mental Well-being' (2 Minutes).",
         "ASL 2: Audio Comprehension Task: Evaluating tone, central idea, and specific data points from an audio passage.",
@@ -4726,7 +4728,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Hindi (R2)",
-      domain: "वाचन एवं श्रवण कौशल (ASL) एवं साहित्यिक अभिव्यक्ति",
       activities: [
         "गतिविधि 1: वाद-विवाद / 'पर्यावरण संरक्षण में युवाओं की भूमिका' अथवा 'इंटरनेट का सदुपयोग' पर पक्ष/विपक्ष में विचार प्रस्तुति।",
         "गतिविधि 2: श्रवण कौशल - ऐतिहासिक संस्मरण या वैज्ञानिक वार्ता सुनकर मुख्य बिंदुओं पर आधारित कार्यपत्रिका पूर्ण करना।",
@@ -4735,7 +4736,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Sanskrit (R3)",
-      domain: "संस्कृत संभाषणम्, संवाद-वाचनम् एवं श्लोक कंठस्थीकरणम्",
       activities: [
         "गतिविधि 1: सस्वर श्लोक-गायनम् - सुभाषितानि / नीतिश्लोकाः (सस्वर उच्चारण, भावार्थ एवं नीतिपरक संदेश सहित)।",
         "गतिविधि 2: संस्कृत-संवादः - दैनन्दिन जीवन पर आधारित दो छात्रों के बीच सरल संस्कृत वार्तालाप (क्रीडा, पठन, मित्र-मिलन)।",
@@ -4744,7 +4744,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Mathematics",
-      domain: "Math Lab Activities, Geometric Constructions & Practical Models",
       activities: [
         "Math Lab 1: Experimental verification of the Exterior Angle Property and Angle Sum Property of a Triangle by paper cutting & pasting.",
         "Math Lab 2: Geometric construction and verification of Pythagoras Theorem using 3-4-5 unit square grids.",
@@ -4753,7 +4752,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Science",
-      domain: "Laboratory Experiments, Indicators & Chemical Changes",
       activities: [
         "Science Lab 1: Preparation of Natural Indicators (Turmeric paste & China Rose extract) and testing Acidic/Basic domestic solutions.",
         "Science Lab 2: Laboratory demonstration of Neutralisation reaction (Dilute Hydrochloric Acid + Sodium Hydroxide with Phenolphthalein).",
@@ -4762,7 +4760,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Social Science",
-      domain: "Map Skills, Heritage Case Study & Environmental Project",
       activities: [
         "SST Activity 1: Historical Map of India: Locating major capitals of the Delhi Sultanate and Mughal Empire (Delhi, Agra, Daulatabad, Lahore).",
         "SST Activity 2: Disaster Management Project: Preparedness guide and infographic poster on Cyclones, Earthquakes, or Floods.",
@@ -4773,7 +4770,6 @@ export const cbseSEAData = {
   "Class 8": [
     {
       subject: "English (R1)",
-      domain: "ASL (Speaking & Listening Skills) & Critical Oratory",
       activities: [
         "ASL 1: Extempore / Formal Speech: Critical analysis of 'AI and the Future of Learning' or 'Combatting Climate Despair' (3 Minutes).",
         "ASL 2: Advanced Audio Listening Task: Inference extraction, speaker bias detection, and analytical response to an audio documentary.",
@@ -4782,7 +4778,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Hindi (R2)",
-      domain: "वाचन एवं श्रवण कौशल (ASL), वाद-विवाद एवं काव्य समीक्षा",
       activities: [
         "गतिविधि 1: आशुभाषण / 'सोशल मीडिया और युवा पीढ़ी' अथवा 'स्वदेशी एवं आत्मनिर्भर भारत' पर ओजस्वी मौखिक वक्तव्य (तर्कसंगत प्रस्तुति)।",
         "गतिविधि 2: श्रवण कौशल - समसामयिक परिचर्चा सुनकर वक्ता के मुख्य तर्कों का विश्लेषण एवं मूल्यांकन आधारित प्रश्नावली हल करना।",
@@ -4791,7 +4786,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Sanskrit (R3)",
-      domain: "संस्कृत-संभाषणम्, श्लोकोच्चारणम् एवं नाट्य-अभिनयः",
       activities: [
         "गतिविधि 1: सस्वर गीता-श्लोकोच्चारणम् - श्रीमद्भगवद्गीता (कर्मयोग / स्थितप्रज्ञ लक्षण) श्लोकों का शुद्ध एवं लयबद्ध वाचन।",
         "गतिविधि 2: संस्कृत लघुनाटिका / संवाद प्रस्तुति - 'डिजीभारतम्' अथवा 'पंचतंत्र कथा' पर आधारित संस्कृत संवाद अभिनय।",
@@ -4800,7 +4794,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Mathematics",
-      domain: "Math Lab Investigations, 3D Mensuration Nets & Algebra Models",
       activities: [
         "Math Lab 1: Verification of Algebraic Identities (e.g., (a + b)² = a² + 2ab + b² and a² - b² = (a - b)(a + b)) using colored unit paper tiles.",
         "Math Lab 2: Construction of 3D Polyhedra Nets (Cube, Cuboid, Cylinder, Cone) and physical derivation of Total Surface Area.",
@@ -4809,7 +4802,6 @@ export const cbseSEAData = {
     },
     {
       subject: "Science",
-      domain: "Laboratory Experiments, Electroplating & Microscopic Mounts",
       activities: [
         "Science Lab 1: Demonstration of Chemical Effects of Electric Current: Electroplating copper onto an iron key using Copper Sulphate solution.",
         "Science Lab 2: Preparation of temporary stained mounts of Onion Peel cells and Human Cheek cells for microscopic comparison.",
@@ -4818,15 +4810,134 @@ export const cbseSEAData = {
     },
     {
       subject: "Social Science",
-      domain: "Map Mastery, Constitutional Case Study & Field Project",
       activities: [
         "SST Activity 1: Historical & Economic Map: Marking key centers of the 1857 Revolt and major Iron & Steel industries in India.",
         "SST Activity 2: Constitutional Rights & Judicial Structure: Mock Parliament / Mock Court case study portfolio on Fundamental Rights.",
         "SST Activity 3: Sustainable Agriculture & Resource Conservation Project: Analytical comparison of Organic Farming vs Intensive Farming."
       ]
     }
+  ],
+  "Class 9": [
+    {
+      subject: "English (R1)",
+      activities: [
+        "ASL 1: Extempore / Speech on themes like 'The Value of Sportsmanship' or 'Digital Habits of Teenagers' (2 Minutes).",
+        "ASL 2: Audio Listening Comprehension: Listening to a recorded passage/news bulletin and answering objective/short-answer questions.",
+        "ASL 3: Prose/Poetry Recitation & Appreciation from Beehive/Moments with correct diction, stress, and expression."
+      ]
+    },
+    {
+      subject: "Hindi (R2 - Ganga)",
+      activities: [
+        "गतिविधि 1: आशुभाषण - 'समय का सदुपयोग' अथवा 'डिजिटल जीवनशैली' विषय पर 2 मिनट का सारगर्भित वक्तव्य।",
+        "गतिविधि 2: श्रवण कौशल - रेडियो समाचार अथवा प्रेरक प्रसंग सुनकर वस्तुनिष्ठ/लघु प्रश्नों के उत्तर देना।",
+        "गतिविधि 3: पाठ्यपुस्तक की कविता/गद्यांश का सस्वर वाचन एवं भाव-सम्प्रेषण सहित प्रस्तुतीकरण।"
+      ]
+    },
+    {
+      subject: "Sanskrit (R3)",
+      activities: [
+        "गतिविधि 1: सस्वर श्लोकोच्चारणम् - शेमुषी पाठ्यपुस्तक के नीति-श्लोकों का शुद्ध उच्चारण एवं लयबद्ध वाचन।",
+        "गतिविधि 2: संस्कृत भाषणम् - 'मम विद्यालयः' अथवा 'ऋतु-वर्णनम्' विषये सरल संस्कृत वाक्येषु वक्तव्यम्।",
+        "गतिविधि 3: श्रवण कौशलम् - शिक्षकेन पठितं लघुकथानकं श्रुत्वा प्रश्नानाम् उत्तराणि लेखनम्।"
+      ]
+    },
+    {
+      subject: "Mathematics",
+      activities: [
+        "Math Lab 1: Verification of algebraic identities (e.g., (a + b)³, a³ - b³) using paper cut-outs or geometric models.",
+        "Math Lab 2: Construction and verification of triangle congruence/similarity criteria using compass and straightedge.",
+        "Math Lab 3: Statistical data collection and construction of a Histogram/Frequency Polygon based on a class survey."
+      ]
+    },
+    {
+      subject: "Science",
+      activities: [
+        "Science Lab 1: Verification of laws of motion / measurement of density of regular and irregular solids using a spring balance and displacement method.",
+        "Science Lab 2: Preparation of a temporary mount to observe plant/animal cells under a microscope and label the parts.",
+        "Science Lab 3: Study of properties of acids and bases using litmus paper and pH testing of common household substances."
+      ]
+    },
+    {
+      subject: "Social Science",
+      activities: [
+        "SST Activity 1: Physical/Political Map of India or the World: Marking key locations related to the French Revolution or the Indian freedom movement.",
+        "SST Activity 2: Case study/portfolio on a democratic institution (e.g., Panchayati Raj, Election Commission) or a current economic issue (poverty, food security).",
+        "SST Activity 3: Data-based project comparing physical features, climate, or natural vegetation across two Indian states/regions."
+      ]
+    }
+  ],
+  "Class 10": [
+    {
+      subject: "English (R1)",
+      activities: [
+        "ASL 1: Formal Speech/Debate on topics like 'Impact of Artificial Intelligence on Careers' or 'Value of Perseverance' (3 Minutes).",
+        "ASL 2: Advanced Audio Comprehension: Analyzing tone, central idea, and inference from a recorded speech or interview.",
+        "ASL 3: Dramatic Reading / Literary Appreciation of a prose or poetry piece from First Flight with critical commentary."
+      ]
+    },
+    {
+      subject: "Hindi (R2 - Ganga)",
+      activities: [
+        "गतिविधि 1: वाद-विवाद/आशुभाषण - 'स्वच्छ भारत अभियान' अथवा 'आत्मनिर्भर भारत' विषय पर ओजस्वी वक्तव्य।",
+        "गतिविधि 2: श्रवण कौशल - समसामयिक परिचर्चा सुनकर वक्ता के तर्कों का विश्लेषणात्मक मूल्यांकन।",
+        "गतिविधि 3: पाठ्यपुस्तक की कविता की भावपूर्ण प्रस्तुति एवं केंद्रीय भाव पर मौखिक व्याख्या।"
+      ]
+    },
+    {
+      subject: "Sanskrit (R3)",
+      activities: [
+        "गतिविधि 1: सस्वर श्लोकोच्चारणम् - शेमुषी द्वितीयो भागः के चयनित श्लोकों का शुद्ध एवं भावपूर्ण वाचन।",
+        "गतिविधि 2: संस्कृत संभाषणम् - दैनिकजीवन-संबंधि सरल संवाद-प्रस्तुतीकरणम्।",
+        "गतिविधि 3: व्याकरण-आधारित गतिविधि - प्रत्यय/समास का प्रयोग करते हुए वाक्य-निर्माणम्।"
+      ]
+    },
+    {
+      subject: "Mathematics",
+      activities: [
+        "Math Lab 1: Verification/derivation of trigonometric identities and heights-and-distances problems using clinometer models.",
+        "Math Lab 2: Graphical verification of the nature of roots of a quadratic equation by plotting the corresponding parabola.",
+        "Math Lab 3: Construction of a cumulative frequency curve (ogive) and estimation of median from real class data."
+      ]
+    },
+    {
+      subject: "Science",
+      activities: [
+        "Science Lab 1: Study of chemical reactions (combination, decomposition, displacement) using common laboratory reagents with safety precautions.",
+        "Science Lab 2: Tracing the path of light through a glass prism/convex lens and verification of laws of refraction.",
+        "Science Lab 3: Study of a model of the human circulatory/excretory system with correct labeling of parts."
+      ]
+    },
+    {
+      subject: "Social Science",
+      activities: [
+        "SST Activity 1: Historical map work on the spread of Nationalism in Europe/India, or resource-distribution mapping (minerals, power).",
+        "SST Activity 2: Project/portfolio on Federalism, Political Parties, or a case study of a social movement in India.",
+        "SST Activity 3: Economic survey/project on globalization, consumer rights, or sectoral contribution to the Indian economy."
+      ]
+    }
   ]
 };
+
+// Unified, class-agnostic SEA domain label per subject - shown once under
+// the subject name in Part 2, valid regardless of which class or which
+// specific chapter/activity is currently being taught.
+const SEA_DOMAIN_MAP = [
+  ["english", "ASL — Oral Communication & Listening Comprehension"],
+  ["hindi", "ASL — मौखिक अभिव्यक्ति एवं श्रवण-बोध"],
+  ["sanskrit", "ASL — श्रवणम्, वाचनम् एवं मौखिक-अभिव्यक्तिः"],
+  ["mathematics", "Hands-on Investigation & Practical Application"],
+  ["social science", "Map Work & Project Work — Geographical Skills, Research & Portfolio"],
+  ["science", "Experiments, Observation & Practical Activities"]
+];
+
+function getSEADomainText(subjName) {
+  const clean = (subjName || '').toLowerCase();
+  for (const [key, text] of SEA_DOMAIN_MAP) {
+    if (clean.includes(key)) return text;
+  }
+  return "Practical / Project-Based Enrichment Activity";
+}
 
 export const coScholasticSubjects = [
   { key: "Music", name: "Music", subtitle: "Vocal & Instrumental", book: "School Music Curriculum" },
@@ -4864,6 +4975,43 @@ function setSubjectIncludedInSheet(cls, subjKey, included) {
 // scholastic subject: { [cls]: { [subject]: 'YYYY-MM-DD' } }
 let sheetNotebookDates = {};
 
+function isPartIncludedInSheet(cls, partKey) {
+  if (!sheetPartInclusion[cls]) {
+    sheetPartInclusion[cls] = {};
+  }
+  if (sheetPartInclusion[cls][partKey] === undefined) {
+    return true; // Default to INCLUDED
+  }
+  return sheetPartInclusion[cls][partKey];
+}
+
+function setPartIncludedInSheet(cls, partKey, included) {
+  if (!sheetPartInclusion[cls]) {
+    sheetPartInclusion[cls] = {};
+  }
+  sheetPartInclusion[cls][partKey] = !!included;
+}
+
+// Computes the display number for each part that's actually going to be
+// rendered for this class, in fixed structural order (Scholastic, SEA,
+// Co-Scholastic [only for Class 6-8], Notebook). A part excluded via its
+// checkbox is simply missing from the returned map - callers skip it
+// entirely, and every part after it shifts up to stay sequential.
+function getSheetPartNumbers(cls, hasCoSch) {
+  const order = ['scholastic', 'sea'];
+  if (hasCoSch) order.push('cosch');
+  order.push('notebook');
+
+  const numbers = {};
+  let n = 1;
+  order.forEach(key => {
+    if (isPartIncludedInSheet(cls, key)) {
+      numbers[key] = n++;
+    }
+  });
+  return numbers;
+}
+
 // Co-scholastic (Part 3) evaluation criteria, typed in manually by the subject
 // teacher per class. Not persisted anywhere - lives only in this page's memory
 // for the current session: { [cls]: { [subjectName]: text } }
@@ -4878,6 +5026,125 @@ function setCoScholasticCriteriaText(cls, subjName, text) {
     sheetCoScholasticCriteria[cls] = {};
   }
   sheetCoScholasticCriteria[cls][subjName] = text;
+}
+
+// SEA (Part 2) manual teacher notes, additive alongside the prescribed
+// activity checklist. Same behavior as the co-scholastic box above: blank by
+// default, per class per subject, session-only (never persisted).
+let sheetSEAManualNotes = {};
+
+function getSEAManualNoteText(cls, subjName) {
+  return (sheetSEAManualNotes[cls] && sheetSEAManualNotes[cls][subjName]) || '';
+}
+
+function setSEAManualNoteText(cls, subjName, text) {
+  if (!sheetSEAManualNotes[cls]) {
+    sheetSEAManualNotes[cls] = {};
+  }
+  sheetSEAManualNotes[cls][subjName] = text;
+}
+
+// Builds Part 2 (SEA) table rows for a class. Shared by the Class 6-8 and
+// Class 9-10 renderers so both stay in lockstep with Part 1's inclusion
+// state and the unified domain text.
+function buildPart2RowsHtml(cls) {
+  let part2RowsHtml = '';
+  let p2Sno = 1;
+  const seaList = (cbseSEAData[cls] || []).filter(item => isSubjectIncludedInSheet(cls, item.subject));
+
+  seaList.forEach(item => {
+    const seaSubjKey = `SEA: ${item.subject}`;
+    const checkedSet = getSubjectSelectionForSheet(cls, seaSubjKey);
+
+    let actsHtml = '';
+    let checkedCount = 0;
+
+    item.activities.forEach(act => {
+      const isChecked = !!(checkedSet && checkedSet.has(act));
+      if (isChecked) checkedCount++;
+
+      const colonIdx = act.indexOf(':');
+      const badgeText = colonIdx > -1 ? act.substring(0, colonIdx) : 'Activity';
+      const bodyText = colonIdx > -1 ? act.substring(colonIdx + 1).trim() : act;
+
+      actsHtml += `
+        <label class="sea-activity-item ${isChecked ? 'is-selected' : 'is-unselected'}" data-subject="${seaSubjKey}" title="${isChecked ? 'Click to exclude' : 'Click to include'}">
+          <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${seaSubjKey}" data-val="${act.replace(/"/g, '&quot;')}" ${isChecked ? 'checked' : ''}>
+          <span class="sea-badge">${badgeText}</span>
+          <span class="sea-activity-title">${bodyText}</span>
+        </label>
+      `;
+    });
+
+    const hasActs = actsHtml.trim().length > 0;
+    const displayActs = (checkedCount === 0 && !hasActs)
+      ? `<div style="font-style: italic; font-size: 8.5pt; color: #000000;">Prescribed CBSE Internal Assessment Activities</div>`
+      : actsHtml;
+
+    part2RowsHtml += `
+      <tr class="paper-subject-row paper-part2-row">
+        <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 12px 4px;">${p2Sno++}</td>
+        <td style="width: 140px; vertical-align: top; padding: 12px 8px;">
+          <div class="paper-subj-title">${item.subject}</div>
+          <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${getSEADomainText(item.subject)}</div>
+          <div class="paper-subj-actions no-print" style="margin-top: 4px;">
+            <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${seaSubjKey}" title="Select all ${item.subject} SEA">All</button>
+            <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${seaSubjKey}" title="Clear all ${item.subject} SEA">Clear</button>
+          </div>
+        </td>
+        <td style="padding: 12px 8px; vertical-align: top;">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            ${displayActs}
+          </div>
+          <div style="font-size: 8.5pt; color: #000000; line-height: 1.45; margin-top: 8px;">
+            <strong>Teacher's Notes:</strong> <span class="paper-sea-manual-display">${escapeHtml(getSEAManualNoteText(cls, item.subject))}</span>
+          </div>
+          <textarea
+            class="sheet-sea-manual-input no-print"
+            data-subject="${item.subject}"
+            rows="2"
+            placeholder="Type any additional activity/notes for ${item.subject} here..."
+          >${escapeHtml(getSEAManualNoteText(cls, item.subject))}</textarea>
+        </td>
+      </tr>
+    `;
+  });
+
+  return part2RowsHtml;
+}
+
+// Builds Part 4 (Notebook Completion) table rows for a class, given the
+// list of scholastic subject entries to consider (same shape as
+// Object.entries(subjectsData)). Mirrors Part 1's "Include in circular"
+// state - a subject excluded there gets no row here either.
+function buildPart4RowsHtml(cls, entries) {
+  let part4RowsHtml = '';
+  let p4Sno = 1;
+
+  entries.forEach(([subjName]) => {
+    if (isSchoolExcludedSubject(subjName)) return;
+    if (!isSubjectIncludedInSheet(cls, subjName)) return;
+
+    const notebookDate = (sheetNotebookDates[cls] && sheetNotebookDates[cls][subjName]) ? sheetNotebookDates[cls][subjName] : '';
+    const notebookDateBadgeHtml = notebookDate
+      ? `<div class="paper-subj-date-badge"><span class="no-print">📅 </span><span class="paper-date-label">Date: </span>${formatExamDate(notebookDate)}</div>`
+      : `<div class="paper-subj-no-date no-print">📅 Set Submission Date</div>`;
+
+    part4RowsHtml += `
+      <tr class="paper-subject-row">
+        <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 10px 4px;">${p4Sno++}</td>
+        <td style="padding: 10px 8px;">
+          <div class="paper-subj-title">${subjName}</div>
+        </td>
+        <td style="padding: 10px 8px; text-align: center;">
+          <input type="date" class="sheet-notebook-date-input no-print" data-subject="${subjName}" value="${notebookDate}" title="Notebook Submission Date">
+          ${notebookDateBadgeHtml}
+        </td>
+      </tr>
+    `;
+  });
+
+  return part4RowsHtml;
 }
 
 function formatExamDate(dateStr) {
@@ -5417,8 +5684,38 @@ function handleSubjectInclusionChange(cb) {
   renderSyllabusSheetPaper();
 }
 
+function handlePartInclusionChange(cb) {
+  if (!sheetClassSelect) return;
+  const cls = sheetClassSelect.value;
+  const partKey = cb.dataset?.part || cb.getAttribute('data-part');
+  if (!partKey) return;
+  setPartIncludedInSheet(cls, partKey, cb.checked);
+  renderSyllabusSheetPaper();
+}
+
+// Keeps the persistent header-ribbon Part checkboxes showing the truth for
+// whichever class is currently selected (per-class memory), and hides the
+// Co-Scholastic toggle entirely for Class 9-10 where that part never exists.
+function syncPartInclusionCheckboxes(cls, isMiddleSchool) {
+  document.querySelectorAll('.sheet-part-include-cb').forEach(cb => {
+    const partKey = cb.dataset.part;
+    cb.checked = isPartIncludedInSheet(cls, partKey);
+  });
+  const coSchWrapper = document.getElementById('sheetIncludeCoSchWrapper');
+  if (coSchWrapper) {
+    coSchWrapper.style.display = isMiddleSchool ? 'inline-flex' : 'none';
+  }
+}
+
 function renderSyllabusSheetPaper() {
   if (!syllabusSheetPaper || !sheetClassSelect) return;
+  // The main page's own init cascade (initClassDropdown() -> ... ->
+  // renderSyllabusChecklist()) fires synchronously at module load, before
+  // this modal has ever been opened - and before later module-level consts
+  // further down the file (e.g. cbseSEAData) exist yet. There's nothing to
+  // render for a hidden modal anyway, and openSyllabusSheetModal() already
+  // re-renders for real once the user opens it.
+  if (syllabusSheetModal && syllabusSheetModal.classList.contains('hidden')) return;
 
   const school = (sheetSchoolName && sheetSchoolName.value) ? sheetSchoolName.value.trim() : 'GOMTI NANDAN PUBLIC SCHOOL';
   const cls = sheetClassSelect.value;
@@ -5430,6 +5727,7 @@ function renderSyllabusSheetPaper() {
   const includeSubtopics = sheetIncludeSubtopics ? sheetIncludeSubtopics.checked : false;
   const includePrincipalSig = sheetIncludePrincipalSig ? sheetIncludePrincipalSig.checked : true;
   const session = getCurrentAcademicSession();
+  syncPartInclusionCheckboxes(cls, isMiddleSchool);
   if (sheetWindowsPanel) {
     sheetWindowsPanel.style.display = 'none';
   }
@@ -6123,6 +6421,8 @@ function renderSyllabusSheetPaper() {
   // CASE A: MIDDLE SCHOOL (CLASSES 6, 7, 8) -> CBSE 3-PART COMPREHENSIVE CIRCULAR
   // --------------------------------------------------------------------------
   if (isMiddleSchool) {
+    const partNumbers = getSheetPartNumbers(cls, true);
+
     // 1. PART 1: Scholastic Subjects (Written Pen-Paper Exams)
     const scholasticEntries = subjectEntries.filter(([sName]) => {
       const sLow = sName.toLowerCase();
@@ -6230,70 +6530,7 @@ function renderSyllabusSheetPaper() {
     });
 
     // 2. PART 2: Subject Enrichment Activities (SEA - 5 Marks Internal Assessment)
-    let part2RowsHtml = '';
-    let p2Sno = 1;
-    const seaList = cbseSEAData[cls] || [];
-
-    seaList.forEach(item => {
-      const seaSubjKey = `SEA: ${item.subject}`;
-      const checkedSet = getSubjectSelectionForSheet(cls, seaSubjKey);
-      const isIncluded = isSubjectIncludedInSheet(cls, seaSubjKey);
-      const currentRowNum = isIncluded ? p2Sno++ : '—';
-
-      let actsHtml = '';
-      let checkedCount = 0;
-
-      item.activities.forEach(act => {
-        const isChecked = !!(checkedSet && checkedSet.has(act));
-        if (isChecked) checkedCount++;
-
-        const colonIdx = act.indexOf(':');
-        const badgeText = colonIdx > -1 ? act.substring(0, colonIdx) : 'Activity';
-        const bodyText = colonIdx > -1 ? act.substring(colonIdx + 1).trim() : act;
-
-        actsHtml += `
-          <label class="sea-activity-item ${isChecked ? 'is-selected' : 'is-unselected'}" data-subject="${seaSubjKey}" title="${isChecked ? 'Click to exclude' : 'Click to include'}">
-            <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${seaSubjKey}" data-val="${act.replace(/"/g, '&quot;')}" ${isChecked ? 'checked' : ''}>
-            <span class="sea-badge">${badgeText}</span>
-            <span class="sea-activity-title">${bodyText}</span>
-          </label>
-        `;
-      });
-
-      const hasActs = actsHtml.trim().length > 0;
-      const displayActs = (checkedCount === 0 && !hasActs)
-        ? `<div style="font-style: italic; font-size: 8.5pt; color: #000000;">Prescribed CBSE Internal Assessment Activities</div>`
-        : actsHtml;
-
-      const includeCheckboxHtml = `
-        <div class="sheet-include-subject-wrapper no-print" style="margin-top: 6px;">
-          <label class="sheet-subject-include-label ${!isIncluded ? 'is-excluded' : ''}" title="${isIncluded ? 'Uncheck to exclude from circular' : 'Check to include in circular'}">
-            <input type="checkbox" class="sheet-subject-include-cb no-print" data-subject="${seaSubjKey}" ${isIncluded ? 'checked' : ''}>
-            <span>Include in circular</span>
-          </label>
-        </div>
-      `;
-
-      part2RowsHtml += `
-        <tr class="paper-subject-row paper-part2-row ${!isIncluded ? 'is-subject-excluded is-unselected' : ''}">
-          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 12px 4px;">${currentRowNum}</td>
-          <td style="width: 140px; vertical-align: top; padding: 12px 8px;">
-            <div class="paper-subj-title">${item.subject}</div>
-            <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${item.domain}</div>
-            <div class="paper-subj-actions no-print" style="margin-top: 4px;">
-              <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${seaSubjKey}" title="Select all ${item.subject} SEA">All</button>
-              <button type="button" class="btn-subj-quick btn-subj-clear" data-subject="${seaSubjKey}" title="Clear all ${item.subject} SEA">Clear</button>
-            </div>
-            ${includeCheckboxHtml}
-          </td>
-          <td style="padding: 12px 8px; vertical-align: top;">
-            <div style="display: flex; flex-direction: column; gap: 6px;">
-              ${displayActs}
-            </div>
-          </td>
-        </tr>
-      `;
-    });
+    const part2RowsHtml = buildPart2RowsHtml(cls);
 
     // 3. PART 3: Co-Scholastic Activities (Internal Skills Assessment)
     let part3RowsHtml = '';
@@ -6338,64 +6575,38 @@ function renderSyllabusSheetPaper() {
     });
 
     // 4. PART 4: Notebook Completion & Submission (Internal Assessment)
-    // Same scholastic subject list as Part 1 - one submission date per subject.
-    let part4RowsHtml = '';
-    let p4Sno = 1;
+    const part4RowsHtml = buildPart4RowsHtml(cls, scholasticEntries);
 
-    scholasticEntries.forEach(([subjName]) => {
-      if (isSchoolExcludedSubject(subjName)) return;
-
-      const notebookDate = (sheetNotebookDates[cls] && sheetNotebookDates[cls][subjName]) ? sheetNotebookDates[cls][subjName] : '';
-      const notebookDateBadgeHtml = notebookDate
-        ? `<div class="paper-subj-date-badge"><span class="no-print">📅 </span><span class="paper-date-label">Date: </span>${formatExamDate(notebookDate)}</div>`
-        : `<div class="paper-subj-no-date no-print">📅 Set Submission Date</div>`;
-
-      part4RowsHtml += `
-        <tr class="paper-subject-row">
-          <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 10px 4px;">${p4Sno++}</td>
-          <td style="padding: 10px 8px;">
-            <div class="paper-subj-title">${subjName}</div>
-          </td>
-          <td style="padding: 10px 8px; text-align: center;">
-            <input type="date" class="sheet-notebook-date-input no-print" data-subject="${subjName}" value="${notebookDate}" title="Notebook Submission Date">
-            ${notebookDateBadgeHtml}
-          </td>
-        </tr>
-      `;
-    });
+    const instructionLines = [];
+    if (partNumbers.scholastic) {
+      instructionLines.push(`<li><strong>Part ${partNumbers.scholastic} (Scholastic Written Examinations):</strong> Pen-paper exams will be conducted on scheduled dates. Timely reporting is compulsory.</li>`);
+    }
+    if (partNumbers.sea) {
+      instructionLines.push(`<li><strong>Part ${partNumbers.sea} (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between ${formatDateRange(seaDateFrom, seaDateTo)} in regular subject periods.</li>`);
+    }
+    if (partNumbers.cosch) {
+      instructionLines.push(`<li><strong>Part ${partNumbers.cosch} (Co-Scholastic Assessments):</strong> Music, Art & Craft, and Yoga evaluations are conducted between ${formatDateRange(coSchDateFrom, coSchDateTo)} during class periods.</li>`);
+    }
+    if (partNumbers.notebook) {
+      instructionLines.push(`<li><strong>Part ${partNumbers.notebook} (Notebook Completion & Submission):</strong> Notebooks must be submitted to the respective subject teacher on the date specified against each subject; 5 marks are awarded per the evaluation criteria noted below.</li>`);
+    }
+    instructionLines.push(`<li><strong>Compulsory Attendance & Materials:</strong> Full-day attendance is compulsory. Students must carry complete practical files, journals, and stationery.</li>`);
 
     const instructionsHtml = includeInstructions ? `
       <div class="paper-instructions-box">
         <div class="paper-instructions-heading" style="text-decoration: none !important;">GENERAL INSTRUCTIONS:</div>
         <ol class="paper-instructions-list">
-          <li><strong>Part 1 (Scholastic Written Examinations):</strong> Pen-paper exams will be conducted on scheduled dates. Timely reporting is compulsory.</li>
-          <li><strong>Part 2 (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between ${formatDateRange(seaDateFrom, seaDateTo)} in regular subject periods.</li>
-          <li><strong>Part 3 (Co-Scholastic Assessments):</strong> Music, Art & Craft, and Yoga evaluations are conducted between ${formatDateRange(coSchDateFrom, coSchDateTo)} during class periods.</li>
-          <li><strong>Part 4 (Notebook Completion & Submission):</strong> Notebooks must be submitted to the respective subject teacher on the date specified against each subject; 5 marks are awarded per the evaluation criteria noted below.</li>
-          <li><strong>Compulsory Attendance & Materials:</strong> Full-day attendance is compulsory. Students must carry complete practical files, journals, and stationery.</li>
+          ${instructionLines.join('\n          ')}
         </ol>
       </div>
     ` : '';
 
-    syllabusSheetPaper.innerHTML = `
-      <div class="syllabus-paper-header">
-        <div class="paper-school-title">${school}</div>
-        <div class="paper-doc-subtitle">EXAMINATION DATE SHEET & SYLLABUS</div>
-        <div class="paper-session-tag">ACADEMIC SESSION ${session}</div>
-      </div>
-
-      <div class="paper-meta-table">
-        <div class="paper-meta-cell"><strong>CLASS:</strong> ${cls}</div>
-        <div class="paper-meta-cell"><strong>EXAMINATION:</strong> ${exam}</div>
-      </div>
-
-      ${instructionsHtml}
-
-      <!-- PART 1: SCHOLASTIC SUBJECTS -->
+    const part1SectionHtml = partNumbers.scholastic ? `
+      <!-- PART ${partNumbers.scholastic}: SCHOLASTIC SUBJECTS -->
       <div class="paper-part-section paper-part-section-scholastic">
         <div class="paper-part-banner paper-part-banner-scholastic">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="paper-part-badge paper-part-badge-scholastic">PART 1</span>
+            <span class="paper-part-badge paper-part-badge-scholastic">PART ${partNumbers.scholastic}</span>
             <span>SCHOLASTIC SUBJECTS (Written Pen-Paper Examination)</span>
           </div>
         </div>
@@ -6417,12 +6628,14 @@ function renderSyllabusSheetPaper() {
           </tbody>
         </table>
       </div>
+    ` : '';
 
-      <!-- PART 2: SUBJECT ENRICHMENT ACTIVITIES (SEA) -->
+    const part2SectionHtml = partNumbers.sea ? `
+      <!-- PART ${partNumbers.sea}: SUBJECT ENRICHMENT ACTIVITIES (SEA) -->
       <div class="paper-part-section paper-part-section-sea">
         <div class="paper-part-banner paper-part-banner-sea">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="paper-part-badge paper-part-badge-sea">PART 2</span>
+            <span class="paper-part-badge paper-part-badge-sea">PART ${partNumbers.sea}</span>
             <span>SUBJECT ENRICHMENT ACTIVITIES (SEA — 5 MARKS INTERNAL ASSESSMENT)</span>
           </div>
         </div>
@@ -6444,12 +6657,14 @@ function renderSyllabusSheetPaper() {
           </tbody>
         </table>
       </div>
+    ` : '';
 
-      <!-- PART 3: CO-SCHOLASTIC ACTIVITIES -->
+    const part3SectionHtml = partNumbers.cosch ? `
+      <!-- PART ${partNumbers.cosch}: CO-SCHOLASTIC ACTIVITIES -->
       <div class="paper-part-section paper-part-section-cosch">
         <div class="paper-part-banner paper-part-banner-cosch">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="paper-part-badge paper-part-badge-cosch">PART 3</span>
+            <span class="paper-part-badge paper-part-badge-cosch">PART ${partNumbers.cosch}</span>
             <span>CO-SCHOLASTIC ACTIVITIES (INTERNAL SKILLS & PRACTICAL ASSESSMENT)</span>
           </div>
         </div>
@@ -6470,12 +6685,14 @@ function renderSyllabusSheetPaper() {
           </tbody>
         </table>
       </div>
+    ` : '';
 
-      <!-- PART 4: NOTEBOOK COMPLETION & SUBMISSION -->
+    const part4SectionHtml = partNumbers.notebook ? `
+      <!-- PART ${partNumbers.notebook}: NOTEBOOK COMPLETION & SUBMISSION -->
       <div class="paper-part-section">
         <div class="paper-part-banner">
           <div style="display: flex; align-items: center; gap: 8px;">
-            <span class="paper-part-badge">PART 4</span>
+            <span class="paper-part-badge">PART ${partNumbers.notebook}</span>
             <span>NOTEBOOK COMPLETION & SUBMISSION (INTERNAL ASSESSMENT)</span>
           </div>
         </div>
@@ -6497,6 +6714,26 @@ function renderSyllabusSheetPaper() {
           </tbody>
         </table>
       </div>
+    ` : '';
+
+    syllabusSheetPaper.innerHTML = `
+      <div class="syllabus-paper-header">
+        <div class="paper-school-title">${school}</div>
+        <div class="paper-doc-subtitle">EXAMINATION DATE SHEET & SYLLABUS</div>
+        <div class="paper-session-tag">ACADEMIC SESSION ${session}</div>
+      </div>
+
+      <div class="paper-meta-table">
+        <div class="paper-meta-cell"><strong>CLASS:</strong> ${cls}</div>
+        <div class="paper-meta-cell"><strong>EXAMINATION:</strong> ${exam}</div>
+      </div>
+
+      ${instructionsHtml}
+
+      ${part1SectionHtml}
+      ${part2SectionHtml}
+      ${part3SectionHtml}
+      ${part4SectionHtml}
 
       <div class="paper-signatures-row">
         <div class="sig-block">
@@ -6522,9 +6759,12 @@ function renderSyllabusSheetPaper() {
   }
 
   // --------------------------------------------------------------------------
-  // CASE B: STANDARD SINGLE-TABLE LAYOUT (FOR OTHER CLASSES)
+  // CASE B: CLASS 9-10 -> SCHOLASTIC TABLE + SEA + NOTEBOOK COMPLETION
+  // (No Co-Scholastic part for these classes.)
   // --------------------------------------------------------------------------
-  let tableRowsHtml = '';
+  const partNumbers = getSheetPartNumbers(cls, false);
+
+  let part1RowsHtml = '';
   let visibleRowIndex = 1;
 
   subjectEntries.forEach(([subjName, subjSyllabus], index) => {
@@ -6564,7 +6804,7 @@ function renderSyllabusSheetPaper() {
       }
     }
 
-    tableRowsHtml += `
+    part1RowsHtml += `
       <tr class="paper-subject-row ${!isIncluded ? 'is-subject-excluded is-unselected' : ''}">
         <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${rowSno}</td>
         <td style="width: 140px; vertical-align: top;">
@@ -6586,15 +6826,117 @@ function renderSyllabusSheetPaper() {
     `;
   });
 
+  const part2RowsHtml = buildPart2RowsHtml(cls);
+  const part4RowsHtml = buildPart4RowsHtml(cls, subjectEntries);
+
+  const instructionLines = [];
+  if (partNumbers.scholastic) {
+    instructionLines.push(`<li><strong>Part ${partNumbers.scholastic} (Scholastic Written Examinations):</strong> Pen-paper exams will be conducted on scheduled dates. Timely reporting is compulsory.</li>`);
+  }
+  if (partNumbers.sea) {
+    instructionLines.push(`<li><strong>Part ${partNumbers.sea} (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between ${formatDateRange(seaDateFrom, seaDateTo)} in regular subject periods.</li>`);
+  }
+  if (partNumbers.notebook) {
+    instructionLines.push(`<li><strong>Part ${partNumbers.notebook} (Notebook Completion & Submission):</strong> Notebooks must be submitted to the respective subject teacher on the date specified against each subject; 5 marks are awarded per the evaluation criteria noted below.</li>`);
+  }
+  instructionLines.push(`<li><strong>In-Depth Study Required:</strong> Do not rely solely on chapter-end exercises; read the entire chapter thoroughly for deep conceptual questions.</li>`);
+  instructionLines.push(`<li><strong>Strict Attendance:</strong> No half-days are permitted, and absolutely no re-examinations will be conducted for absentees.</li>`);
+  instructionLines.push(`<li><strong>Zero Tolerance (UFM):</strong> Any use of Unfair Means will result in the immediate cancellation of the exam and strict disciplinary action.</li>`);
+  instructionLines.push(`<li><strong>Bring Own Stationery:</strong> Bring your own complete examination stationery (blue/black pens, pencils, geometry instruments). Lending or borrowing is strictly prohibited.</li>`);
+
   const instructionsHtml = includeInstructions ? `
     <div class="paper-instructions-box">
       <div class="paper-instructions-heading" style="text-decoration: none !important;">GENERAL INSTRUCTIONS FOR STUDENTS:</div>
       <ol class="paper-instructions-list">
-        <li><strong>In-Depth Study Required:</strong> Do not rely solely on chapter-end exercises; read the entire chapter thoroughly for deep conceptual questions.</li>
-        <li><strong>Strict Attendance:</strong> No half-days are permitted, and absolutely no re-examinations will be conducted for absentees.</li>
-        <li><strong>Zero Tolerance (UFM):</strong> Any use of Unfair Means will result in the immediate cancellation of the exam and strict disciplinary action.</li>
-        <li><strong>Bring Own Stationery:</strong> Bring your own complete examination stationery (blue/black pens, pencils, geometry instruments). Lending or borrowing is strictly prohibited.</li>
+        ${instructionLines.join('\n        ')}
       </ol>
+    </div>
+  ` : '';
+
+  const part1SectionHtml = partNumbers.scholastic ? `
+    <!-- PART ${partNumbers.scholastic}: SCHOLASTIC SUBJECTS -->
+    <div class="paper-part-section paper-part-section-scholastic">
+      <div class="paper-part-banner paper-part-banner-scholastic">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="paper-part-badge paper-part-badge-scholastic">PART ${partNumbers.scholastic}</span>
+          <span>SCHOLASTIC SUBJECTS (Written Pen-Paper Examination)</span>
+        </div>
+      </div>
+      <div class="paper-part-meta-strip paper-part-meta-strip-3col">
+        <div class="part-meta-cell"><strong>TIME ALLOWED:</strong> ${duration}</div>
+        <div class="part-meta-cell"><strong>MAXIMUM MARKS:</strong> ${marks}</div>
+        <div class="part-meta-cell"><strong>SCHOOL TIMINGS:</strong> ${schoolTiming}</div>
+      </div>
+      <table class="paper-syllabus-table">
+        <thead>
+          <tr>
+            <th style="width: 35px; text-align: center;">S.No.</th>
+            <th style="width: 145px;">Subject & Exam Date</th>
+            <th>Prescribed Examination Portion & Chapter Breakdown</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${part1RowsHtml}
+        </tbody>
+      </table>
+    </div>
+  ` : '';
+
+  const part2SectionHtml = partNumbers.sea ? `
+    <!-- PART ${partNumbers.sea}: SUBJECT ENRICHMENT ACTIVITIES (SEA) -->
+    <div class="paper-part-section paper-part-section-sea">
+      <div class="paper-part-banner paper-part-banner-sea">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="paper-part-badge paper-part-badge-sea">PART ${partNumbers.sea}</span>
+          <span>SUBJECT ENRICHMENT ACTIVITIES (SEA — 5 MARKS INTERNAL ASSESSMENT)</span>
+        </div>
+      </div>
+      <div class="paper-part-meta-strip paper-part-meta-strip-3col">
+        <div class="part-meta-cell"><strong>MAXIMUM MARKS:</strong> ${p2Marks}</div>
+        <div class="part-meta-cell"><strong>DATE:</strong> From: ${formatExamDate(seaDateFrom)} TO ${formatExamDate(seaDateTo)}</div>
+        <div class="part-meta-cell"><strong>SCHOOL TIMINGS:</strong> (${p2TimingStart} – ${p2TimingEnd})</div>
+      </div>
+      <table class="paper-syllabus-table">
+        <thead>
+          <tr>
+            <th style="width: 35px; text-align: center;">S.No.</th>
+            <th style="width: 145px;">Scholastic Subject</th>
+            <th>Prescribed 5-Mark Enrichment Activities & Practical Rubrics</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${part2RowsHtml}
+        </tbody>
+      </table>
+    </div>
+  ` : '';
+
+  const part4SectionHtml = partNumbers.notebook ? `
+    <!-- PART ${partNumbers.notebook}: NOTEBOOK COMPLETION & SUBMISSION -->
+    <div class="paper-part-section">
+      <div class="paper-part-banner">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span class="paper-part-badge">PART ${partNumbers.notebook}</span>
+          <span>NOTEBOOK COMPLETION & SUBMISSION (INTERNAL ASSESSMENT)</span>
+        </div>
+      </div>
+      <div class="paper-part-meta-strip" style="grid-template-columns: 1fr !important; text-align: left !important;">
+        <div class="part-meta-cell" style="border-right: none !important;">
+          <strong>Evaluation Criteria (5 Marks):</strong> Regularity &amp; Syllabus Completion (2) — all classwork/homework recorded regularly, entire prescribed syllabus completed, corrections done; Neatness, Upkeep &amp; Presentation (2) — notebook well-maintained, properly covered &amp; labelled, index page maintained, legible handwriting; Overall Discipline (1) — margins, date-wise entries, diagrams/tables neatly done.
+        </div>
+      </div>
+      <table class="paper-syllabus-table">
+        <thead>
+          <tr>
+            <th style="width: 35px; text-align: center;">S.No.</th>
+            <th>Subject</th>
+            <th style="width: 190px; text-align: center;">Notebook Submission Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${part4RowsHtml}
+        </tbody>
+      </table>
     </div>
   ` : '';
 
@@ -6608,25 +6950,13 @@ function renderSyllabusSheetPaper() {
     <div class="paper-meta-table">
       <div class="paper-meta-cell"><strong>CLASS:</strong> ${cls}</div>
       <div class="paper-meta-cell"><strong>EXAMINATION:</strong> ${exam}</div>
-      <div class="paper-meta-cell"><strong>TIME ALLOWED:</strong> ${duration}</div>
-      <div class="paper-meta-cell"><strong>MAXIMUM MARKS:</strong> ${marks}</div>
-      <div class="paper-meta-cell"><strong>SCHOOL TIMINGS:</strong> ${schoolTiming}</div>
     </div>
 
     ${instructionsHtml}
 
-    <table class="paper-syllabus-table">
-      <thead>
-        <tr>
-          <th style="width: 35px; text-align: center;">S.No.</th>
-          <th style="width: 145px;">Subject & Exam Date</th>
-          <th>Prescribed Examination Portion & Chapter Breakdown</th>
-        </tr>
-      </thead>
-      <tbody>
-        ${tableRowsHtml}
-      </tbody>
-    </table>
+    ${part1SectionHtml}
+    ${part2SectionHtml}
+    ${part4SectionHtml}
 
     <div class="paper-signatures-row">
       <div class="sig-block">
@@ -6925,38 +7255,40 @@ function exportSyllabusSheetToExcel() {
     }
   }
 
-  if (isMiddleSchool) {
-    const coSchDateFrom = (sheetCoSchDateFrom && sheetCoSchDateFrom.value) ? sheetCoSchDateFrom.value : coSchExamDateFrom;
-    const coSchDateTo = (sheetCoSchDateTo && sheetCoSchDateTo.value) ? sheetCoSchDateTo.value : coSchExamDateTo;
+  {
     const seaDateFrom = (sheetSEADateFrom && sheetSEADateFrom.value) ? sheetSEADateFrom.value : seaExamDateFrom;
     const seaDateTo = (sheetSEADateTo && sheetSEADateTo.value) ? sheetSEADateTo.value : seaExamDateTo;
 
-    // Add Part 2: Subject Enrichment Activities
-    const seaList = cbseSEAData[cls] || [];
+    // Add Subject Enrichment Activities (mirrors Part 1's inclusion) - Class 6-10
+    const seaList = (cbseSEAData[cls] || []).filter(item => isSubjectIncludedInSheet(cls, item.subject));
     seaList.forEach(item => {
       const seaSubjKey = `SEA: ${item.subject}`;
-      if (!isSubjectIncludedInSheet(cls, seaSubjKey)) return;
       const checkedSet = getSubjectSelectionForSheet(cls, seaSubjKey);
       if (checkedSet) {
         item.activities.forEach(act => {
           if (checkedSet.has(act)) {
             csv += includeSubtopics
-              ? `"${rowCount++}","${formatDateRange(seaDateFrom, seaDateTo)}","${item.subject}","Part 2: Subject Enrichment (SEA)","${act.replace(/"/g, '""')}","${item.domain.replace(/"/g, '""')}"\n`
-              : `"${rowCount++}","${formatDateRange(seaDateFrom, seaDateTo)}","${item.subject}","Part 2: Subject Enrichment (SEA)","${act.replace(/"/g, '""')}"\n`;
+              ? `"${rowCount++}","${formatDateRange(seaDateFrom, seaDateTo)}","${item.subject}","Subject Enrichment (SEA)","${act.replace(/"/g, '""')}","${getSEADomainText(item.subject).replace(/"/g, '""')}"\n`
+              : `"${rowCount++}","${formatDateRange(seaDateFrom, seaDateTo)}","${item.subject}","Subject Enrichment (SEA)","${act.replace(/"/g, '""')}"\n`;
           }
         });
       }
     });
+  }
 
-    // Add Part 3: Co-Scholastic subjects
+  if (isMiddleSchool) {
+    const coSchDateFrom = (sheetCoSchDateFrom && sheetCoSchDateFrom.value) ? sheetCoSchDateFrom.value : coSchExamDateFrom;
+    const coSchDateTo = (sheetCoSchDateTo && sheetCoSchDateTo.value) ? sheetCoSchDateTo.value : coSchExamDateTo;
+
+    // Add Co-Scholastic subjects (Class 6-8 only)
     ['Music', 'Art & Craft', 'Yoga'].forEach(subjName => {
       if (!isSubjectIncludedInSheet(cls, subjName)) return;
       const checkedSet = getSubjectSelectionForSheet(cls, subjName);
       if (checkedSet && (checkedSet.has('__included__') || checkedSet.has(subjName))) {
         const criteria = getCoScholasticCriteriaText(cls, subjName).replace(/"/g, '""');
         csv += includeSubtopics
-          ? `"${rowCount++}","${formatDateRange(coSchDateFrom, coSchDateTo)}","${subjName}","Part 3: Co-Scholastic Activities","${criteria}",""\n`
-          : `"${rowCount++}","${formatDateRange(coSchDateFrom, coSchDateTo)}","${subjName}","Part 3: Co-Scholastic Activities","${criteria}"\n`;
+          ? `"${rowCount++}","${formatDateRange(coSchDateFrom, coSchDateTo)}","${subjName}","Co-Scholastic Activities","${criteria}",""\n`
+          : `"${rowCount++}","${formatDateRange(coSchDateFrom, coSchDateTo)}","${subjName}","Co-Scholastic Activities","${criteria}"\n`;
       }
     });
   }
@@ -7061,6 +7393,14 @@ if (sheetIncludePrincipalSig) {
   sheetIncludePrincipalSig.addEventListener('change', renderSyllabusSheetPaper);
 }
 
+// Master per-Part toggles live in the persistent header ribbon (not inside
+// syllabusSheetPaper), so they stay reachable even when the part they
+// control is currently hidden - unlike a checkbox placed inside the part's
+// own section, which would vanish along with it.
+document.querySelectorAll('.sheet-part-include-cb').forEach(cb => {
+  cb.addEventListener('change', () => handlePartInclusionChange(cb));
+});
+
 [sheetSEADateFrom, sheetSEADateTo, sheetCoSchDateFrom, sheetCoSchDateTo].forEach(input => {
   if (input) {
     input.addEventListener('change', renderSyllabusSheetPaper);
@@ -7136,6 +7476,19 @@ if (syllabusSheetPaper) {
       if (display) display.textContent = e.target.value;
 
       // Auto-grow to fit the typed content
+      e.target.style.height = 'auto';
+      e.target.style.height = `${e.target.scrollHeight}px`;
+    }
+
+    if (e.target && e.target.classList.contains('sheet-sea-manual-input')) {
+      const subjName = e.target.dataset.subject;
+      const cls = sheetClassSelect ? sheetClassSelect.value : '';
+      setSEAManualNoteText(cls, subjName, e.target.value);
+
+      const row = e.target.closest('tr');
+      const display = row ? row.querySelector('.paper-sea-manual-display') : null;
+      if (display) display.textContent = e.target.value;
+
       e.target.style.height = 'auto';
       e.target.style.height = `${e.target.scrollHeight}px`;
     }

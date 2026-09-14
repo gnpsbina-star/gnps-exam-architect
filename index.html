@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GNPS Exam Architect</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css?v=55" />
+    <link rel="stylesheet" href="./style.css?v=56" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   </head>
@@ -402,6 +402,31 @@
 
             <div class="sheet-ribbon-divider"></div>
 
+            <!-- Master per-Part toggles: unchecking a part drops it from the
+                 generated sheet entirely (screen and PDF), and the remaining
+                 parts renumber to stay sequential. Remembered per class. -->
+            <label class="sheet-check-label" style="font-size: 0.76rem; cursor: pointer;" title="Include the Scholastic Subjects section">
+              <input type="checkbox" class="sheet-part-include-cb" data-part="scholastic" checked>
+              <span>Scholastic</span>
+            </label>
+
+            <label class="sheet-check-label" style="font-size: 0.76rem; cursor: pointer;" title="Include the Subject Enrichment Activities (SEA) section">
+              <input type="checkbox" class="sheet-part-include-cb" data-part="sea" checked>
+              <span>SEA</span>
+            </label>
+
+            <label class="sheet-check-label" id="sheetIncludeCoSchWrapper" style="font-size: 0.76rem; cursor: pointer;" title="Include the Co-Scholastic Activities section (Class 6-8 only)">
+              <input type="checkbox" class="sheet-part-include-cb" data-part="cosch" checked>
+              <span>Co-Scholastic</span>
+            </label>
+
+            <label class="sheet-check-label" style="font-size: 0.76rem; cursor: pointer;" title="Include the Notebook Completion & Submission section">
+              <input type="checkbox" class="sheet-part-include-cb" data-part="notebook" checked>
+              <span>Notebook</span>
+            </label>
+
+            <div class="sheet-ribbon-divider"></div>
+
             <!-- Export Actions -->
             <button type="button" id="printSheetBtn" class="sheet-btn-action sheet-btn-print">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
@@ -760,6 +785,6 @@
       </div>
     </div>
 
-    <script type="module" src="./main.js?v=216"></script>
+    <script type="module" src="./main.js?v=217"></script>
   </body>
 </html>
