@@ -525,6 +525,16 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
           { name: "Section C", type: "Fill in the Blanks & Match Columns / Trivia (Sports, Books, Facts)", count: 6, unitMark: 1, marksPerQ: "1 Mark", total: 6, choice: "All Compulsory" }
         ];
       }
+    } else if (subLower.includes("science") && !subLower.includes("social")) {
+      // Mirrors the official Class 10 board pattern's subject-based Section
+      // A/B/C (Biology/Chemistry/Physics) principle, scaled down - per
+      // school policy, Class 6-9 Science exams follow the Class 10 board
+      // structure at every mark tier, not just the full 80-mark exam.
+      sections = [
+        { name: "Section A", type: "Biology", count: 4, unitMark: 2.5, marksPerQ: "Mixed (1/3/5 Marks)", total: 10, choice: "2 MCQ (2M) + 1 SA (3M) + 1 LA (5M)" },
+        { name: "Section B", type: "Chemistry", count: 3, unitMark: 1.7, marksPerQ: "Mixed (1/3 Marks)", total: 5, choice: "2 MCQ (2M) + 1 SA (3M)" },
+        { name: "Section C", type: "Physics", count: 3, unitMark: 1.7, marksPerQ: "Mixed (1/3 Marks)", total: 5, choice: "2 MCQ (2M) + 1 SA (3M)" }
+      ];
     } else {
       sections = [
         { name: "Section A", type: "Multiple Choice Questions (MCQs)", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "Compulsory" },
@@ -653,6 +663,15 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
         { name: "Section C", type: "Fill in the Blanks & Match Columns (Sports, Books, Currencies)", count: 10, unitMark: 1, marksPerQ: "1 Mark", total: 10, choice: "All Compulsory" },
         { name: "Section D", type: "Logical Reasoning & Mental Ability Trivia (Patterns, Series, Analogies)", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "All Compulsory" }
       ];
+    } else if (subLower.includes("science") && !subLower.includes("social")) {
+      // Same subject-based (Biology/Chemistry/Physics) principle as the
+      // Class 10 board pattern, scaled to this mark tier - see Unit Test
+      // branch above for the policy rationale.
+      sections = [
+        { name: "Section A", type: "Biology", count: 7, unitMark: 2.3, marksPerQ: "Mixed (1/2/3/4 Marks)", total: 16, choice: "3 MCQ (3M) + 1 VSA (2M) + 1 SA (3M) + 1 LA (4M) + 1 Case-Based (4M)" },
+        { name: "Section B", type: "Chemistry", count: 7, unitMark: 1.7, marksPerQ: "Mixed (1/2/3 Marks)", total: 12, choice: "4 MCQ (4M) + 1 VSA (2M) + 2 SA (6M)" },
+        { name: "Section C", type: "Physics", count: 7, unitMark: 1.7, marksPerQ: "Mixed (1/2/3 Marks)", total: 12, choice: "4 MCQ (4M) + 1 VSA (2M) + 2 SA (6M)" }
+      ];
     } else {
       sections = [
         { name: "Section A", type: "MCQs & Assertion-Reasoning", count: 8, unitMark: 1, marksPerQ: "1 Mark", total: 8, choice: "Compulsory" },
@@ -678,17 +697,15 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
     const litBook = getCleanLiteratureBookName(className, subjectName);
     const litSecType = litBook ? `Language Through Literature (${litBook})` : "Language Through Literature";
 
-    if (className === "Class 11") {
-      sections = [
-        { name: "Section A", type: "Reading Skills (2 Unseen Passages - Factual & Case-based)", count: 2, unitMark: 13, marksPerQ: "10-16 Marks", total: 26, choice: "Passage 1 (10M) + Passage 2 Case-based / Note-Making (16M)" },
-        { name: "Section B", type: "Grammar & Creative Writing Skills", count: 4, unitMark: 5.75, marksPerQ: "4-7 Marks", total: 23, choice: "Grammar (7M) + Notice/Poster (4M) + Speech/Debate (5M+7M)" },
-        { name: "Section C", type: litSecType, count: 7, unitMark: 4.4, marksPerQ: "3-6 Marks", total: 31, choice: "Poetry RTC (3M) + Prose RTC (3M) + Snapshots RTC (4M) + SA (9M) + LA (12M)" }
-      ];
-    } else if (className === "Class 12") {
+    if (className === "Class 11" || className === "Class 12") {
+      // Class 11 follows the Class 12 board exam structure exactly (same
+      // section layout, mark/question distribution) per school policy -
+      // only the actual prescribed literature book differs, which
+      // litSecType already resolves correctly per class.
       sections = [
         { name: "Section A", type: "Reading Skills (2 Unseen Passages - Discursive & Case-based)", count: 2, unitMark: 11, marksPerQ: "10-12 Marks", total: 22, choice: "Passage 1 Discursive (12M) + Passage 2 Case-based (10M)" },
         { name: "Section B", type: "Creative Writing Skills", count: 4, unitMark: 4.5, marksPerQ: "4-5 Marks", total: 18, choice: "Notice (4M) + Invitation & Reply (4M) + Letter / Job App (5M) + Article / Report (5M)" },
-        { name: "Section C", type: litSecType, count: 6, unitMark: 6.6, marksPerQ: "2-5 Marks", total: 40, choice: "Flamingo Poetry RTC (6M) + Vistas RTC (4M) + Flamingo Prose RTC (6M) + SA (14M) + LA (10M)" }
+        { name: "Section C", type: litSecType, count: 6, unitMark: 6.6, marksPerQ: "2-5 Marks", total: 40, choice: "Poetry RTC (6M) + Supplementary Reader RTC (4M) + Prose RTC (6M) + SA (14M) + LA (10M)" }
       ];
     } else if (className === "Class 6" || className === "Class 7" || className === "Class 8") {
       sections = [
