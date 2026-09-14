@@ -7586,15 +7586,10 @@ async function checkAuthSession() {
       authCurrentUser = data.user;
       updateHeaderAuthUI();
     } else {
-      const errData = await res.json().catch(() => ({}));
       authToken = '';
       safeAuthStorage.clearToken();
       authCurrentUser = null;
       updateHeaderAuthUI();
-
-      if (errData.permission_withdrawn) {
-        showLoginAlert('withdrawn', '⛔ <strong>Access Denied:</strong> Your login permission has been withdrawn by the Super Administrator.');
-      }
     }
   } catch (err) {
     console.warn('Auth session check network error:', err);
@@ -7602,35 +7597,16 @@ async function checkAuthSession() {
   }
 }
 
-// 2. Login Submit Handler
-async function handleAuthLogin(event) {
-  if (event) event.preventDefault();
+// 2. Google Sign-In Callback
+const GOOGLE_CLIENT_ID = '512204084471-3eimhonv10j2om186kvj07447320va4r.apps.googleusercontent.com';
+
+async function handleGoogleCredentialResponse(response) {
   clearLoginAlert();
-
-  const usernameInput = document.getElementById('loginUsernameInput');
-  const passwordInput = document.getElementById('loginPasswordInput');
-  const rememberCheckbox = document.getElementById('loginRememberMe');
-  const submitBtn = document.getElementById('loginSubmitBtn');
-
-  const username = usernameInput ? usernameInput.value.trim() : '';
-  const password = passwordInput ? passwordInput.value : '';
-  const remember = rememberCheckbox ? rememberCheckbox.checked : true;
-
-  if (!username || !password) {
-    showLoginAlert('error', '⚠️ Please enter both your username and password.');
-    return;
-  }
-
-  if (submitBtn) {
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span>Verifying credentials...</span>';
-  }
-
   try {
-    const res = await fetch('/api/auth/login', {
+    const res = await fetch('/api/auth/google-login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
+      body: JSON.stringify({ credential: response.credential })
     });
 
     const data = await res.json();
@@ -7639,32 +7615,39 @@ async function handleAuthLogin(event) {
       authToken = data.token;
       authCurrentUser = data.user;
 
-      safeAuthStorage.setToken(authToken, remember);
+      safeAuthStorage.setToken(authToken, true);
       loadCustomSubjects();
 
       showLoginAlert('success', `✅ Welcome back, <strong>${escapeHtml(data.user.name)}</strong>! Unlocking portal...`);
       setTimeout(() => {
-        if (passwordInput) passwordInput.value = '';
         updateHeaderAuthUI();
         clearLoginAlert();
       }, 500);
-
-    } else if (res.status === 403 && data.permission_withdrawn) {
-      showLoginAlert('withdrawn', data.error || '⛔ Access Denied: Your login permission has been withdrawn by the Super Admin.');
     } else if (res.status === 429) {
       showLoginAlert('error', '⏳ ' + (data.error || 'Too many failed login attempts. Please wait 5 minutes.'));
     } else {
-      showLoginAlert('error', data.error || '❌ Invalid username or password. Please verify credentials.');
+      showLoginAlert('error', data.error || '❌ Could not sign you in. Please use your official @mygnps.com Google account.');
     }
   } catch (err) {
     console.error('Login error:', err);
     showLoginAlert('error', '🔌 Network or server error. Please ensure the backend server is running.');
-  } finally {
-    if (submitBtn) {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = '<span>Sign In to Exam Architect</span><span style="font-size: 1.1rem;">→</span>';
-    }
   }
+}
+
+function initGoogleSignIn() {
+  const btnContainer = document.getElementById('googleSignInButton');
+  if (!btnContainer || typeof google === 'undefined' || !google.accounts?.id) return;
+
+  google.accounts.id.initialize({
+    client_id: GOOGLE_CLIENT_ID,
+    callback: handleGoogleCredentialResponse
+  });
+  google.accounts.id.renderButton(btnContainer, {
+    theme: 'outline',
+    size: 'large',
+    text: 'signin_with',
+    shape: 'pill'
+  });
 }
 
 // 3. Logout Handler
@@ -7689,13 +7672,6 @@ async function handleAuthLogout() {
 
   updateHeaderAuthUI();
   showLoginAlert('success', '👋 You have been securely signed out of GNPS Exam Architect.');
-}
-
-function toggleLoginPasswordVisibility() {
-  const pInput = document.getElementById('loginPasswordInput');
-  if (pInput) {
-    pInput.type = pInput.type === 'password' ? 'text' : 'password';
-  }
 }
 
 // ==========================================================================
@@ -7845,12 +7821,14 @@ function renderAdminLogsTable(logsList) {
     let resultBadge = '';
     if (l.status === 'SUCCESS') {
       resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3);">🟢 SUCCESS</span>';
-    } else if (l.status === 'ACCESS_WITHDRAWN') {
-      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4);">⛔ WITHDRAWN</span>';
+    } else if (l.status === 'WRONG_DOMAIN') {
+      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4);">⛔ NOT STAFF</span>';
     } else if (l.status === 'LOGOUT') {
       resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3);">🚪 LOGOUT</span>';
+    } else if (l.status === 'BLOCKED_RATE_LIMIT') {
+      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(245, 158, 11, 0.15); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.3);">🚫 RATE LIMITED</span>';
     } else {
-      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(245, 158, 11, 0.15); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.3);">🔴 WRONG PW</span>';
+      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(245, 158, 11, 0.15); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.3);">🔴 INVALID TOKEN</span>';
     }
 
     return `
@@ -7966,9 +7944,7 @@ async function clearAuditLogs() {
 }
 
 // Bind to window for HTML event handlers
-window.handleAuthLogin = handleAuthLogin;
 window.handleAuthLogout = handleAuthLogout;
-window.toggleLoginPasswordVisibility = toggleLoginPasswordVisibility;
 window.openAdminControlModal = openAdminControlModal;
 window.closeAdminControlModal = closeAdminControlModal;
 window.switchAdminTab = switchAdminTab;
@@ -7986,6 +7962,16 @@ if (adminControlModal) {
 
 // Check session on page load
 checkAuthSession();
+
+// Render the "Sign in with Google" button once the GSI script has loaded
+// (it's fetched with async/defer, so it may not be ready immediately)
+(function waitForGoogleSignIn(attemptsLeft) {
+  if (typeof google !== 'undefined' && google.accounts?.id) {
+    initGoogleSignIn();
+  } else if (attemptsLeft > 0) {
+    setTimeout(() => waitForGoogleSignIn(attemptsLeft - 1), 200);
+  }
+})(25);
 
 
 

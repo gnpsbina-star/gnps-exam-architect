@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GNPS Exam Architect</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css?v=57" />
+    <link rel="stylesheet" href="./style.css?v=58" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
     <div class="container">
@@ -570,41 +571,11 @@
         <!-- Alert Notification Box -->
         <div id="loginAlertBox" class="login-alert-box hidden"></div>
 
-        <!-- Form -->
-        <form id="loginForm" class="login-form" onsubmit="window.handleAuthLogin && window.handleAuthLogin(event)">
-          <div class="login-field-group">
-            <label for="loginUsernameInput" class="login-field-label">Username / Staff ID</label>
-            <div class="login-input-wrap">
-              <span class="login-input-icon">👤</span>
-              <input type="text" id="loginUsernameInput" required placeholder="Enter your staff username" autocomplete="username" class="login-input">
-            </div>
-          </div>
-
-          <div class="login-field-group">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-              <label for="loginPasswordInput" class="login-field-label" style="margin-bottom: 0;">Password</label>
-              <button type="button" class="login-forgot-link" onclick="alert('Please contact the School Super Administrator to reset your password.')">Forgot Password?</button>
-            </div>
-            <div class="login-input-wrap">
-              <span class="login-input-icon">🔑</span>
-              <input type="password" id="loginPasswordInput" required placeholder="Enter password" autocomplete="current-password" class="login-input">
-              <button type="button" class="login-toggle-pw" onclick="window.toggleLoginPasswordVisibility && window.toggleLoginPasswordVisibility()" title="Toggle password visibility">👁️</button>
-            </div>
-          </div>
-
-          <div class="login-options-row">
-            <label class="login-remember-label">
-              <input type="checkbox" id="loginRememberMe" checked>
-              <span>Keep me signed in</span>
-            </label>
-            <span class="login-secure-tag">🔒 256-bit Encrypted</span>
-          </div>
-
-          <button type="submit" id="loginSubmitBtn" class="login-submit-btn">
-            <span>Sign In to Exam Architect</span>
-            <span style="font-size: 1.1rem;">→</span>
-          </button>
-        </form>
+        <!-- Google Sign-In -->
+        <div class="login-google-wrap">
+          <p class="login-google-hint">Sign in with your official @mygnps.com Google account</p>
+          <div id="googleSignInButton" style="display: flex; justify-content: center;"></div>
+        </div>
 
         <div class="login-footer-notice">
           🛡️ Institutional access is monitored. All logins are audited with timestamp, device info, IP address, and location.
@@ -626,7 +597,7 @@
                 <h2 class="admin-main-title">SUPER ADMIN MANAGEMENT & AUDIT CONSOLE</h2>
                 <span class="admin-root-badge">ROOT ACCESS</span>
               </div>
-              <p class="admin-sub-title">Control faculty login access, grant/withdraw permissions, and inspect real-time security audit logs.</p>
+              <p class="admin-sub-title">View recent Google sign-ins and inspect real-time security audit logs.</p>
             </div>
           </div>
           <button type="button" class="admin-close-btn" onclick="window.closeAdminControlModal && window.closeAdminControlModal()" title="Close console">✕</button>
@@ -637,7 +608,7 @@
           <div class="admin-tab-group">
             <button type="button" id="adminTabBtnUsers" class="admin-tab-btn active" onclick="window.switchAdminTab && window.switchAdminTab('users')">
               <span>👥</span>
-              <span>Faculty Accounts</span>
+              <span>Recent Sign-Ins</span>
               <span id="adminUserCountBadge" class="admin-count-pill">0</span>
             </button>
             <button type="button" id="adminTabBtnLogs" class="admin-tab-btn" onclick="window.switchAdminTab && window.switchAdminTab('logs')">
@@ -655,14 +626,14 @@
           </div>
         </div>
 
-        <!-- Tab 1: Faculty User Accounts -->
+        <!-- Tab 1: Recent Sign-Ins -->
         <div id="adminTabContentUsers" class="admin-tab-content">
           <div class="admin-filter-bar">
             <div class="admin-filter-info">
-              <strong>Faculty Access Control Matrix</strong>
-              <span>Accounts are managed in the app's source code (not from this panel) so they survive redeploys. To add, remove, or reset a password for a faculty account, contact the developer.</span>
+              <strong>Google Workspace Sign-In</strong>
+              <span>Any verified @mygnps.com Google account can sign in - access is controlled entirely by your Google Workspace, not by this panel. This list shows everyone who has signed in at least once.</span>
             </div>
-            <input type="text" id="adminUserSearchInput" placeholder="Search by faculty name or username..." oninput="window.filterAdminUsers && window.filterAdminUsers(this.value)" class="admin-search-input">
+            <input type="text" id="adminUserSearchInput" placeholder="Search by name or email..." oninput="window.filterAdminUsers && window.filterAdminUsers(this.value)" class="admin-search-input">
           </div>
 
           <div class="admin-table-container">
@@ -670,9 +641,8 @@
               <thead>
                 <tr>
                   <th>Faculty Member</th>
-                  <th>Username / Staff ID</th>
+                  <th>Email</th>
                   <th>Designated Role</th>
-                  <th>Login Permission</th>
                   <th>Last Login</th>
                 </tr>
               </thead>
@@ -694,8 +664,9 @@
               <select id="adminLogStatusFilter" onchange="window.filterAdminLogs && window.filterAdminLogs()" class="admin-select-filter">
                 <option value="ALL">All Login Results</option>
                 <option value="SUCCESS">Success Only (🟢)</option>
-                <option value="FAILED_PASSWORD">Wrong Password (🔴)</option>
-                <option value="ACCESS_WITHDRAWN">Permission Withdrawn (⛔)</option>
+                <option value="WRONG_DOMAIN">Wrong Domain / Not Staff (⛔)</option>
+                <option value="INVALID_TOKEN">Invalid Google Token (🔴)</option>
+                <option value="BLOCKED_RATE_LIMIT">Rate Limited (🚫)</option>
               </select>
               <input type="text" id="adminLogSearchInput" placeholder="Filter by IP, user, device..." oninput="window.filterAdminLogs && window.filterAdminLogs()" class="admin-search-input">
               <button type="button" onclick="window.clearAuditLogs && window.clearAuditLogs()" class="btn-admin-danger-subtle" title="Clear all audit logs">Clear Logs</button>
@@ -723,6 +694,6 @@
       </div>
     </div>
 
-    <script type="module" src="./main.js?v=221"></script>
+    <script type="module" src="./main.js?v=222"></script>
   </body>
 </html>

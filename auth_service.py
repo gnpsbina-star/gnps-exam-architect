@@ -2,24 +2,31 @@ import os
 import json
 import time
 import datetime
-import hashlib
 import secrets
 import urllib.request
 import urllib.parse
 import ipaddress
 import re
 
+from google.oauth2 import id_token as google_id_token
+from google.auth.transport import requests as google_requests
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.environ.get("DATA_DIR", BASE_DIR)
 os.makedirs(DATA_DIR, exist_ok=True)
 
-# Staff login accounts are a hardcoded, git-tracked file (edited via a code
-# change + deploy, not through the admin panel) so accounts and passwords
-# survive redeploys/restarts without needing a persistent disk. It lives in
-# BASE_DIR (the repo checkout), not DATA_DIR.
-STAFF_ACCOUNTS_FILE = os.path.join(BASE_DIR, "staff_accounts.json")
 LOGS_FILE = os.path.join(DATA_DIR, "login_logs.json")
 SESSIONS_FILE = os.path.join(DATA_DIR, "sessions.json")
+
+# Login is "Sign in with Google", restricted to this Google Workspace domain.
+# The OAuth Client ID is not a secret (it's meant to be embedded in the
+# frontend page) so it's fine hardcoded here and in index.html.
+GOOGLE_CLIENT_ID = "512204084471-3eimhonv10j2om186kvj07447320va4r.apps.googleusercontent.com"
+ALLOWED_GOOGLE_DOMAIN = "mygnps.com"
+# Emails on the allowed domain that get Super Admin (full admin panel access)
+# instead of standard faculty access. Everyone else on the domain who signs
+# in automatically gets faculty access - no per-teacher setup needed.
+SUPER_ADMIN_EMAILS = {"vikas@mygnps.com"}
 
 SESSION_TTL_SECONDS = 7 * 24 * 3600  # 7 Days
 MAX_LOG_ENTRIES = 1000
@@ -30,8 +37,6 @@ RATE_LIMIT_MAX_FAILURES = 5
 GEO_CACHE = {}
 FAILED_ATTEMPTS = {}  # ip -> list of float timestamps
 SESSIONS = {}         # token -> session dict
-LAST_LOGIN = {}       # username (lowercase) -> display timestamp string; not
-                       # persisted to disk since it's informational only
 
 # -------------------------------------------------------------
 # 1. DATA PERSISTENCE & INITIAL SEEDING
@@ -55,15 +60,9 @@ def _atomic_json_write(filepath, data, max_entries=None):
                 pass
 
 def init_auth_storage():
-    """Initializes audit-log/session storage. Staff accounts are not seeded
-    here - they live entirely in the git-tracked STAFF_ACCOUNTS_FILE, edited
-    via a code change + deploy rather than at runtime."""
+    """Initializes audit-log/session storage. There are no local accounts to
+    seed - login is Google Sign-In, restricted to ALLOWED_GOOGLE_DOMAIN."""
     global SESSIONS
-    if not os.path.exists(STAFF_ACCOUNTS_FILE):
-        print(f"WARNING: {STAFF_ACCOUNTS_FILE} not found - no one will be able to log in.")
-    elif not any(u.get("role") == "super_admin" for u in get_users()):
-        print(f"WARNING: {STAFF_ACCOUNTS_FILE} has no super_admin account.")
-
     if not os.path.exists(LOGS_FILE):
         save_logs([])
 
@@ -77,22 +76,6 @@ def init_auth_storage():
         except Exception as e:
             print(f"Error loading sessions: {e}")
             SESSIONS = {}
-
-def get_users():
-    """Loads the hardcoded staff account list from git-tracked
-    STAFF_ACCOUNTS_FILE. Login accounts and passwords are managed by editing
-    this file and redeploying, not through the admin panel - so this list is
-    always exactly what's committed, regardless of container restarts."""
-    if not os.path.exists(STAFF_ACCOUNTS_FILE):
-        return []
-    try:
-        with open(STAFF_ACCOUNTS_FILE, 'r', encoding='utf-8') as f:
-            accounts = json.load(f)
-    except Exception:
-        return []
-    for u in accounts:
-        u['last_login'] = LAST_LOGIN.get(u.get('username', '').lower(), u.get('last_login', 'Never'))
-    return accounts
 
 def get_logs():
     if os.path.exists(LOGS_FILE):
@@ -110,21 +93,7 @@ def save_sessions():
     _atomic_json_write(SESSIONS_FILE, SESSIONS)
 
 # -------------------------------------------------------------
-# 2. CRYPTOGRAPHY & PASSWORDS
-# -------------------------------------------------------------
-
-def hash_password(password, salt=None):
-    if not salt:
-        salt = secrets.token_hex(16)
-    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 100000)
-    return salt, key.hex()
-
-def verify_password(password, salt, stored_hash):
-    key = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 100000).hex()
-    return secrets.compare_digest(key, stored_hash)
-
-# -------------------------------------------------------------
-# 3. REAL CLIENT IP, GEOLOCATION & DEVICE PARSING
+# 2. REAL CLIENT IP, GEOLOCATION & DEVICE PARSING
 # -------------------------------------------------------------
 
 
@@ -296,73 +265,66 @@ def record_failed_attempt(ip):
 # 5. AUTHENTICATION & SESSION MANAGEMENT
 # -------------------------------------------------------------
 
-def authenticate_user(username, password, ip, user_agent_str):
+def authenticate_google_user(credential, ip, user_agent_str):
     """
-    Authenticates user and returns (success: bool, result_dict: dict, status_code: int).
+    Verifies a Google Sign-In ID token (the 'credential' JWT the frontend
+    receives from Google Identity Services), confirms it belongs to
+    ALLOWED_GOOGLE_DOMAIN, and issues our own session token.
+    Returns (success: bool, result_dict: dict, status_code: int).
     """
     device = parse_user_agent(user_agent_str)
     location = get_ip_location(ip)
 
     if is_rate_limited(ip):
-        record_audit_log(username, username, "user", "BLOCKED_RATE_LIMIT", ip, device, location)
+        record_audit_log("unknown", "unknown", "user", "BLOCKED_RATE_LIMIT", ip, device, location)
         return False, {"error": "Too many failed login attempts. Please wait 5 minutes before trying again."}, 429
 
-    users = get_users()
-    user = next((u for u in users if u["username"].lower() == username.lower().strip()), None)
-
-    if not user:
+    try:
+        idinfo = google_id_token.verify_oauth2_token(
+            credential, google_requests.Request(), GOOGLE_CLIENT_ID
+        )
+    except Exception:
         record_failed_attempt(ip)
-        record_audit_log(username, "Unknown User", "user", "USER_NOT_FOUND", ip, device, location)
-        return False, {"error": "Invalid username or password. Please verify credentials."}, 401
+        record_audit_log("unknown", "Unknown User", "user", "INVALID_TOKEN", ip, device, location)
+        return False, {"error": "Could not verify your Google sign-in. Please try again."}, 401
 
-    if not verify_password(password, user.get("salt", ""), user.get("password_hash", "")):
+    email = (idinfo.get("email") or "").strip().lower()
+    hosted_domain = idinfo.get("hd", "")
+
+    if not idinfo.get("email_verified") or hosted_domain != ALLOWED_GOOGLE_DOMAIN or not email.endswith(f"@{ALLOWED_GOOGLE_DOMAIN}"):
         record_failed_attempt(ip)
-        record_audit_log(user["username"], user["name"], user["role"], "FAILED_PASSWORD", ip, device, location)
-        return False, {"error": "Invalid username or password. Please verify credentials."}, 401
+        record_audit_log(email or "unknown", "Unknown User", "user", "WRONG_DOMAIN", ip, device, location)
+        return False, {"error": f"Access restricted to @{ALLOWED_GOOGLE_DOMAIN} accounts."}, 403
 
-    # Check permission status
-    if user.get("status") == "suspended":
-        record_audit_log(user["username"], user["name"], user["role"], "ACCESS_WITHDRAWN", ip, device, location)
-        return False, {
-            "error": "⛔ Access Denied: Your login permission has been withdrawn by the Super Admin. Please contact the school administration.",
-            "permission_withdrawn": True
-        }, 403
-
-    # Success: update last login (in-memory only, not persisted to disk -
-    # this is informational and fine to lose on a restart) and create a
-    # session token
-    now_str = datetime.datetime.now().strftime("%d %b %Y, %I:%M %p")
-    LAST_LOGIN[user["username"].lower()] = now_str
-    user["last_login"] = now_str
+    name = idinfo.get("name") or email
+    role = "super_admin" if email in SUPER_ADMIN_EMAILS else "user"
 
     # Issue secure session token
     token = secrets.token_hex(32)
     SESSIONS[token] = {
-        "user_id": user["id"],
-        "username": user["username"],
-        "name": user["name"],
-        "role": user["role"],
+        "email": email,
+        "name": name,
+        "role": role,
         "expires_at": time.time() + SESSION_TTL_SECONDS
     }
     save_sessions()
 
-    record_audit_log(user["username"], user["name"], user["role"], "SUCCESS", ip, device, location)
+    record_audit_log(email, name, role, "SUCCESS", ip, device, location)
 
+    now_str = datetime.datetime.now().strftime("%d %b %Y, %I:%M %p")
     safe_user = {
-        "id": user["id"],
-        "name": user["name"],
-        "username": user["username"],
-        "role": user["role"],
-        "status": user["status"],
-        "last_login": user["last_login"]
+        "name": name,
+        "username": email,
+        "role": role,
+        "status": "active",
+        "last_login": now_str
     }
 
     return True, {"token": token, "user": safe_user}, 200
 
 def verify_session_token(token):
     """
-    Verifies token validity and user status.
-    Returns (is_valid: bool, user_data: dict or None)
+    Verifies token validity. Returns (is_valid: bool, user_data: dict or None)
     """
     if not token or token not in SESSIONS:
         return False, None
@@ -373,23 +335,11 @@ def verify_session_token(token):
         save_sessions()
         return False, None
 
-    # Check if user is still active in users.json
-    users = get_users()
-    user = next((u for u in users if u["id"] == sess["user_id"]), None)
-
-    if not user or user.get("status") == "suspended":
-        # Permission revoked while logged in!
-        del SESSIONS[token]
-        save_sessions()
-        return False, None
-
     safe_user = {
-        "id": user["id"],
-        "name": user["name"],
-        "username": user["username"],
-        "role": user["role"],
-        "status": user["status"],
-        "last_login": user.get("last_login", "Recently")
+        "name": sess["name"],
+        "username": sess["email"],
+        "role": sess["role"],
+        "status": "active"
     }
     return True, safe_user
 
@@ -398,7 +348,7 @@ def revoke_session_token(token, ip, user_agent_str):
         sess = SESSIONS[token]
         device = parse_user_agent(user_agent_str)
         location = get_ip_location(ip)
-        record_audit_log(sess["username"], sess.get("name", sess["username"]), sess["role"], "LOGOUT", ip, device, location)
+        record_audit_log(sess["email"], sess.get("name", sess["email"]), sess["role"], "LOGOUT", ip, device, location)
         del SESSIONS[token]
         save_sessions()
     return True
@@ -407,21 +357,31 @@ def revoke_session_token(token, ip, user_agent_str):
 # 6. SUPER ADMIN MANAGEMENT OPERATIONS
 # -------------------------------------------------------------
 
-def admin_get_all_users():
-    users = get_users()
-    # Strip sensitive salt and password_hash
-    safe_list = []
-    for u in users:
-        safe_list.append({
-            "id": u["id"],
-            "name": u["name"],
-            "username": u["username"],
-            "role": u["role"],
-            "status": u["status"],
-            "created_at": u.get("created_at", "N/A"),
-            "last_login": u.get("last_login", "Never")
+def admin_get_recent_signins():
+    """
+    There's no fixed account roster anymore - anyone verified on
+    ALLOWED_GOOGLE_DOMAIN can sign in. This derives a "who has signed in"
+    view from the audit log instead: one row per unique email, showing
+    their most recent successful login (logs are stored newest-first).
+    """
+    logs = get_logs()
+    seen = set()
+    result = []
+    for entry in logs:
+        if entry.get("status") != "SUCCESS":
+            continue
+        email = entry.get("username", "")
+        if not email or email in seen:
+            continue
+        seen.add(email)
+        result.append({
+            "name": entry.get("name", email),
+            "username": email,
+            "role": entry.get("role", "user"),
+            "status": "active",
+            "last_login": entry.get("timestamp", "Never")
         })
-    return safe_list
+    return result
 
 def admin_clear_logs():
     save_logs([])

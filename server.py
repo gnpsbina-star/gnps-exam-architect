@@ -871,7 +871,7 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             if not is_valid or user.get("role") != "super_admin":
                 self.send_json(403, {"error": "Unauthorized. Super Admin privileges required."})
                 return
-            users = auth_service.admin_get_all_users()
+            users = auth_service.admin_get_recent_signins()
             self.send_json(200, {"success": True, "users": users})
             return
 
@@ -1002,15 +1002,14 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         parsed_path = urllib.parse.urlparse(self.path)
 
-        # --- Authentication: Login ---
-        if parsed_path.path == '/api/auth/login':
+        # --- Authentication: Google Sign-In ---
+        if parsed_path.path == '/api/auth/google-login':
             try:
                 body = self.read_json_body() or {}
-                username = body.get('username', '')
-                password = body.get('password', '')
+                credential = body.get('credential', '')
                 ip = auth_service.get_client_ip(self.headers, self.client_address)
                 ua = self.headers.get('User-Agent', '')
-                success, result, status_code = auth_service.authenticate_user(username, password, ip, ua)
+                success, result, status_code = auth_service.authenticate_google_user(credential, ip, ua)
                 self.send_json(status_code, result)
             except Exception as e:
                 self.send_json(500, {"error": str(e)})
