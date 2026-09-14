@@ -349,7 +349,12 @@ def extract_text_from_pdf_url(url, is_sqp=True):
         if is_sqp:
             upper_text = text.upper()
             start_idx = upper_text.find("GENERAL INSTRUCTION")
-            match = re.search(r'\n\s*SECTION\s*[-:]*\s*A', upper_text)
+            # CBSE's own SQP PDFs typically use an en dash ("Section – A") or
+            # em dash rather than a plain hyphen, which the old [-:] class
+            # didn't match - causing this to fall through to the blind
+            # 1500-char fallback below and spill real exam questions into
+            # what's meant to be just the general-instructions reference text.
+            match = re.search(r'\n\s*SECTION\s*[-:–—]*\s*A\b', upper_text)
             
             if start_idx != -1 and match:
                 end_idx = match.start()
