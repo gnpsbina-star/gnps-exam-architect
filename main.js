@@ -1,4 +1,4 @@
-import { cbseData } from './data.js?v=33';
+import { cbseData } from './data.js?v=34';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
 
