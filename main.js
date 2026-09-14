@@ -6140,6 +6140,7 @@ function renderSyllabusSheetPaper() {
               return {
                 raw: it,
                 title: it,
+                num: null,
                 isChecked
               };
             });
