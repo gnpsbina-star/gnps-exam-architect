@@ -7634,20 +7634,47 @@ async function handleGoogleCredentialResponse(response) {
   }
 }
 
+function showGoogleSignInError(message) {
+  const btnContainer = document.getElementById('googleSignInButton');
+  if (btnContainer) {
+    btnContainer.innerHTML = `<div style="color: #fca5a5; font-size: 0.78rem; text-align: center; padding: 8px 12px; border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; background: rgba(239, 68, 68, 0.1);">${message}</div>`;
+  }
+}
+
 function initGoogleSignIn() {
   const btnContainer = document.getElementById('googleSignInButton');
-  if (!btnContainer || typeof google === 'undefined' || !google.accounts?.id) return;
+  if (!btnContainer) return;
 
-  google.accounts.id.initialize({
-    client_id: GOOGLE_CLIENT_ID,
-    callback: handleGoogleCredentialResponse
-  });
-  google.accounts.id.renderButton(btnContainer, {
-    theme: 'outline',
-    size: 'large',
-    text: 'signin_with',
-    shape: 'pill'
-  });
+  if (typeof google === 'undefined' || !google.accounts?.id) {
+    showGoogleSignInError('⚠️ Could not load Google Sign-In (accounts.google.com may be blocked on this network). Try refreshing, or a different network.');
+    return;
+  }
+
+  try {
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleCredentialResponse
+    });
+    google.accounts.id.renderButton(btnContainer, {
+      theme: 'outline',
+      size: 'large',
+      text: 'signin_with',
+      shape: 'pill'
+    });
+
+    // Google's script sometimes fails silently (no exception) when the
+    // page's origin isn't registered in the OAuth Client ID's "Authorized
+    // JavaScript origins" - in that case nothing gets rendered into the
+    // container at all, so check for that after giving it a moment.
+    setTimeout(() => {
+      if (!btnContainer.hasChildNodes()) {
+        showGoogleSignInError(`⚠️ Google Sign-In did not load. This usually means "${window.location.origin}" is not yet registered as an Authorized JavaScript origin for this Google OAuth Client ID.`);
+      }
+    }, 1500);
+  } catch (err) {
+    console.error('Google Sign-In render error:', err);
+    showGoogleSignInError('⚠️ Google Sign-In failed to load. Please refresh the page. If this persists, the site\'s URL may not be registered with Google yet.');
+  }
 }
 
 // 3. Logout Handler
@@ -7964,11 +7991,13 @@ if (adminControlModal) {
 checkAuthSession();
 
 // Render the "Sign in with Google" button once the GSI script has loaded
-// (it's fetched with async/defer, so it may not be ready immediately)
+// (it's fetched with async/defer, so it may not be ready immediately).
+// Once attempts run out, initGoogleSignIn() is still called so it can show
+// a visible error instead of leaving the button silently blank.
 (function waitForGoogleSignIn(attemptsLeft) {
-  if (typeof google !== 'undefined' && google.accounts?.id) {
+  if ((typeof google !== 'undefined' && google.accounts?.id) || attemptsLeft <= 0) {
     initGoogleSignIn();
-  } else if (attemptsLeft > 0) {
+  } else {
     setTimeout(() => waitForGoogleSignIn(attemptsLeft - 1), 200);
   }
 })(25);
