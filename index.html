@@ -648,19 +648,6 @@
           </div>
 
           <div class="admin-top-actions">
-            <button type="button" id="adminAddNewUserBtn" class="btn-admin-add" onclick="window.openNewUserModal && window.openNewUserModal()">
-              <span>+</span>
-              <span>Add Faculty User</span>
-            </button>
-            <button type="button" id="adminBackupDataBtn" class="btn-admin-export" onclick="window.exportSystemBackup && window.exportSystemBackup()" title="Download a complete snapshot of all users and audit logs to your PC">
-              <span>💾</span>
-              <span>Backup Data</span>
-            </button>
-            <button type="button" id="adminRestoreDataBtn" class="btn-admin-export" onclick="document.getElementById('adminImportBackupInput').click()" title="Restore users and data from a previously downloaded backup JSON file">
-              <span>📤</span>
-              <span>Restore Backup</span>
-            </button>
-            <input type="file" id="adminImportBackupInput" accept=".json" style="display: none;" onchange="window.handleBackupFileSelect && window.handleBackupFileSelect(event)">
             <button type="button" id="adminExportLogsBtn" class="btn-admin-export" onclick="window.exportAuditLogsToCSV && window.exportAuditLogsToCSV()">
               <span>📥</span>
               <span>Export CSV</span>
@@ -673,7 +660,7 @@
           <div class="admin-filter-bar">
             <div class="admin-filter-info">
               <strong>Faculty Access Control Matrix</strong>
-              <span>Toggle permissions to immediately allow or revoke application login access.</span>
+              <span>Accounts are managed in the app's source code (not from this panel) so they survive redeploys. To add, remove, or reset a password for a faculty account, contact the developer.</span>
             </div>
             <input type="text" id="adminUserSearchInput" placeholder="Search by faculty name or username..." oninput="window.filterAdminUsers && window.filterAdminUsers(this.value)" class="admin-search-input">
           </div>
@@ -687,7 +674,6 @@
                   <th>Designated Role</th>
                   <th>Login Permission</th>
                   <th>Last Login</th>
-                  <th style="text-align: right;">Account Actions</th>
                 </tr>
               </thead>
               <tbody id="adminUsersTableBody">
@@ -737,48 +723,6 @@
       </div>
     </div>
 
-    <!-- Modal: Add Faculty User -->
-    <div id="newUserModal" class="admin-submodal-overlay hidden">
-      <div class="admin-submodal-card">
-        <div class="admin-submodal-header">
-          <h3>Add New Faculty User</h3>
-          <button type="button" onclick="window.closeNewUserModal && window.closeNewUserModal()">✕</button>
-        </div>
-        <form onsubmit="event.preventDefault(); window.handleCreateFacultyUser && window.handleCreateFacultyUser(event); return false;" class="admin-submodal-form">
-          <div class="admin-form-group">
-            <label for="newUserNameInput">Full Name & Designation</label>
-            <input type="text" id="newUserNameInput" required placeholder="e.g. S. K. Gupta (TGT Science)">
-          </div>
-          <div class="admin-form-group">
-            <label for="newUserUsernameInput">Username / Staff ID</label>
-            <input type="text" id="newUserUsernameInput" required placeholder="e.g. gupta.sci">
-          </div>
-          <div class="admin-form-group">
-            <label for="newUserPasswordInput">Initial Password</label>
-            <input type="password" id="newUserPasswordInput" required placeholder="Enter initial password">
-          </div>
-          <div class="admin-form-group">
-            <label for="newUserRoleSelect">User Role</label>
-            <select id="newUserRoleSelect">
-              <option value="user">Faculty / Subject Teacher</option>
-              <option value="super_admin">Super Admin (Full Access & User Control)</option>
-            </select>
-          </div>
-          <div class="admin-form-group">
-            <label for="newUserStatusSelect">Initial Permission</label>
-            <select id="newUserStatusSelect">
-              <option value="active">Granted (Active - Can Log In)</option>
-              <option value="suspended">Withdrawn (Suspended - Locked Out)</option>
-            </select>
-          </div>
-          <div class="admin-submodal-actions">
-            <button type="button" onclick="window.closeNewUserModal && window.closeNewUserModal()" class="btn-subtle">Cancel</button>
-            <button type="submit" class="btn-primary">Create Account</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <script type="module" src="./main.js?v=220"></script>
+    <script type="module" src="./main.js?v=221"></script>
   </body>
 </html>

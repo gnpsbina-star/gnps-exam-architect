@@ -7523,7 +7523,6 @@ const headerUserName = document.getElementById('headerUserName');
 const headerUserRole = document.getElementById('headerUserRole');
 const openAdminPanelBtn = document.getElementById('openAdminPanelBtn');
 const adminControlModal = document.getElementById('adminControlModal');
-const newUserModal = document.getElementById('newUserModal');
 
 function showLoginAlert(type, message) {
   if (!loginAlertBox) return;
@@ -7775,7 +7774,7 @@ function renderAdminUsersTable(usersList) {
   if (!tbody) return;
 
   if (usersList.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 2rem;">No faculty accounts found.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 2rem;">No faculty accounts found.</td></tr>`;
     return;
   }
 
@@ -7800,157 +7799,14 @@ function renderAdminUsersTable(usersList) {
           </span>
         </td>
         <td>
-          <button 
-            type="button" 
-            onclick="window.toggleUserPermission(${u.id})"
-            ${isSuperAdmin ? 'disabled title="Super Admin access cannot be revoked"' : 'title="Click to Grant or Withdraw login permission"'}
-            class="admin-perm-toggle-btn ${isActive ? 'admin-perm-active' : 'admin-perm-suspended'}"
-            style="${isSuperAdmin ? 'opacity: 0.7; cursor: not-allowed;' : ''}"
-          >
+          <span class="admin-perm-toggle-btn ${isActive ? 'admin-perm-active' : 'admin-perm-suspended'}" title="Managed in source code, not from this panel">
             <span>${isActive ? '🟢 PERMITTED' : '🔴 WITHDRAWN'}</span>
-            ${!isSuperAdmin ? '<span style="font-size: 0.62rem; opacity: 0.75;">(toggle)</span>' : ''}
-          </button>
+          </span>
         </td>
         <td style="color: #94a3b8; font-size: 0.72rem;">${escapeHtml(u.last_login || 'Never')}</td>
-        <td style="text-align: right;">
-          <div style="display: inline-flex; gap: 6px;">
-            <button type="button" onclick="window.handleResetUserPassword(${u.id})" class="btn-action-small" title="Reset user password">Reset PW</button>
-            ${!isSuperAdmin ? `<button type="button" onclick="window.handleDeleteUser(${u.id})" class="btn-action-danger" title="Delete account">Delete</button>` : ''}
-          </div>
-        </td>
       </tr>
     `;
   }).join('');
-}
-
-// 5. Toggle Permission
-async function toggleUserPermission(userId) {
-  if (!authToken) return;
-  try {
-    const res = await fetch('/api/admin/toggle-permission', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`,
-        'X-Auth-Token': authToken
-      },
-      body: JSON.stringify({ user_id: userId })
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      await loadAdminUsers();
-      if (activeAdminTab === 'logs') loadAdminLogs();
-    } else {
-      alert(data.error || 'Failed to toggle user permission.');
-    }
-  } catch (err) {
-    console.error('Toggle permission error:', err);
-  }
-}
-
-// 6. Add User Submodal
-function openNewUserModal() {
-  if (newUserModal) newUserModal.classList.remove('hidden');
-}
-
-function closeNewUserModal() {
-  if (newUserModal) newUserModal.classList.add('hidden');
-}
-
-async function handleCreateFacultyUser(event) {
-  if (event) event.preventDefault();
-  const name = document.getElementById('newUserNameInput')?.value.trim();
-  const username = document.getElementById('newUserUsernameInput')?.value.trim();
-  const password = document.getElementById('newUserPasswordInput')?.value;
-  const role = document.getElementById('newUserRoleSelect')?.value || 'user';
-  const status = document.getElementById('newUserStatusSelect')?.value || 'active';
-
-  if (!name || !username || !password) {
-    alert('Please fill in all required fields.');
-    return;
-  }
-
-  try {
-    const res = await fetch('/api/admin/users', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`,
-        'X-Auth-Token': authToken
-      },
-      body: JSON.stringify({ name, username, password, role, status })
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      closeNewUserModal();
-      document.getElementById('newUserNameInput').value = '';
-      document.getElementById('newUserUsernameInput').value = '';
-      document.getElementById('newUserPasswordInput').value = '';
-      await loadAdminUsers();
-      alert(`Faculty account "${name}" created successfully with status: ${status.toUpperCase()}`);
-    } else {
-      alert(data.error || 'Failed to create user account.');
-    }
-  } catch (err) {
-    console.error('Create user error:', err);
-  }
-}
-
-// 7. Reset User Password
-async function handleResetUserPassword(userId) {
-  const username = (cachedAdminUsers.find(u => u.id === userId) || {}).username || 'this user';
-  const newPass = prompt(`Enter new password for "${username}":`, 'gnps2026');
-  if (!newPass) return;
-
-  try {
-    const res = await fetch('/api/admin/reset-password', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`,
-        'X-Auth-Token': authToken
-      },
-      body: JSON.stringify({ user_id: userId, new_password: newPass })
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      alert(`Password for user "${username}" has been successfully updated.`);
-    } else {
-      alert(data.error || 'Failed to reset password.');
-    }
-  } catch (err) {
-    console.error('Reset password error:', err);
-  }
-}
-
-// 8. Delete User
-async function handleDeleteUser(userId) {
-  const username = (cachedAdminUsers.find(u => u.id === userId) || {}).username || 'this user';
-  if (!confirm(`Are you sure you want to permanently delete faculty account "${username}"?`)) return;
-
-  try {
-    const res = await fetch('/api/admin/delete-user', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${authToken}`,
-        'X-Auth-Token': authToken
-      },
-      body: JSON.stringify({ user_id: userId })
-    });
-
-    const data = await res.json();
-    if (res.ok) {
-      await loadAdminUsers();
-    } else {
-      alert(data.error || 'Failed to delete user.');
-    }
-  } catch (err) {
-    console.error('Delete user error:', err);
-  }
 }
 
 // 9. Load & Render Security Audit Logs
@@ -8109,85 +7965,6 @@ async function clearAuditLogs() {
   }
 }
 
-// 10. System Backup & Restore
-async function exportSystemBackup() {
-  if (!authToken) return;
-  try {
-    const res = await fetch('/api/admin/export-backup', {
-      headers: {
-        'Authorization': `Bearer ${authToken}`,
-        'X-Auth-Token': authToken
-      }
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      const backupJson = JSON.stringify(data.backup || {}, null, 2);
-      const blob = new Blob([backupJson], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `GNPS_Exam_Architect_Backup_${new Date().toISOString().slice(0, 10)}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    } else {
-      const errData = await res.json().catch(() => ({}));
-      alert(errData.error || 'Failed to export backup.');
-    }
-  } catch (err) {
-    console.error('Export backup error:', err);
-    alert('Network error while exporting backup.');
-  }
-}
-
-async function handleBackupFileSelect(event) {
-  const file = event.target.files?.[0];
-  if (!file) return;
-
-  // Reset input so same file can be selected again if needed
-  event.target.value = '';
-
-  if (!confirm(`Are you sure you want to restore data from backup file "${file.name}"? This will import and merge all faculty accounts.`)) {
-    return;
-  }
-
-  const reader = new FileReader();
-  reader.onload = async (e) => {
-    try {
-      const backupData = JSON.parse(e.target.result);
-      if (!backupData || !Array.isArray(backupData.users)) {
-        alert('Invalid backup file! It does not contain valid user records.');
-        return;
-      }
-
-      const res = await fetch('/api/admin/import-backup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${authToken}`,
-          'X-Auth-Token': authToken
-        },
-        body: JSON.stringify({ backup: backupData })
-      });
-
-      const resData = await res.json();
-      if (res.ok) {
-        alert(resData.message || 'System data restored successfully!');
-        await loadAdminUsers();
-        if (activeAdminTab === 'logs') await loadAdminLogs();
-      } else {
-        alert(resData.error || 'Failed to import backup.');
-      }
-    } catch (parseErr) {
-      console.error('Error parsing backup file:', parseErr);
-      alert('Failed to parse backup JSON file. Please ensure it is a valid backup file.');
-    }
-  };
-  reader.readAsText(file);
-}
-
 // Bind to window for HTML event handlers
 window.handleAuthLogin = handleAuthLogin;
 window.handleAuthLogout = handleAuthLogout;
@@ -8195,28 +7972,15 @@ window.toggleLoginPasswordVisibility = toggleLoginPasswordVisibility;
 window.openAdminControlModal = openAdminControlModal;
 window.closeAdminControlModal = closeAdminControlModal;
 window.switchAdminTab = switchAdminTab;
-window.toggleUserPermission = toggleUserPermission;
-window.openNewUserModal = openNewUserModal;
-window.closeNewUserModal = closeNewUserModal;
-window.handleCreateFacultyUser = handleCreateFacultyUser;
-window.handleResetUserPassword = handleResetUserPassword;
-window.handleDeleteUser = handleDeleteUser;
 window.filterAdminUsers = filterAdminUsers;
 window.filterAdminLogs = filterAdminLogs;
 window.exportAuditLogsToCSV = exportAuditLogsToCSV;
 window.clearAuditLogs = clearAuditLogs;
-window.exportSystemBackup = exportSystemBackup;
-window.handleBackupFileSelect = handleBackupFileSelect;
 
 // Close modals on backdrop click
 if (adminControlModal) {
   adminControlModal.addEventListener('click', (e) => {
     if (e.target === adminControlModal) closeAdminControlModal();
-  });
-}
-if (newUserModal) {
-  newUserModal.addEventListener('click', (e) => {
-    if (e.target === newUserModal) closeNewUserModal();
   });
 }
 

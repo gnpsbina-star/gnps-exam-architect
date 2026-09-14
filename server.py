@@ -901,20 +901,6 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_json(200, {"success": True, "logs": logs})
             return
 
-        # --- Super Admin: Export System Backup ---
-        elif parsed_path.path == '/api/admin/export-backup':
-            token = self.extract_auth_token()
-            is_valid, user = auth_service.verify_session_token(token)
-            if not is_valid or user.get("role") != "super_admin":
-                self.send_json(403, {"error": "Unauthorized. Super Admin privileges required."})
-                return
-            try:
-                backup_data = auth_service.admin_export_backup_data()
-                self.send_json(200, {"success": True, "backup": backup_data})
-            except Exception as e:
-                self.send_json(500, {"error": str(e)})
-            return
-        
         elif parsed_path.path == '/api/cbse-subjects':
             if not self.require_auth():
                 return
@@ -1042,99 +1028,6 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json(500, {"error": str(e)})
             return
 
-        # --- Admin: Create User ---
-        elif parsed_path.path == '/api/admin/users':
-            token = self.extract_auth_token()
-            is_valid, user = auth_service.verify_session_token(token)
-            if not is_valid or user.get("role") != "super_admin":
-                self.send_json(403, {"error": "Unauthorized. Super Admin privileges required."})
-                return
-            try:
-                body = self.read_json_body() or {}
-                name = body.get('name', '')
-                username = body.get('username', '')
-                password = body.get('password', '')
-                role = body.get('role', 'user')
-                status = body.get('status', 'active')
-                if not name or not username or not password:
-                    self.send_json(400, {"error": "Name, username, and password are required"})
-                    return
-                success, res = auth_service.admin_create_user(name, username, password, role, status)
-                if not success:
-                    self.send_json(400, {"error": res})
-                    return
-                self.send_json(200, {"success": True, "user": res})
-            except Exception as e:
-                self.send_json(500, {"error": str(e)})
-            return
-
-        # --- Admin: Toggle Permission (Grant / Withdraw) ---
-        elif parsed_path.path == '/api/admin/toggle-permission':
-            token = self.extract_auth_token()
-            is_valid, user = auth_service.verify_session_token(token)
-            if not is_valid or user.get("role") != "super_admin":
-                self.send_json(403, {"error": "Unauthorized. Super Admin privileges required."})
-                return
-            try:
-                body = self.read_json_body() or {}
-                user_id = body.get('user_id')
-                if user_id is None:
-                    self.send_json(400, {"error": "user_id is required"})
-                    return
-                success, res = auth_service.admin_toggle_user_permission(int(user_id))
-                if not success:
-                    self.send_json(400, {"error": res})
-                    return
-                self.send_json(200, {"success": True, "new_status": res})
-            except Exception as e:
-                self.send_json(500, {"error": str(e)})
-            return
-
-        # --- Admin: Reset Password ---
-        elif parsed_path.path == '/api/admin/reset-password':
-            token = self.extract_auth_token()
-            is_valid, user = auth_service.verify_session_token(token)
-            if not is_valid or user.get("role") != "super_admin":
-                self.send_json(403, {"error": "Unauthorized. Super Admin privileges required."})
-                return
-            try:
-                body = self.read_json_body() or {}
-                user_id = body.get('user_id')
-                new_password = body.get('new_password')
-                if user_id is None or not new_password:
-                    self.send_json(400, {"error": "user_id and new_password are required"})
-                    return
-                success, msg = auth_service.admin_reset_password(int(user_id), new_password)
-                if not success:
-                    self.send_json(400, {"error": msg})
-                    return
-                self.send_json(200, {"success": True, "message": msg})
-            except Exception as e:
-                self.send_json(500, {"error": str(e)})
-            return
-
-        # --- Admin: Delete User ---
-        elif parsed_path.path == '/api/admin/delete-user':
-            token = self.extract_auth_token()
-            is_valid, user = auth_service.verify_session_token(token)
-            if not is_valid or user.get("role") != "super_admin":
-                self.send_json(403, {"error": "Unauthorized. Super Admin privileges required."})
-                return
-            try:
-                body = self.read_json_body() or {}
-                user_id = body.get('user_id')
-                if user_id is None:
-                    self.send_json(400, {"error": "user_id is required"})
-                    return
-                success, msg = auth_service.admin_delete_user(int(user_id))
-                if not success:
-                    self.send_json(400, {"error": msg})
-                    return
-                self.send_json(200, {"success": True, "message": msg})
-            except Exception as e:
-                self.send_json(500, {"error": str(e)})
-            return
-
         # --- Admin: Clear Logs ---
         elif parsed_path.path == '/api/admin/clear-logs':
             token = self.extract_auth_token()
@@ -1145,25 +1038,6 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             try:
                 auth_service.admin_clear_logs()
                 self.send_json(200, {"success": True, "message": "Audit logs cleared successfully"})
-            except Exception as e:
-                self.send_json(500, {"error": str(e)})
-            return
-
-        # --- Admin: Import System Backup ---
-        elif parsed_path.path == '/api/admin/import-backup':
-            token = self.extract_auth_token()
-            is_valid, user = auth_service.verify_session_token(token)
-            if not is_valid or user.get("role") != "super_admin":
-                self.send_json(403, {"error": "Unauthorized. Super Admin privileges required."})
-                return
-            try:
-                body = self.read_json_body() or {}
-                backup_dict = body.get('backup') or body
-                success, msg = auth_service.admin_import_backup_data(backup_dict)
-                if not success:
-                    self.send_json(400, {"error": msg})
-                    return
-                self.send_json(200, {"success": True, "message": msg, "users": auth_service.admin_get_all_users()})
             except Exception as e:
                 self.send_json(500, {"error": str(e)})
             return
@@ -1290,7 +1164,7 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
                 
             return
             
-        return super().do_POST()
+        self.send_json(404, {"error": "Not found"})
 
 if __name__ == '__main__':
     socketserver.TCPServer.allow_reuse_address = True

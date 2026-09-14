@@ -13,7 +13,11 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.environ.get("DATA_DIR", BASE_DIR)
 os.makedirs(DATA_DIR, exist_ok=True)
 
-USERS_FILE = os.path.join(DATA_DIR, "users.json")
+# Staff login accounts are a hardcoded, git-tracked file (edited via a code
+# change + deploy, not through the admin panel) so accounts and passwords
+# survive redeploys/restarts without needing a persistent disk. It lives in
+# BASE_DIR (the repo checkout), not DATA_DIR.
+STAFF_ACCOUNTS_FILE = os.path.join(BASE_DIR, "staff_accounts.json")
 LOGS_FILE = os.path.join(DATA_DIR, "login_logs.json")
 SESSIONS_FILE = os.path.join(DATA_DIR, "sessions.json")
 
@@ -26,6 +30,8 @@ RATE_LIMIT_MAX_FAILURES = 5
 GEO_CACHE = {}
 FAILED_ATTEMPTS = {}  # ip -> list of float timestamps
 SESSIONS = {}         # token -> session dict
+LAST_LOGIN = {}       # username (lowercase) -> display timestamp string; not
+                       # persisted to disk since it's informational only
 
 # -------------------------------------------------------------
 # 1. DATA PERSISTENCE & INITIAL SEEDING
@@ -49,46 +55,14 @@ def _atomic_json_write(filepath, data, max_entries=None):
                 pass
 
 def init_auth_storage():
-    """Initializes user storage and seeds default super admin if none exists."""
+    """Initializes audit-log/session storage. Staff accounts are not seeded
+    here - they live entirely in the git-tracked STAFF_ACCOUNTS_FILE, edited
+    via a code change + deploy rather than at runtime."""
     global SESSIONS
-    if not os.path.exists(USERS_FILE) or os.path.getsize(USERS_FILE) == 0:
-        salt, p_hash = hash_password("admin123")
-        now_str = datetime.datetime.now(datetime.timezone.utc).astimezone().strftime("%d %b %Y, %I:%M %p")
-        initial_users = [
-            {
-                "id": 1,
-                "name": "Super Administrator",
-                "username": "admin",
-                "role": "super_admin",
-                "status": "active",
-                "salt": salt,
-                "password_hash": p_hash,
-                "created_at": now_str,
-                "last_login": "Never"
-            }
-        ]
-        save_users(initial_users)
-        print("Initialized users.json with default Super Admin: 'admin' / 'admin123'")
-    else:
-        # Ensure super_admin exists even in existing users.json
-        existing = get_users()
-        if not any(u.get("role") == "super_admin" for u in existing):
-            salt, p_hash = hash_password("admin123")
-            now_str = datetime.datetime.now(datetime.timezone.utc).astimezone().strftime("%d %b %Y, %I:%M %p")
-            admin_user = {
-                "id": 1,
-                "name": "Super Administrator",
-                "username": "admin",
-                "role": "super_admin",
-                "status": "active",
-                "salt": salt,
-                "password_hash": p_hash,
-                "created_at": now_str,
-                "last_login": "Never"
-            }
-            existing.insert(0, admin_user)
-            save_users(existing)
-            print("Restored default Super Admin to existing users.json")
+    if not os.path.exists(STAFF_ACCOUNTS_FILE):
+        print(f"WARNING: {STAFF_ACCOUNTS_FILE} not found - no one will be able to log in.")
+    elif not any(u.get("role") == "super_admin" for u in get_users()):
+        print(f"WARNING: {STAFF_ACCOUNTS_FILE} has no super_admin account.")
 
     if not os.path.exists(LOGS_FILE):
         save_logs([])
@@ -105,16 +79,20 @@ def init_auth_storage():
             SESSIONS = {}
 
 def get_users():
-    if os.path.exists(USERS_FILE):
-        try:
-            with open(USERS_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception:
-            return []
-    return []
-
-def save_users(users_list):
-    _atomic_json_write(USERS_FILE, users_list)
+    """Loads the hardcoded staff account list from git-tracked
+    STAFF_ACCOUNTS_FILE. Login accounts and passwords are managed by editing
+    this file and redeploying, not through the admin panel - so this list is
+    always exactly what's committed, regardless of container restarts."""
+    if not os.path.exists(STAFF_ACCOUNTS_FILE):
+        return []
+    try:
+        with open(STAFF_ACCOUNTS_FILE, 'r', encoding='utf-8') as f:
+            accounts = json.load(f)
+    except Exception:
+        return []
+    for u in accounts:
+        u['last_login'] = LAST_LOGIN.get(u.get('username', '').lower(), u.get('last_login', 'Never'))
+    return accounts
 
 def get_logs():
     if os.path.exists(LOGS_FILE):
@@ -350,10 +328,12 @@ def authenticate_user(username, password, ip, user_agent_str):
             "permission_withdrawn": True
         }, 403
 
-    # Success: update last login and create session token
+    # Success: update last login (in-memory only, not persisted to disk -
+    # this is informational and fine to lose on a restart) and create a
+    # session token
     now_str = datetime.datetime.now().strftime("%d %b %Y, %I:%M %p")
+    LAST_LOGIN[user["username"].lower()] = now_str
     user["last_login"] = now_str
-    save_users(users)
 
     # Issue secure session token
     token = secrets.token_hex(32)
@@ -443,181 +423,9 @@ def admin_get_all_users():
         })
     return safe_list
 
-def admin_toggle_user_permission(user_id):
-    users = get_users()
-    user = next((u for u in users if u["id"] == user_id), None)
-    if not user:
-        return False, "User not found"
-
-    if user["role"] == "super_admin":
-        return False, "Super Admin permissions cannot be withdrawn"
-
-    user["status"] = "suspended" if user["status"] == "active" else "active"
-    save_users(users)
-
-    # If suspended, invalidate all active sessions for this user immediately
-    if user["status"] == "suspended":
-        tokens_to_remove = [k for k, v in SESSIONS.items() if v.get("user_id") == user_id]
-        for t in tokens_to_remove:
-            del SESSIONS[t]
-        save_sessions()
-
-    return True, user["status"]
-
-def admin_create_user(name, username, password, role, status="active"):
-    users = get_users()
-    clean_username = username.strip().lower()
-
-    if any(u["username"].lower() == clean_username for u in users):
-        return False, f"Username '{clean_username}' already exists"
-
-    salt, p_hash = hash_password(password)
-    now_str = datetime.datetime.now().strftime("%d %b %Y, %I:%M %p")
-    new_id = int(time.time() * 1000)
-
-    new_user = {
-        "id": new_id,
-        "name": name.strip(),
-        "username": clean_username,
-        "role": role if role in ["super_admin", "user"] else "user",
-        "status": status if status in ["active", "suspended"] else "active",
-        "salt": salt,
-        "password_hash": p_hash,
-        "created_at": now_str,
-        "last_login": "Never"
-    }
-
-    users.append(new_user)
-    save_users(users)
-    return True, new_user
-
-def admin_reset_password(user_id, new_password):
-    users = get_users()
-    user = next((u for u in users if u["id"] == user_id), None)
-    if not user:
-        return False, "User not found"
-
-    salt, p_hash = hash_password(new_password)
-    user["salt"] = salt
-    user["password_hash"] = p_hash
-    save_users(users)
-
-    # Invalidate existing sessions for this user so they log in with new password
-    tokens_to_remove = [k for k, v in SESSIONS.items() if v.get("user_id") == user_id]
-    for t in tokens_to_remove:
-        del SESSIONS[t]
-    save_sessions()
-
-    return True, "Password reset successfully"
-
-def admin_delete_user(user_id):
-    users = get_users()
-    user = next((u for u in users if u["id"] == user_id), None)
-    if not user:
-        return False, "User not found"
-
-    if user["role"] == "super_admin":
-        return False, "Super Admin account cannot be deleted"
-
-    users = [u for u in users if u["id"] != user_id]
-    save_users(users)
-
-    tokens_to_remove = [k for k, v in SESSIONS.items() if v.get("user_id") == user_id]
-    for t in tokens_to_remove:
-        del SESSIONS[t]
-    save_sessions()
-
-    return True, "User deleted successfully"
-
 def admin_clear_logs():
     save_logs([])
     return True
-
-def admin_export_backup_data():
-    """Returns a full system backup dictionary of users and logs."""
-    return {
-        "version": "1.0",
-        "exported_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-        "users": get_users(),
-        "login_logs": get_logs()
-    }
-
-def admin_import_backup_data(backup_dict):
-    """
-    Imports and restores users and login logs from backup.
-    Returns (success: bool, message: str)
-    """
-    if not isinstance(backup_dict, dict):
-        return False, "Invalid backup format. Expected JSON object."
-    
-    imported_users = backup_dict.get("users")
-    if not isinstance(imported_users, list) or len(imported_users) == 0:
-        return False, "No valid user records found in backup."
-
-    current_users = get_users()
-    current_usernames = {u["username"].lower(): u for u in current_users}
-
-    imported_count = 0
-    updated_count = 0
-
-    for u in imported_users:
-        if not isinstance(u, dict) or not u.get("username"):
-            continue
-        uname = u["username"].strip().lower()
-        clean_user = {
-            "id": u.get("id") or int(time.time() * 1000) + imported_count,
-            "name": u.get("name", uname),
-            "username": uname,
-            "role": u.get("role", "user"),
-            "status": u.get("status", "active"),
-            "salt": u.get("salt", ""),
-            "password_hash": u.get("password_hash", ""),
-            "created_at": u.get("created_at", "N/A"),
-            "last_login": u.get("last_login", "Never")
-        }
-
-        # If user has no password hash (e.g. plain password imported), generate hash
-        if not clean_user["password_hash"] and u.get("password"):
-            salt, p_hash = hash_password(str(u["password"]))
-            clean_user["salt"] = salt
-            clean_user["password_hash"] = p_hash
-
-        if uname in current_usernames:
-            idx = next(i for i, cur in enumerate(current_users) if cur["username"].lower() == uname)
-            current_users[idx] = clean_user
-            updated_count += 1
-        else:
-            current_users.append(clean_user)
-            imported_count += 1
-
-    # Ensure at least 1 super_admin exists
-    if not any(u.get("role") == "super_admin" for u in current_users):
-        salt, p_hash = hash_password("admin123")
-        current_users.insert(0, {
-            "id": 1,
-            "name": "Super Administrator",
-            "username": "admin",
-            "role": "super_admin",
-            "status": "active",
-            "salt": salt,
-            "password_hash": p_hash,
-            "created_at": "Restored",
-            "last_login": "Never"
-        })
-
-    save_users(current_users)
-
-    # Import logs if available
-    imported_logs = backup_dict.get("login_logs")
-    if isinstance(imported_logs, list) and len(imported_logs) > 0:
-        current_logs = get_logs()
-        existing_ids = {l.get("id") for l in current_logs if l.get("id")}
-        for l in imported_logs:
-            if isinstance(l, dict) and l.get("id") not in existing_ids:
-                current_logs.append(l)
-        save_logs(current_logs)
-
-    return True, f"Successfully restored: {imported_count} new users, {updated_count} updated users."
 
 # Initialize storage on import
 init_auth_storage()
