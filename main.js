@@ -738,7 +738,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   else if (marks === 70 || (marks < 75 && (className === "Class 11" || className === "Class 12") && (subLower.includes("physics") || subLower.includes("chemistry") || subLower.includes("biology") || subLower.includes("psychology") || subLower.includes("computer science") || subLower.includes("informatics practices") || subLower.includes("geography") || subLower.includes("physical education") || subLower.includes("biotechnology")))) {
     sections = [
       { name: "Section A", type: "MCQs & Assertion-Reasoning", count: 16, unitMark: 1, marksPerQ: "1 Mark", total: 16, choice: "12 MCQs + 4 Assertion-Reason" },
-      { name: "Section B", type: "Very Short Answer (VSA)", count: 5, unitMark: 2, marksPerQ: "2 Marks", total: 10, choice: "Internal choice in 1 Q" },
+      { name: "Section B", type: "Very Short Answer (VSA)", count: 5, unitMark: 2, marksPerQ: "2 Marks", total: 10, choice: "Internal choice in 2 Qs" },
       { name: "Section C", type: "Short Answer (SA)", count: 7, unitMark: 3, marksPerQ: "3 Marks", total: 21, choice: "Internal choice in 1 Q" },
       { name: "Section D", type: "Case-Based / Source Integrated", count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "Internal choice in 2-mark sub-part" },
       { name: "Section E", type: "Long Answer (LA)", count: 3, unitMark: 5, marksPerQ: "5 Marks", total: 15, choice: "Internal choice in all 3 Qs" }
