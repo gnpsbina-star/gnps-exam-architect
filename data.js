@@ -1678,78 +1678,62 @@ export const cbseData = {
             ]
         },
     "Mathematics": {
-      "Chapter 1: Number Systems": [
-        "1.1 Real Numbers, Rational Numbers and Representation on Number Line",
-        "1.2 Decimal Expansions of Real Numbers (Terminating and Non-Terminating Recurring)",
-        "1.3 Irrational Numbers: Existence and Representation on Number Line (sqrt(2), sqrt(3), sqrt(5))",
-        "1.4 Real Numbers and their Decimal Expansions (Geometric Representation of sqrt(x))",
-        "1.5 Operations on Real Numbers and Rationalising the Denominator",
-        "1.6 Laws of Exponents for Real Numbers with Integral and Rational Powers"
+      "Chapter 1: Orienting Yourself - The Use of Coordinates": [
+        "1.1 Cartesian Coordinate System: x-axis, y-axis and the Origin",
+        "1.2 Plotting Points and the Four Quadrants (Sign Conventions)",
+        "1.3 Distance Between Two Points: Baudhayana-Pythagoras Theorem and the Distance Formula",
+        "1.4 Section Formula and the Mid-Point of a Line Segment",
+        "1.5 Reflection of Points about the Axes"
       ],
-      "Chapter 2: Polynomials": [
-        "2.1 Polynomials in One Variable, Coefficients, Terms, Degree and Classification",
-        "2.2 Zeroes and Roots of a Polynomial & Geometrical Meaning",
-        "2.3 Factor Theorem and Remainder Theorem with Algebraic Applications",
-        "2.4 Factorisation of Quadratic Polynomials (Splitting the Middle Term) and Cubic Polynomials (Factor Theorem)",
-        "2.5 Standard Algebraic Identities [(a+b+c)^2, (a±b)^3, a^3+b^3+c^3-3abc and Conditional Identities]"
+      "Chapter 2: Introduction to Linear Polynomials": [
+        "2.1 Variables, Coefficients, Constants and Terms in Real-Life Contexts",
+        "2.2 Linear Polynomials and Linear Equations in One and Two Variables",
+        "2.3 Patterns of Growth and Decay: Representing Change with y = ax + b",
+        "2.4 Graph of a Linear Equation on the Cartesian Plane",
+        "2.5 Zero of a Linear Polynomial and its Graphical Meaning"
       ],
-      "Chapter 3: Coordinate Geometry": [
-        "3.1 Cartesian Plane, Coordinate Axes (x-axis, y-axis) and Origin (0,0)",
-        "3.2 Abscissa, Ordinate, Signs of Coordinates in Four Quadrants and on Axes",
-        "3.3 Plotting Points in the Cartesian Coordinate Plane"
+      "Chapter 3: The World of Numbers": [
+        "3.1 Historical Development of Number Systems",
+        "3.2 Rational Numbers: Representation and Density on the Number Line",
+        "3.3 Decimal Expansions of Rational Numbers (Terminating and Non-Terminating Recurring)",
+        "3.4 Irrational Numbers and their Existence (sqrt(2), sqrt(3), sqrt(5))",
+        "3.5 Constructing the Square Root Spiral",
+        "3.6 Real Numbers, Operations on Real Numbers and Rationalising the Denominator",
+        "3.7 Laws of Exponents for Real Numbers"
       ],
-      "Chapter 4: Linear Equations in Two Variables": [
-        "4.1 Introduction and Standard Form: ax + by + c = 0",
-        "4.2 Solutions of a Linear Equation in Two Variables (Infinitely Many Solutions as Ordered Pairs)",
-        "4.3 Graph of a Linear Equation in Two Variables on Cartesian Plane"
+      "Chapter 4: Exploring Algebraic Identities": [
+        "4.1 Standard Algebraic Identities: (a+b)^2, (a-b)^2 and (a+b)(a-b)",
+        "4.2 Geometric (Visual) Proofs of Algebraic Identities",
+        "4.3 Identities Involving Three Variables: (a+b+c)^2",
+        "4.4 Identities for Cubes: (a+b)^3, (a-b)^3 and a^3+b^3+c^3-3abc",
+        "4.5 Factorisation of Algebraic Expressions using Identities",
+        "4.6 Simplifying Rational Algebraic Expressions"
       ],
-      "Chapter 5: Introduction to Euclid's Geometry": [
-        "5.1 History of Geometry and Euclid's Method of Formalising Mathematics",
-        "5.2 Euclid's Definitions, Seven Axioms and Five Postulates",
-        "5.3 Equivalent Versions of Euclid's Fifth Postulate and Axiom vs Theorem Concept"
+      "Chapter 5: I'm Up and Down, and Round and Round": [
+        "5.1 Circles and Related Terms: Centre, Radius, Diameter, Chord and Arc",
+        "5.2 Relationship between Equal Chords and their Distances from the Centre",
+        "5.3 Angle Subtended by a Chord or an Arc at the Centre",
+        "5.4 Perpendicular from the Centre to a Chord and its Converse",
+        "5.5 Concyclic Points and the Circle through Three Points",
+        "5.6 Angles in the Same Segment and Cyclic Quadrilaterals"
       ],
-      "Chapter 6: Lines and Angles": [
-        "6.1 Basic Terms: Ray, Line Segment, Collinear Points, Acute, Right, Obtuse, Straight and Reflex Angles",
-        "6.2 Pairs of Angles: Adjacent Angles, Linear Pair Axiom and its Converse",
-        "6.3 Vertically Opposite Angles Theorem (Proof and Applications)",
-        "6.4 Parallel Lines and a Transversal (Corresponding, Alternate Interior, and Co-Interior Angles)",
-        "6.5 Lines Parallel to the Same Line and Angle Sum Property of a Triangle (180° and Exterior Angle Theorem)"
+      "Chapter 6: Measuring Space - Perimeter and Area": [
+        "6.1 Perimeter and Area of Triangles and Quadrilaterals",
+        "6.2 Heron's Formula and its Applications to Triangular Regions",
+        "6.3 Circumference and Area of a Circle",
+        "6.4 Area of Combinations of Plane Figures (Composite Shapes)",
+        "6.5 Real-Life Applications of Perimeter and Area"
       ],
-      "Chapter 7: Triangles": [
-        "7.1 Congruence of Figures and Congruence of Triangles Concept",
-        "7.2 Criteria for Congruence: SAS Axiom and ASA Theorem (with Proof)",
-        "7.3 AAS Congruence Rule, SSS Criterion and RHS Congruence Criterion",
-        "7.4 Properties of Isosceles Triangles: Angles Opposite to Equal Sides (with Proof) and Converse"
+      "Chapter 7: The Mathematics of Maybe - Introduction to Probability": [
+        "7.1 Experimental (Empirical) Approach to Probability",
+        "7.2 Probability of an Event based on Observed Frequencies",
+        "7.3 Interpreting Probability as a Measure of Chance in Everyday Situations"
       ],
-      "Chapter 8: Quadrilaterals": [
-        "8.1 Properties of a Parallelogram (Theorems on Diagonal, Opposite Sides, Angles and Diagonals Bisecting Each Other)",
-        "8.2 Conditions for a Quadrilateral to be a Parallelogram",
-        "8.3 The Mid-Point Theorem (with Proof): Line Segment Joining Mid-Points of Two Sides is Parallel and Half of Third Side",
-        "8.4 Converse of the Mid-Point Theorem"
-      ],
-      "Chapter 9: Circles": [
-        "9.1 Circles and Related Terms: Centre, Radius, Chord, Arc, Sector, Segment",
-        "9.2 Angle Subtended by a Chord at the Centre & Perpendicular from Centre to a Chord",
-        "9.3 Equal Chords and their Distances from the Centre",
-        "9.4 Angle Subtended by an Arc of a Circle at the Centre is Double the Angle at Remaining Part (with Proof)",
-        "9.5 Angles in the Same Segment of a Circle are Equal",
-        "9.6 Cyclic Quadrilaterals: Sum of Opposite Angles is 180° and its Converse"
-      ],
-      "Chapter 10: Heron's Formula": [
-        "10.1 Area of a Triangle using Heron's Formula: Area = sqrt[s(s-a)(s-b)(s-c)], where s = (a+b+c)/2",
-        "10.2 Applications of Heron's Formula in Real-Life Problems Involving Triangular Regions"
-      ],
-      "Chapter 11: Surface Areas and Volumes": [
-        "11.1 Surface Area of Right Circular Cones (Curved Surface Area = pi*r*l, Total Surface Area = pi*r(l+r))",
-        "11.2 Surface Area of Spheres and Hemispheres (Curved and Total Surface Areas: 4*pi*r^2, 2*pi*r^2, 3*pi*r^2)",
-        "11.3 Volume of a Right Circular Cone (V = 1/3 pi*r^2*h)",
-        "11.4 Volume of a Sphere (V = 4/3 pi*r^3) and Hemisphere (V = 2/3 pi*r^3)"
-      ],
-      "Chapter 12: Statistics": [
-        "12.1 Collection and Presentation of Data: Raw Data and Grouped Frequency Distribution Tables",
-        "12.2 Graphical Representation of Data: Bar Graphs",
-        "12.3 Histograms of Uniform Width and Varying Widths (Frequency Density Adjustments)",
-        "12.4 Frequency Polygons"
+      "Chapter 8: Predicting What Comes Next - Exploring Sequences and Progressions": [
+        "8.1 Patterns and Sequences in Real Life",
+        "8.2 Describing Sequences using Explicit Rules (General Term)",
+        "8.3 Describing Sequences using Recursive Rules",
+        "8.4 Arithmetic Patterns and Common Differences"
       ]
     },
     "Social Science": {
