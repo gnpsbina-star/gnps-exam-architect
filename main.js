@@ -375,7 +375,7 @@ function initClassDropdown() {
 
   // Pre-select Annual Examination by default so Exam Name is immediately ready and never blank
   if (examNameSelect) {
-    const defaultExam = Array.from(examNameSelect.options).find(o => o.value === 'Annual Examination' || o.value === 'Final Exam' || o.value === 'Half Yearly');
+    const defaultExam = Array.from(examNameSelect.options).find(o => o.value === 'Annual Examination' || o.value === 'Final Examination' || o.value === 'Final Exam' || o.value === 'Half Yearly');
     if (defaultExam) {
       examNameSelect.value = defaultExam.value;
       examNameSelect.dispatchEvent(new Event('change'));
@@ -1613,7 +1613,7 @@ function getExamDefaultDetails(className, subjectName, examName) {
   // Vocational / Skill subjects (Healthcare, Computer Applications, IT, etc.):
   // - No Unit Tests
   // - PA is half of 50M Annual = 25 Marks in 60 Mins
-  // - Annual / Pre-Board / Mid-Term / Term II = 50 Marks in 120 Mins
+  // - Final / Pre-Board / Mid-Term = 50 Marks in 120 Mins
   if (isSkill) {
     if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
       return { marks: 0, duration: "No Unit Test" };
@@ -1641,7 +1641,7 @@ function getExamDefaultDetails(className, subjectName, examName) {
     return { marks: 40, duration: "90 Mins" };
   }
 
-  // 3. Other Examinations (Mid Term Examination, Half Yearly, Term II, Pre-Board, Annual, Final): 2.5 Hours for 6-8, 180 Mins for 9-12
+  // 3. Other Examinations (Mid Term Examination, Half Yearly, Pre-Board, Annual, Final): 2.5 Hours for 6-8, 180 Mins for 9-12
   let fullMarks = 80;
   let fullDuration = isMiddle ? "2.5 Hours" : "180 Mins";
 
@@ -1811,7 +1811,7 @@ classSelect.addEventListener('change', (e) => {
   if (selectedClass === 'Class 6' || selectedClass === 'Class 7' || selectedClass === 'Class 8') {
     exams = ["Unit Test I", "Unit Test II", "PA I", "Unit Test III", "Mid Term Examination", "Unit Test IV", "PA II", "Unit Test V", "Annual Examination"];
   } else {
-    exams = ["Unit Test I", "Unit Test II", "PA I", "Unit Test III", "Mid Term Examination", "Unit Test IV", "PA II", "Unit Test V", "Term II", "Pre Board 1", "Pre Board 2", "Pre Board 3", "Annual Board Examination"];
+    exams = ["Unit Test I", "Unit Test II", "PA I", "Unit Test III", "Mid Term Examination", "Unit Test IV", "PA II", "Unit Test V", "Final Examination", "Pre Board 1", "Pre Board 2", "Pre Board 3"];
   }
   
   const examGroup = document.createElement('optgroup');
@@ -1835,7 +1835,7 @@ classSelect.addEventListener('change', (e) => {
   examNameSelect.appendChild(worksheetGroup);
   
   // Auto-select standard Annual Examination by default so exam details and time duration are always active and correct
-  const defaultExam = Array.from(examNameSelect.options).find(o => o.value === 'Annual Examination' || o.value === 'Annual Board Examination' || o.value === 'Final Exam');
+  const defaultExam = Array.from(examNameSelect.options).find(o => o.value === 'Annual Examination' || o.value === 'Final Examination' || o.value === 'Final Exam');
   if (defaultExam) {
     examNameSelect.value = defaultExam.value;
   }
@@ -5778,7 +5778,7 @@ function populateSheetExamDropdown(cls) {
   if (examsList.length === 0) {
     const rawList = (cls === 'Class 6' || cls === 'Class 7' || cls === 'Class 8')
       ? ["Unit Test I", "Unit Test II", "PA I", "Unit Test III", "Mid Term Examination", "Unit Test IV", "PA II", "Unit Test V", "Annual Examination"]
-      : ["Unit Test I", "Unit Test II", "PA I", "Unit Test III", "Mid Term Examination", "Unit Test IV", "PA II", "Unit Test V", "Term II", "Pre Board 1", "Pre Board 2", "Pre Board 3", "Annual Board Examination"];
+      : ["Unit Test I", "Unit Test II", "PA I", "Unit Test III", "Mid Term Examination", "Unit Test IV", "PA II", "Unit Test V", "Final Examination", "Pre Board 1", "Pre Board 2", "Pre Board 3"];
 
     rawList.forEach(exName => {
       const def = getExamDefaultDetails(cls, subjectSelect ? subjectSelect.value : '', exName);
