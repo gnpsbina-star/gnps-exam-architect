@@ -3571,9 +3571,7 @@ You must format the entire worksheet in clean, modern, print-ready HTML and CSS 
     *   **Assertion-Reason Layout:** Format with standard CBSE options (a), (b), (c), (d) cleanly displayed.
     *   **MCQ Layout:** Format options \`(a)\`, \`(b)\`, \`(c)\`, \`(d)\` into a compact 2x2 grid table immediately below the question stem without extra margins.
     *   **Diagrams & Visuals:** Wrap all diagrams and graphics in '<div class="diagram-container" style="text-align: center; margin: 8px auto 10px auto; page-break-inside: avoid;">' containing an inline vector '<svg>...</svg>' and a bold italic figure caption '<div class="diagram-caption" style="font-size: 10pt; font-weight: bold; margin-top: 4px; font-style: italic;">Fig. X: [Label]</div>'.
-5.  **Running Footer on Every Page:**
-    *   Bottom Left: \`GNPS / CBSE 2027 WORKSHEET / ${cleanTopic}\`
-    *   Bottom Right: \`Page X of Y\`
+5.  **No Footer or Page Numbers:** Do NOT write a footer, page numbers, or "Page X of Y" into the HTML — you cannot know where the pages will break, so it would land mid-page. The GNPS Exam Architect PDF converter stamps the running footer on every page automatically.
 6.  **Official CBSE Step-by-Step Marking Scheme & Examiner's Tips:**
     *   At the very end on a fresh page (\`page-break-before: always;\`), provide a complete, verified CBSE Marking Scheme.
     *   **Step-Marking Rubric:** Every question must display precise mark allocation (e.g., [½ Mark for state of law/condition/formula], [½ Mark for substitution/step-reasoning], [1 Mark for final calculated answer with unit / conclusion]).
@@ -3907,7 +3905,7 @@ ${blueprintPromptText}
     *   Embed complete print styling (\`@media print { size: A4 portrait; margin: 19mm; }\`) and include a floating print button (\`<button onclick="window.print()" class="no-print" style="position: fixed; top: 16px; right: 16px; padding: 10px 18px; font-weight: bold; background: #0284c7; color: #fff; border: none; border-radius: 8px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">🖨️ Print / Save as PDF</button>\`) so the user can immediately preview and save as a pixel-perfect CBSE A4 PDF directly from their browser (\`Ctrl+P\` / \`Cmd+P\` -> Save as PDF).
 2.  **Official CBSE Typography & Diagram Styling:** Style Section headings with **centered bold text only** — do NOT use \`text-decoration: underline\` on a heading/banner block, as the underline misplaces itself onto the next line when the paper is converted to PDF. In your HTML/CSS template, you must set the font family to 'Times New Roman' (or 'Mangal / Noto Serif Devanagari / Kruti Dev 010' for Hindi/Sanskrit), 12pt body text, 14pt bold sub-headings / section headers, and 18pt centered bold main header. For any diagram, chart, or graphic, wrap inside '<div class="diagram-container">' with 'text-align: center; margin: 8px auto 12px auto; page-break-inside: avoid;' and a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'.
 3.  **Line Spacing & Margins:** Enforce a strict CSS line-height: 1.25 and standard margins of 19mm (0.75 inches) on all sides ('@page { size: A4 portrait; margin: 19mm; }').
-4.  **Alignment & Footer:** Ensure clean vertical alignment with right-aligned marks (e.g., [1], [2], [3], [5]) matching official board papers. At the bottom of every page, include a clean footer with school name, exam name, and set label format "**GNPS / ${examName.toUpperCase()} / SET A**" (or "**GNPS / ${examName.toUpperCase()} / SET B**" corresponding to the set) on the left margin and Page Numbering (e.g., "**Page 1 of 4**") on the right margin.
+4.  **Alignment & Footer:** Ensure clean vertical alignment with right-aligned marks (e.g., [1], [2], [3], [5]) matching official board papers. **DO NOT add a page footer, page numbers, or "Page X of Y" text anywhere in the HTML** — you cannot know how the content will paginate, so any footer you write would land in the middle of a page. The running footer ("GNPS / ${examName.toUpperCase()} / ${fullSubjectDisplay.toUpperCase()} / SET A" on the left and "Page X of Y" on the right) is stamped automatically onto every page by the GNPS Exam Architect PDF converter. Simply leave the bottom of the document clean.
 5.  **Even-Page Budgeting & Page Breaks (Critical for Printing):**
     *   The final output for EACH PDF must fit EXACTLY into an even number of pages (e.g., exactly 2, 4, or 6 pages).
     *   **NEVER force a page break between sections.** Do NOT put \`page-break-before: always;\` on Section banners/headings (Section A, B, C...). Sections must flow continuously down the page, one starting immediately after the previous one ends, otherwise the paper wastes half-empty pages. The ONLY permitted forced page break is between Set A and Set B (and those are separate documents anyway).
@@ -4539,6 +4537,17 @@ copyBtn.addEventListener('click', () => {
 
 const SET_LABEL_RE = /\bSET\s*[-–—:]?\s*([A-D])\b/;
 
+// Adjacent elements concatenate when read via textContent ("...180 Mins" +
+// "SET A" reads as "MINSSET A"), which hides the set label from the pattern
+// above. Replace the tags themselves with spaces so words stay separated.
+function flattenMarkupText(markup) {
+  return String(markup || '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .toUpperCase();
+}
+
 function extractHtmlDocuments(raw) {
   const text = (raw || '').trim();
   if (!text) return [];
@@ -4569,7 +4578,7 @@ function splitCombinedSets(htmlString) {
   const children = Array.from(doc.body.children);
   if (children.length < 2) return null;
 
-  const textOf = (nodes) => nodes.map(n => n.textContent || '').join(' ').toUpperCase();
+  const textOf = (nodes) => flattenMarkupText(nodes.map(n => n.outerHTML || '').join(' '));
   let splitIdx = -1;
   for (let i = 1; i < children.length; i++) {
     const el = children[i];
@@ -4592,11 +4601,35 @@ function splitCombinedSets(htmlString) {
 }
 
 function detectPaperLabel(htmlString, index, total) {
-  const doc = new DOMParser().parseFromString(htmlString, 'text/html');
-  const text = ((doc.body && doc.body.textContent) || '').toUpperCase();
-  const match = text.match(SET_LABEL_RE);
+  const match = flattenMarkupText(htmlString).match(SET_LABEL_RE);
   if (match) return `Set ${match[1]}`;
   return total > 1 ? `Paper ${index + 1}` : 'Question Paper';
+}
+
+// Only the converter knows how the paper paginates, so the running footer is
+// stamped here rather than asked of the AI, which cannot know its own page count.
+function buildFooterLeftText(label) {
+  const examEl = document.getElementById('examName');
+  const parts = ['GNPS'];
+  if (examEl && examEl.value) parts.push(examEl.value);
+  if (subjectSelect && subjectSelect.value) parts.push(subjectSelect.value);
+  if (label && /^set\b/i.test(label)) parts.push(label);
+  return parts.join(' / ').toUpperCase();
+}
+
+function stampRunningFooter(pdf, footerLeft) {
+  const total = pdf.internal.getNumberOfPages();
+  const pageWidth = pdf.internal.pageSize.getWidth();
+  const pageHeight = pdf.internal.pageSize.getHeight();
+  for (let page = 1; page <= total; page++) {
+    pdf.setPage(page);
+    pdf.setFont('times', 'normal');
+    pdf.setFontSize(8);
+    pdf.setTextColor(90);
+    const baseline = pageHeight - 5;
+    if (footerLeft) pdf.text(footerLeft, 12, baseline);
+    pdf.text(`Page ${page} of ${total}`, pageWidth - 12, baseline, { align: 'right' });
+  }
 }
 
 function buildAiPdfFileName(label) {
@@ -4785,7 +4818,7 @@ const PDF_PAGE_MARGIN_MM = 12; // top/bottom margin, applied by html2pdf on ever
 const PDF_PAGE_PADDING = '0 48px'; // side margins (~12mm); vertical margin comes from html2pdf
 const PDF_STAGE_ID = 'ai-pdf-paper';
 
-async function exportPastedPaperToPdf(htmlString, filename) {
+async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
   const { content, css } = buildPrintableNode(htmlString);
 
   const stage = document.createElement('div');
@@ -4809,6 +4842,17 @@ async function exportPastedPaperToPdf(htmlString, filename) {
   normalizeRenderedSvgs(content);
   await rasterizeSvgs(content);
 
+  // Trailing empty nodes and a final bottom margin can spill a few pixels past
+  // the last page, producing a blank extra sheet that wastes paper when the
+  // paper is printed double-sided.
+  let tail = content.lastElementChild;
+  while (tail && !(tail.textContent || '').trim() && !tail.querySelector('img, svg, canvas, table, hr')) {
+    const previous = tail.previousElementSibling;
+    tail.remove();
+    tail = previous;
+  }
+  if (tail) tail.style.marginBottom = '0';
+
   // Margins are split deliberately. Vertical margins go to html2pdf so every
   // page gets them (padding on this wrapper would only indent the first and
   // last page, letting the rest run into the paper edge). Horizontal margin
@@ -4825,7 +4869,9 @@ async function exportPastedPaperToPdf(htmlString, filename) {
   };
 
   try {
-    await html2pdf().set(opt).from(content).save();
+    await html2pdf().set(opt).from(content).toPdf()
+      .get('pdf').then(pdf => stampRunningFooter(pdf, footerLeft))
+      .save();
   } finally {
     stage.remove();
   }
@@ -4879,7 +4925,7 @@ async function handleGeneratePdfFromAi() {
     for (let i = 0; i < papers.length; i++) {
       if (btnText) btnText.textContent = `Rendering ${labels[i]} (${i + 1}/${papers.length})...`;
       setStatus(`Rendering ${labels[i]} — ${i + 1} of ${papers.length}. The download starts automatically.`, '#4ade80');
-      await exportPastedPaperToPdf(papers[i], buildAiPdfFileName(labels[i]));
+      await exportPastedPaperToPdf(papers[i], buildAiPdfFileName(labels[i]), buildFooterLeftText(labels[i]));
       await new Promise(resolve => setTimeout(resolve, 600));
     }
     setStatus(`Done — ${papers.length} PDF${papers.length > 1 ? 's' : ''} downloaded (${labels.join(', ')}).`, '#4ade80');
