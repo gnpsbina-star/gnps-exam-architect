@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GNPS Exam Architect</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css?v=58" />
+    <link rel="stylesheet" href="./style.css?v=59" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -260,7 +260,7 @@
         </section>
 
         <!-- Convert the AI's Answer into Ready-to-Print PDFs -->
-        <section id="ai-to-pdf-section" class="blueprint-card output-panel" style="margin-top: 2rem; padding: 1.25rem; border: 1px solid rgba(34, 197, 94, 0.35); background: linear-gradient(180deg, rgba(6, 78, 59, 0.28) 0%, rgba(15, 23, 42, 0.6) 100%);">
+        <section id="ai-to-pdf-section" class="blueprint-card output-panel" style="margin-top: 2rem; padding: 1.25rem; border: 1px solid rgba(34, 197, 94, 0.35); background: linear-gradient(180deg, rgba(6, 78, 59, 0.55) 0%, rgba(15, 23, 42, 0.88) 100%); box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.15);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
             <div>
               <div style="display: flex; align-items: center; gap: 8px;">
@@ -275,7 +275,7 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                 <span>Clear</span>
               </button>
-              <button type="button" id="generatePdfFromAiBtn" class="btn-primary" style="padding: 0.45rem 0.9rem; font-size: 0.82rem; border-radius: 8px; background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); display: inline-flex; align-items: center; gap: 6px;" title="Render the pasted paper and download it as PDF">
+              <button type="button" id="generatePdfFromAiBtn" class="btn-primary" style="width: auto; padding: 0.45rem 0.9rem; font-size: 0.82rem; border-radius: 8px; background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); display: inline-flex; align-items: center; gap: 6px;" title="Render the pasted paper and download it as PDF">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 <span id="generatePdfFromAiBtnText">Generate PDF(s)</span>
               </button>
@@ -283,7 +283,7 @@
           </div>
 
           <div class="output-wrapper">
-            <textarea id="aiResponseInput" placeholder="Paste the AI's full answer here, then click Generate PDF(s).&#10;&#10;Works with either:&#10;  • the whole reply copied from Gemini/ChatGPT (including the ```html code block), or&#10;  • just the raw HTML code copied from the code block." style="height: 200px; font-family: monospace; font-size: 0.82rem; line-height: 1.55;"></textarea>
+            <textarea id="aiResponseInput" placeholder="Paste the AI's full answer here, then click Generate PDF(s).&#10;&#10;Works with either:&#10;  • the whole reply copied from Gemini / ChatGPT (including the ```html code block), or&#10;  • just the raw HTML code copied from the code block."></textarea>
           </div>
 
           <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-size: 0.78rem; color: #94a3b8; gap: 1rem; flex-wrap: wrap;">
@@ -727,6 +727,6 @@
       </div>
     </div>
 
-    <script type="module" src="./main.js?v=230"></script>
+    <script type="module" src="./main.js?v=231"></script>
   </body>
 </html>
