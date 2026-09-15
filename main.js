@@ -3686,6 +3686,7 @@ ${subjectSpecificRules}
 *   **OFFICIAL CBSE DIAGRAM STYLING & PRINT-SAFE RULES:**
     1. **Monochrome / Grayscale:** All SVG line art MUST use high-contrast black strokes (stroke="#000", stroke-width="1.5" or "2", fill="none" or subtle grayscale fills like #f8fafc) suitable for high-speed risograph / photocopier double-sided printing.
     2. **Typography in SVG:** All text, labels, and values inside <text> tags MUST use font-family="Times New Roman", serif (font-size: 10pt to 12pt) to blend seamlessly with official board typography.
+    2b. **MANDATORY SVG ATTRIBUTES (or the diagram will be clipped when converted to PDF):** Every \`<svg>\` MUST carry ALL of \`xmlns="http://www.w3.org/2000/svg"\`, an explicit \`viewBox="0 0 W H"\`, and matching numeric \`width="W" height="H"\` attributes. Every drawn coordinate must lie INSIDE the viewBox bounds — never draw at x or y values larger than the viewBox width/height, or that part of the figure will be cut off.
     3. **Container & Sizing:** Wrap every diagram inside a centered container with an explicit caption:
        \`<div class="diagram-container" style="text-align: center; margin: 8px auto 10px auto; page-break-inside: avoid;">\`
          \`<svg viewBox="0 0 W H" width="240" height="130" style="display: block; margin: 0 auto; max-width: 100%;">...</svg>\`
@@ -3909,6 +3910,7 @@ ${blueprintPromptText}
 4.  **Alignment & Footer:** Ensure clean vertical alignment with right-aligned marks (e.g., [1], [2], [3], [5]) matching official board papers. At the bottom of every page, include a clean footer with school name, exam name, and set label format "**GNPS / ${examName.toUpperCase()} / SET A**" (or "**GNPS / ${examName.toUpperCase()} / SET B**" corresponding to the set) on the left margin and Page Numbering (e.g., "**Page 1 of 4**") on the right margin.
 5.  **Even-Page Budgeting & Page Breaks (Critical for Printing):**
     *   The final output for EACH PDF must fit EXACTLY into an even number of pages (e.g., exactly 2, 4, or 6 pages).
+    *   **NEVER force a page break between sections.** Do NOT put \`page-break-before: always;\` on Section banners/headings (Section A, B, C...). Sections must flow continuously down the page, one starting immediately after the previous one ends, otherwise the paper wastes half-empty pages. The ONLY permitted forced page break is between Set A and Set B (and those are separate documents anyway).
     *   Compact your line gaps and format MCQ options into a 2x2 grid ((a) ... (b) ... / (c) ... (d) ...).
     *   **CRITICAL CSS RULE FOR PAGE BREAKS:** You must NOT apply 'page-break-inside: avoid;' globally to all table rows ('tr'). Doing so causes long text blocks (like Reading Passages) to jump entirely to the next page, leaving massive blank spaces. You must allow main question rows to break naturally across pages. You may ONLY apply 'page-break-inside: avoid;' strictly to small, nested elements such as the 2x2 MCQ option tables (e.g., '.mcq-table tr { page-break-inside: avoid; }'). The files must be completely ready for double-sided printing.
 6.  **Dual Balanced Sets (Set A & Set B):**
@@ -4632,31 +4634,187 @@ function buildPrintableNode(htmlString) {
     lead = lead.firstElementChild;
   }
 
-  const css = Array.from(doc.querySelectorAll('style')).map(s => s.textContent || '').join('\n');
+  let css = Array.from(doc.querySelectorAll('style')).map(s => s.textContent || '').join('\n');
+  // Sections must flow on continuously; a forced break before each one leaves
+  // half-empty pages between Biology / Chemistry / Physics.
+  css = css.replace(/page-break-before\s*:\s*always\s*;?/gi, '');
+  doc.querySelectorAll('[style*="page-break-before"]').forEach(el => {
+    if (/^\s*SECTION\b/i.test(el.textContent || '')) {
+      el.setAttribute('style', (el.getAttribute('style') || '').replace(/page-break-before\s*:\s*always\s*;?/gi, ''));
+    }
+  });
+
   const content = document.createElement('div');
-  content.style.cssText = 'width: 794px; padding: 12px 16px; margin: 0; background: #ffffff; color: #000000; box-sizing: border-box;';
+  content.style.cssText = `width: ${PDF_STAGE_WIDTH}px; padding: ${PDF_PAGE_PADDING}; margin: 0; background: #ffffff; color: #000000; box-sizing: border-box;`;
   content.innerHTML = doc.body ? doc.body.innerHTML : htmlString;
   return { content, css };
 }
+
+// An <svg> without a viewBox clips anything drawn past its declared width or
+// height, which is how apparatus and circuit diagrams end up as a stray sliver.
+// One with a viewBox but no width/height instead stretches to the full column.
+// Give each a viewBox covering its real content and its intrinsic pixel size.
+function normalizeRenderedSvgs(root) {
+  root.querySelectorAll('svg').forEach(svg => {
+    if (!svg.getAttribute('xmlns')) svg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+
+    if (!svg.getAttribute('viewBox')) {
+      try {
+        const box = svg.getBBox();
+        if (box.width > 0 && box.height > 0) {
+          const pad = 4;
+          svg.setAttribute('viewBox', `${box.x - pad} ${box.y - pad} ${box.width + pad * 2} ${box.height + pad * 2}`);
+        }
+      } catch (err) {
+        /* getBBox throws for an empty or detached SVG; nothing to normalise */
+      }
+    }
+
+    const viewBox = (svg.getAttribute('viewBox') || '').split(/[\s,]+/).filter(Boolean).map(Number);
+    const isPlainNumber = (value) => value && /^\d+(\.\d+)?(px)?$/i.test(value);
+    if (viewBox.length === 4 && viewBox[2] > 0 && viewBox[3] > 0) {
+      if (!isPlainNumber(svg.getAttribute('width'))) svg.setAttribute('width', Math.round(viewBox[2]));
+      if (!isPlainNumber(svg.getAttribute('height'))) svg.setAttribute('height', Math.round(viewBox[3]));
+      svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+    }
+
+    svg.style.overflow = 'visible';
+    svg.style.maxWidth = '100%';
+  });
+}
+
+// html2canvas rasterises an inline <svg> at its serialised intrinsic size and
+// falls back to 300x150, which lops the right-hand side off wider apparatus and
+// circuit diagrams. Convert each one to a PNG at its real rendered size first,
+// so what reaches the PDF is a plain image that cannot be mismeasured.
+async function rasterizeSvgs(root) {
+  for (const svg of Array.from(root.querySelectorAll('svg'))) {
+    try {
+      const rect = svg.getBoundingClientRect();
+      const width = Math.round(rect.width) || Number(svg.getAttribute('width')) || 300;
+      const height = Math.round(rect.height) || Number(svg.getAttribute('height')) || 150;
+      if (width < 1 || height < 1) continue;
+
+      const clone = svg.cloneNode(true);
+      clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      clone.setAttribute('width', width);
+      clone.setAttribute('height', height);
+      const source = 'data:image/svg+xml;charset=utf-8,' +
+        encodeURIComponent(new XMLSerializer().serializeToString(clone));
+
+      const loaded = await new Promise(resolve => {
+        const probe = new Image();
+        probe.onload = () => resolve(probe);
+        probe.onerror = () => resolve(null);
+        probe.src = source;
+      });
+      if (!loaded) continue;
+
+      const scale = 2;
+      const canvas = document.createElement('canvas');
+      canvas.width = width * scale;
+      canvas.height = height * scale;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(loaded, 0, 0, canvas.width, canvas.height);
+
+      const flat = document.createElement('img');
+      flat.src = canvas.toDataURL('image/png');
+      flat.style.cssText = `width: ${width}px; height: ${height}px; display: inline-block; max-width: 100%;`;
+      svg.replaceWith(flat);
+    } catch (err) {
+      /* keep the original SVG if it cannot be rasterised */
+    }
+  }
+}
+
+// The pasted stylesheet targets `body`, `@page` and bare tag names, so injecting
+// it as-is restyles the app itself — which also skews the measurements
+// html2canvas takes and clips the right edge off the capture. Re-emit every
+// rule confined to the render stage, using the browser's own CSS parser so
+// @media blocks survive intact.
+function scopeCssToStage(cssText, scopeSelector) {
+  const carrier = document.createElement('style');
+  carrier.media = 'not all';
+  carrier.textContent = cssText;
+  document.head.appendChild(carrier);
+
+  const scopeSelectorList = (selectorText) => selectorText
+    .split(',')
+    .map(part => {
+      const trimmed = part.trim();
+      if (!trimmed) return '';
+      if (/^(html|body|:root)$/i.test(trimmed)) return scopeSelector;
+      return `${scopeSelector} ${trimmed.replace(/^(html|body)\s+/i, '')}`;
+    })
+    .filter(Boolean)
+    .join(', ');
+
+  const collect = (rules, out) => {
+    Array.from(rules || []).forEach(rule => {
+      if (rule.type === CSSRule.STYLE_RULE) {
+        out.push(`${scopeSelectorList(rule.selectorText)} { ${rule.style.cssText} }`);
+      } else if (rule.type === CSSRule.MEDIA_RULE) {
+        const inner = [];
+        collect(rule.cssRules, inner);
+        // We are producing print output, so print rules apply unconditionally.
+        if (/print/i.test(rule.conditionText || rule.media.mediaText || '')) out.push(inner.join('\n'));
+        else out.push(`@media ${rule.media.mediaText} { ${inner.join('\n')} }`);
+      } else if (rule.type === CSSRule.PAGE_RULE) {
+        /* @page margins are the PDF generator's job, not the document's */
+      } else if (rule.cssText) {
+        out.push(rule.cssText);
+      }
+    });
+  };
+
+  const chunks = [];
+  try {
+    collect(carrier.sheet && carrier.sheet.cssRules, chunks);
+  } catch (err) {
+    carrier.remove();
+    return '';
+  }
+  carrier.remove();
+  return chunks.join('\n');
+}
+
+const PDF_STAGE_WIDTH = 794; // A4 portrait at 96dpi
+const PDF_PAGE_PADDING = '45px 48px'; // ~12mm print margin, applied here rather than by html2pdf
+const PDF_STAGE_ID = 'ai-pdf-paper';
 
 async function exportPastedPaperToPdf(htmlString, filename) {
   const { content, css } = buildPrintableNode(htmlString);
 
   const stage = document.createElement('div');
   stage.id = 'ai-pdf-render-stage';
-  stage.style.cssText = 'position: fixed; left: 0; top: 0; width: 794px; margin: 0; padding: 0; background: #ffffff; z-index: 999999; overflow: visible;';
+  stage.style.cssText = `position: fixed; left: 0; top: 0; width: ${PDF_STAGE_WIDTH}px; margin: 0; padding: 0; background: #ffffff; z-index: 999999; overflow: visible;`;
+
+  // The scope id and the stylesheet both live on the captured element itself:
+  // html2canvas clones only that subtree, so styles hung off an ancestor
+  // wrapper would not match anything during rasterisation.
+  content.id = PDF_STAGE_ID;
   if (css) {
     const styleTag = document.createElement('style');
-    styleTag.textContent = css;
-    stage.appendChild(styleTag);
+    styleTag.textContent = scopeCssToStage(css, `#${PDF_STAGE_ID}`);
+    content.insertBefore(styleTag, content.firstChild);
   }
   stage.appendChild(content);
   document.body.appendChild(stage);
 
   await new Promise(resolve => setTimeout(resolve, 250));
 
+  normalizeRenderedSvgs(content);
+  await rasterizeSvgs(content);
+
+  // html2pdf resizes the captured element to the page's inner width before
+  // rasterising, so anything laid out wider than that gets squeezed and clipped
+  // (this is what cut off the subject code and maximum marks). Render at the
+  // full A4 width and take the page margin from this wrapper's padding instead,
+  // so the layout width and the capture width are the same number.
   const opt = {
-    margin: [8, 8, 8, 8],
+    margin: 0,
     filename,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true, scrollX: 0, scrollY: 0 },
