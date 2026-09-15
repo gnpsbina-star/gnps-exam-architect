@@ -4815,8 +4815,81 @@ function scopeCssToStage(cssText, scopeSelector) {
 
 const PDF_STAGE_WIDTH = 794; // A4 portrait at 96dpi
 const PDF_PAGE_MARGIN_MM = 12; // top/bottom margin, applied by html2pdf on every page
+const PDF_PAGE_HEIGHT_PX = ((297 - 2 * PDF_PAGE_MARGIN_MM) / 25.4) * 96; // usable A4 height at 96dpi
 const PDF_PAGE_PADDING = '0 48px'; // side margins (~12mm); vertical margin comes from html2pdf
 const PDF_STAGE_ID = 'ai-pdf-paper';
+
+// Push any block that would straddle a page boundary onto the next page, so a
+// line of text is never sliced through the middle.
+//
+// html2pdf's own 'avoid-all' cannot be relied on here: it measures against the
+// viewport rather than the paper (so its spacers land a few pixels short and
+// cut the line anyway) and it gives up entirely on any block taller than a
+// page, which is exactly what a case study with a figure is. Measuring against
+// the paper and recursing into oversized blocks fixes both.
+function makePagePad(heightPx) {
+  const pad = document.createElement('div');
+  pad.dataset.pdfPad = '1';
+  pad.style.cssText = `display: block; margin: 0; padding: 0; border: 0; float: none; height: ${Math.ceil(heightPx)}px;`;
+  return pad;
+}
+
+// A block's opening line is usually loose text with no element of its own (a
+// case study's heading, say), so it cannot be pushed like a child can. Measure
+// it with a Range and, if it straddles, pad from inside the block — wrapping it
+// in a div instead would knock a floated mark allocation onto its own line.
+function padLeadingInlineContent(el, paperTop, pageHeightPx) {
+  const leading = [];
+  for (const node of Array.from(el.childNodes)) {
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      const display = getComputedStyle(node).display;
+      if (display !== 'inline' && display !== 'inline-block') break;
+    }
+    leading.push(node);
+  }
+  if (!leading.length || !leading.some(node => (node.textContent || '').trim())) return;
+
+  const range = document.createRange();
+  range.setStartBefore(leading[0]);
+  range.setEndAfter(leading[leading.length - 1]);
+  const rect = range.getBoundingClientRect();
+  if (!rect || rect.height <= 0) return;
+
+  const top = rect.top - paperTop;
+  const bottom = rect.bottom - paperTop;
+  if (Math.floor(top / pageHeightPx) === Math.floor((bottom - 1) / pageHeightPx)) return;
+
+  el.insertBefore(makePagePad(pageHeightPx - (top % pageHeightPx)), el.firstChild);
+}
+
+function insertSafePageBreaks(root, pageHeightPx) {
+  const paperTop = root.getBoundingClientRect().top;
+
+  const walk = (parent, depth) => {
+    if (depth > 4) return;
+    for (const el of Array.from(parent.children)) {
+      if (el.tagName === 'STYLE' || el.dataset.pdfPad === '1') continue;
+
+      const rect = el.getBoundingClientRect();
+      if (rect.height <= 0) continue;
+
+      const top = rect.top - paperTop;
+      const bottom = rect.bottom - paperTop;
+      if (Math.floor(top / pageHeightPx) === Math.floor((bottom - 1) / pageHeightPx)) continue;
+
+      if (rect.height > pageHeightPx && el.children.length) {
+        // Too tall to move as one piece, so break between its parts instead.
+        padLeadingInlineContent(el, paperTop, pageHeightPx);
+        walk(el, depth + 1);
+        continue;
+      }
+
+      el.parentNode.insertBefore(makePagePad(pageHeightPx - (top % pageHeightPx)), el);
+    }
+  };
+
+  walk(root, 0);
+}
 
 async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
   const { content, css } = buildPrintableNode(htmlString);
@@ -4853,6 +4926,8 @@ async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
   }
   if (tail) tail.style.marginBottom = '0';
 
+  insertSafePageBreaks(content, PDF_PAGE_HEIGHT_PX);
+
   // Margins are split deliberately. Vertical margins go to html2pdf so every
   // page gets them (padding on this wrapper would only indent the first and
   // last page, letting the rest run into the paper edge). Horizontal margin
@@ -4865,7 +4940,7 @@ async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true, scrollX: 0, scrollY: 0 },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    pagebreak: { mode: ['avoid-all', 'css', 'legacy'], avoid: ['.diagram-container', '.mcq-table tr'] }
+    pagebreak: { mode: ['css', 'legacy'] }
   };
 
   try {
