@@ -3905,7 +3905,7 @@ ${blueprintPromptText}
     *   **STRICTLY DO NOT write or execute Python scripts, and DO NOT use or require any external compiler or CLI tools.** The document is designed to render directly in the browser preview / Gemini Canvas.
     *   **TWO SEPARATE DOCUMENTS (CRITICAL):** Output **Set A** and **Set B** as **TWO INDEPENDENT, COMPLETE HTML DOCUMENTS in TWO SEPARATE \`\`\`html \`\`\` code blocks**, one immediately after the other. Each code block MUST start with its own \`<!DOCTYPE html>\` and contain its own \`<html>\`, \`<head>\` (with the full embedded \`<style>\`) and \`<body>\` with its own complete school header. **DO NOT merge both sets into one HTML document separated by a page break** — they must be two standalone files so each can be saved and printed as its own separate PDF.
     *   Embed complete print styling (\`@media print { size: A4 portrait; margin: 19mm; }\`) and include a floating print button (\`<button onclick="window.print()" class="no-print" style="position: fixed; top: 16px; right: 16px; padding: 10px 18px; font-weight: bold; background: #0284c7; color: #fff; border: none; border-radius: 8px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">🖨️ Print / Save as PDF</button>\`) so the user can immediately preview and save as a pixel-perfect CBSE A4 PDF directly from their browser (\`Ctrl+P\` / \`Cmd+P\` -> Save as PDF).
-2.  **Official CBSE Typography & Diagram Styling:** In your HTML/CSS template, you must set the font family to 'Times New Roman' (or 'Mangal / Noto Serif Devanagari / Kruti Dev 010' for Hindi/Sanskrit), 12pt body text, 14pt bold sub-headings / section headers, and 18pt centered bold main header. For any diagram, chart, or graphic, wrap inside '<div class="diagram-container">' with 'text-align: center; margin: 8px auto 12px auto; page-break-inside: avoid;' and a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'.
+2.  **Official CBSE Typography & Diagram Styling:** Style Section headings with **centered bold text only** — do NOT use \`text-decoration: underline\` on a heading/banner block, as the underline misplaces itself onto the next line when the paper is converted to PDF. In your HTML/CSS template, you must set the font family to 'Times New Roman' (or 'Mangal / Noto Serif Devanagari / Kruti Dev 010' for Hindi/Sanskrit), 12pt body text, 14pt bold sub-headings / section headers, and 18pt centered bold main header. For any diagram, chart, or graphic, wrap inside '<div class="diagram-container">' with 'text-align: center; margin: 8px auto 12px auto; page-break-inside: avoid;' and a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'.
 3.  **Line Spacing & Margins:** Enforce a strict CSS line-height: 1.25 and standard margins of 19mm (0.75 inches) on all sides ('@page { size: A4 portrait; margin: 19mm; }').
 4.  **Alignment & Footer:** Ensure clean vertical alignment with right-aligned marks (e.g., [1], [2], [3], [5]) matching official board papers. At the bottom of every page, include a clean footer with school name, exam name, and set label format "**GNPS / ${examName.toUpperCase()} / SET A**" (or "**GNPS / ${examName.toUpperCase()} / SET B**" corresponding to the set) on the left margin and Page Numbering (e.g., "**Page 1 of 4**") on the right margin.
 5.  **Even-Page Budgeting & Page Breaks (Critical for Printing):**
@@ -4781,7 +4781,8 @@ function scopeCssToStage(cssText, scopeSelector) {
 }
 
 const PDF_STAGE_WIDTH = 794; // A4 portrait at 96dpi
-const PDF_PAGE_PADDING = '45px 48px'; // ~12mm print margin, applied here rather than by html2pdf
+const PDF_PAGE_MARGIN_MM = 12; // top/bottom margin, applied by html2pdf on every page
+const PDF_PAGE_PADDING = '0 48px'; // side margins (~12mm); vertical margin comes from html2pdf
 const PDF_STAGE_ID = 'ai-pdf-paper';
 
 async function exportPastedPaperToPdf(htmlString, filename) {
@@ -4808,18 +4809,19 @@ async function exportPastedPaperToPdf(htmlString, filename) {
   normalizeRenderedSvgs(content);
   await rasterizeSvgs(content);
 
-  // html2pdf resizes the captured element to the page's inner width before
-  // rasterising, so anything laid out wider than that gets squeezed and clipped
-  // (this is what cut off the subject code and maximum marks). Render at the
-  // full A4 width and take the page margin from this wrapper's padding instead,
-  // so the layout width and the capture width are the same number.
+  // Margins are split deliberately. Vertical margins go to html2pdf so every
+  // page gets them (padding on this wrapper would only indent the first and
+  // last page, letting the rest run into the paper edge). Horizontal margin
+  // stays 0 and comes from the wrapper's side padding instead, because
+  // html2pdf resizes the captured element to the page's inner width — any
+  // left/right margin here would squeeze the layout and clip its right edge.
   const opt = {
-    margin: 0,
+    margin: [PDF_PAGE_MARGIN_MM, 0, PDF_PAGE_MARGIN_MM, 0],
     filename,
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true, scrollX: 0, scrollY: 0 },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-    pagebreak: { mode: ['css', 'legacy'], avoid: ['.diagram-container', '.mcq-table tr'] }
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'], avoid: ['.diagram-container', '.mcq-table tr'] }
   };
 
   try {
