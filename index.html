@@ -259,6 +259,39 @@
           </div>
         </section>
 
+        <!-- Convert the AI's Answer into Ready-to-Print PDFs -->
+        <section id="ai-to-pdf-section" class="blueprint-card output-panel" style="margin-top: 2rem; padding: 1.25rem; border: 1px solid rgba(34, 197, 94, 0.35); background: linear-gradient(180deg, rgba(6, 78, 59, 0.28) 0%, rgba(15, 23, 42, 0.6) 100%);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
+                <h2 style="font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin: 0;">Convert AI Answer &rarr; Ready-to-Print PDF</h2>
+              </div>
+              <p class="subtitle" style="margin: 4px 0 0 0; font-size: 0.8rem; color: #94a3b8;">Paste whatever Gemini / ChatGPT gave you (rendered page or raw HTML code &mdash; both work). If the paper has Set A and Set B, you get 2 separate PDFs.</p>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+              <span id="aiPdfBadge" class="blueprint-badge" style="background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.35); color: #4ade80;">Awaiting Paste</span>
+              <button type="button" id="clearAiResponseBtn" class="btn-secondary" style="padding: 0.45rem 0.8rem; font-size: 0.82rem; border-radius: 8px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Clear the pasted AI response">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                <span>Clear</span>
+              </button>
+              <button type="button" id="generatePdfFromAiBtn" class="btn-primary" style="padding: 0.45rem 0.9rem; font-size: 0.82rem; border-radius: 8px; background: linear-gradient(135deg, #22c55e 0%, #15803d 100%); display: inline-flex; align-items: center; gap: 6px;" title="Render the pasted paper and download it as PDF">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                <span id="generatePdfFromAiBtnText">Generate PDF(s)</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="output-wrapper">
+            <textarea id="aiResponseInput" placeholder="Paste the AI's full answer here, then click Generate PDF(s).&#10;&#10;Works with either:&#10;  • the whole reply copied from Gemini/ChatGPT (including the ```html code block), or&#10;  • just the raw HTML code copied from the code block." style="height: 200px; font-family: monospace; font-size: 0.82rem; line-height: 1.55;"></textarea>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-size: 0.78rem; color: #94a3b8; gap: 1rem; flex-wrap: wrap;">
+            <span id="aiPdfStatus">Tip: Set A and Set B are detected automatically and downloaded as two separate PDF files.</span>
+            <span id="aiResponseCharCount" style="color: #94a3b8; font-family: monospace;"></span>
+          </div>
+        </section>
+
         <!-- Window 2: CBSE Multi-Paper Master Prompt (Sequential AI Generation) -->
         <section id="master-prompt-section" class="blueprint-card output-panel hidden" style="margin-top: 2rem; padding: 1.25rem; border: 1px solid rgba(168, 85, 247, 0.35); background: linear-gradient(180deg, rgba(30, 27, 75, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%); box-shadow: 0 10px 30px -10px rgba(147, 51, 234, 0.15);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
@@ -694,6 +727,6 @@
       </div>
     </div>
 
-    <script type="module" src="./main.js?v=229"></script>
+    <script type="module" src="./main.js?v=230"></script>
   </body>
 </html>

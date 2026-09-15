@@ -3902,7 +3902,7 @@ ${blueprintPromptText}
 1.  **MANDATORY OUTPUT FORMAT — 100% STANDALONE PRINT-READY HTML & CSS:**
     *   You MUST output the complete question paper directly as valid, self-contained HTML/CSS inside an \`\`\`html \`\`\` code block.
     *   **STRICTLY DO NOT write or execute Python scripts, and DO NOT use or require any external compiler or CLI tools.** The document is designed to render directly in the browser preview / Gemini Canvas.
-    *   Include BOTH **Set A** and **Set B** in the output, cleanly separated with a distinct page break (\`page-break-before: always;\`) and school header for Set B.
+    *   **TWO SEPARATE DOCUMENTS (CRITICAL):** Output **Set A** and **Set B** as **TWO INDEPENDENT, COMPLETE HTML DOCUMENTS in TWO SEPARATE \`\`\`html \`\`\` code blocks**, one immediately after the other. Each code block MUST start with its own \`<!DOCTYPE html>\` and contain its own \`<html>\`, \`<head>\` (with the full embedded \`<style>\`) and \`<body>\` with its own complete school header. **DO NOT merge both sets into one HTML document separated by a page break** — they must be two standalone files so each can be saved and printed as its own separate PDF.
     *   Embed complete print styling (\`@media print { size: A4 portrait; margin: 19mm; }\`) and include a floating print button (\`<button onclick="window.print()" class="no-print" style="position: fixed; top: 16px; right: 16px; padding: 10px 18px; font-weight: bold; background: #0284c7; color: #fff; border: none; border-radius: 8px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">🖨️ Print / Save as PDF</button>\`) so the user can immediately preview and save as a pixel-perfect CBSE A4 PDF directly from their browser (\`Ctrl+P\` / \`Cmd+P\` -> Save as PDF).
 2.  **Official CBSE Typography & Diagram Styling:** In your HTML/CSS template, you must set the font family to 'Times New Roman' (or 'Mangal / Noto Serif Devanagari / Kruti Dev 010' for Hindi/Sanskrit), 12pt body text, 14pt bold sub-headings / section headers, and 18pt centered bold main header. For any diagram, chart, or graphic, wrap inside '<div class="diagram-container">' with 'text-align: center; margin: 8px auto 12px auto; page-break-inside: avoid;' and a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'.
 3.  **Line Spacing & Margins:** Enforce a strict CSS line-height: 1.25 and standard margins of 19mm (0.75 inches) on all sides ('@page { size: A4 portrait; margin: 19mm; }').
@@ -3912,7 +3912,7 @@ ${blueprintPromptText}
     *   Compact your line gaps and format MCQ options into a 2x2 grid ((a) ... (b) ... / (c) ... (d) ...).
     *   **CRITICAL CSS RULE FOR PAGE BREAKS:** You must NOT apply 'page-break-inside: avoid;' globally to all table rows ('tr'). Doing so causes long text blocks (like Reading Passages) to jump entirely to the next page, leaving massive blank spaces. You must allow main question rows to break naturally across pages. You may ONLY apply 'page-break-inside: avoid;' strictly to small, nested elements such as the 2x2 MCQ option tables (e.g., '.mcq-table tr { page-break-inside: avoid; }'). The files must be completely ready for double-sided printing.
 6.  **Dual Balanced Sets (Set A & Set B):**
-    *   Generate **EXACTLY TWO DISTINCT SETS** (**Set A** and **Set B**).
+    *   Generate **EXACTLY TWO DISTINCT SETS** (**Set A** and **Set B**), delivered as two separate standalone HTML documents in two separate \`\`\`html \`\`\` code blocks (see Rule 1).
     *   Both sets must feature 100% different questions while maintaining the exact same difficulty level, chapter weightage, and blueprint question counts.
 7.  **High-Yield Official Repositories (MANDATORY SOURCING):** You MUST source, adapt, and formulate questions directly from the following authoritative repositories:
     *   **Official CBSE Competency-Based Education (CBE / CBT) Question Banks** (from cbseacademic.nic.in/cbe/).
@@ -4527,6 +4527,241 @@ copyBtn.addEventListener('click', () => {
     copyBtn.style.background = '';
   }, 2500);
 });
+
+// ---------------------------------------------------------------------------
+// AI Answer -> Ready-to-Print PDF
+// Takes whatever Gemini/ChatGPT returned (full reply with ```html fences, or a
+// raw HTML paste) and turns each question paper it contains into its own PDF,
+// so Set A and Set B download as two separate files.
+// ---------------------------------------------------------------------------
+
+const SET_LABEL_RE = /\bSET\s*[-–—:]?\s*([A-D])\b/;
+
+function extractHtmlDocuments(raw) {
+  const text = (raw || '').trim();
+  if (!text) return [];
+
+  const fenced = [];
+  const fenceRe = /```(?:html|HTML)?[^\S\n]*\n([\s\S]*?)```/g;
+  let match;
+  while ((match = fenceRe.exec(text)) !== null) {
+    const block = match[1].trim();
+    if (/<!doctype\s+html|<html[\s>]|<body[\s>]|<div[\s>]|<table[\s>]/i.test(block)) fenced.push(block);
+  }
+  if (fenced.length) return fenced;
+
+  const splitIfRepeated = (pattern) => {
+    const count = (text.match(pattern) || []).length;
+    if (count < 2) return null;
+    return text.split(new RegExp(`(?=${pattern.source})`, 'i')).map(s => s.trim()).filter(Boolean);
+  };
+  return splitIfRepeated(/<!doctype\s+html/gi) || splitIfRepeated(/<html[\s>]/gi) || [text];
+}
+
+// Fallback for older responses that merge both sets into one document separated
+// by a page break. Returns null when the split can't be made confidently.
+function splitCombinedSets(htmlString) {
+  const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+  if (!doc.body) return null;
+
+  const children = Array.from(doc.body.children);
+  if (children.length < 2) return null;
+
+  const textOf = (nodes) => nodes.map(n => n.textContent || '').join(' ').toUpperCase();
+  let splitIdx = -1;
+  for (let i = 1; i < children.length; i++) {
+    const el = children[i];
+    const styled = [el, ...el.querySelectorAll('[style]')];
+    const hasBreak = styled.some(n => /page-break-before\s*:\s*always/i.test(n.getAttribute('style') || ''));
+    if (!hasBreak) continue;
+    const before = textOf(children.slice(0, i));
+    const after = textOf(children.slice(i));
+    if (/\bSET\s*[-–—:]?\s*A\b/.test(before) && /\bSET\s*[-–—:]?\s*B\b/.test(after)) {
+      splitIdx = i;
+      break;
+    }
+  }
+  if (splitIdx <= 0) return null;
+
+  const headHtml = doc.head ? doc.head.innerHTML : '';
+  const wrap = (nodes) =>
+    `<!DOCTYPE html><html><head>${headHtml}</head><body>${nodes.map(n => n.outerHTML).join('\n')}</body></html>`;
+  return [wrap(children.slice(0, splitIdx)), wrap(children.slice(splitIdx))];
+}
+
+function detectPaperLabel(htmlString, index, total) {
+  const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+  const text = ((doc.body && doc.body.textContent) || '').toUpperCase();
+  const match = text.match(SET_LABEL_RE);
+  if (match) return `Set ${match[1]}`;
+  return total > 1 ? `Paper ${index + 1}` : 'Question Paper';
+}
+
+function buildAiPdfFileName(label) {
+  const examEl = document.getElementById('examName');
+  const parts = ['GNPS', classSelect && classSelect.value, subjectSelect && subjectSelect.value, examEl && examEl.value, label]
+    .filter(Boolean)
+    .map(s => String(s).replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_+|_+$/g, ''))
+    .filter(Boolean);
+  return `${parts.join('_').replace(/_+/g, '_')}.pdf`;
+}
+
+// The pasted markup comes from an external AI chat, so it is untrusted: strip
+// scripts, inline event handlers and javascript: URLs before it ever touches
+// the live DOM (this page holds the signed-in user's session).
+function buildPrintableNode(htmlString) {
+  const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+  doc.querySelectorAll('script, .no-print, [data-no-print]').forEach(n => n.remove());
+  doc.querySelectorAll('*').forEach(el => {
+    Array.from(el.attributes).forEach(attr => {
+      const name = attr.name.toLowerCase();
+      if (name.startsWith('on')) el.removeAttribute(attr.name);
+      else if (['href', 'src', 'xlink:href'].includes(name) && /^\s*javascript:/i.test(attr.value)) el.removeAttribute(attr.name);
+    });
+  });
+
+  // A leading page break (the one that separated Set A from Set B, or a stray
+  // one from the AI) would render an empty first page. Clear it down the
+  // opening first-child chain.
+  let lead = doc.body ? doc.body.firstElementChild : null;
+  while (lead) {
+    const style = lead.getAttribute('style');
+    if (style && /page-break-before\s*:\s*always/i.test(style)) {
+      lead.setAttribute('style', style.replace(/page-break-before\s*:\s*always\s*;?/gi, ''));
+    }
+    lead = lead.firstElementChild;
+  }
+
+  const css = Array.from(doc.querySelectorAll('style')).map(s => s.textContent || '').join('\n');
+  const content = document.createElement('div');
+  content.style.cssText = 'width: 794px; padding: 12px 16px; margin: 0; background: #ffffff; color: #000000; box-sizing: border-box;';
+  content.innerHTML = doc.body ? doc.body.innerHTML : htmlString;
+  return { content, css };
+}
+
+async function exportPastedPaperToPdf(htmlString, filename) {
+  const { content, css } = buildPrintableNode(htmlString);
+
+  const stage = document.createElement('div');
+  stage.id = 'ai-pdf-render-stage';
+  stage.style.cssText = 'position: fixed; left: 0; top: 0; width: 794px; margin: 0; padding: 0; background: #ffffff; z-index: 999999; overflow: visible;';
+  if (css) {
+    const styleTag = document.createElement('style');
+    styleTag.textContent = css;
+    stage.appendChild(styleTag);
+  }
+  stage.appendChild(content);
+  document.body.appendChild(stage);
+
+  await new Promise(resolve => setTimeout(resolve, 250));
+
+  const opt = {
+    margin: [8, 8, 8, 8],
+    filename,
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true, scrollX: 0, scrollY: 0 },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+    pagebreak: { mode: ['css', 'legacy'], avoid: ['.diagram-container', '.mcq-table tr'] }
+  };
+
+  try {
+    await html2pdf().set(opt).from(content).save();
+  } finally {
+    stage.remove();
+  }
+}
+
+async function handleGeneratePdfFromAi() {
+  const input = document.getElementById('aiResponseInput');
+  const statusEl = document.getElementById('aiPdfStatus');
+  const badgeEl = document.getElementById('aiPdfBadge');
+  const btn = document.getElementById('generatePdfFromAiBtn');
+  const btnText = document.getElementById('generatePdfFromAiBtnText');
+  if (!input || !btn) return;
+
+  const setStatus = (msg, color = '#94a3b8') => {
+    if (statusEl) {
+      statusEl.textContent = msg;
+      statusEl.style.color = color;
+    }
+  };
+
+  const raw = input.value.trim();
+  if (!raw) {
+    setStatus('Paste the AI response first, then click Generate PDF(s).', '#f87171');
+    return;
+  }
+  if (typeof html2pdf === 'undefined') {
+    setStatus('PDF engine failed to load. Check your internet connection and refresh the page.', '#f87171');
+    return;
+  }
+
+  if (!/<[a-z!][\s\S]*>/i.test(raw)) {
+    setStatus('That looks like plain text, not a question paper. Copy the AI\'s HTML output (the ```html code block) and paste it here.', '#f87171');
+    return;
+  }
+
+  let papers = extractHtmlDocuments(raw);
+  if (papers.length === 1) {
+    const split = splitCombinedSets(papers[0]);
+    if (split) papers = split;
+  }
+  if (!papers.length) {
+    setStatus('No HTML question paper found in what you pasted. Copy the AI\'s full answer including the ```html code block.', '#f87171');
+    return;
+  }
+
+  const originalText = btnText ? btnText.textContent : '';
+  btn.disabled = true;
+  const labels = papers.map((html, i) => detectPaperLabel(html, i, papers.length));
+
+  try {
+    for (let i = 0; i < papers.length; i++) {
+      if (btnText) btnText.textContent = `Rendering ${labels[i]} (${i + 1}/${papers.length})...`;
+      setStatus(`Rendering ${labels[i]} — ${i + 1} of ${papers.length}. The download starts automatically.`, '#4ade80');
+      await exportPastedPaperToPdf(papers[i], buildAiPdfFileName(labels[i]));
+      await new Promise(resolve => setTimeout(resolve, 600));
+    }
+    setStatus(`Done — ${papers.length} PDF${papers.length > 1 ? 's' : ''} downloaded (${labels.join(', ')}).`, '#4ade80');
+    if (badgeEl) badgeEl.textContent = `${papers.length} PDF${papers.length > 1 ? 's' : ''} Generated`;
+  } catch (err) {
+    console.error('AI response -> PDF failed:', err);
+    setStatus(`Could not build the PDF: ${err.message || err}. Try pasting just the HTML code block.`, '#f87171');
+  } finally {
+    btn.disabled = false;
+    if (btnText) btnText.textContent = originalText || 'Generate PDF(s)';
+  }
+}
+
+(function setupAiToPdfSection() {
+  const input = document.getElementById('aiResponseInput');
+  const btn = document.getElementById('generatePdfFromAiBtn');
+  const clearBtn = document.getElementById('clearAiResponseBtn');
+  const countEl = document.getElementById('aiResponseCharCount');
+  const badgeEl = document.getElementById('aiPdfBadge');
+  if (!input || !btn) return;
+
+  btn.addEventListener('click', handleGeneratePdfFromAi);
+
+  input.addEventListener('input', () => {
+    const len = input.value.length;
+    if (countEl) countEl.textContent = len ? `${len.toLocaleString()} characters` : '';
+    if (badgeEl) badgeEl.textContent = len ? 'Ready to Convert' : 'Awaiting Paste';
+  });
+
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      if (countEl) countEl.textContent = '';
+      if (badgeEl) badgeEl.textContent = 'Awaiting Paste';
+      const statusEl = document.getElementById('aiPdfStatus');
+      if (statusEl) {
+        statusEl.textContent = 'Tip: Set A and Set B are detected automatically and downloaded as two separate PDF files.';
+        statusEl.style.color = '#94a3b8';
+      }
+    });
+  }
+})();
 
 // Dynamic Academic Session Calculation (April to March cycle)
 function getCurrentAcademicSession() {
