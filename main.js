@@ -1579,13 +1579,9 @@ function getExamDefaultDetails(className, subjectName, examName) {
   // Special School Configuration for Middle Wing GK & Robotics (Classes 6 to 8)
   if (isMiddle) {
     if (subLower.includes("robotics")) {
-      if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
-        return { marks: 10, duration: "20 Mins" };
-      }
-      if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
-        return { marks: 10, duration: "20 Mins" };
-      }
-      return { marks: 20, duration: "45 Minutes" };
+      // Skill subject: no unit tests or periodic assessments. The written paper
+      // is 30 marks in 60 minutes, alongside a 70 mark practical.
+      return { marks: 30, duration: "60 Mins" };
     }
     if (subLower.includes("general knowledge") || subLower.includes("gk")) {
       if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
@@ -1776,7 +1772,11 @@ function populateSubjectsDropdown(selectedClass, defaultSelectSubject = null) {
   
   if (!cbseData[selectedClass]) return;
   
-  const subjects = Object.keys(cbseData[selectedClass]).filter(s => !isSchoolExcludedSubject(s));
+  // Robotics is assessed in the lab and via a school-set written paper; no
+  // question paper is generated for it, so it is offered on the Syllabus Sheet
+  // only and kept out of this dropdown.
+  const subjects = Object.keys(cbseData[selectedClass])
+    .filter(s => !isSchoolExcludedSubject(s) && !/robotics/i.test(s));
   const customList = (customSubjectsData && customSubjectsData[selectedClass]) ? Object.keys(customSubjectsData[selectedClass]) : [];
   
   subjects.forEach(subject => {
@@ -4092,45 +4092,6 @@ Anchor the passages in timeless human values:
   }
 
   const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
-  if (isMiddle && subLower.includes("robotics")) {
-    const isPA = (examName || '').includes("PA") || (examName || '').toLowerCase().includes("periodic");
-    if (marks <= 10) {
-      if (isPA) {
-        promptText += `\n\n**ROBOTICS PERIODIC ASSESSMENT SPECIFICATIONS (10 MARKS WRITTEN THEORY / 20 MINS):**
-* **Assessment Scheme:**
-  - Written Theory Paper: 10 Marks (Time Allowed: 20 Minutes)
-  - Hands-on Lab Assessment: 10 Marks (Conducted during regular school time in the Robotics Lab)
-  - Total Weightage: 20 Marks
-* Formulate strictly the **10-Mark Student Written Theory Question Paper** for this 20-minute sitting.
-* Structure the paper into 2 crisp sections:
-  - Section A: Objective & Technical MCQs (4 Marks) on components, sensors (LDR, ultrasonic, IR), and pins.
-  - Section B: Short Answer & Circuit Logic (6 Marks) on block code logic, connections, and basic schematic functions.`;
-      } else {
-        // Unit Test
-        promptText += `\n\n**ROBOTICS UNIT TEST SPECIFICATIONS (10 MARKS WRITTEN THEORY / 20 MINS):**
-* **Assessment Scheme:**
-  - Written Theory Paper: 10 Marks (Time Allowed: 20 Minutes)
-  - Practical Component: None (No lab practical for Unit Tests; 100% written assessment)
-  - Total Weightage: 10 Marks
-* Formulate strictly the **10-Mark Student Written Theory Question Paper** for this 20-minute sitting.
-* Structure the paper into 2 crisp sections:
-  - Section A: Objective & Technical MCQs (4 Marks) on components, sensors, and pins.
-  - Section B: Short Answer & Circuit Logic (6 Marks) on block code logic and circuit connections.`;
-      }
-    } else {
-      promptText += `\n\n**ROBOTICS EXAMINATION SPECIFICATIONS (20 MARKS WRITTEN THEORY / 45 MINS):**
-* **Assessment Scheme:**
-  - Written Theory Paper: 20 Marks (Time Allowed: 45 Minutes)
-  - Hands-on Practical / Project Assessment: 20 Marks (Conducted during regular school time in the Robotics Lab)
-  - Total Weightage: 40 Marks
-* Formulate strictly the **20-Mark Student Written Theory Question Paper** for this 45-minute sitting.
-* Structure the paper into clean sections:
-  - Section A: Objective & Technical MCQs (6 Marks) on circuit components, sensors (LDR, ultrasonic, moisture), and block coding logic.
-  - Section B: Short Answer Questions (6 Marks) on circuit logic, Arduino pins/functions, and conditional statements.
-  - Section C: Descriptive & Coding / Circuit Schematics (8 Marks) with internal choice (e.g. block code algorithm, Tinkercad circuit wiring).`;
-    }
-  }
-
   if (isMiddle && (subLower.includes("general knowledge") || subLower.includes("gk"))) {
     promptText += `\n\n**GENERAL KNOWLEDGE EXAMINATION SPECIFICATIONS (${marks} MARKS WRITTEN THEORY / ${duration}):**
 * Strictly frame an engaging, intellectually stimulating 100% objective paper for ${marks} Marks, paced for ${duration}.`;
@@ -5466,6 +5427,16 @@ function getSEADomainText(subjName) {
     if (clean.includes(key)) return text;
   }
   return "Practical / Project-Based Enrichment Activity";
+}
+
+function isGeneralKnowledgeSubject(name) {
+  return /general knowledge|\bgk\b/i.test(name || '');
+}
+
+// Robotics is a skill subject: the written paper is taken only in the Mid Term
+// and the final exam. It has no unit tests or periodic assessments.
+function roboticsHasWrittenExam(examName) {
+  return /mid\s*term|annual|final/i.test(examName || '');
 }
 
 export const coScholasticSubjects = [
@@ -6946,9 +6917,12 @@ function renderSyllabusSheetPaper() {
     const partNumbers = getSheetPartNumbers(cls, true);
 
     // 1. PART 1: Scholastic Subjects (Written Pen-Paper Exams)
+    // General Knowledge is assessed as a co-scholastic domain (Part 3), not as a
+    // written scholastic paper, so it is not listed here.
     const scholasticEntries = subjectEntries.filter(([sName]) => {
       const sLow = sName.toLowerCase();
-      return !sLow.includes('music') && !sLow.includes('art') && !sLow.includes('yoga');
+      return !sLow.includes('music') && !sLow.includes('art') && !sLow.includes('yoga') &&
+             !isGeneralKnowledgeSubject(sName);
     });
 
     let part1RowsHtml = '';
@@ -6956,10 +6930,13 @@ function renderSyllabusSheetPaper() {
 
     scholasticEntries.forEach(([subjName, subjSyllabus]) => {
       if (isSchoolExcludedSubject(subjName)) return;
+
+      const isRobo = /robotics|computer/i.test(subjName);
+      if (isRobo && !roboticsHasWrittenExam(exam)) return;
+
       const checkedSet = getSubjectSelectionForSheet(cls, subjName);
       const { contentHtml, checkedCount } = renderSubjectPortionContent(subjName, subjSyllabus, checkedSet);
 
-      const isRobo = /robotics|computer/i.test(subjName);
       let dateContainerHtml = '';
 
       if (isRobo) {
@@ -7016,11 +6993,17 @@ function renderSyllabusSheetPaper() {
       if (!isRobo && !isGK && sheetPart1Marks && sheetPart1Marks.value.trim() && !isNaN(parseInt(sheetPart1Marks.value, 10))) {
         subjectMarks = parseInt(sheetPart1Marks.value, 10);
       }
-      let marksBadgeText = `${subjectMarks} Marks`;
-      if (isRobo && !isUT) {
-        marksBadgeText += ` (+${def.marks} Lab)`;
-      }
+      const marksBadgeText = isRobo ? '100 Marks' : `${subjectMarks} Marks`;
       const marksBadgeHtml = `<span class="subj-marks-badge">${marksBadgeText}</span>`;
+
+      // Robotics is assessed as 70 marks practical + a 30 mark written paper,
+      // so the split is spelled out under the subject name.
+      const roboticsBreakdownHtml = isRobo ? `
+        <div style="font-size: 8pt; color: #000000; line-height: 1.4; margin-top: 3px;">
+          <div><strong>Practical (70M):</strong> Hands-on (40) + Project (20) + Viva (10)</div>
+          <div><strong>Written Exam (30M):</strong> Theory (30) &mdash; 60 Mins</div>
+        </div>
+      ` : '';
 
       const includeCheckboxHtml = `
         <div class="sheet-include-subject-wrapper no-print">
@@ -7036,6 +7019,7 @@ function renderSyllabusSheetPaper() {
           <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px;">${currentRowNum}</td>
           <td style="width: 140px; vertical-align: top;">
             <div class="paper-subj-title">${subjName} ${marksBadgeHtml}</div>
+            ${roboticsBreakdownHtml}
             ${dateContainerHtml}
             <div class="paper-subj-actions no-print">
               <button type="button" class="btn-subj-quick btn-subj-all" data-subject="${subjName}" title="Select ${subjName}">All</button>
@@ -7062,6 +7046,19 @@ function renderSyllabusSheetPaper() {
       const isIncluded = isSubjectIncludedInSheet(cls, subjName);
       const currentRowNum = isIncluded ? p3Sno++ : '—';
 
+      // General Knowledge keeps its prescribed chapter list, which moved here
+      // from Part 1 along with the subject itself.
+      let domainPortionHtml = '';
+      if (isGeneralKnowledgeSubject(subjName)) {
+        const gkEntry = subjectEntries.find(([sName]) => isGeneralKnowledgeSubject(sName));
+        if (gkEntry) {
+          const gkSyllabus = gkEntry[1];
+          const gkChecked = getSubjectSelectionForSheet(cls, gkEntry[0]);
+          const { contentHtml } = renderSubjectPortionContent(gkEntry[0], gkSyllabus, gkChecked);
+          if (contentHtml) domainPortionHtml = `<div style="margin-bottom: 6px;">${contentHtml}</div>`;
+        }
+      }
+
       const includeCheckboxHtml = `
         <div class="sheet-include-subject-wrapper no-print" style="margin-top: 6px;">
           <label class="sheet-subject-include-label ${!isIncluded ? 'is-excluded' : ''}" title="${isIncluded ? 'Uncheck to exclude from circular' : 'Check to include in circular'}">
@@ -7080,6 +7077,7 @@ function renderSyllabusSheetPaper() {
             ${includeCheckboxHtml}
           </td>
           <td style="min-height: 100px; vertical-align: top; padding: 10px 8px;">
+            ${domainPortionHtml}
             <div style="font-size: 8.5pt; color: #000000; line-height: 1.45;">
               <strong>Evaluation Criteria:</strong> <span class="paper-coscholastic-criteria-display">${escapeHtml(getCoScholasticCriteriaText(cls, subjName))}</span>
             </div>
@@ -7669,6 +7667,7 @@ function exportSyllabusSheetToExcel() {
 
   for (const [subjName, subjSyllabus] of subjectEntries) {
     if (!isSubjectIncludedInSheet(cls, subjName)) continue;
+    if (/robotics/i.test(subjName) && !roboticsHasWrittenExam(exam)) continue;
     const checkedSet = getSubjectSelectionForSheet(cls, subjName);
     const subjDate = (sheetSubjectDates[cls] && sheetSubjectDates[cls][subjName]) ? formatExamDate(sheetSubjectDates[cls][subjName]) : '';
     const isBlankSubject = (subjName.toLowerCase().includes('general knowledge') || subjName.toLowerCase().includes('robotics')) && (!subjSyllabus || (Array.isArray(subjSyllabus) && subjSyllabus.length === 0) || (typeof subjSyllabus === 'object' && Object.keys(subjSyllabus).length === 0));
