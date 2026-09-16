@@ -29,32 +29,6 @@ os.makedirs(DATA_DIR, exist_ok=True)
 CUSTOM_FILE_BASELINE = os.path.join(BASE_DIR, "custom_subjects.json")
 CUSTOM_FILE = os.path.join(DATA_DIR, "custom_subjects.json")
 
-# Scraping cbseacademic.nic.in and parsing the sample-paper PDF on every single
-# prompt generation is slow and breaks whenever their site is down. The result
-# barely changes - CBSE publishes a pattern once a year - so it is cached here
-# and only re-fetched when someone explicitly asks for a refresh.
-SQP_CACHE_BASELINE = os.path.join(BASE_DIR, "sqp_cache.json")
-SQP_CACHE_FILE = os.path.join(DATA_DIR, "sqp_cache.json")
-
-def load_sqp_cache():
-    for path in (SQP_CACHE_FILE, SQP_CACHE_BASELINE):
-        try:
-            if os.path.exists(path):
-                with open(path, 'r', encoding='utf-8') as f:
-                    return json.load(f)
-        except Exception as e:
-            print(f"Could not read SQP cache {path}: {e}")
-    return {}
-
-def save_sqp_cache(cache):
-    try:
-        tmp = SQP_CACHE_FILE + ".tmp"
-        with open(tmp, 'w', encoding='utf-8') as f:
-            json.dump(cache, f, indent=2, ensure_ascii=False)
-        os.replace(tmp, SQP_CACHE_FILE)
-    except Exception as e:
-        print(f"Could not write SQP cache: {e}")
-
 def _seed_custom_subjects_if_missing():
     if not os.path.exists(CUSTOM_FILE) and os.path.exists(CUSTOM_FILE_BASELINE):
         try:
@@ -359,44 +333,6 @@ def save_custom_data(data):
     with open(temp_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
     os.replace(temp_path, CUSTOM_FILE)
-
-def extract_text_from_pdf_url(url, is_sqp=True):
-    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-    try:
-        response = urllib.request.urlopen(req, context=ctx)
-        pdf_bytes = response.read()
-        reader = pypdf.PdfReader(io.BytesIO(pdf_bytes))
-        text = ""
-        for i in range(min(5, len(reader.pages))):
-            page_text = reader.pages[i].extract_text()
-            if page_text:
-                text += page_text + "\n"
-                
-        if is_sqp:
-            upper_text = text.upper()
-            start_idx = upper_text.find("GENERAL INSTRUCTION")
-            # CBSE's own SQP PDFs typically use an en dash ("Section – A") or
-            # em dash rather than a plain hyphen, which the old [-:] class
-            # didn't match - causing this to fall through to the blind
-            # 1500-char fallback below and spill real exam questions into
-            # what's meant to be just the general-instructions reference text.
-            match = re.search(r'\n\s*SECTION\s*[-:–—]*\s*A\b', upper_text)
-            
-            if start_idx != -1 and match:
-                end_idx = match.start()
-                if end_idx > start_idx:
-                    return text[start_idx:end_idx].strip()
-            
-            if start_idx != -1:
-                return text[start_idx:start_idx+1500].strip()
-            else:
-                return text[:1000].strip()
-        else:
-            return text
-            
-    except Exception as e:
-        print(f"Error extracting PDF: {e}")
-        return ""
 
 def fetch_cbse_subjects_list(cls):
     is_senior = cls in ['Class 11', 'Class 12']
@@ -734,103 +670,6 @@ def fetch_syllabus_from_cbse(cls, subject_name):
         f"Unit 5: Practical Skills & Project Applications"
     ]
 
-def find_official_sqp_link(cls, subject):
-    is_senior = cls in ['Class 11', 'Class 12']
-    clean_sub = re.sub(r'\s*\([0-9]+\)\s*', '', subject).strip().lower()
-    years_to_check = ['2026-27', '2025-26', '2024-25', '2023-24']
-    
-    direct_maps_10 = {
-        'english': 'web_material/SQP/ClassX_{y_us}/EnglishL-SQP.pdf',
-        'english language & literature': 'web_material/SQP/ClassX_{y_us}/EnglishL-SQP.pdf',
-        'english (language and literature)': 'web_material/SQP/ClassX_{y_us}/EnglishL-SQP.pdf',
-        'english communicative': 'web_material/SQP/ClassX_{y_us}/English-Comm-SQP.pdf',
-        'hindi a': 'web_material/SQP/ClassX_{y_us}/HindiCourseA-SQP.pdf',
-        'hindi course-a': 'web_material/SQP/ClassX_{y_us}/HindiCourseA-SQP.pdf',
-        'hindi course a': 'web_material/SQP/ClassX_{y_us}/HindiCourseA-SQP.pdf',
-        'hindi b': 'web_material/SQP/ClassX_{y_us}/HindiCourseB-SQP.pdf',
-        'hindi course-b': 'web_material/SQP/ClassX_{y_us}/HindiCourseB-SQP.pdf',
-        'hindi course b': 'web_material/SQP/ClassX_{y_us}/HindiCourseB-SQP.pdf',
-        'sanskrit': 'web_material/SQP/ClassX_{y_us}/Sanskrit-SQP.pdf',
-        'sanskrit communicative': 'web_material/SQP/ClassX_{y_us}/Sanskrit-Comm-SQP.pdf',
-        'science': 'web_material/SQP/ClassX_{y_us}/Science-SQP.pdf',
-        'mathematics standard': 'web_material/SQP/ClassX_{y_us}/MathsStandard-SQP.pdf',
-        'mathematics basic': 'web_material/SQP/ClassX_{y_us}/MathsBasic-SQP.pdf',
-        'social science': 'web_material/SQP/ClassX_{y_us}/SocialScience-SQP.pdf',
-        'french': 'web_material/SQP/ClassX_{y_us}/French-SQP.pdf',
-        'german': 'web_material/SQP/ClassX_{y_us}/German-SQP.pdf'
-    }
-
-    direct_maps_12 = {
-        'english core': 'web_material/SQP/ClassXII_{y_us}/EnglishCore-SQP.pdf',
-        'english elective': 'web_material/SQP/ClassXII_{y_us}/EnglishElective-SQP.pdf',
-        'hindi core': 'web_material/SQP/ClassXII_{y_us}/HindiCore-SQP.pdf',
-        'hindi elective': 'web_material/SQP/ClassXII_{y_us}/HindiElective-SQP.pdf',
-        'sanskrit core': 'web_material/SQP/ClassXII_{y_us}/SanskritCore-SQP.pdf',
-        'sanskrit elective': 'web_material/SQP/ClassXII_{y_us}/SanskritElective-SQP.pdf',
-        'physics': 'web_material/SQP/ClassXII_{y_us}/Physics-SQP.pdf',
-        'chemistry': 'web_material/SQP/ClassXII_{y_us}/Chemistry-SQP.pdf',
-        'biology': 'web_material/SQP/ClassXII_{y_us}/Biology-SQP.pdf',
-        'mathematics': 'web_material/SQP/ClassXII_{y_us}/Maths-SQP.pdf',
-        'applied mathematics': 'web_material/SQP/ClassXII_{y_us}/Applied-Maths-SQP.pdf',
-        'accountancy': 'web_material/SQP/ClassXII_{y_us}/Accountancy-SQP.pdf',
-        'business studies': 'web_material/SQP/ClassXII_{y_us}/BusinessStudies-SQP.pdf',
-        'economics': 'web_material/SQP/ClassXII_{y_us}/Economics-SQP.pdf',
-        'computer science': 'web_material/SQP/ClassXII_{y_us}/ComputerScience-SQP.pdf',
-        'informatics practices': 'web_material/SQP/ClassXII_{y_us}/IP-SQP.pdf',
-        'history': 'web_material/SQP/ClassXII_{y_us}/History-SQP.pdf',
-        'political science': 'web_material/SQP/ClassXII_{y_us}/PolSci-SQP.pdf',
-        'geography': 'web_material/SQP/ClassXII_{y_us}/Geography-SQP.pdf',
-        'psychology': 'web_material/SQP/ClassXII_{y_us}/Psychology-SQP.pdf'
-    }
-
-    target_map = direct_maps_12 if is_senior else direct_maps_10
-    
-    matched_template = None
-    if clean_sub in target_map:
-        matched_template = target_map[clean_sub]
-    else:
-        for k in sorted(target_map.keys(), key=lambda x: len(x), reverse=True):
-            if k in clean_sub or clean_sub in k:
-                matched_template = target_map[k]
-                break
-
-    for y in years_to_check:
-        y_us = y.replace('-', '_')
-        if matched_template:
-            candidate_url = matched_template.replace('{y_us}', y_us)
-            if y == '2025-26':
-                return candidate_url, '2025-26 (Latest Available)'
-            try:
-                test_req = urllib.request.Request(BASE_URL + candidate_url, headers={'User-Agent': 'Mozilla/5.0'}, method='HEAD')
-                res = urllib.request.urlopen(test_req, context=ctx, timeout=3)
-                if res.status == 200:
-                    return candidate_url, y
-            except:
-                pass
-
-        # Also search official CBSE HTML tables for that year
-        page = f'SQP_CLASSXII_{y}.html' if is_senior else f'SQP_CLASSX_{y}.html'
-        try:
-            req = urllib.request.Request(BASE_URL + page, headers={'User-Agent': 'Mozilla/5.0'})
-            html = urllib.request.urlopen(req, context=ctx, timeout=4).read()
-            soup = BeautifulSoup(html, 'html.parser')
-            for row in soup.find_all('tr'):
-                cells = row.find_all('td')
-                if cells and len(cells) >= 3:
-                    name = cells[0].text.strip().lower().split('\n')[0].strip()
-                    if not name or 'subject' in name or 'sample' in name:
-                        continue
-                    if name == clean_sub or name.startswith(clean_sub + ' ') or name.startswith(clean_sub + '(') or clean_sub == name.split('(')[0].strip():
-                        for a in row.find_all('a'):
-                            href = a.get('href', '')
-                            text = a.text.strip().upper()
-                            if text == 'SQP' or '-sqp.pdf' in href.lower():
-                                return href, y
-        except:
-            pass
-
-    return None, None
-
 class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     def end_headers(self):
         self.send_header('Access-Control-Allow-Origin', '*')
@@ -975,72 +814,6 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.wfile.write(json.dumps(data).encode('utf-8'))
             return
 
-        elif parsed_path.path == '/api/fetch-sqp':
-            if not self.require_auth():
-                return
-            cls = query_components.get('class', [''])[0]
-            subject = query_components.get('subject', [''])[0]
-
-            if not cls or not subject:
-                self.send_error(400, "Missing class or subject")
-                return
-                
-            cache_key = f"{cls}||{subject}"
-            force_refresh = query_components.get('refresh', ['0'])[0] in ('1', 'true', 'yes')
-            sqp_cache = load_sqp_cache()
-
-            if not force_refresh and cache_key in sqp_cache:
-                print(f"API: SQP cache hit for {cls} - {subject}")
-                sys.stdout.flush()
-                self.send_json(200, dict(sqp_cache[cache_key], cached=True))
-                return
-
-            print(f"API: Fetching SQP for {cls} - {subject} (refresh={force_refresh})")
-            sys.stdout.flush()
-
-            try:
-                sqp_pdf_link, detected_year = find_official_sqp_link(cls, subject)
-                
-                if not sqp_pdf_link:
-                    raise Exception(f"Could not find SQP for subject {subject}")
-                    
-                sqp_url = BASE_URL + sqp_pdf_link if not sqp_pdf_link.startswith('http') else sqp_pdf_link
-                sqp_text = extract_text_from_pdf_url(sqp_url, is_sqp=True)
-                
-                combined_text = f"--- SQP ---\n{sqp_text}\n"
-                
-                if cls == 'Class 9' and 'english' in subject.lower():
-                    combined_text = re.sub(r'First Flight\s*(?:&|and)\s*Footprints(?:\s*Without\s*Feet)?', 'Kaveri', combined_text, flags=re.IGNORECASE)
-                    combined_text = re.sub(r'First Flight', 'Kaveri (Prose & Poetry)', combined_text, flags=re.IGNORECASE)
-                    combined_text = re.sub(r'Footprints(?:\s*Without\s*Feet)?', 'Kaveri', combined_text, flags=re.IGNORECASE)
-                    combined_text = re.sub(r'Beehive\s*(?:&|and)\s*Moments', 'Kaveri', combined_text, flags=re.IGNORECASE)
-                    combined_text = re.sub(r'Analytical\s*Paragraph', 'Descriptive Paragraph / Diary Entry / Story Writing', combined_text, flags=re.IGNORECASE)
-
-                self.send_response(200)
-                self.send_header('Content-type', 'application/json')
-                self.end_headers()
-                
-                response_data = {
-                    "year": detected_year or "2026-27",
-                    "targetClass": "Class XII" if cls in ['Class 11', 'Class 12'] else "Class X",
-                    "subject": subject,
-                    "text": combined_text
-                }
-
-                sqp_cache[cache_key] = response_data
-                save_sqp_cache(sqp_cache)
-
-                self.wfile.write(json.dumps(response_data).encode('utf-8'))
-                
-            except Exception as e:
-                print(f"API Error: {e}")
-                self.send_response(500)
-                self.send_header('Content-type', 'application/json')
-                self.end_headers()
-                self.wfile.write(json.dumps({"error": str(e)}).encode('utf-8'))
-                
-            return
-            
         return super().do_GET()
 
     def do_POST(self):

@@ -1,4 +1,5 @@
 import { cbseData } from './data.js?v=36';
+import { getSqpBlueprint } from './sqp_blueprints.js?v=1';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
 
@@ -384,12 +385,7 @@ function initClassDropdown() {
 }
 
 
-// Global cache & active state for Blueprint
-let sqpInstructionsCache = {};
-let sqpInstructionsYear = {};
-// Subjects already looked up this session, so a miss is not retried on every
-// re-render of the blueprint.
-let sqpLookupAttempted = new Set();
+// Global active state for Blueprint
 let currentBlueprintState = null;
 let lastBlueprintConfigKey = "";
 
@@ -1428,18 +1424,18 @@ function renderBlueprintView() {
     `;
   });
 
-  const cacheKey = `${blueprint.className}_${blueprint.subjectName}`;
+  const repoSqp = getSqpBlueprint(blueprint.className, blueprint.subjectName);
   let instructionsBlock = '';
-  
-  if (sqpInstructionsCache[cacheKey]) {
+
+  if (repoSqp && repoSqp.text) {
     instructionsBlock = `
       <div style="margin-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem;">
         <button type="button" class="blueprint-instructions-toggle" onclick="document.getElementById('sqpInstructionsBox').classList.toggle('hidden')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          <span>Official CBSE General Instructions (Live Extract)</span>
+          <span>Official CBSE General Instructions (${repoSqp.year})</span>
         </button>
         <div id="sqpInstructionsBox" class="blueprint-instructions-text hidden">
-${sqpInstructionsCache[cacheKey]}
+${repoSqp.text}
         </div>
       </div>
     `;
@@ -1526,22 +1522,6 @@ async function updateExamBlueprint(forceRecalculate = false) {
 
   renderBlueprintView();
 
-  const cacheKey = `${className}_${subjectName}`;
-  if (!sqpInstructionsCache[cacheKey] && !sqpLookupAttempted.has(cacheKey)) {
-    sqpLookupAttempted.add(cacheKey);
-    fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}`, {
-      headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
-    })
-      .then(res => res.ok ? res.json() : null)
-      .then(data => {
-        if (data && data.text) {
-          sqpInstructionsCache[cacheKey] = data.text;
-          if (data.year) sqpInstructionsYear[cacheKey] = data.year;
-          renderBlueprintView();
-        }
-      })
-      .catch(e => console.warn("Could not prefetch SQP blueprint text", e));
-  }
 }
 function syncWorksheetDynamicScaling() {
   const exam = examNameSelect ? examNameSelect.value : "";
@@ -2892,61 +2872,6 @@ if (fetchCbseSyllabusBtn) {
 }
 
 // Fetch Latest CBSE Blueprint Button Handler
-const fetchCbseBlueprintBtn = document.getElementById('fetchCbseBlueprintBtn');
-if (fetchCbseBlueprintBtn) {
-  fetchCbseBlueprintBtn.addEventListener('click', async () => {
-    const className = classSelect.value;
-    const subjectName = subjectSelect.value;
-    const examName = examNameSelect.value;
-
-    if (!className) {
-      alert("Please select a Class first.");
-      return;
-    }
-    if (!subjectName) {
-      alert("Please select a Subject first.");
-      return;
-    }
-    if (!examName) {
-      alert("Please select an Exam Name first.");
-      return;
-    }
-
-    const origHtml = fetchCbseBlueprintBtn.innerHTML;
-    fetchCbseBlueprintBtn.disabled = true;
-    fetchCbseBlueprintBtn.innerHTML = '<span>⏳ Fetching...</span>';
-
-    try {
-      const cacheKey = `${className}_${subjectName}`;
-      sqpLookupAttempted.delete(cacheKey);
-      const res = await fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}&refresh=1`, {
-        headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data && data.text) {
-          sqpInstructionsCache[cacheKey] = data.text;
-          if (data.year) sqpInstructionsYear[cacheKey] = data.year;
-        }
-      }
-      updateExamBlueprint(true);
-      fetchCbseBlueprintBtn.innerHTML = '<span>✓ Blueprint Synced!</span>';
-      setTimeout(() => {
-        fetchCbseBlueprintBtn.innerHTML = origHtml;
-        fetchCbseBlueprintBtn.disabled = false;
-      }, 2000);
-    } catch (err) {
-      console.warn("Could not fetch online SQP blueprint:", err);
-      updateExamBlueprint(true);
-      fetchCbseBlueprintBtn.innerHTML = '<span>✓ Pattern Updated</span>';
-      setTimeout(() => {
-        fetchCbseBlueprintBtn.innerHTML = origHtml;
-        fetchCbseBlueprintBtn.disabled = false;
-      }, 2000);
-    }
-  });
-}
-
 // Modal Logic for "+ Add Subject" (Clean List Only with Duplicate Checking)
 let fetchedCbseSubjectsList = [];
 
@@ -3804,9 +3729,9 @@ export async function buildPromptString(activeBtn) {
   let sqpData = null;
 
   try {
-    const cachedInstructions = sqpInstructionsCache[`${className}_${subjectName}`];
-    if (cachedInstructions) {
-      let cleanInstructions = cachedInstructions;
+    const repoSqp = getSqpBlueprint(className, subjectName);
+    if (repoSqp && repoSqp.text) {
+      let cleanInstructions = repoSqp.text;
       if (className === "Class 9" && subjectName.toLowerCase().includes("english")) {
         cleanInstructions = cleanInstructions
           .replace(/First Flight\s*(?:&|and)\s*Footprints(?:\s*Without\s*Feet)?/gi, 'Kaveri')
@@ -3815,7 +3740,7 @@ export async function buildPromptString(activeBtn) {
           .replace(/Beehive\s*(?:&|and)\s*Moments/gi, 'Kaveri')
           .replace(/Analytical\s*Paragraph/gi, 'Descriptive Paragraph / Diary Entry / Story Writing');
       }
-      sqpData = { year: sqpInstructionsYear[`${className}_${subjectName}`] || '2026-27', text: cleanInstructions };
+      sqpData = { year: repoSqp.year || '2026-27', text: cleanInstructions };
     }
   } finally {
     generateBtn.disabled = false;
