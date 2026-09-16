@@ -1772,11 +1772,11 @@ function populateSubjectsDropdown(selectedClass, defaultSelectSubject = null) {
   
   if (!cbseData[selectedClass]) return;
   
-  // Robotics is assessed in the lab and via a school-set written paper; no
-  // question paper is generated for it, so it is offered on the Syllabus Sheet
-  // only and kept out of this dropdown.
+  // Robotics is assessed in the lab and via a school-set written paper, and
+  // General Knowledge is a co-scholastic domain. No question paper is generated
+  // for either, so they appear on the Syllabus Sheet only, not in this dropdown.
   const subjects = Object.keys(cbseData[selectedClass])
-    .filter(s => !isSchoolExcludedSubject(s) && !/robotics/i.test(s));
+    .filter(s => !isSchoolExcludedSubject(s) && !/robotics/i.test(s) && !isGeneralKnowledgeSubject(s));
   const customList = (customSubjectsData && customSubjectsData[selectedClass]) ? Object.keys(customSubjectsData[selectedClass]) : [];
   
   subjects.forEach(subject => {
@@ -4092,30 +4092,6 @@ Anchor the passages in timeless human values:
   }
 
   const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
-  if (isMiddle && (subLower.includes("general knowledge") || subLower.includes("gk"))) {
-    promptText += `\n\n**GENERAL KNOWLEDGE EXAMINATION SPECIFICATIONS (${marks} MARKS WRITTEN THEORY / ${duration}):**
-* Strictly frame an engaging, intellectually stimulating 100% objective paper for ${marks} Marks, paced for ${duration}.`;
-    if (marks <= 10) {
-      promptText += `
-* Structure the paper into 2 crisp, cleanly demarcated sections:
-  - Section A: Multiple Choice Questions (5 Marks - Current Affairs, Science & Trivia)
-  - Section B: One-Word Answer / Identification / Direct Trivia (5 Marks - Personalities, Monuments, Facts)`;
-    } else if (marks <= 20) {
-      promptText += `
-* Structure the paper into 3 crisp, cleanly demarcated sections:
-  - Section A: Multiple Choice Questions (8 Marks - Current Affairs, Science & Tech, India)
-  - Section B: One-Word Answer / Identification (6 Marks - Personalities, Monuments, Sobriquets)
-  - Section C: Fill in the Blanks & Match Columns / Trivia (6 Marks - Sports, Books, Currencies)`;
-    } else {
-      promptText += `
-* Structure the paper into 4 crisp, cleanly demarcated sections:
-  - Section A: Multiple Choice Questions (15 Marks - Current Affairs, Science & Tech, India & World)
-  - Section B: One-Word Answer / Identification (10 Marks - Famous Personalities, Monuments, Sobriquets)
-  - Section C: Fill in the Blanks & Match the Columns (10 Marks - Sports, Books & Authors, Currencies)
-  - Section D: Logical Reasoning & Mental Ability Trivia (5 Marks - Patterns, Series, Analogies)`;
-    }
-  }
-
   const isScienceBranch = subLower.includes("physics") || subLower.includes("chemistry") || subLower.includes("biology");
   if (isScienceBranch) {
     if (subLower.includes("physics")) {
