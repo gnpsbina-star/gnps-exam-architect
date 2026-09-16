@@ -1902,12 +1902,12 @@ function getPrescribedBookName(className, subjectName) {
   if (cls === "Class 6") {
     if (sub.includes("social")) return "Exploring Society: India and Beyond (NCERT)";
     if (sub.includes("science")) return "Curiosity (NCERT)";
-    if (sub.includes("math")) return "Ganita Prakash (NCERT)";
+    if (sub.includes("math")) return "Mathematics (School Text Book)";
     if (sub.includes("english") && sub.includes("r2")) return "Communicative English Reader (CBSE)";
     if (sub.includes("english")) return "Poorvi (Grade 6) (NCERT)";
     if (sub.includes("hindi")) return "Malhar (मल्हार) & Bal Ramkatha (NCERT)";
     if (sub.includes("sanskrit")) return "Deepakam (दीपकम्) (NCERT)";
-    if (sub.includes("general knowledge") || sub === "gk") return "General Knowledge (School Curriculum)";
+    if (sub.includes("general knowledge") || sub === "gk") return "GK (School Text Book)";
     if (sub.includes("robotics") || sub.includes("ai")) return "AI & Robotics (School Curriculum)";
   }
 
@@ -1915,12 +1915,12 @@ function getPrescribedBookName(className, subjectName) {
   if (cls === "Class 7") {
     if (sub.includes("social")) return "Exploring Society: India and Beyond (NCERT)";
     if (sub.includes("science")) return "Curiosity (Grade 7) (NCERT)";
-    if (sub.includes("math")) return "Ganita Prakash (Grade 7) (NCERT)";
+    if (sub.includes("math")) return "Mathematics (School Text Book)";
     if (sub.includes("english") && sub.includes("r2")) return "Communicative English Reader (CBSE)";
     if (sub.includes("english")) return "Poorvi (Grade 7) (NCERT)";
     if (sub.includes("hindi")) return "Malhar (मल्हार) / Vasant Part-2 & Bal Mahabharat Katha (NCERT)";
     if (sub.includes("sanskrit")) return "Deepakam (दीपकम्) (NCERT)";
-    if (sub.includes("general knowledge") || sub === "gk") return "General Knowledge (School Curriculum)";
+    if (sub.includes("general knowledge") || sub === "gk") return "GK (School Text Book)";
     if (sub.includes("robotics") || sub.includes("ai")) return "AI & Robotics (School Curriculum)";
   }
 
@@ -1928,13 +1928,13 @@ function getPrescribedBookName(className, subjectName) {
   if (cls === "Class 8") {
     if (sub.includes("social")) return "Exploring Society: India and Beyond (NCERT)";
     if (sub.includes("science")) return "Curiosity (Grade 8) (NCERT)";
-    if (sub.includes("math")) return "Ganita Prakash (Grade 8) (NCERT)";
+    if (sub.includes("math")) return "Mathematics (School Text Book)";
     if (sub.includes("english") && sub.includes("r2")) return "Communicative English Reader (CBSE)";
     if (sub.includes("english")) return "Poorvi (Grade 8) (NCERT)";
     if (sub.includes("hindi")) return "Malhar (मल्हार) / Vasant Part-3 & Bharat Ki Khoj (NCERT)";
     if (sub.includes("sanskrit")) return "Deepakam (दीपकम्) (NCERT)";
     if (sub.includes("computer")) return "Computer Science (School Curriculum)";
-    if (sub.includes("general knowledge") || sub === "gk") return "General Knowledge (School Curriculum)";
+    if (sub.includes("general knowledge") || sub === "gk") return "GK (School Text Book)";
     if (sub.includes("robotics") || sub.includes("ai")) return "AI & Robotics (School Curriculum)";
   }
 
@@ -6415,6 +6415,17 @@ function renderSyllabusSheetPaper() {
     const isSst = /social science|social studies|sst/i.test(subjName);
     const isRobo = /robotics|computer/i.test(subjName);
 
+    // The portion heading names the actual prescribed textbook instead of a
+    // generic "NCERT chapters" label. `cls` is the sheet's own class, not the
+    // prompt panel's, since the two can differ. Unrecognised subjects fall
+    // back to getPrescribedBookName's catch-all, which is not worth printing,
+    // so those keep a neutral label.
+    const prescribedBook = getPrescribedBookName(cls, subjName);
+    const hasPrescribedBook = !!prescribedBook && !prescribedBook.includes('Official CBSE');
+    const bookLine = (seqText) => hasPrescribedBook
+      ? `<div class="portion-book-line"><span class="portion-book-name">${prescribedBook}</span> &mdash; <span class="portion-book-chapters">${seqText}</span></div>`
+      : `<div class="portion-book-line"><span class="portion-book-name">Prescribed Chapters:</span> <span class="portion-book-chapters">${seqText}</span></div>`;
+
     // 1. GENERAL KNOWLEDGE
     if (isGk) {
       const items = Array.isArray(subjSyllabus) ? subjSyllabus : Object.keys(subjSyllabus || {});
@@ -6428,9 +6439,7 @@ function renderSyllabusSheetPaper() {
         <div class="portion-inline-text">
           <!-- Print/PDF output -->
           <div class="portion-print-summary">
-            <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45;">
-              Prescribed Syllabus: ${seq.text}
-            </div>
+            ${bookLine(seq.text)}
           </div>
           <!-- On-screen view: only checkboxes -->
           <div class="portion-screen-selector">
@@ -6459,12 +6468,9 @@ function renderSyllabusSheetPaper() {
 
       contentHtml = `
         <div class="portion-inline-text">
-          <span class="portion-sec-title">Prescribed NCERT Chapters:</span><br>
           <!-- Print/PDF output -->
           <div class="portion-print-summary">
-            <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45; margin-top: 2px;">
-              ${seq.text}
-            </div>
+            ${bookLine(seq.text)}
           </div>
           <!-- On-screen view: only checkboxes -->
           <div class="portion-screen-selector">
@@ -6510,12 +6516,9 @@ function renderSyllabusSheetPaper() {
 
         contentHtml = `
           <div class="portion-inline-text">
-            <span class="portion-sec-title">Prescribed NCERT Chapters:</span><br>
             <!-- Print/PDF output -->
             <div class="portion-print-summary">
-              <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45; margin-top: 2px;">
-                ${seq.text}
-              </div>
+              ${bookLine(seq.text)}
             </div>
             <!-- On-screen view: only checkboxes -->
             <div class="portion-screen-selector">
@@ -6580,7 +6583,7 @@ function renderSyllabusSheetPaper() {
         const mergedSeq = buildChapterSequenceString(allSelectedSst, totalSstChapters);
         themesSummaryHtml = `
           <div class="portion-inline-text">
-            <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45;">${mergedSeq.text}</div>
+            ${bookLine(mergedSeq.text)}
             ${mapWorkLine}
           </div>
         `;
@@ -6865,9 +6868,7 @@ function renderSyllabusSheetPaper() {
         <div class="portion-inline-text">
           <!-- Print/PDF output -->
           <div class="portion-print-summary">
-            <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45;">
-              ${seq.text}
-            </div>
+            ${bookLine(seq.text)}
           </div>
           <!-- On-screen view: only checkboxes -->
           <div class="portion-screen-selector">

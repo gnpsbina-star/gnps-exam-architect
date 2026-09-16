@@ -2689,6 +2689,31 @@ tr.paper-subject-row.is-subject-excluded .paper-subj-title {
   line-height: 1.4 !important;
 }
 
+/* Prescribed textbook name printed on the same line as the chapter range.
+   .portion-sec-title is display:block, so the portion heading uses this
+   single-line variant instead while keeping the same blue rule. */
+.student-syllabus-paper.is-pdf-exporting .portion-book-line,
+.portion-book-line {
+  font-size: 10pt !important;
+  line-height: 1.45 !important;
+  color: #000000 !important;
+  margin-top: 4px !important;
+  padding-left: 7px !important;
+  border-left: 3px solid #3b82f6 !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .portion-book-name,
+.portion-book-name {
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+
+.student-syllabus-paper.is-pdf-exporting .portion-book-chapters,
+.portion-book-chapters {
+  font-weight: bold !important;
+  color: #000000 !important;
+}
+
 .paper-portion-subnote {
   font-style: italic !important;
   font-size: 9pt !important;
