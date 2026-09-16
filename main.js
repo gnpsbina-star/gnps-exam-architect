@@ -5469,9 +5469,11 @@ function getSEADomainText(subjName) {
 }
 
 export const coScholasticSubjects = [
-  { key: "Music", name: "Music", subtitle: "Vocal & Instrumental", book: "School Music Curriculum" },
-  { key: "Art & Craft", name: "Art & Craft", subtitle: "Visual Arts & Creative Craft", book: "Visual Arts Curriculum" },
-  { key: "Yoga", name: "Yoga", subtitle: "Asanas, Pranayama & Fitness", book: "Physical & Health Education" }
+  { name: "Work Education", subtitle: "Pre-vocational skills, self-reliance & dignity of labour" },
+  { name: "Art Education", subtitle: "Visual arts, music, dance & drama" },
+  { name: "Health & Physical Education", subtitle: "Games, yoga, fitness & health awareness" },
+  { name: "General Knowledge (GK) / General Awareness", subtitle: "Current affairs, science, sports & world awareness" },
+  { name: "Discipline & Value Education", subtitle: "Conduct, punctuality, values & respect for peers" }
 ];
 
 // Tracks filtered chapters: { [subject]: Set([chapter1, chapter2]) }
@@ -7075,7 +7077,6 @@ function renderSyllabusSheetPaper() {
           <td style="width: 140px; vertical-align: top; padding: 10px 8px;">
             <div class="paper-subj-title">${subjName}</div>
             <div style="font-size: 8pt; color: #000000; font-style: italic; margin-top: 1px;">${item.subtitle}</div>
-            <div style="font-size: 7.5pt; color: #333333; margin-top: 1px;">${item.book}</div>
             ${includeCheckboxHtml}
           </td>
           <td style="min-height: 100px; vertical-align: top; padding: 10px 8px;">
@@ -7104,7 +7105,7 @@ function renderSyllabusSheetPaper() {
       instructionLines.push(`<li><strong>Part ${partNumbers.sea} (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between ${formatDateRange(seaDateFrom, seaDateTo)} in regular subject periods.</li>`);
     }
     if (partNumbers.cosch) {
-      instructionLines.push(`<li><strong>Part ${partNumbers.cosch} (Co-Scholastic Assessments):</strong> Music, Art & Craft, and Yoga evaluations are conducted between ${formatDateRange(coSchDateFrom, coSchDateTo)} during class periods.</li>`);
+      instructionLines.push(`<li><strong>Part ${partNumbers.cosch} (Co-Scholastic Assessments):</strong> Co-scholastic domain evaluations are conducted between ${formatDateRange(coSchDateFrom, coSchDateTo)} during class periods.</li>`);
     }
     if (partNumbers.notebook) {
       instructionLines.push(`<li><strong>Part ${partNumbers.notebook} (Notebook Completion & Submission):</strong> Notebooks must be submitted to the respective subject teacher on the date specified against each subject; 5 marks are awarded per the evaluation criteria noted below.</li>`);
@@ -7184,7 +7185,7 @@ function renderSyllabusSheetPaper() {
         <div class="paper-part-banner paper-part-banner-cosch">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="paper-part-badge paper-part-badge-cosch">PART ${partNumbers.cosch}</span>
-            <span>CO-SCHOLASTIC ACTIVITIES (INTERNAL SKILLS & PRACTICAL ASSESSMENT)</span>
+            <span>CO-SCHOLASTIC DOMAINS (Holistic Development &amp; Life Skills) (Graded on a 3-Point Scale)</span>
           </div>
         </div>
         <div class="paper-part-meta-strip paper-part-meta-strip-2col">
@@ -7195,7 +7196,7 @@ function renderSyllabusSheetPaper() {
           <thead>
             <tr>
               <th style="width: 35px; text-align: center;">S.No.</th>
-              <th style="width: 145px;">Activity & Prescribed Book</th>
+              <th style="width: 145px;">Co-Scholastic Domain</th>
               <th>Evaluation Criteria & Practical Portion</th>
             </tr>
           </thead>
