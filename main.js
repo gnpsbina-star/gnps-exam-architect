@@ -1,4 +1,4 @@
-import { cbseData } from './data.js?v=35';
+import { cbseData } from './data.js?v=36';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
 
@@ -244,7 +244,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_exam_marks_duration_sync_v16';
+      const CURRENT_SYLLABUS_VER = '2026_exam_marks_duration_sync_v17';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -4137,6 +4137,21 @@ Anchor the passages in timeless human values:
       ? "Admission / Retirement / Death of a partner, Dissolution of a firm, Issue & Forfeiture of Shares, Issue and Redemption of Debentures, Cash Flow Statement"
       : "Bank Reconciliation Statement, Depreciation (Straight Line & Written Down Value), Trial Balance & Rectification of Errors, Financial Statements of a Sole Proprietorship with adjustments";
 
+    // The chapter checkboxes carry only "Chapter -> subtopic", so the Part a
+    // chapter sits under is lost by the time the syllabus list is written out.
+    // Spell the mapping out from the live syllabus data.
+    const accountancySyllabus = (cbseData[className] || {})[subjectName];
+    let partMapText = '';
+    if (accountancySyllabus && typeof accountancySyllabus === 'object' && !Array.isArray(accountancySyllabus)) {
+      const partGroups = Object.entries(accountancySyllabus)
+        .filter(([group, chapters]) => /^part\s/i.test(group) && chapters && typeof chapters === 'object' && !Array.isArray(chapters));
+      if (partGroups.length) {
+        partMapText = `\n\n**WHICH CHAPTER BELONGS TO WHICH PART (place every question in the correct Part):**` +
+          partGroups.map(([group, chapters]) => `\n*   **${group}** — ${Object.keys(chapters).join('; ')}`).join('') +
+          `\n*   A question drawn from a Part A chapter must be numbered inside Part A, and likewise for Part B. Never mix them.`;
+      }
+    }
+
     promptText += `\n\n**CBSE ACCOUNTANCY PAPER DESIGN (MANDATORY — THIS SUBJECT DOES NOT USE THE GENERIC SECTION A-E TEMPLATE):**
 *   **Two Parts, not lettered sections:** The paper is divided into ${partALabel} and ${partBLabel}. Number the questions continuously from Q1 to Q34 across both parts — do NOT restart numbering in Part B and do NOT label the parts as "Section A/B/C/D/E".
 *   **Mark ladder:** Accountancy uses ONLY 1, 3, 4 and 6 mark questions. **NEVER set a 2-mark or a 5-mark question in this subject.**
@@ -4150,7 +4165,7 @@ Anchor the passages in timeless human values:
 *   Every numerical must supply **complete, internally consistent data** — amounts, dates, ratios, rates of interest, depreciation rates — so the problem is actually solvable and the figures reconcile (Balance Sheet totals must agree, Realisation/Revaluation accounts must balance).
 *   Required practical formats, reproduced as proper ruled formats with correct column headings: Journal entries with narration, Ledger accounts, Cash Book, Revaluation Account, Partners' Capital Accounts (fixed and fluctuating), Realisation Account, Balance Sheet, Comparative & Common-Size Statements, Accounting Ratios and Cash Flow Statement.
 *   Anchor the 6-mark questions in: ${sixMarkTopics}.
-*   Use Indian currency notation (₹) and realistic Indian business names and amounts throughout.`;
+*   Use Indian currency notation (₹) and realistic Indian business names and amounts throughout.${partMapText}`;
   }
 
   const isScienceBranch = subLower.includes("physics") || subLower.includes("chemistry") || subLower.includes("biology");

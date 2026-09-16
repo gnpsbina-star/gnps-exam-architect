@@ -3279,74 +3279,78 @@
       ]
     },
     "Accountancy": {
-      "Chapter 1: Introduction to Accounting": [
-        "1.1 Meaning and Definition of Accounting, Attributes and Steps of Accounting (Identification, Measurement, Recording, Classifying, Summarising, Analysing, Interpreting, Communicating)",
-        "1.2 Objectives of Accounting, Advantages and Limitations of Accounting",
-        "1.3 Accounting as a Source of Information: Internal Users (Owners, Management, Employees) vs External Users (Investors, Creditors, Banks, Government)",
-        "1.4 Qualitative Characteristics of Accounting Information (Reliability, Relevance, Understandability, Comparability)",
-        "1.5 Basic Accounting Terms: Entity, Business Transaction, Capital, Drawings, Liabilities (Non-Current & Current), Assets (Non-Current, Current, Tangible, Intangible), Receipts (Capital & Revenue), Expenditure (Capital, Revenue, Deferred Revenue), Expense, Revenue, Income, Profit, Loss, Purchases, Sales, Goods, Stock/Inventory, Trade Receivables (Debtors & Bills Receivable), Trade Payables (Creditors & Bills Payable), Cost, Voucher, Discount (Trade & Cash Discount)"
-      ],
-      "Chapter 2: Theory Base of Accounting": [
-        "2.1 Generally Accepted Accounting Principles (GAAP): Meaning, Nature and Significance",
-        "2.2 Fundamental Accounting Assumptions: Going Concern, Consistency, Accrual",
-        "2.3 Accounting Principles / Concepts: Business Entity Concept, Money Measurement Concept, Accounting Period Concept, Historical Cost Concept, Dual Aspect Concept (A = L + C), Revenue Recognition / Realisation Concept, Matching Concept, Full Disclosure Concept, Consistency Concept, Conservatism / Prudence Concept, Materiality Concept, Objectivity Concept",
-        "2.4 Bases of Accounting: Cash Basis vs Accrual Basis of Accounting (Comparative Differences)",
-        "2.5 Accounting Standards (AS) and Indian Accounting Standards (Ind AS): Concept, Objectives and Benefits",
-        "2.6 Goods and Services Tax (GST): Characteristics, Advantages, CGST, SGST, IGST and Input Tax Credit (ITC) Mechanism"
-      ],
-      "Chapter 3: Recording of Transactions - I": [
-        "3.1 Business Transactions and Source Documents: Cash Memo, Invoice / Bill, Receipt, Pay-in-Slip, Cheque, Debit Note, Credit Note",
-        "3.2 Accounting Vouchers: Source Vouchers vs Accounting Vouchers (Cash Vouchers: Credit & Debit Vouchers, Non-Cash / Transfer Vouchers)",
-        "3.3 Accounting Equation: Meaning, Significance and Rules: Assets = Liabilities + Capital",
-        "3.4 Rules of Debit and Credit: Traditional Approach (Personal, Real and Nominal Accounts) vs Modern / American Approach (Assets, Liabilities, Capital, Revenues, Expenses)",
-        "3.5 Meaning and Format of Journal, Journalising Process",
-        "3.6 Journal Entries for Basic Transactions: Capital Introduced, Drawings, Purchases, Sales, Expenses, Incomes, Cash Discount, Trade Discount, Bad Debts, Recovery of Bad Debts, Depreciation, Interest on Capital, Goods Withdrawn for Personal Use, Goods Distributed as Free Samples"
-      ],
-      "Chapter 4: Recording of Transactions - II (Special Purpose Books)": [
-        "4.1 Need for Sub-division of Journal and Types of Special Purpose Books",
-        "4.2 Cash Book: Simple / Single Column Cash Book (Format, Recording of Receipts and Payments)",
-        "4.3 Two Column Cash Book: Cash and Bank Columns, Contra Entries (Depositing Cash into Bank, Cash Withdrawn from Bank for Office Use)",
-        "4.4 Petty Cash Book: Simple and Analytical Petty Cash Book, Imprest System of Petty Cash",
-        "4.5 Purchases Book (Purchases Journal): Format and Recording of Credit Purchases of Goods",
-        "4.6 Sales Book (Sales Journal): Format and Recording of Credit Sales of Goods",
-        "4.7 Purchases Return Book (Return Outwards Book) and Debit Note Preparation",
-        "4.8 Sales Return Book (Return Inwards Book) and Credit Note Preparation",
-        "4.9 Journal Proper: Meaning and Types of Entries Recorded (Opening Entries, Closing Entries, Transfer Entries, Adjustment Entries, Rectification Entries, Miscellaneous Entries)",
-        "4.10 The Ledger: Meaning, Format, Utility, Distinctions Between Journal and Ledger, Mechanics of Ledger Posting and Balancing of Accounts"
-      ],
-      "Chapter 5: Bank Reconciliation Statement": [
-        "5.1 Meaning, Objectives and Significance of Bank Reconciliation Statement (BRS)",
-        "5.2 Causes of Disagreement between the Bank Balance as per Cash Book and Pass Book (Timing Differences and Errors Committed by Firm or Bank)",
-        "5.3 Preparation of Bank Reconciliation Statement Starting with Favourable Balance (Debit Balance as per Cash Book or Credit Balance as per Pass Book)",
-        "5.4 Preparation of Bank Reconciliation Statement Starting with Overdraft / Unfavourable Balance (Credit Balance as per Cash Book or Debit Balance as per Pass Book)",
-        "5.5 Preparation of Bank Reconciliation Statement with Adjusted / Amended Cash Book Balance"
-      ],
-      "Chapter 6: Trial Balance and Rectification of Errors": [
-        "6.1 Meaning, Objectives and Limitations of a Trial Balance",
-        "6.2 Preparation of Trial Balance: Balance Method and Total-cum-Balance Method",
-        "6.3 Classification of Accounting Errors: Errors of Omission (Complete vs Partial), Errors of Commission, Errors of Principle, Compensating Errors",
-        "6.4 Errors Disclosed by Trial Balance vs Errors Not Disclosed by Trial Balance",
-        "6.5 Rectification of Errors: One-Sided Errors vs Two-Sided Errors",
-        "6.6 Rectification of Errors Before Preparation of Trial Balance vs After Preparation of Trial Balance (using Suspense Account)",
-        "6.7 Disposal of Suspense Account Balance"
-      ],
-      "Chapter 7: Depreciation, Provisions and Reserves": [
-        "7.1 Depreciation: Meaning, Features, Causes, Need for Providing Depreciation and Factors Determining Amount of Depreciation",
-        "7.2 Methods of Calculating Depreciation: Straight Line Method (SLM / Fixed Instalment Method) vs Written Down Value Method (WDV / Diminishing Balance Method) Comparison",
-        "7.3 Accounting Treatment of Depreciation: Charging to Asset Account vs Creating Provision for Depreciation / Accumulated Depreciation Account",
-        "7.4 Disposal of an Asset: Preparation of Asset Disposal Account",
-        "7.5 Provisions: Meaning, Objectives, Accounting Treatment (Provision for Depreciation, Provision for Doubtful Debts, Provision for Discount on Debtors)",
-        "7.6 Reserves: Meaning, Objectives, Difference Between Provisions and Reserves",
-        "7.7 Types of Reserves: Revenue Reserves (General Reserve, Specific Reserve) vs Capital Reserves, Secret Reserves"
-      ],
-      "Chapter 8: Financial Statements of Sole Proprietorship": [
-        "8.1 Financial Statements: Meaning, Objectives and Users",
-        "8.2 Capital Expenditure vs Revenue Expenditure, Capital Receipts vs Revenue Receipts",
-        "8.3 Trading Account: Meaning, Purpose, Gross Profit / Gross Loss Calculation, Cost of Goods Sold (COGS)",
-        "8.4 Profit and Loss Account: Meaning, Purpose, Operating Profit, Net Profit / Net Loss Calculation",
-        "8.5 Balance Sheet: Meaning, Need, Format and Marshalling of Assets and Liabilities (Order of Liquidity vs Order of Permanence)",
-        "8.6 Adjustments in Preparation of Financial Statements: Closing Stock, Outstanding Expenses, Prepaid Expenses, Accrued Income, Income Received in Advance, Depreciation, Bad Debts, Provision for Doubtful Debts, Provision for Discount on Debtors, Manager's Commission, Interest on Capital"
-      ]
+      "Part A: Financial Accounting - I (56 Marks)": {
+        "Chapter 1: Introduction to Accounting": [
+          "1.1 Meaning and Definition of Accounting, Attributes and Steps of Accounting (Identification, Measurement, Recording, Classifying, Summarising, Analysing, Interpreting, Communicating)",
+          "1.2 Objectives of Accounting, Advantages and Limitations of Accounting",
+          "1.3 Accounting as a Source of Information: Internal Users (Owners, Management, Employees) vs External Users (Investors, Creditors, Banks, Government)",
+          "1.4 Qualitative Characteristics of Accounting Information (Reliability, Relevance, Understandability, Comparability)",
+          "1.5 Basic Accounting Terms: Entity, Business Transaction, Capital, Drawings, Liabilities (Non-Current & Current), Assets (Non-Current, Current, Tangible, Intangible), Receipts (Capital & Revenue), Expenditure (Capital, Revenue, Deferred Revenue), Expense, Revenue, Income, Profit, Loss, Purchases, Sales, Goods, Stock/Inventory, Trade Receivables (Debtors & Bills Receivable), Trade Payables (Creditors & Bills Payable), Cost, Voucher, Discount (Trade & Cash Discount)"
+        ],
+        "Chapter 2: Theory Base of Accounting": [
+          "2.1 Generally Accepted Accounting Principles (GAAP): Meaning, Nature and Significance",
+          "2.2 Fundamental Accounting Assumptions: Going Concern, Consistency, Accrual",
+          "2.3 Accounting Principles / Concepts: Business Entity Concept, Money Measurement Concept, Accounting Period Concept, Historical Cost Concept, Dual Aspect Concept (A = L + C), Revenue Recognition / Realisation Concept, Matching Concept, Full Disclosure Concept, Consistency Concept, Conservatism / Prudence Concept, Materiality Concept, Objectivity Concept",
+          "2.4 Bases of Accounting: Cash Basis vs Accrual Basis of Accounting (Comparative Differences)",
+          "2.5 Accounting Standards (AS) and Indian Accounting Standards (Ind AS): Concept, Objectives and Benefits",
+          "2.6 Goods and Services Tax (GST): Characteristics, Advantages, CGST, SGST, IGST and Input Tax Credit (ITC) Mechanism"
+        ],
+        "Chapter 3: Recording of Transactions - I": [
+          "3.1 Business Transactions and Source Documents: Cash Memo, Invoice / Bill, Receipt, Pay-in-Slip, Cheque, Debit Note, Credit Note",
+          "3.2 Accounting Vouchers: Source Vouchers vs Accounting Vouchers (Cash Vouchers: Credit & Debit Vouchers, Non-Cash / Transfer Vouchers)",
+          "3.3 Accounting Equation: Meaning, Significance and Rules: Assets = Liabilities + Capital",
+          "3.4 Rules of Debit and Credit: Traditional Approach (Personal, Real and Nominal Accounts) vs Modern / American Approach (Assets, Liabilities, Capital, Revenues, Expenses)",
+          "3.5 Meaning and Format of Journal, Journalising Process",
+          "3.6 Journal Entries for Basic Transactions: Capital Introduced, Drawings, Purchases, Sales, Expenses, Incomes, Cash Discount, Trade Discount, Bad Debts, Recovery of Bad Debts, Depreciation, Interest on Capital, Goods Withdrawn for Personal Use, Goods Distributed as Free Samples"
+        ],
+        "Chapter 4: Recording of Transactions - II (Special Purpose Books)": [
+          "4.1 Need for Sub-division of Journal and Types of Special Purpose Books",
+          "4.2 Cash Book: Simple / Single Column Cash Book (Format, Recording of Receipts and Payments)",
+          "4.3 Two Column Cash Book: Cash and Bank Columns, Contra Entries (Depositing Cash into Bank, Cash Withdrawn from Bank for Office Use)",
+          "4.4 Petty Cash Book: Simple and Analytical Petty Cash Book, Imprest System of Petty Cash",
+          "4.5 Purchases Book (Purchases Journal): Format and Recording of Credit Purchases of Goods",
+          "4.6 Sales Book (Sales Journal): Format and Recording of Credit Sales of Goods",
+          "4.7 Purchases Return Book (Return Outwards Book) and Debit Note Preparation",
+          "4.8 Sales Return Book (Return Inwards Book) and Credit Note Preparation",
+          "4.9 Journal Proper: Meaning and Types of Entries Recorded (Opening Entries, Closing Entries, Transfer Entries, Adjustment Entries, Rectification Entries, Miscellaneous Entries)",
+          "4.10 The Ledger: Meaning, Format, Utility, Distinctions Between Journal and Ledger, Mechanics of Ledger Posting and Balancing of Accounts"
+        ],
+        "Chapter 5: Bank Reconciliation Statement": [
+          "5.1 Meaning, Objectives and Significance of Bank Reconciliation Statement (BRS)",
+          "5.2 Causes of Disagreement between the Bank Balance as per Cash Book and Pass Book (Timing Differences and Errors Committed by Firm or Bank)",
+          "5.3 Preparation of Bank Reconciliation Statement Starting with Favourable Balance (Debit Balance as per Cash Book or Credit Balance as per Pass Book)",
+          "5.4 Preparation of Bank Reconciliation Statement Starting with Overdraft / Unfavourable Balance (Credit Balance as per Cash Book or Debit Balance as per Pass Book)",
+          "5.5 Preparation of Bank Reconciliation Statement with Adjusted / Amended Cash Book Balance"
+        ],
+        "Chapter 6: Trial Balance and Rectification of Errors": [
+          "6.1 Meaning, Objectives and Limitations of a Trial Balance",
+          "6.2 Preparation of Trial Balance: Balance Method and Total-cum-Balance Method",
+          "6.3 Classification of Accounting Errors: Errors of Omission (Complete vs Partial), Errors of Commission, Errors of Principle, Compensating Errors",
+          "6.4 Errors Disclosed by Trial Balance vs Errors Not Disclosed by Trial Balance",
+          "6.5 Rectification of Errors: One-Sided Errors vs Two-Sided Errors",
+          "6.6 Rectification of Errors Before Preparation of Trial Balance vs After Preparation of Trial Balance (using Suspense Account)",
+          "6.7 Disposal of Suspense Account Balance"
+        ],
+        "Chapter 7: Depreciation, Provisions and Reserves": [
+          "7.1 Depreciation: Meaning, Features, Causes, Need for Providing Depreciation and Factors Determining Amount of Depreciation",
+          "7.2 Methods of Calculating Depreciation: Straight Line Method (SLM / Fixed Instalment Method) vs Written Down Value Method (WDV / Diminishing Balance Method) Comparison",
+          "7.3 Accounting Treatment of Depreciation: Charging to Asset Account vs Creating Provision for Depreciation / Accumulated Depreciation Account",
+          "7.4 Disposal of an Asset: Preparation of Asset Disposal Account",
+          "7.5 Provisions: Meaning, Objectives, Accounting Treatment (Provision for Depreciation, Provision for Doubtful Debts, Provision for Discount on Debtors)",
+          "7.6 Reserves: Meaning, Objectives, Difference Between Provisions and Reserves",
+          "7.7 Types of Reserves: Revenue Reserves (General Reserve, Specific Reserve) vs Capital Reserves, Secret Reserves"
+        ]
+      },
+      "Part B: Financial Accounting - II (24 Marks)": {
+        "Chapter 8: Financial Statements of Sole Proprietorship": [
+          "8.1 Financial Statements: Meaning, Objectives and Users",
+          "8.2 Capital Expenditure vs Revenue Expenditure, Capital Receipts vs Revenue Receipts",
+          "8.3 Trading Account: Meaning, Purpose, Gross Profit / Gross Loss Calculation, Cost of Goods Sold (COGS)",
+          "8.4 Profit and Loss Account: Meaning, Purpose, Operating Profit, Net Profit / Net Loss Calculation",
+          "8.5 Balance Sheet: Meaning, Need, Format and Marshalling of Assets and Liabilities (Order of Liquidity vs Order of Permanence)",
+          "8.6 Adjustments in Preparation of Financial Statements: Closing Stock, Outstanding Expenses, Prepaid Expenses, Accrued Income, Income Received in Advance, Depreciation, Bad Debts, Provision for Doubtful Debts, Provision for Discount on Debtors, Manager's Commission, Interest on Capital"
+        ]
+      }
     },
     "Business Studies": {
       "Chapter 1: Business, Trade and Commerce": [
@@ -4169,88 +4173,92 @@
       ]
     },
     "Accountancy": {
-      "Chapter 1: Accounting for Partnership - Basic Concepts": [
-        "1.1 Nature of Partnership Firm, Partnership Deed Provisions in the Absence of Deed (Equal Profits, 6% Interest on Loan)",
-        "1.2 Maintenance of Capital Accounts: Fixed Capital Method (Capital & Current Accounts) vs Fluctuating Capital Method",
-        "1.3 Distribution of Profit: Profit and Loss Appropriation Account Preparation",
-        "1.4 Calculation of Interest on Drawings: Product Method, Monthly, Quarterly, Half-Yearly Drawings Rules",
-        "1.5 Calculation of Interest on Capital, Partner's Salary / Commission (Before vs After Charging Such Commission)",
-        "1.6 Past Adjustments: Omission / Commission in Interest on Capital, Drawings, Profit Sharing Ratio (Single Journal Entry Adjustment)",
-        "1.7 Guarantee of Minimum Profit to a Partner (By Firm, By Remaining Partners, By Individual Partner)"
-      ],
-      "Chapter 2: Reconstitution of Partnership - Change in Profit Sharing Ratio": [
-        "2.1 Sacrificing Ratio and Gaining Ratio Determination (Sacrificing = Old Share - New Share)",
-        "2.2 Accounting Treatment of Goodwill: Nature, Factors Affecting Goodwill, Methods of Valuation (Average Profit, Weighted Average, Super Profit, Capitalisation Methods)",
-        "2.3 Accounting Treatment of Existing Goodwill vs Created Goodwill as per AS-26",
-        "2.4 Accounting Treatment of Reserves, Accumulated Profits and Losses (General Reserve, P&L, Workmen Compensation Reserve, Investment Fluctuation Reserve)",
-        "2.5 Revaluation of Assets and Reassessment of Liabilities: Revaluation Account (Profit/Loss Distribution)",
-        "2.6 Adjustment of Capitals of Partners Based on New Profit Sharing Ratio"
-      ],
-      "Chapter 3: Admission of a Partner": [
-        "3.1 Effects of Admission of a Partner and Calculation of New Profit Sharing Ratio and Sacrificing Ratio",
-        "3.2 Treatment of Goodwill on Admission: Brought in Cash (Premium for Goodwill), Retained / Withdrawn by Old Partners, Not Brought in Cash (Current Account Method)",
-        "3.3 Hidden Goodwill / Inferred Goodwill Calculation on Admission",
-        "3.4 Revaluation Account, Accounting Treatment of Reserves and Accumulated Profits/Losses",
-        "3.5 Adjustment of Capitals: When Incoming Partner's Capital is Given (Adjusting Old Partners) vs When New Partner Brings Proportionate Capital"
-      ],
-      "Chapter 4: Retirement and Death of a Partner": [
-        "4.1 Calculation of New Profit Sharing Ratio and Gaining Ratio (Gaining = New Share - Old Share)",
-        "4.2 Treatment of Goodwill on Retirement / Death (Debiting Gaining Partners in Gaining Ratio and Crediting Retiring/Deceased Partner)",
-        "4.3 Revaluation of Assets and Reassessment of Liabilities and Adjustment of Reserves/Losses",
-        "4.4 Settlement of Amount Due to Retiring Partner (Lump-Sum Payment vs Retiring Partner's Loan Account with Interest)",
-        "4.5 Adjustment of Remaining Partners' Capitals in Proportion to New Profit Sharing Ratio",
-        "4.6 Death of a Partner: Ascertainment of Deceased Partner's Share of Profit till Date of Death (On Time Basis vs On Turnover/Sales Basis using P&L Suspense Account)",
-        "4.7 Preparation of Deceased Partner's Capital Account and Executor's Account"
-      ],
-      "Chapter 5: Dissolution of a Partnership Firm": [
-        "5.1 Meaning of Dissolution of Partnership vs Dissolution of Partnership Firm",
-        "5.2 Settlement of Accounts on Dissolution (Section 48 of Partnership Act: Order of Payment of Losses and Assets Realisation)",
-        "5.3 Preparation of Realisation Account: Transfer of Assets and Outside Liabilities, Realisation of Assets, Payment of Liabilities and Expenses",
-        "5.4 Treatment of Unrecorded Assets, Unrecorded Liabilities, Partner's Loan to Firm vs Firm's Loan to Partner",
-        "5.5 Preparation of Partners' Capital Accounts and Cash / Bank Account (Final Settlement)"
-      ],
-      "Chapter 6: Accounting for Share Capital": [
-        "6.1 Features and Types of Companies, Share Capital: Authorised, Issued, Subscribed (Subscribed and Fully Paid, Subscribed but not Fully Paid), Called-up, Paid-up Capital, Reserve Capital",
-        "6.2 Issue of Shares for Cash at Par and at Premium (Section 52(2) Permitted Uses of Securities Premium)",
-        "6.3 Accounting for Under-subscription and Over-subscription of Shares: Pro-Rata Allotment and Combined Application & Allotment Account",
-        "6.4 Calls-in-Arrears and Calls-in-Advance (Interest on Calls as per Table F)",
-        "6.5 Issue of Shares for Consideration other than Cash (Purchase of Assets and Purchase of Business)",
-        "6.6 Forfeiture of Shares: Issued at Par, Issued at Premium (When Premium is Received vs Not Received)",
-        "6.7 Reissue of Forfeited Shares: at Par, at Premium, at Discount (Maximum Permissible Discount) and Transfer to Capital Reserve",
-        "6.8 Disclosure of Share Capital in the Balance Sheet of a Company as per Schedule III Part I of Companies Act 2013 (Notes to Accounts)"
-      ],
-      "Chapter 7: Accounting for Debentures": [
-        "7.1 Meaning, Characteristics and Types of Debentures, Difference Between Shares and Debentures",
-        "7.2 Issue of Debentures for Cash at Par, at Premium and at Discount",
-        "7.3 Issue of Debentures for Consideration other than Cash (Purchase of Assets and Vendor Accounting)",
-        "7.4 Issue of Debentures as Collateral Security: First Method (No Journal Entry) vs Second Method (Debenture Suspense Account)",
-        "7.5 Accounting Treatment of Issue of Debentures Considering the Terms of Redemption (Six Situations: Par/Par, Par/Premium, Discount/Par, Discount/Premium, Premium/Par, Premium/Premium)",
-        "7.6 Writing off Discount / Loss on Issue of Debentures (from Securities Premium or Statement of Profit and Loss in the Year Incurred)"
-      ],
-      "Chapter 8: Financial Statements of a Company": [
-        "8.1 Meaning, Nature and Objectives of Financial Statements as per Section 2(40) of Companies Act 2013",
-        "8.2 Form and Content of Balance Sheet as per Schedule III Part I of Companies Act 2013: Major Heads and Sub-Heads (Equity & Liabilities, Non-Current Liabilities, Current Liabilities, Non-Current Assets, Current Assets)",
-        "8.3 Form and Content of Statement of Profit and Loss as per Schedule III Part II of Companies Act 2013 (Revenue from Operations, Other Income, Expenses Breakdown)"
-      ],
-      "Chapter 9: Financial Statement Analysis": [
-        "9.1 Meaning, Significance, Objectives and Limitations of Financial Statement Analysis",
-        "9.2 Tools of Financial Statement Analysis: Comparative Statements (Comparative Balance Sheet and Comparative Statement of Profit and Loss: Absolute and Percentage Changes)",
-        "9.3 Common Size Statements (Common Size Balance Sheet taking Total Assets as 100, Common Size Statement of Profit and Loss taking Revenue from Operations as 100)"
-      ],
-      "Chapter 10: Accounting Ratios": [
-        "10.1 Meaning, Objectives, Classification and Limitations of Ratio Analysis",
-        "10.2 Liquidity Ratios: Current Ratio (Current Assets / Current Liabilities, Ideal 2:1) and Quick / Acid Test Ratio (Quick Assets / Current Liabilities, Ideal 1:1)",
-        "10.3 Solvency Ratios: Debt-Equity Ratio (Debt / Equity), Total Assets to Debt Ratio, Proprietary Ratio (Proprietor's Funds / Total Assets), Interest Coverage Ratio (EBIT / Interest)",
-        "10.4 Activity / Turnover Ratios: Inventory Turnover Ratio (COGS / Average Inventory), Trade Receivables Turnover Ratio (Credit Revenue / Average Debtors & Average Collection Period), Trade Payables Turnover Ratio, Working Capital Turnover Ratio",
-        "10.5 Profitability Ratios: Gross Profit Ratio (GP / Revenue * 100), Operating Ratio, Operating Profit Ratio, Net Profit Ratio, Return on Investment / Return on Capital Employed (ROI / ROCE = EBIT / Capital Employed * 100)"
-      ],
-      "Chapter 11: Cash Flow Statement": [
-        "11.1 Meaning, Objectives and Significance of Cash Flow Statement as per Accounting Standard-3 (AS-3 Revised)",
-        "11.2 Concept of Cash and Cash Equivalents (Treasury Bills, Commercial Paper, Demand Deposits, Current Investments)",
-        "11.3 Classification of Activities: Operating Activities (Inflows & Outflows), Investing Activities (Purchase/Sale of Fixed Assets & Non-Current Investments, Interest/Dividend Received), Financing Activities (Issue of Shares/Debentures, Loans, Dividends Paid, Interest Paid)",
-        "11.4 Calculation of Cash Flow from Operating Activities by Indirect Method: Net Profit Before Tax and Extraordinary Items, Non-Cash & Non-Operating Adjustments, Working Capital Changes",
-        "11.5 Preparation of Complete Cash Flow Statement with Adjustments (Provision for Tax, Proposed Dividend, Depreciation, Sale/Purchase of Fixed Assets with Accumulated Depreciation)"
-      ]
+      "Part A: Accounting for Partnership Firms and Companies (60 Marks)": {
+        "Chapter 1: Accounting for Partnership - Basic Concepts": [
+          "1.1 Nature of Partnership Firm, Partnership Deed Provisions in the Absence of Deed (Equal Profits, 6% Interest on Loan)",
+          "1.2 Maintenance of Capital Accounts: Fixed Capital Method (Capital & Current Accounts) vs Fluctuating Capital Method",
+          "1.3 Distribution of Profit: Profit and Loss Appropriation Account Preparation",
+          "1.4 Calculation of Interest on Drawings: Product Method, Monthly, Quarterly, Half-Yearly Drawings Rules",
+          "1.5 Calculation of Interest on Capital, Partner's Salary / Commission (Before vs After Charging Such Commission)",
+          "1.6 Past Adjustments: Omission / Commission in Interest on Capital, Drawings, Profit Sharing Ratio (Single Journal Entry Adjustment)",
+          "1.7 Guarantee of Minimum Profit to a Partner (By Firm, By Remaining Partners, By Individual Partner)"
+        ],
+        "Chapter 2: Reconstitution of Partnership - Change in Profit Sharing Ratio": [
+          "2.1 Sacrificing Ratio and Gaining Ratio Determination (Sacrificing = Old Share - New Share)",
+          "2.2 Accounting Treatment of Goodwill: Nature, Factors Affecting Goodwill, Methods of Valuation (Average Profit, Weighted Average, Super Profit, Capitalisation Methods)",
+          "2.3 Accounting Treatment of Existing Goodwill vs Created Goodwill as per AS-26",
+          "2.4 Accounting Treatment of Reserves, Accumulated Profits and Losses (General Reserve, P&L, Workmen Compensation Reserve, Investment Fluctuation Reserve)",
+          "2.5 Revaluation of Assets and Reassessment of Liabilities: Revaluation Account (Profit/Loss Distribution)",
+          "2.6 Adjustment of Capitals of Partners Based on New Profit Sharing Ratio"
+        ],
+        "Chapter 3: Admission of a Partner": [
+          "3.1 Effects of Admission of a Partner and Calculation of New Profit Sharing Ratio and Sacrificing Ratio",
+          "3.2 Treatment of Goodwill on Admission: Brought in Cash (Premium for Goodwill), Retained / Withdrawn by Old Partners, Not Brought in Cash (Current Account Method)",
+          "3.3 Hidden Goodwill / Inferred Goodwill Calculation on Admission",
+          "3.4 Revaluation Account, Accounting Treatment of Reserves and Accumulated Profits/Losses",
+          "3.5 Adjustment of Capitals: When Incoming Partner's Capital is Given (Adjusting Old Partners) vs When New Partner Brings Proportionate Capital"
+        ],
+        "Chapter 4: Retirement and Death of a Partner": [
+          "4.1 Calculation of New Profit Sharing Ratio and Gaining Ratio (Gaining = New Share - Old Share)",
+          "4.2 Treatment of Goodwill on Retirement / Death (Debiting Gaining Partners in Gaining Ratio and Crediting Retiring/Deceased Partner)",
+          "4.3 Revaluation of Assets and Reassessment of Liabilities and Adjustment of Reserves/Losses",
+          "4.4 Settlement of Amount Due to Retiring Partner (Lump-Sum Payment vs Retiring Partner's Loan Account with Interest)",
+          "4.5 Adjustment of Remaining Partners' Capitals in Proportion to New Profit Sharing Ratio",
+          "4.6 Death of a Partner: Ascertainment of Deceased Partner's Share of Profit till Date of Death (On Time Basis vs On Turnover/Sales Basis using P&L Suspense Account)",
+          "4.7 Preparation of Deceased Partner's Capital Account and Executor's Account"
+        ],
+        "Chapter 5: Dissolution of a Partnership Firm": [
+          "5.1 Meaning of Dissolution of Partnership vs Dissolution of Partnership Firm",
+          "5.2 Settlement of Accounts on Dissolution (Section 48 of Partnership Act: Order of Payment of Losses and Assets Realisation)",
+          "5.3 Preparation of Realisation Account: Transfer of Assets and Outside Liabilities, Realisation of Assets, Payment of Liabilities and Expenses",
+          "5.4 Treatment of Unrecorded Assets, Unrecorded Liabilities, Partner's Loan to Firm vs Firm's Loan to Partner",
+          "5.5 Preparation of Partners' Capital Accounts and Cash / Bank Account (Final Settlement)"
+        ],
+        "Chapter 6: Accounting for Share Capital": [
+          "6.1 Features and Types of Companies, Share Capital: Authorised, Issued, Subscribed (Subscribed and Fully Paid, Subscribed but not Fully Paid), Called-up, Paid-up Capital, Reserve Capital",
+          "6.2 Issue of Shares for Cash at Par and at Premium (Section 52(2) Permitted Uses of Securities Premium)",
+          "6.3 Accounting for Under-subscription and Over-subscription of Shares: Pro-Rata Allotment and Combined Application & Allotment Account",
+          "6.4 Calls-in-Arrears and Calls-in-Advance (Interest on Calls as per Table F)",
+          "6.5 Issue of Shares for Consideration other than Cash (Purchase of Assets and Purchase of Business)",
+          "6.6 Forfeiture of Shares: Issued at Par, Issued at Premium (When Premium is Received vs Not Received)",
+          "6.7 Reissue of Forfeited Shares: at Par, at Premium, at Discount (Maximum Permissible Discount) and Transfer to Capital Reserve",
+          "6.8 Disclosure of Share Capital in the Balance Sheet of a Company as per Schedule III Part I of Companies Act 2013 (Notes to Accounts)"
+        ],
+        "Chapter 7: Accounting for Debentures": [
+          "7.1 Meaning, Characteristics and Types of Debentures, Difference Between Shares and Debentures",
+          "7.2 Issue of Debentures for Cash at Par, at Premium and at Discount",
+          "7.3 Issue of Debentures for Consideration other than Cash (Purchase of Assets and Vendor Accounting)",
+          "7.4 Issue of Debentures as Collateral Security: First Method (No Journal Entry) vs Second Method (Debenture Suspense Account)",
+          "7.5 Accounting Treatment of Issue of Debentures Considering the Terms of Redemption (Six Situations: Par/Par, Par/Premium, Discount/Par, Discount/Premium, Premium/Par, Premium/Premium)",
+          "7.6 Writing off Discount / Loss on Issue of Debentures (from Securities Premium or Statement of Profit and Loss in the Year Incurred)"
+        ]
+      },
+      "Part B: Analysis of Financial Statements (20 Marks)": {
+        "Chapter 8: Financial Statements of a Company": [
+          "8.1 Meaning, Nature and Objectives of Financial Statements as per Section 2(40) of Companies Act 2013",
+          "8.2 Form and Content of Balance Sheet as per Schedule III Part I of Companies Act 2013: Major Heads and Sub-Heads (Equity & Liabilities, Non-Current Liabilities, Current Liabilities, Non-Current Assets, Current Assets)",
+          "8.3 Form and Content of Statement of Profit and Loss as per Schedule III Part II of Companies Act 2013 (Revenue from Operations, Other Income, Expenses Breakdown)"
+        ],
+        "Chapter 9: Financial Statement Analysis": [
+          "9.1 Meaning, Significance, Objectives and Limitations of Financial Statement Analysis",
+          "9.2 Tools of Financial Statement Analysis: Comparative Statements (Comparative Balance Sheet and Comparative Statement of Profit and Loss: Absolute and Percentage Changes)",
+          "9.3 Common Size Statements (Common Size Balance Sheet taking Total Assets as 100, Common Size Statement of Profit and Loss taking Revenue from Operations as 100)"
+        ],
+        "Chapter 10: Accounting Ratios": [
+          "10.1 Meaning, Objectives, Classification and Limitations of Ratio Analysis",
+          "10.2 Liquidity Ratios: Current Ratio (Current Assets / Current Liabilities, Ideal 2:1) and Quick / Acid Test Ratio (Quick Assets / Current Liabilities, Ideal 1:1)",
+          "10.3 Solvency Ratios: Debt-Equity Ratio (Debt / Equity), Total Assets to Debt Ratio, Proprietary Ratio (Proprietor's Funds / Total Assets), Interest Coverage Ratio (EBIT / Interest)",
+          "10.4 Activity / Turnover Ratios: Inventory Turnover Ratio (COGS / Average Inventory), Trade Receivables Turnover Ratio (Credit Revenue / Average Debtors & Average Collection Period), Trade Payables Turnover Ratio, Working Capital Turnover Ratio",
+          "10.5 Profitability Ratios: Gross Profit Ratio (GP / Revenue * 100), Operating Ratio, Operating Profit Ratio, Net Profit Ratio, Return on Investment / Return on Capital Employed (ROI / ROCE = EBIT / Capital Employed * 100)"
+        ],
+        "Chapter 11: Cash Flow Statement": [
+          "11.1 Meaning, Objectives and Significance of Cash Flow Statement as per Accounting Standard-3 (AS-3 Revised)",
+          "11.2 Concept of Cash and Cash Equivalents (Treasury Bills, Commercial Paper, Demand Deposits, Current Investments)",
+          "11.3 Classification of Activities: Operating Activities (Inflows & Outflows), Investing Activities (Purchase/Sale of Fixed Assets & Non-Current Investments, Interest/Dividend Received), Financing Activities (Issue of Shares/Debentures, Loans, Dividends Paid, Interest Paid)",
+          "11.4 Calculation of Cash Flow from Operating Activities by Indirect Method: Net Profit Before Tax and Extraordinary Items, Non-Cash & Non-Operating Adjustments, Working Capital Changes",
+          "11.5 Preparation of Complete Cash Flow Statement with Adjustments (Provision for Tax, Proposed Dividend, Depreciation, Sale/Purchase of Fixed Assets with Accumulated Depreciation)"
+        ]
+      }
     },
     "Business Studies": {
       "Chapter 1: Nature and Significance of Management": [
