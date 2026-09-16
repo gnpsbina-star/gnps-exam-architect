@@ -29,6 +29,32 @@ os.makedirs(DATA_DIR, exist_ok=True)
 CUSTOM_FILE_BASELINE = os.path.join(BASE_DIR, "custom_subjects.json")
 CUSTOM_FILE = os.path.join(DATA_DIR, "custom_subjects.json")
 
+# Scraping cbseacademic.nic.in and parsing the sample-paper PDF on every single
+# prompt generation is slow and breaks whenever their site is down. The result
+# barely changes - CBSE publishes a pattern once a year - so it is cached here
+# and only re-fetched when someone explicitly asks for a refresh.
+SQP_CACHE_BASELINE = os.path.join(BASE_DIR, "sqp_cache.json")
+SQP_CACHE_FILE = os.path.join(DATA_DIR, "sqp_cache.json")
+
+def load_sqp_cache():
+    for path in (SQP_CACHE_FILE, SQP_CACHE_BASELINE):
+        try:
+            if os.path.exists(path):
+                with open(path, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+        except Exception as e:
+            print(f"Could not read SQP cache {path}: {e}")
+    return {}
+
+def save_sqp_cache(cache):
+    try:
+        tmp = SQP_CACHE_FILE + ".tmp"
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(cache, f, indent=2, ensure_ascii=False)
+        os.replace(tmp, SQP_CACHE_FILE)
+    except Exception as e:
+        print(f"Could not write SQP cache: {e}")
+
 def _seed_custom_subjects_if_missing():
     if not os.path.exists(CUSTOM_FILE) and os.path.exists(CUSTOM_FILE_BASELINE):
         try:
@@ -959,9 +985,19 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_error(400, "Missing class or subject")
                 return
                 
-            print(f"API: Fetching SQP for {cls} - {subject}")
+            cache_key = f"{cls}||{subject}"
+            force_refresh = query_components.get('refresh', ['0'])[0] in ('1', 'true', 'yes')
+            sqp_cache = load_sqp_cache()
+
+            if not force_refresh and cache_key in sqp_cache:
+                print(f"API: SQP cache hit for {cls} - {subject}")
+                sys.stdout.flush()
+                self.send_json(200, dict(sqp_cache[cache_key], cached=True))
+                return
+
+            print(f"API: Fetching SQP for {cls} - {subject} (refresh={force_refresh})")
             sys.stdout.flush()
-            
+
             try:
                 sqp_pdf_link, detected_year = find_official_sqp_link(cls, subject)
                 
@@ -990,7 +1026,10 @@ class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
                     "subject": subject,
                     "text": combined_text
                 }
-                
+
+                sqp_cache[cache_key] = response_data
+                save_sqp_cache(sqp_cache)
+
                 self.wfile.write(json.dumps(response_data).encode('utf-8'))
                 
             except Exception as e:

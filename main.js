@@ -386,6 +386,10 @@ function initClassDropdown() {
 
 // Global cache & active state for Blueprint
 let sqpInstructionsCache = {};
+let sqpInstructionsYear = {};
+// Subjects already looked up this session, so a miss is not retried on every
+// re-render of the blueprint.
+let sqpLookupAttempted = new Set();
 let currentBlueprintState = null;
 let lastBlueprintConfigKey = "";
 
@@ -1523,7 +1527,8 @@ async function updateExamBlueprint(forceRecalculate = false) {
   renderBlueprintView();
 
   const cacheKey = `${className}_${subjectName}`;
-  if (!sqpInstructionsCache[cacheKey]) {
+  if (!sqpInstructionsCache[cacheKey] && !sqpLookupAttempted.has(cacheKey)) {
+    sqpLookupAttempted.add(cacheKey);
     fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}`, {
       headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
     })
@@ -1531,6 +1536,7 @@ async function updateExamBlueprint(forceRecalculate = false) {
       .then(data => {
         if (data && data.text) {
           sqpInstructionsCache[cacheKey] = data.text;
+          if (data.year) sqpInstructionsYear[cacheKey] = data.year;
           renderBlueprintView();
         }
       })
@@ -2912,13 +2918,15 @@ if (fetchCbseBlueprintBtn) {
 
     try {
       const cacheKey = `${className}_${subjectName}`;
-      const res = await fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}`, {
+      sqpLookupAttempted.delete(cacheKey);
+      const res = await fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}&refresh=1`, {
         headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
       });
       if (res.ok) {
         const data = await res.json();
         if (data && data.text) {
           sqpInstructionsCache[cacheKey] = data.text;
+          if (data.year) sqpInstructionsYear[cacheKey] = data.year;
         }
       }
       updateExamBlueprint(true);
@@ -3786,35 +3794,29 @@ export async function buildPromptString(activeBtn) {
   const fetchStatus = document.getElementById('fetchStatus');
   
   generateBtn.disabled = true;
-  generateBtn.innerHTML = '<span>Fetching Latest SQP... <i class="fas fa-spinner fa-spin"></i></span>';
+  generateBtn.innerHTML = '<span>Building Prompt... <i class="fas fa-spinner fa-spin"></i></span>';
   fetchStatus.style.display = 'none';
-  
+
+  // The CBSE reference pattern is whatever has already been cached for this
+  // subject. Generating never waits on cbseacademic.nic.in: the pattern only
+  // changes once a year, so it is refreshed on demand with the "Fetch CBSE
+  // Blueprint" button instead of being re-scraped on every single click.
   let sqpData = null;
-  
+
   try {
-    const response = await fetch(`/api/fetch-sqp?class=${encodeURIComponent(className)}&subject=${encodeURIComponent(subjectName)}`, {
-      headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
-    });
-    if (response.ok) {
-      const data = await response.json();
-      if (data && (data.general_instructions || data.text)) {
-        let cleanInstructions = data.general_instructions || data.text;
-        if (className === "Class 9" && subjectName.toLowerCase().includes("english")) {
-          cleanInstructions = cleanInstructions
-            .replace(/First Flight\s*(?:&|and)\s*Footprints(?:\s*Without\s*Feet)?/gi, 'Kaveri')
-            .replace(/First Flight/gi, 'Kaveri (Prose & Poetry)')
-            .replace(/Footprints(?:\s*Without\s*Feet)?/gi, 'Kaveri')
-            .replace(/Beehive\s*(?:&|and)\s*Moments/gi, 'Kaveri')
-            .replace(/Analytical\s*Paragraph/gi, 'Descriptive Paragraph / Diary Entry / Story Writing');
-        }
-        sqpData = {
-          year: data.year || '2026-27',
-          text: cleanInstructions
-        };
+    const cachedInstructions = sqpInstructionsCache[`${className}_${subjectName}`];
+    if (cachedInstructions) {
+      let cleanInstructions = cachedInstructions;
+      if (className === "Class 9" && subjectName.toLowerCase().includes("english")) {
+        cleanInstructions = cleanInstructions
+          .replace(/First Flight\s*(?:&|and)\s*Footprints(?:\s*Without\s*Feet)?/gi, 'Kaveri')
+          .replace(/First Flight/gi, 'Kaveri (Prose & Poetry)')
+          .replace(/Footprints(?:\s*Without\s*Feet)?/gi, 'Kaveri')
+          .replace(/Beehive\s*(?:&|and)\s*Moments/gi, 'Kaveri')
+          .replace(/Analytical\s*Paragraph/gi, 'Descriptive Paragraph / Diary Entry / Story Writing');
       }
+      sqpData = { year: sqpInstructionsYear[`${className}_${subjectName}`] || '2026-27', text: cleanInstructions };
     }
-  } catch (e) {
-    console.warn("Could not fetch SQP blueprint fallback:", e);
   } finally {
     generateBtn.disabled = false;
     generateBtn.innerHTML = activeBtn._originalHtml;
