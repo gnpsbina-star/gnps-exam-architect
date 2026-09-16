@@ -6574,9 +6574,10 @@ function renderSyllabusSheetPaper() {
       const numbersRepeatAcrossGroups = new Set(selectedNums).size !== selectedNums.length;
       const canMergeIntoOneRange = selectedNums.length === allSelectedSst.length && !numbersRepeatAcrossGroups;
 
-      const mapWorkLine = numbersRepeatAcrossGroups
-        ? `<div style="margin-top: 3px; font-size: 9pt; color: #333333;">&bull; <strong>Map Work:</strong> Identification and labelling on Outline Political Map of India (Major 1857 Revolt centers, Soil types, Agricultural crops, and Iron/Steel plants).</div>`
-        : `<div style="margin-top: 3px; font-size: 9pt; color: #333333;">&bull; <strong>Map Work:</strong> Identification and labelling on Outline Political Map of India.</div>`;
+      // Map Work carries no syllabus of its own - it is set from the chapters
+      // listed above, so the line says that instead of naming extra topics.
+      const MAP_WORK_TEXT = 'Identification and labelling on the Outline Political Map of India, from the prescribed chapters listed above only. No additional map syllabus.';
+      const mapWorkLine = `<div style="margin-top: 3px; font-size: 9pt; color: #333333;">&bull; <strong>Map Work:</strong> ${MAP_WORK_TEXT}</div>`;
 
       let themesSummaryHtml = '';
       if (canMergeIntoOneRange && allSelectedSst.length > 0) {
@@ -6619,7 +6620,7 @@ function renderSyllabusSheetPaper() {
                 </div>
               </div>
             `).join('')}
-            <div style="margin-top: 3px; font-size: 9pt; color: #475569;">&bull; <strong>Map Work:</strong> Identification and labelling on Outline Political Map of India.</div>
+            <div style="margin-top: 3px; font-size: 9pt; color: #475569;">&bull; <strong>Map Work:</strong> ${MAP_WORK_TEXT}</div>
           </div>
         </div>
       `;
