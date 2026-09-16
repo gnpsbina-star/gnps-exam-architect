@@ -5086,6 +5086,7 @@ const sheetIncludePrincipalSig = document.getElementById('sheetIncludePrincipalS
 const sheetHideUncheckedToggle = document.getElementById('sheetHideUncheckedToggle');
 const printSheetBtn = document.getElementById('printSheetBtn');
 const exportPdfSheetBtn = document.getElementById('exportPdfSheetBtn');
+const exportWordSheetBtn = document.getElementById('exportWordSheetBtn');
 const exportExcelSheetBtn = document.getElementById('exportExcelSheetBtn');
 const syllabusSheetPaper = document.getElementById('syllabusSheetPaper');
 const sheetSEADateFrom = document.getElementById('sheetSEADateFrom');
@@ -7543,12 +7544,59 @@ async function triggerPrintSyllabusSheet() {
   }, 1000);
 }
 
-async function exportSyllabusSheetToPdf() {
-  if (!syllabusSheetPaper) return;
+// Builds the print-ready copy of the sheet: the live paper minus every on-screen
+// control, with excluded rows dropped and the remaining ones renumbered. Both the
+// PDF and the Word export start from this, so the two can never drift apart.
+function buildCleanSheetClone() {
+  const clone = syllabusSheetPaper.cloneNode(true);
+  clone.classList.add('is-pdf-exporting');
+  clone.classList.add('hide-unselected');
+
+  // Strip all screen-only controls, buttons, checkboxes, and selectors
+  clone.querySelectorAll('.no-print, .portion-screen-selector, .sheet-topic-selector-grid, .paper-subj-actions, .sheet-ch-customizer').forEach(el => el.remove());
+
+  // Clean up trailing commas for the last visible item in each inline flow
+  clone.querySelectorAll('.paper-inline-chapter-flow, .paper-topic-list').forEach(container => {
+    const visibleCommas = container.querySelectorAll('.is-selected .paper-item-comma');
+    if (visibleCommas.length > 0) {
+      visibleCommas[visibleCommas.length - 1].style.display = 'none';
+    }
+  });
+
+  // Remove all excluded subject rows from print output
+  clone.querySelectorAll('tr.is-subject-excluded').forEach(r => r.remove());
+
+  // Renumber remaining visible rows in each table strictly sequentially (1, 2, 3...)
+  clone.querySelectorAll('.paper-syllabus-table').forEach(table => {
+    let sno = 1;
+    table.querySelectorAll('tbody tr.paper-subject-row').forEach(row => {
+      const snoCell = row.querySelector('.paper-row-sno');
+      if (snoCell) snoCell.textContent = sno++;
+    });
+  });
+
+  // Remove any empty sections where all subject rows were excluded
+  clone.querySelectorAll('.paper-part-section').forEach(section => {
+    const remainingRows = section.querySelectorAll('tbody tr.paper-subject-row');
+    if (remainingRows.length === 0) {
+      section.remove();
+    }
+  });
+
+  return clone;
+}
+
+function buildSheetFileName(extension) {
   const school = (sheetSchoolName && sheetSchoolName.value) ? sheetSchoolName.value.trim() : 'GNPS';
   const cls = sheetClassSelect ? sheetClassSelect.value : 'Class';
   const exam = getSelectedSheetExamName();
-  const cleanFileName = `${school.replace(/[^a-zA-Z0-9]/g, '_')}_${cls.replace(/[^a-zA-Z0-9]/g, '_')}_${exam.replace(/[^a-zA-Z0-9]/g, '_')}_Syllabus_Sheet.pdf`;
+  const clean = str => str.replace(/[^a-zA-Z0-9]/g, '_');
+  return `${clean(school)}_${clean(cls)}_${clean(exam)}_Syllabus_Sheet.${extension}`;
+}
+
+async function exportSyllabusSheetToPdf() {
+  if (!syllabusSheetPaper) return;
+  const cleanFileName = buildSheetFileName('pdf');
 
   if (typeof html2pdf !== 'undefined') {
     const origHtml = exportPdfSheetBtn.innerHTML;
@@ -7562,41 +7610,8 @@ async function exportSyllabusSheetToPdf() {
     stage.style.cssText = 'position: fixed; left: 0; top: 0; width: 750px; min-width: 750px; max-width: 750px; margin: 0; padding: 0; background: #ffffff; z-index: 999999; overflow: visible;';
 
     // 2. Clone the syllabusSheetPaper
-    const clone = syllabusSheetPaper.cloneNode(true);
-    clone.classList.add('is-pdf-exporting');
-    clone.classList.add('hide-unselected');
+    const clone = buildCleanSheetClone();
     clone.style.cssText = 'width: 750px !important; min-width: 750px !important; max-width: 750px !important; margin: 0 !important; padding: 8px 12px !important; background: #ffffff !important; box-sizing: border-box !important; display: block !important;';
-
-    // Strip all screen-only controls, buttons, checkboxes, and selectors from the PDF clone
-    clone.querySelectorAll('.no-print, .portion-screen-selector, .sheet-topic-selector-grid, .paper-subj-actions, .sheet-ch-customizer').forEach(el => el.remove());
-
-    // Clean up trailing commas on the clone for the last visible item in each inline flow
-    clone.querySelectorAll('.paper-inline-chapter-flow, .paper-topic-list').forEach(container => {
-      const visibleCommas = container.querySelectorAll('.is-selected .paper-item-comma');
-      if (visibleCommas.length > 0) {
-        visibleCommas[visibleCommas.length - 1].style.display = 'none';
-      }
-    });
-
-    // Remove all excluded subject rows from print output
-    clone.querySelectorAll('tr.is-subject-excluded').forEach(r => r.remove());
-
-    // Renumber remaining visible rows in each table strictly sequentially (1, 2, 3...)
-    clone.querySelectorAll('.paper-syllabus-table').forEach(table => {
-      let sno = 1;
-      table.querySelectorAll('tbody tr.paper-subject-row').forEach(row => {
-        const snoCell = row.querySelector('.paper-row-sno');
-        if (snoCell) snoCell.textContent = sno++;
-      });
-    });
-
-    // Remove any empty sections where all subject rows were excluded
-    clone.querySelectorAll('.paper-part-section').forEach(section => {
-      const remainingRows = section.querySelectorAll('tbody tr.paper-subject-row');
-      if (remainingRows.length === 0) {
-        section.remove();
-      }
-    });
 
     stage.appendChild(clone);
     document.body.appendChild(stage);
@@ -7635,6 +7650,229 @@ async function exportSyllabusSheetToPdf() {
     }
   } else {
     triggerPrintSyllabusSheet();
+  }
+}
+
+// --------------------------------------------------------------------------
+// WORD EXPORT
+// The PDF export rasterises the sheet through html2canvas, so its text cannot
+// be edited. Word reads HTML, so the same clean clone is serialised into a
+// Word-format document instead - real text, real tables, editable on arrival.
+// --------------------------------------------------------------------------
+
+// Word's HTML engine ignores `display: grid` and `display: flex`, so any row
+// built with them collapses into a vertical stack. Rebuild such a row as a
+// one-row table: the container's classes stay on the table so its borders and
+// background still apply, and each child keeps its own classes on its cell.
+function gridRowToTable(el) {
+  const children = Array.from(el.children);
+  if (children.length === 0) return;
+
+  const table = document.createElement('table');
+  table.className = el.className;
+  table.setAttribute('cellspacing', '0');
+  table.setAttribute('cellpadding', '0');
+  table.style.cssText = `${el.getAttribute('style') || ''}; width: 100%; border-collapse: collapse; display: table;`;
+
+  const row = document.createElement('tr');
+  const widthPct = (100 / children.length).toFixed(4);
+  children.forEach(child => {
+    const cell = document.createElement('td');
+    cell.className = child.className;
+    cell.setAttribute('valign', 'middle');
+    cell.style.cssText = `${child.getAttribute('style') || ''}; width: ${widthPct}%; display: table-cell;`;
+    while (child.firstChild) cell.appendChild(child.firstChild);
+    row.appendChild(cell);
+  });
+
+  // The row goes inside an explicit tbody. A browser tolerates <tr> sitting
+  // directly under <table>, but Word's importer reads such a table as
+  // malformed and lays it out at the wrong width.
+  const body = document.createElement('tbody');
+  body.appendChild(row);
+  table.appendChild(body);
+  el.replaceWith(table);
+}
+
+// Rows the sheet lays out with grid/flex. Everything else in the printed sheet
+// is already real table markup and needs no help.
+const WORD_GRID_ROW_SELECTORS = ['.paper-meta-table', '.paper-part-meta-strip', '.paper-signatures-row'];
+
+// Word's HTML engine resolves only simple CSS and largely ignores the
+// class-based, multi-selector rules the app's stylesheet is built from - a
+// document that merely links or embeds style.css arrives with its table
+// borders and column widths missing. Copying the browser's own computed values
+// onto each element instead removes any dependence on the cascade.
+const WORD_INLINE_PROPS = [
+  'font-family', 'font-size', 'font-weight', 'font-style', 'color', 'background-color',
+  'text-align', 'text-transform', 'text-decoration-line', 'vertical-align',
+  'line-height', 'letter-spacing', 'white-space',
+  'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+  'margin-top', 'margin-right', 'margin-bottom', 'margin-left'
+];
+
+// Defaults worth omitting, so the file stays a sensible size.
+const WORD_SKIP_VALUES = new Set(['', 'none', 'normal', 'auto', '0px', 'start',
+  'rgba(0, 0, 0, 0)', 'transparent', 'baseline', 'currentcolor']);
+
+// Borders must be written as the `border-<side>` shorthand. Word and other
+// HTML importers skip the `border-top-width` / `-style` / `-color` longhands
+// getComputedStyle reports, which is why an earlier attempt arrived with every
+// table gridline missing.
+function borderShorthands(cs) {
+  return ['top', 'right', 'bottom', 'left'].reduce((out, side) => {
+    const width = cs.getPropertyValue(`border-${side}-width`).trim();
+    const style = cs.getPropertyValue(`border-${side}-style`).trim();
+    if (!width || width === '0px' || !style || style === 'none') return out;
+    out.push(`border-${side}:${width} ${style} ${cs.getPropertyValue(`border-${side}-color`).trim()}`);
+    return out;
+  }, []);
+}
+
+// Word measures print type in points, so hand it points rather than the pixels
+// the browser computes.
+function pxToPt(value) {
+  const px = parseFloat(value);
+  return Number.isFinite(px) ? `${(px * 0.75).toFixed(2)}pt` : value;
+}
+
+// `display` is deliberately never copied: carrying `flex` or `grid` across
+// would reintroduce the very stacking gridRowToTable exists to prevent.
+function inlineComputedStyles(root) {
+  const elements = [root, ...root.querySelectorAll('*')];
+  elements.forEach(el => {
+    const cs = window.getComputedStyle(el);
+    const parts = [];
+    WORD_INLINE_PROPS.forEach(prop => {
+      let value = cs.getPropertyValue(prop).trim();
+      if (WORD_SKIP_VALUES.has(value.toLowerCase())) return;
+      if (prop === 'font-size' || prop === 'line-height') value = pxToPt(value);
+      parts.push(`${prop}:${value}`);
+    });
+    parts.push(...borderShorthands(cs));
+    if (parts.length) {
+      const existing = el.getAttribute('style');
+      el.setAttribute('style', existing ? `${existing};${parts.join(';')}` : parts.join(';'));
+    }
+  });
+}
+
+// Column widths as percentages of the table, taken from the laid-out clone.
+// Percentages let Word reflow the table to its own page width; the pixel
+// widths getComputedStyle reports would overflow an A4 page.
+function setWordTableWidths(root) {
+  root.querySelectorAll('table').forEach(table => {
+    table.setAttribute('cellspacing', '0');
+    table.style.width = '100%';
+    table.style.borderCollapse = 'collapse';
+    // Word sizes tables from the legacy width attribute and ignores the CSS
+    // one, so both are set.
+    table.setAttribute('width', '100%');
+
+    const firstRow = table.querySelector('tr');
+    if (!firstRow || !table.offsetWidth) return;
+    Array.from(firstRow.children).forEach(cell => {
+      // Rows gridRowToTable just built already carry an even percentage split;
+      // measuring those would size each cell to its text and leave the table
+      // short of the page width. Any other inline width is in pixels (the
+      // sheet pins its S.No column that way), so it is measured like the rest.
+      const declared = cell.style.width || '';
+      const pct = declared.endsWith('%')
+        ? parseFloat(declared)
+        : (cell.offsetWidth / table.offsetWidth) * 100;
+      if (!Number.isFinite(pct) || pct <= 0) return;
+      cell.style.width = `${pct.toFixed(2)}%`;
+      cell.setAttribute('width', `${pct.toFixed(2)}%`);
+    });
+  });
+
+  // A rule drawn as an empty bordered div (the signature lines) collapses to
+  // nothing in Word, which lays out no box for an empty element. A hard space
+  // gives it something to draw.
+  root.querySelectorAll('.sig-line, .paper-ruled-line, .paper-ruled-line-dashed').forEach(line => {
+    if (!line.textContent.trim()) line.innerHTML = '&nbsp;';
+  });
+
+  // Word needs explicit pixel dimensions on images it is given inline.
+  root.querySelectorAll('img').forEach(img => {
+    if (img.offsetWidth) img.setAttribute('width', String(Math.round(img.offsetWidth)));
+    if (img.offsetHeight) img.setAttribute('height', String(Math.round(img.offsetHeight)));
+  });
+}
+
+function buildWordDocument(bodyHtml, title) {
+  return `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="utf-8">
+<title>${title}</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]-->
+<style>
+@page WordSection1 { size: 21.0cm 29.7cm; margin: 1.0cm 1.0cm 1.0cm 1.0cm; }
+div.WordSection1 { page: WordSection1; }
+body { margin: 0; font-family: 'Times New Roman', Times, serif; }
+table { border-collapse: collapse; }
+tr { page-break-inside: avoid; }
+</style>
+</head>
+<body>
+<div class="WordSection1">
+${bodyHtml}
+</div>
+</body>
+</html>`;
+}
+
+async function exportSyllabusSheetToWord() {
+  if (!syllabusSheetPaper || !exportWordSheetBtn) return;
+
+  const origHtml = exportWordSheetBtn.innerHTML;
+  exportWordSheetBtn.disabled = true;
+  exportWordSheetBtn.innerHTML = '<span>⏳ Generating Word...</span>';
+
+  // The clone has to be laid out in the live document before its computed
+  // styles and column widths mean anything, so it goes through the same
+  // offscreen 750px stage the PDF export uses.
+  const stage = document.createElement('div');
+  stage.id = 'word-render-stage';
+  stage.style.cssText = 'position: fixed; left: -10000px; top: 0; width: 750px; min-width: 750px; max-width: 750px; margin: 0; padding: 0; background: #ffffff; overflow: visible;';
+
+  try {
+    const clone = buildCleanSheetClone();
+    clone.style.cssText = 'width: 750px !important; min-width: 750px !important; max-width: 750px !important; margin: 0 !important; padding: 0 !important; background: #ffffff !important; box-sizing: border-box !important; display: block !important; box-shadow: none !important; border: none !important;';
+
+    WORD_GRID_ROW_SELECTORS.forEach(sel => {
+      clone.querySelectorAll(sel).forEach(gridRowToTable);
+    });
+
+    stage.appendChild(clone);
+    document.body.appendChild(stage);
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    setWordTableWidths(clone);
+    inlineComputedStyles(clone);
+
+    const cls = sheetClassSelect ? sheetClassSelect.value : 'Class';
+    const title = `${cls} ${getSelectedSheetExamName()} Syllabus Sheet`;
+    const doc = buildWordDocument(clone.outerHTML, title);
+
+    // The BOM makes Word read the file as UTF-8, which keeps the Hindi and
+    // Sanskrit portions legible.
+    const blob = new Blob(['﻿', doc], { type: 'application/msword' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = buildSheetFileName('doc');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  } catch (err) {
+    console.error('Word export failed:', err);
+    alert('Sorry, the Word export failed. Please try Export PDF instead.');
+  } finally {
+    stage.remove();
+    exportWordSheetBtn.innerHTML = origHtml;
+    exportWordSheetBtn.disabled = false;
   }
 }
 
@@ -8035,6 +8273,9 @@ if (printSheetBtn) {
 }
 if (exportPdfSheetBtn) {
   exportPdfSheetBtn.addEventListener('click', exportSyllabusSheetToPdf);
+}
+if (exportWordSheetBtn) {
+  exportWordSheetBtn.addEventListener('click', exportSyllabusSheetToWord);
 }
 if (exportExcelSheetBtn) {
   exportExcelSheetBtn.addEventListener('click', exportSyllabusSheetToExcel);
