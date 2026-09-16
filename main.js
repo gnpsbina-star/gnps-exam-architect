@@ -6559,21 +6559,29 @@ function renderSyllabusSheetPaper() {
       });
 
       checkedCount = selectedSstChapters;
-      const isAllSst = selectedSstChapters === totalSstChapters && totalSstChapters > 0;
+
+      // Classes 6-9 number their Social Science chapters continuously across
+      // the themes, so the printed portion reads as one plain chapter range
+      // with no theme names. Class 10 restarts numbering inside each of its
+      // four books, where a merged range would mean four different "Chapter 1"s,
+      // so those keep their book names. Decided from the numbers themselves
+      // rather than the class, so it stays right if the syllabus changes.
+      const allSelectedSst = themeDataList.flatMap(t => t.selected);
+      const selectedNums = allSelectedSst.map(it => it.num).filter(n => n !== null && n !== undefined);
+      const numbersRepeatAcrossGroups = new Set(selectedNums).size !== selectedNums.length;
+      const canMergeIntoOneRange = selectedNums.length === allSelectedSst.length && !numbersRepeatAcrossGroups;
+
+      const mapWorkLine = numbersRepeatAcrossGroups
+        ? `<div style="margin-top: 3px; font-size: 9pt; color: #333333;">&bull; <strong>Map Work:</strong> Identification and labelling on Outline Political Map of India (Major 1857 Revolt centers, Soil types, Agricultural crops, and Iron/Steel plants).</div>`
+        : `<div style="margin-top: 3px; font-size: 9pt; color: #333333;">&bull; <strong>Map Work:</strong> Identification and labelling on Outline Political Map of India.</div>`;
 
       let themesSummaryHtml = '';
-      if (isAllSst && themeDataList.length >= 4) {
+      if (canMergeIntoOneRange && allSelectedSst.length > 0) {
+        const mergedSeq = buildChapterSequenceString(allSelectedSst, totalSstChapters);
         themesSummaryHtml = `
-          <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45;">
-            Theme A to Theme E: Chapter 1 to Chapter 14 (Complete Prescribed Syllabus)
-          </div>
-          <div style="margin-top: 4px; font-size: 9.5pt; color: #000000; line-height: 1.4;">
-            <div>&bull; <strong>Theme A (Land & People):</strong> Chapter 1 & Chapter 8</div>
-            <div>&bull; <strong>Theme B (Tapestry of the Past):</strong> Chapter 2 to Chapter 4, Chapter 9</div>
-            <div>&bull; <strong>Theme C (Cultural Heritage):</strong> Chapter 10 & Chapter 11</div>
-            <div>&bull; <strong>Theme D (Governance & Democracy):</strong> Chapter 5 & Chapter 6, Chapter 12 & Chapter 13</div>
-            <div>&bull; <strong>Theme E (Economic Life):</strong> Chapter 7, Chapter 14 & Chapter 15</div>
-            <div>&bull; <strong>Map Work:</strong> Identification and labelling on Outline Political Map of India (Major 1857 Revolt centers, Soil types, Agricultural crops, and Iron/Steel plants).</div>
+          <div class="portion-inline-text">
+            <div style="font-weight: bold; font-size: 10pt; color: #000000; line-height: 1.45;">${mergedSeq.text}</div>
+            ${mapWorkLine}
           </div>
         `;
       } else {
@@ -6582,7 +6590,7 @@ function renderSyllabusSheetPaper() {
             ${themeDataList.filter(t => t.selected.length > 0).map(t => `
               <div><span class="portion-sec-title">${t.themeKey}:</span> <span style="font-weight: bold;">${t.seqText}</span></div>
             `).join('')}
-            <div style="margin-top: 3px; font-size: 9pt; color: #333333;">&bull; <strong>Map Work:</strong> Identification and labelling on Outline Political Map of India.</div>
+            ${mapWorkLine}
           </div>
         `;
       }
