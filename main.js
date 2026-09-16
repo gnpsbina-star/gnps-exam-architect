@@ -436,8 +436,28 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   let sections = [];
   let competencyRatio = "50%";
 
+  const isAccountancy = (className === "Class 11" || className === "Class 12") && subLower.includes("account");
+
+  // 0. Accountancy short tests. Part A / Part B is a division of the syllabus
+  // for the full paper, so it does not apply here - a unit test is often drawn
+  // from a single part. The 1/3/4/6 mark ladder does still apply: Accountancy
+  // never sets a 2 or 5 mark question, and these tests should build board
+  // habits from the start.
+  if (isAccountancy && marks > 0 && marks < 75) {
+    const isShortTest = marks <= 25;
+    sections = isShortTest ? [
+      { name: "Objective", type: "MCQ / Assertion-Reasoning / Fill-ups", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "Compulsory" },
+      { name: "Short Answer", type: "Practical working (entries / ledger / short computation)", count: 3, unitMark: 3, marksPerQ: "3 Marks", total: 9, choice: "Internal choice in 1 Q" },
+      { name: "Long Answer", type: "Full numerical problem", count: 1, unitMark: 6, marksPerQ: "6 Marks", total: 6, choice: "Internal choice" }
+    ] : [
+      { name: "Objective", type: "MCQ / Assertion-Reasoning / Fill-ups", count: 8, unitMark: 1, marksPerQ: "1 Mark", total: 8, choice: "Compulsory" },
+      { name: "Short Answer", type: "Practical working (entries / ledger / short computation)", count: 4, unitMark: 3, marksPerQ: "3 Marks", total: 12, choice: "Internal choice in 1 Q" },
+      { name: "Short Answer - numerical", type: "Numerical problem", count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "Internal choice in 1 Q" },
+      { name: "Long Answer", type: "Full numerical problem", count: 2, unitMark: 6, marksPerQ: "6 Marks", total: 12, choice: "Internal choice in 1 Q" }
+    ];
+  }
   // 1. Unit Test (20 Marks / 45 Min) or GK/Robo 10M / 20M
-  if (marks <= 20 || (examName && examName.includes("Unit Test") && marks <= 20)) {
+  else if (marks <= 20 || (examName && examName.includes("Unit Test") && marks <= 20)) {
     if (subLower.includes("english")) {
       const litBook = getCleanLiteratureBookName(className, subjectName);
       const litSecType = litBook ? `Literature Textbooks (${litBook})` : "Literature Textbooks";
@@ -4126,7 +4146,8 @@ Anchor the passages in timeless human values:
   }
 
   const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
-  if (subLower.includes("account") && (className === "Class 11" || className === "Class 12") && marks >= 75) {
+  if (subLower.includes("account") && (className === "Class 11" || className === "Class 12")) {
+    const isFullPaper = marks >= 75;
     const partALabel = className === "Class 12"
       ? "Part A (Accounting for Partnership Firms & Companies, 60 Marks)"
       : "Part A (Financial Accounting - I, 56 Marks)";
@@ -4145,7 +4166,7 @@ Anchor the passages in timeless human values:
     if (accountancySyllabus && typeof accountancySyllabus === 'object' && !Array.isArray(accountancySyllabus)) {
       const partGroups = Object.entries(accountancySyllabus)
         .filter(([group, chapters]) => /^part\s/i.test(group) && chapters && typeof chapters === 'object' && !Array.isArray(chapters));
-      if (partGroups.length) {
+      if (isFullPaper && partGroups.length) {
         partMapText = `\n\n**WHICH CHAPTER BELONGS TO WHICH PART (place every question in the correct Part):**` +
           partGroups.map(([group, chapters]) => `\n*   **${group}** — ${Object.keys(chapters).join('; ')}`).join('') +
           `\n*   A question drawn from a Part A chapter must be numbered inside Part A, and likewise for Part B. Never mix them.`;
@@ -4153,15 +4174,17 @@ Anchor the passages in timeless human values:
     }
 
     promptText += `\n\n**CBSE ACCOUNTANCY PAPER DESIGN (MANDATORY — THIS SUBJECT DOES NOT USE THE GENERIC SECTION A-E TEMPLATE):**
-*   **Two Parts, not lettered sections:** The paper is divided into ${partALabel} and ${partBLabel}. Number the questions continuously from Q1 to Q34 across both parts — do NOT restart numbering in Part B and do NOT label the parts as "Section A/B/C/D/E".
+${isFullPaper
+  ? `*   **Two Parts, not lettered sections:** The paper is divided into ${partALabel} and ${partBLabel}. Number the questions continuously from Q1 to Q34 across both parts — do NOT restart numbering in Part B and do NOT label the parts as "Section A/B/C/D/E".`
+  : `*   **No Part A / Part B here:** that split belongs to the full ${className === "Class 12" ? "80-mark board-pattern" : "80-mark"} paper. This is a short internal test drawn from the selected chapters only, which may all sit within one part. Print it as ONE continuous run of questions numbered from Q1, with no Part or lettered Section headings.`}
 *   **Mark ladder:** Accountancy uses ONLY 1, 3, 4 and 6 mark questions. **NEVER set a 2-mark or a 5-mark question in this subject.**
-*   **Internal choice:** Provide internal choice in exactly 7 questions, concentrated in the 4-mark and 6-mark numericals, exactly as CBSE does.
+*   **Internal choice:** ${isFullPaper ? "Provide internal choice in exactly 7 questions, concentrated in the 4-mark and 6-mark numericals, exactly as CBSE does." : "Provide internal choice in the 6-mark numerical, and in one 3-mark or 4-mark question."}
 *   **This overrides the general typology guidance above for this subject:** ignore the 2-mark VSA and 5-mark LA rules entirely, and treat the 4-mark questions as numerical problems rather than case-based questions with (i)/(ii)/(iii) sub-parts.
 
 **NUMERICAL / PRACTICAL WEIGHTAGE (THE MOST COMMON FAILURE — READ CAREFULLY):**
 *   Accountancy is a **practical, problem-solving subject**. A paper of definitions and theory is WRONG and will not prepare the student.
 *   **Every single 4-mark and 6-mark question MUST be a full numerical problem** built on realistic figures — never a descriptive or "explain the concept" question.
-*   **At least 70% of the total 80 marks must come from numerical / practical problems** requiring the student to prepare accounts, pass entries or compute values. Theory is confined to the 1-mark objective questions and at most one or two 3-mark parts.
+*   **At least 70% of the total ${marks} marks must come from numerical / practical problems** requiring the student to prepare accounts, pass entries or compute values. Theory is confined to the 1-mark objective questions and at most one or two 3-mark parts.
 *   Every numerical must supply **complete, internally consistent data** — amounts, dates, ratios, rates of interest, depreciation rates — so the problem is actually solvable and the figures reconcile (Balance Sheet totals must agree, Realisation/Revaluation accounts must balance).
 *   Required practical formats, reproduced as proper ruled formats with correct column headings: Journal entries with narration, Ledger accounts, Cash Book, Revaluation Account, Partners' Capital Accounts (fixed and fluctuating), Realisation Account, Balance Sheet, Comparative & Common-Size Statements, Accounting Ratios and Cash Flow Statement.
 *   Anchor the 6-mark questions in: ${sixMarkTopics}.
