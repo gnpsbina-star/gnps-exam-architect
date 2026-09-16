@@ -742,7 +742,41 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
       { name: "Section E", type: "Long Answer (LA)", count: 3, unitMark: 5, marksPerQ: "5 Marks", total: 15, choice: "Internal choice in all 3 Qs" }
     ];
   }
-  // 8. Standard 80M Board Subjects (Math, Science 9/10, SST 9/10, Accounts, Economics, etc.)
+  // 8. Accountancy (Class 11-12): CBSE does not use the generic A-E template
+  // here. The real paper is split into Part A and Part B by syllabus content,
+  // and its questions run on a 1 / 3 / 4 / 6 mark ladder with no 2 or 5 mark
+  // questions at all. Class 11 mirrors the same ladder against its own 56 / 24
+  // syllabus weighting (Financial Accounting I and II).
+  else if (marks >= 75 && (className === "Class 11" || className === "Class 12") && subLower.includes("account")) {
+    const isTwelve = className === "Class 12";
+    const partAName = isTwelve
+      ? "Part A: Accounting for Partnership Firms & Companies"
+      : "Part A: Financial Accounting - I";
+    const partBName = isTwelve
+      ? "Part B: Analysis of Financial Statements (OR Computerised Accounting)"
+      : "Part B: Financial Accounting - II";
+
+    sections = isTwelve ? [
+      { name: partAName, type: "Objective (MCQ / Assertion-Reasoning / Fill-ups)", count: 16, unitMark: 1, marksPerQ: "1 Mark", total: 16, choice: "Q1-Q16. Objective questions on partnership and company accounts" },
+      { name: partAName, type: "Short Answer - practical working", count: 4, unitMark: 3, marksPerQ: "3 Marks", total: 12, choice: "Q17-Q20. Journal entries / ledger / short numerical working" },
+      { name: partAName, type: "Short Answer - numerical", count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "Q21-Q22. Numerical problems with internal choice" },
+      { name: partAName, type: "Long Answer - full numerical", count: 4, unitMark: 6, marksPerQ: "6 Marks", total: 24, choice: "Q23-Q26. Admission/Retirement/Death, Dissolution, Share & Debenture accounts" },
+      { name: partBName, type: "Objective (MCQ / Assertion-Reasoning)", count: 4, unitMark: 1, marksPerQ: "1 Mark", total: 4, choice: "Q27-Q30. Objective questions" },
+      { name: partBName, type: "Short Answer - practical working", count: 2, unitMark: 3, marksPerQ: "3 Marks", total: 6, choice: "Q31-Q32. Ratio / statement working" },
+      { name: partBName, type: "Short Answer - numerical", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "Q33. Numerical problem" },
+      { name: partBName, type: "Long Answer - full numerical", count: 1, unitMark: 6, marksPerQ: "6 Marks", total: 6, choice: "Q34. Cash Flow Statement / comprehensive analysis" }
+    ] : [
+      { name: partAName, type: "Objective (MCQ / Assertion-Reasoning / Fill-ups)", count: 16, unitMark: 1, marksPerQ: "1 Mark", total: 16, choice: "Q1-Q16. Theoretical framework and accounting process" },
+      { name: partAName, type: "Short Answer - practical working", count: 4, unitMark: 3, marksPerQ: "3 Marks", total: 12, choice: "Q17-Q20. Journal entries / ledger / short numerical working" },
+      { name: partAName, type: "Short Answer - numerical", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "Q21. Numerical problem with internal choice" },
+      { name: partAName, type: "Long Answer - full numerical", count: 4, unitMark: 6, marksPerQ: "6 Marks", total: 24, choice: "Q22-Q25. Bank Reconciliation, Depreciation, Trial Balance & Rectification" },
+      { name: partBName, type: "Objective (MCQ / Assertion-Reasoning)", count: 4, unitMark: 1, marksPerQ: "1 Mark", total: 4, choice: "Q26-Q29. Objective questions" },
+      { name: partBName, type: "Short Answer - practical working", count: 2, unitMark: 3, marksPerQ: "3 Marks", total: 6, choice: "Q30-Q31. Adjustments / short working" },
+      { name: partBName, type: "Short Answer - numerical", count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "Q32-Q33. Numerical problems" },
+      { name: partBName, type: "Long Answer - full numerical", count: 1, unitMark: 6, marksPerQ: "6 Marks", total: 6, choice: "Q34. Financial Statements of Sole Proprietorship with adjustments" }
+    ];
+  }
+  // 9. Standard 80M Board Subjects (Math, Science 9/10, SST 9/10, Economics, etc.)
   else {
     const isSecSocial = (className === "Class 9" || className === "Class 10") && (subLower.includes("social") || subLower.includes("sst") || subLower.includes("087"));
     // Only Class 9-10 use the Biology/Chemistry/Physics subject-based split -
@@ -4092,6 +4126,33 @@ Anchor the passages in timeless human values:
   }
 
   const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
+  if (subLower.includes("account") && (className === "Class 11" || className === "Class 12") && marks >= 75) {
+    const partALabel = className === "Class 12"
+      ? "Part A (Accounting for Partnership Firms & Companies, 60 Marks)"
+      : "Part A (Financial Accounting - I, 56 Marks)";
+    const partBLabel = className === "Class 12"
+      ? "Part B (Analysis of Financial Statements, 20 Marks — state on the paper that candidates attempt EITHER this OR Computerised Accounting)"
+      : "Part B (Financial Accounting - II, 24 Marks)";
+    const sixMarkTopics = className === "Class 12"
+      ? "Admission / Retirement / Death of a partner, Dissolution of a firm, Issue & Forfeiture of Shares, Issue and Redemption of Debentures, Cash Flow Statement"
+      : "Bank Reconciliation Statement, Depreciation (Straight Line & Written Down Value), Trial Balance & Rectification of Errors, Financial Statements of a Sole Proprietorship with adjustments";
+
+    promptText += `\n\n**CBSE ACCOUNTANCY PAPER DESIGN (MANDATORY — THIS SUBJECT DOES NOT USE THE GENERIC SECTION A-E TEMPLATE):**
+*   **Two Parts, not lettered sections:** The paper is divided into ${partALabel} and ${partBLabel}. Number the questions continuously from Q1 to Q34 across both parts — do NOT restart numbering in Part B and do NOT label the parts as "Section A/B/C/D/E".
+*   **Mark ladder:** Accountancy uses ONLY 1, 3, 4 and 6 mark questions. **NEVER set a 2-mark or a 5-mark question in this subject.**
+*   **Internal choice:** Provide internal choice in exactly 7 questions, concentrated in the 4-mark and 6-mark numericals, exactly as CBSE does.
+*   **This overrides the general typology guidance above for this subject:** ignore the 2-mark VSA and 5-mark LA rules entirely, and treat the 4-mark questions as numerical problems rather than case-based questions with (i)/(ii)/(iii) sub-parts.
+
+**NUMERICAL / PRACTICAL WEIGHTAGE (THE MOST COMMON FAILURE — READ CAREFULLY):**
+*   Accountancy is a **practical, problem-solving subject**. A paper of definitions and theory is WRONG and will not prepare the student.
+*   **Every single 4-mark and 6-mark question MUST be a full numerical problem** built on realistic figures — never a descriptive or "explain the concept" question.
+*   **At least 70% of the total 80 marks must come from numerical / practical problems** requiring the student to prepare accounts, pass entries or compute values. Theory is confined to the 1-mark objective questions and at most one or two 3-mark parts.
+*   Every numerical must supply **complete, internally consistent data** — amounts, dates, ratios, rates of interest, depreciation rates — so the problem is actually solvable and the figures reconcile (Balance Sheet totals must agree, Realisation/Revaluation accounts must balance).
+*   Required practical formats, reproduced as proper ruled formats with correct column headings: Journal entries with narration, Ledger accounts, Cash Book, Revaluation Account, Partners' Capital Accounts (fixed and fluctuating), Realisation Account, Balance Sheet, Comparative & Common-Size Statements, Accounting Ratios and Cash Flow Statement.
+*   Anchor the 6-mark questions in: ${sixMarkTopics}.
+*   Use Indian currency notation (₹) and realistic Indian business names and amounts throughout.`;
+  }
+
   const isScienceBranch = subLower.includes("physics") || subLower.includes("chemistry") || subLower.includes("biology");
   if (isScienceBranch) {
     if (subLower.includes("physics")) {
