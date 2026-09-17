@@ -7641,13 +7641,15 @@ function buildCleanSheetClone() {
 }
 
 // Exported sheets are named GNPS_<class>_<exam>, e.g.
-// GNPS_Class_6_Annual_Examination.pdf. Spaces become underscores so the name
-// stays safe to attach, upload and copy between machines.
+// "GNPS_Class 6_Annual Examination.pdf". The underscore separates the three
+// fields, so the class and exam names keep their own spaces and stay legible;
+// only characters a file system refuses are replaced.
 function buildSheetFileName(extension) {
   const cls = sheetClassSelect ? sheetClassSelect.value : 'Class';
   const exam = getSelectedSheetExamName();
-  const clean = str => (str || '').replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_+|_+$/g, '');
-  return `GNPS_${clean(cls)}_${clean(exam)}.${extension}`;
+  const clean = str => (str || '').replace(/[\\/:*?"<>|]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const fields = ['GNPS', clean(cls), clean(exam)].filter(Boolean);
+  return `${fields.join('_')}.${extension}`;
 }
 
 async function exportSyllabusSheetToPdf() {
