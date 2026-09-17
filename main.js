@@ -5442,6 +5442,33 @@ function roboticsHasWrittenExam(examName) {
   return /mid\s*term|annual|final/i.test(examName || '');
 }
 
+// The Classes 6-8 Sanskrit syllabus carries an English gloss in brackets beside
+// each Sanskrit term - "अपठित-अवबोधनम् (Section A: Reading Comprehension)". The
+// circular goes out in Sanskrit only, so the gloss is dropped when the sheet is
+// rendered. The stored syllabus keeps it: the prompt generator feeds it to the
+// AI, and chapter selections are keyed by the raw text.
+//
+// Brackets holding Sanskrit are kept as they are - "(20–30 शब्द)" is portion
+// detail, not a translation - and a bracket carrying both, such as
+// "(Section D: Literature - पाठ्यपुस्तकम् 'दीपकम्')", keeps its Sanskrit half.
+function stripEnglishGloss(text) {
+  if (!text || !/[A-Za-z]/.test(text)) return text;
+  const hasDevanagari = str => /[ऀ-ॿ]/.test(str);
+
+  const stripped = text.replace(/\s*\(([^()]*)\)/g, (whole, inner) => {
+    if (!/[A-Za-z]/.test(inner)) return whole;   // pure Sanskrit note - keep
+    if (!hasDevanagari(inner)) return '';        // pure translation - drop
+    const kept = inner
+      .replace(/[A-Za-z][A-Za-z0-9\s,./'&?:;!-]*/g, ' ')
+      .replace(/\s+/g, ' ')
+      .replace(/^[\s\-–—:;,/.]+|[\s\-–—:;,/.]+$/g, '')
+      .trim();
+    return kept ? ` (${kept})` : '';
+  });
+
+  return stripped.replace(/\s{2,}/g, ' ').trim();
+}
+
 export const coScholasticSubjects = [
   { name: "Work Education", subtitle: "Pre-vocational skills, self-reliance & dignity of labour" },
   { name: "Art Education", subtitle: "Visual arts, music, dance & drama" },
@@ -6632,6 +6659,12 @@ function renderSyllabusSheetPaper() {
       const shouldAggregateLit = litKeys.length > 1;
       const nonLitKeys = shouldAggregateLit ? allSecKeys.filter(k => !litKeys.includes(k)) : allSecKeys;
 
+      // Sanskrit prints in Sanskrit only - see stripEnglishGloss. Applied to
+      // displayed text alone; data-val keeps the raw string so the chapter
+      // selections it keys stay intact.
+      const isSanskrit = /sanskrit|संस्कृत/i.test(subjName);
+      const display = txt => isSanskrit ? stripEnglishGloss(txt) : txt;
+
       const sectionBlocks = [];
 
       // A. Standard non-literature sections (Reading, Writing, Grammar, or standard book)
@@ -6669,18 +6702,18 @@ function renderSyllabusSheetPaper() {
 
             subgroupSummaries.push(`
               <div style="margin-top: 2px; line-height: 1.35; font-size: 9pt;">
-                &bull; <strong>${subGroupName.endsWith(':') ? subGroupName.slice(0, -1) : subGroupName}:</strong> ${seq.text}
+                &bull; <strong>${display(subGroupName.endsWith(':') ? subGroupName.slice(0, -1) : subGroupName)}:</strong> ${display(seq.text)}
               </div>
             `);
 
             subgroupSelectors.push(`
               <div style="margin-top: 4px; margin-bottom: 6px;">
-                <div style="font-weight: 700; font-size: 8.5pt; color: #1e293b; margin-bottom: 3px;">${subGroupName.endsWith(':') ? subGroupName : subGroupName + ':'}</div>
+                <div style="font-weight: 700; font-size: 8.5pt; color: #1e293b; margin-bottom: 3px;">${display(subGroupName.endsWith(':') ? subGroupName : subGroupName + ':')}</div>
                 <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}" data-section="${secKey}" data-subgroup="${subGroupName}">
                   ${parsed.map(it => `
                     <label class="sheet-ch-customizer-item">
                       <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="${secKey}" data-subgroup="${subGroupName}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
-                      <span>${it.raw}</span>
+                      <span>${display(it.raw)}</span>
                     </label>
                   `).join('')}
                 </div>
@@ -6691,7 +6724,7 @@ function renderSyllabusSheetPaper() {
           sectionBlocks.push(`
             <div class="paper-section-block ${!hasAnySubgroupSelected ? 'is-unselected' : ''}" style="margin-bottom: 4px;">
               <div>
-                <span class="portion-sec-title">${secKey}:</span>
+                <span class="portion-sec-title">${display(secKey)}:</span>
                 <!-- Print/PDF output -->
                 <div class="portion-print-summary" style="margin-top: 2px;">
                   ${subgroupSummaries.join('')}
@@ -6717,9 +6750,9 @@ function renderSyllabusSheetPaper() {
         sectionBlocks.push(`
           <div class="paper-section-block ${selected.length === 0 ? 'is-unselected' : ''}" style="margin-bottom: 4px;">
             <div>
-              <span class="portion-sec-title">${secKey}:</span>
+              <span class="portion-sec-title">${display(secKey)}:</span>
               <!-- Print/PDF output -->
-              <span class="portion-print-summary" style="${isBookSection ? 'font-weight: bold;' : ''}"> ${seq.text}</span>
+              <span class="portion-print-summary" style="${isBookSection ? 'font-weight: bold;' : ''}"> ${display(seq.text)}</span>
             </div>
             <!-- On-screen view: only checkboxes -->
             <div class="portion-screen-selector">
@@ -6727,7 +6760,7 @@ function renderSyllabusSheetPaper() {
                 ${parsed.map(it => `
                   <label class="sheet-ch-customizer-item">
                     <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="${secKey}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
-                    <span>${it.raw}</span>
+                    <span>${display(it.raw)}</span>
                   </label>
                 `).join('')}
               </div>
