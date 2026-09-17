@@ -5613,8 +5613,15 @@ function buildPart2RowsHtml(cls) {
       ? `<div style="font-style: italic; font-size: 8.5pt; color: #000000;">Prescribed CBSE Internal Assessment Activities</div>`
       : actsHtml;
 
+    // A subject with nothing ticked and no teacher's note has nothing to say in
+    // the circular, so it is marked the way an excluded subject is: still shown
+    // on screen (dimmed, so the activities can be ticked back on) but dropped
+    // from the printed sheet by buildCleanSheetClone.
+    const hasTeacherNote = getSEAManualNoteText(cls, item.subject).trim().length > 0;
+    const isRowEmpty = checkedCount === 0 && !hasTeacherNote;
+
     part2RowsHtml += `
-      <tr class="paper-subject-row paper-part2-row">
+      <tr class="paper-subject-row paper-part2-row ${isRowEmpty ? 'is-subject-excluded is-unselected' : ''}">
         <td class="paper-row-sno" style="text-align: center; font-weight: bold; font-size: 9pt; color: #000000; width: 32px; padding: 12px 4px;">${p2Sno++}</td>
         <td style="width: 140px; vertical-align: top; padding: 12px 8px;">
           <div class="paper-subj-title">${item.subject}</div>
@@ -7140,16 +7147,16 @@ function renderSyllabusSheetPaper() {
 
     const instructionLines = [];
     if (partNumbers.scholastic) {
-      instructionLines.push(`<li><strong>Part ${partNumbers.scholastic} (Scholastic Written Examinations):</strong> Pen-paper exams will be conducted on scheduled dates. Timely reporting is compulsory.</li>`);
+      instructionLines.push(`<li data-part="scholastic"><strong>Part ${partNumbers.scholastic} (Scholastic Written Examinations):</strong> Pen-paper exams will be conducted on scheduled dates. Timely reporting is compulsory.</li>`);
     }
     if (partNumbers.sea) {
-      instructionLines.push(`<li><strong>Part ${partNumbers.sea} (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between ${formatDateRange(seaDateFrom, seaDateTo)} in regular subject periods.</li>`);
+      instructionLines.push(`<li data-part="sea"><strong>Part ${partNumbers.sea} (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between ${formatDateRange(seaDateFrom, seaDateTo)} in regular subject periods.</li>`);
     }
     if (partNumbers.cosch) {
-      instructionLines.push(`<li><strong>Part ${partNumbers.cosch} (Co-Scholastic Assessments):</strong> Co-scholastic domain evaluations are conducted between ${formatDateRange(coSchDateFrom, coSchDateTo)} during class periods.</li>`);
+      instructionLines.push(`<li data-part="cosch"><strong>Part ${partNumbers.cosch} (Co-Scholastic Assessments):</strong> Co-scholastic domain evaluations are conducted between ${formatDateRange(coSchDateFrom, coSchDateTo)} during class periods.</li>`);
     }
     if (partNumbers.notebook) {
-      instructionLines.push(`<li><strong>Part ${partNumbers.notebook} (Notebook Completion & Submission):</strong> Notebooks must be submitted to the respective subject teacher on the date specified against each subject; 5 marks are awarded per the evaluation criteria noted below.</li>`);
+      instructionLines.push(`<li data-part="notebook"><strong>Part ${partNumbers.notebook} (Notebook Completion & Submission):</strong> Notebooks must be submitted to the respective subject teacher on the date specified against each subject; 5 marks are awarded per the evaluation criteria noted below.</li>`);
     }
     instructionLines.push(`<li><strong>Compulsory Attendance & Materials:</strong> Full-day attendance is compulsory. Students must carry complete practical files, journals, and stationery.</li>`);
 
@@ -7164,7 +7171,7 @@ function renderSyllabusSheetPaper() {
 
     const part1SectionHtml = partNumbers.scholastic ? `
       <!-- PART ${partNumbers.scholastic}: SCHOLASTIC SUBJECTS -->
-      <div class="paper-part-section paper-part-section-scholastic">
+      <div class="paper-part-section paper-part-section-scholastic" data-part="scholastic">
         <div class="paper-part-banner paper-part-banner-scholastic">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="paper-part-badge paper-part-badge-scholastic">PART ${partNumbers.scholastic}</span>
@@ -7193,7 +7200,7 @@ function renderSyllabusSheetPaper() {
 
     const part2SectionHtml = partNumbers.sea ? `
       <!-- PART ${partNumbers.sea}: SUBJECT ENRICHMENT ACTIVITIES (SEA) -->
-      <div class="paper-part-section paper-part-section-sea">
+      <div class="paper-part-section paper-part-section-sea" data-part="sea">
         <div class="paper-part-banner paper-part-banner-sea">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="paper-part-badge paper-part-badge-sea">PART ${partNumbers.sea}</span>
@@ -7222,7 +7229,7 @@ function renderSyllabusSheetPaper() {
 
     const part3SectionHtml = partNumbers.cosch ? `
       <!-- PART ${partNumbers.cosch}: CO-SCHOLASTIC ACTIVITIES -->
-      <div class="paper-part-section paper-part-section-cosch">
+      <div class="paper-part-section paper-part-section-cosch" data-part="cosch">
         <div class="paper-part-banner paper-part-banner-cosch">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="paper-part-badge paper-part-badge-cosch">PART ${partNumbers.cosch}</span>
@@ -7250,7 +7257,7 @@ function renderSyllabusSheetPaper() {
 
     const part4SectionHtml = partNumbers.notebook ? `
       <!-- PART ${partNumbers.notebook}: NOTEBOOK COMPLETION & SUBMISSION -->
-      <div class="paper-part-section">
+      <div class="paper-part-section" data-part="notebook">
         <div class="paper-part-banner">
           <div style="display: flex; align-items: center; gap: 8px;">
             <span class="paper-part-badge">PART ${partNumbers.notebook}</span>
@@ -7392,13 +7399,13 @@ function renderSyllabusSheetPaper() {
 
   const instructionLines = [];
   if (partNumbers.scholastic) {
-    instructionLines.push(`<li><strong>Part ${partNumbers.scholastic} (Scholastic Written Examinations):</strong> Pen-paper exams will be conducted on scheduled dates. Timely reporting is compulsory.</li>`);
+    instructionLines.push(`<li data-part="scholastic"><strong>Part ${partNumbers.scholastic} (Scholastic Written Examinations):</strong> Pen-paper exams will be conducted on scheduled dates. Timely reporting is compulsory.</li>`);
   }
   if (partNumbers.sea) {
-    instructionLines.push(`<li><strong>Part ${partNumbers.sea} (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between ${formatDateRange(seaDateFrom, seaDateTo)} in regular subject periods.</li>`);
+    instructionLines.push(`<li data-part="sea"><strong>Part ${partNumbers.sea} (Subject Enrichment Activities - SEA):</strong> Mandatory 5-mark activities (ASL, Math Lab, Science Experiments, SST Map/Project) are assessed between ${formatDateRange(seaDateFrom, seaDateTo)} in regular subject periods.</li>`);
   }
   if (partNumbers.notebook) {
-    instructionLines.push(`<li><strong>Part ${partNumbers.notebook} (Notebook Completion & Submission):</strong> Notebooks must be submitted to the respective subject teacher on the date specified against each subject; 5 marks are awarded per the evaluation criteria noted below.</li>`);
+    instructionLines.push(`<li data-part="notebook"><strong>Part ${partNumbers.notebook} (Notebook Completion & Submission):</strong> Notebooks must be submitted to the respective subject teacher on the date specified against each subject; 5 marks are awarded per the evaluation criteria noted below.</li>`);
   }
   instructionLines.push(`<li><strong>In-Depth Study Required:</strong> Do not rely solely on chapter-end exercises; read the entire chapter thoroughly for deep conceptual questions.</li>`);
   instructionLines.push(`<li><strong>Strict Attendance:</strong> No half-days are permitted, and absolutely no re-examinations will be conducted for absentees.</li>`);
@@ -7416,7 +7423,7 @@ function renderSyllabusSheetPaper() {
 
   const part1SectionHtml = partNumbers.scholastic ? `
     <!-- PART ${partNumbers.scholastic}: SCHOLASTIC SUBJECTS -->
-    <div class="paper-part-section paper-part-section-scholastic">
+    <div class="paper-part-section paper-part-section-scholastic" data-part="scholastic">
       <div class="paper-part-banner paper-part-banner-scholastic">
         <div style="display: flex; align-items: center; gap: 8px;">
           <span class="paper-part-badge paper-part-badge-scholastic">PART ${partNumbers.scholastic}</span>
@@ -7445,7 +7452,7 @@ function renderSyllabusSheetPaper() {
 
   const part2SectionHtml = partNumbers.sea ? `
     <!-- PART ${partNumbers.sea}: SUBJECT ENRICHMENT ACTIVITIES (SEA) -->
-    <div class="paper-part-section paper-part-section-sea">
+    <div class="paper-part-section paper-part-section-sea" data-part="sea">
       <div class="paper-part-banner paper-part-banner-sea">
         <div style="display: flex; align-items: center; gap: 8px;">
           <span class="paper-part-badge paper-part-badge-sea">PART ${partNumbers.sea}</span>
@@ -7474,7 +7481,7 @@ function renderSyllabusSheetPaper() {
 
   const part4SectionHtml = partNumbers.notebook ? `
     <!-- PART ${partNumbers.notebook}: NOTEBOOK COMPLETION & SUBMISSION -->
-    <div class="paper-part-section">
+    <div class="paper-part-section" data-part="notebook">
       <div class="paper-part-banner">
         <div style="display: flex; align-items: center; gap: 8px;">
           <span class="paper-part-badge">PART ${partNumbers.notebook}</span>
@@ -7605,23 +7612,42 @@ function buildCleanSheetClone() {
     });
   });
 
-  // Remove any empty sections where all subject rows were excluded
+  // Remove any empty sections where all subject rows were excluded, taking the
+  // general-instruction line that describes the part with them - a circular
+  // should not promise a Part that is not printed.
   clone.querySelectorAll('.paper-part-section').forEach(section => {
     const remainingRows = section.querySelectorAll('tbody tr.paper-subject-row');
-    if (remainingRows.length === 0) {
-      section.remove();
+    if (remainingRows.length > 0) return;
+    const partKey = section.getAttribute('data-part');
+    if (partKey) {
+      clone.querySelectorAll(`li[data-part="${partKey}"]`).forEach(li => li.remove());
     }
+    section.remove();
+  });
+
+  // Renumber the parts that survived, so the sheet reads Part 1, 2, 3 with no
+  // gap where a dropped part used to be. Matches what getSheetPartNumbers
+  // already does when a part is switched off from the ribbon.
+  let partNo = 1;
+  clone.querySelectorAll('.paper-part-section[data-part]').forEach(section => {
+    const n = partNo++;
+    const badge = section.querySelector('.paper-part-badge');
+    if (badge) badge.textContent = `PART ${n}`;
+    const li = clone.querySelector(`li[data-part="${section.getAttribute('data-part')}"] > strong`);
+    if (li) li.textContent = li.textContent.replace(/^Part\s+\d+/, `Part ${n}`);
   });
 
   return clone;
 }
 
+// Exported sheets are named GNPS_<class>_<exam>, e.g.
+// GNPS_Class_6_Annual_Examination.pdf. Spaces become underscores so the name
+// stays safe to attach, upload and copy between machines.
 function buildSheetFileName(extension) {
-  const school = (sheetSchoolName && sheetSchoolName.value) ? sheetSchoolName.value.trim() : 'GNPS';
   const cls = sheetClassSelect ? sheetClassSelect.value : 'Class';
   const exam = getSelectedSheetExamName();
-  const clean = str => str.replace(/[^a-zA-Z0-9]/g, '_');
-  return `${clean(school)}_${clean(cls)}_${clean(exam)}_Syllabus_Sheet.${extension}`;
+  const clean = str => (str || '').replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+  return `GNPS_${clean(cls)}_${clean(exam)}.${extension}`;
 }
 
 async function exportSyllabusSheetToPdf() {
@@ -7777,6 +7803,14 @@ function removeHiddenElements(root) {
     const cs = window.getComputedStyle(el);
     if (cs.display === 'none' || cs.visibility === 'hidden') el.remove();
   });
+
+  // Drop HTML comments too. They are invisible in Word, but the section
+  // markers carry the part numbers from before any renumbering, so leaving
+  // them in means the file still reads "PART 2" somewhere after Part 2 went.
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_COMMENT);
+  const comments = [];
+  while (walker.nextNode()) comments.push(walker.currentNode);
+  comments.forEach(node => node.remove());
 }
 
 // `display` is deliberately never copied: carrying `flex` or `grid` across
