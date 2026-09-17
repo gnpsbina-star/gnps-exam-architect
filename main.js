@@ -5983,9 +5983,6 @@ function getFlatItemsForSubject(cls, subj) {
     }
     return [];
   }
-  if (['Music', 'Art & Craft', 'Yoga'].includes(subj)) {
-    return [{ value: '__included__', label: `${subj} (Include in circular)` }];
-  }
   const subjectsData = getSheetSubjectsData(cls);
   const data = subjectsData[subj];
   if (!data || (Array.isArray(data) && data.length === 0) || (typeof data === 'object' && Object.keys(data).length === 0)) {
@@ -7918,6 +7915,10 @@ function exportSyllabusSheetToExcel() {
   for (const [subjName, subjSyllabus] of subjectEntries) {
     if (!isSubjectIncludedInSheet(cls, subjName)) continue;
     if (/robotics/i.test(subjName) && !roboticsHasWrittenExam(exam)) continue;
+    // General Knowledge is assessed as a co-scholastic domain, not as a written
+    // paper, so it is exported further down with Part 3 instead - matching the
+    // sheet's own Part 1 filter.
+    if (isMiddleSchool && isGeneralKnowledgeSubject(subjName)) continue;
     const checkedSet = getSubjectSelectionForSheet(cls, subjName);
     const subjDate = (sheetSubjectDates[cls] && sheetSubjectDates[cls][subjName]) ? formatExamDate(sheetSubjectDates[cls][subjName]) : '';
     const isBlankSubject = (subjName.toLowerCase().includes('general knowledge') || subjName.toLowerCase().includes('robotics')) && (!subjSyllabus || (Array.isArray(subjSyllabus) && subjSyllabus.length === 0) || (typeof subjSyllabus === 'object' && Object.keys(subjSyllabus).length === 0));
@@ -8049,15 +8050,35 @@ function exportSyllabusSheetToExcel() {
     const coSchDateFrom = (sheetCoSchDateFrom && sheetCoSchDateFrom.value) ? sheetCoSchDateFrom.value : coSchExamDateFrom;
     const coSchDateTo = (sheetCoSchDateTo && sheetCoSchDateTo.value) ? sheetCoSchDateTo.value : coSchExamDateTo;
 
-    // Add Co-Scholastic subjects (Class 6-8 only)
-    ['Music', 'Art & Craft', 'Yoga'].forEach(subjName => {
+    // Add the Part 3 co-scholastic domains (Class 6-8 only). Inclusion is
+    // decided by isSubjectIncludedInSheet alone, exactly as Part 3 itself does:
+    // the domains carry no chapter list, so there is no selection set to test.
+    const coSchDates = formatDateRange(coSchDateFrom, coSchDateTo);
+    const gkEntry = subjectEntries.find(([sName]) => isGeneralKnowledgeSubject(sName));
+
+    coScholasticSubjects.forEach(domain => {
+      const subjName = domain.name;
       if (!isSubjectIncludedInSheet(cls, subjName)) return;
-      const checkedSet = getSubjectSelectionForSheet(cls, subjName);
-      if (checkedSet && (checkedSet.has('__included__') || checkedSet.has(subjName))) {
-        const criteria = getCoScholasticCriteriaText(cls, subjName).replace(/"/g, '""');
-        csv += includeSubtopics
-          ? `"${rowCount++}","${formatDateRange(coSchDateFrom, coSchDateTo)}","${subjName}","Co-Scholastic Activities","${criteria}",""\n`
-          : `"${rowCount++}","${formatDateRange(coSchDateFrom, coSchDateTo)}","${subjName}","Co-Scholastic Activities","${criteria}"\n`;
+
+      const criteria = getCoScholasticCriteriaText(cls, subjName).replace(/"/g, '""');
+      const subtitle = (domain.subtitle || '').replace(/"/g, '""');
+      csv += includeSubtopics
+        ? `"${rowCount++}","${coSchDates}","${subjName}","Co-Scholastic Domain","${criteria}","${subtitle}"\n`
+        : `"${rowCount++}","${coSchDates}","${subjName}","Co-Scholastic Domain","${criteria}"\n`;
+
+      // General Knowledge keeps its prescribed chapters, which moved into Part 3
+      // along with the subject, so they follow its domain row.
+      if (isGeneralKnowledgeSubject(subjName) && gkEntry) {
+        const [gkKey, gkSyllabus] = gkEntry;
+        const gkChapters = Array.isArray(gkSyllabus) ? gkSyllabus : Object.keys(gkSyllabus || {});
+        const gkChecked = getSubjectSelectionForSheet(cls, gkKey);
+        gkChapters.forEach(ch => {
+          const title = typeof ch === 'string' ? ch : (ch.name || String(ch));
+          if (!gkChecked || !gkChecked.has(title)) return;
+          csv += includeSubtopics
+            ? `"${rowCount++}","${coSchDates}","${subjName}","Co-Scholastic Domain","${title.replace(/"/g, '""')}",""\n`
+            : `"${rowCount++}","${coSchDates}","${subjName}","Co-Scholastic Domain","${title.replace(/"/g, '""')}"\n`;
+        });
       }
     });
   }
