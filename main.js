@@ -7766,6 +7766,19 @@ function pxToPt(value) {
   return Number.isFinite(px) ? `${(px * 0.75).toFixed(2)}pt` : value;
 }
 
+// The sheet hides anything the teacher unticked with `display: none` rather
+// than removing it - an unticked SEA activity, an unselected chapter, an
+// excluded row. Since `display` is never copied to the Word file (see below),
+// that content would reappear there, so it is cut out of the clone instead.
+// Reads the laid-out clone, so it must run while the clone is in the stage.
+function removeHiddenElements(root) {
+  root.querySelectorAll('*').forEach(el => {
+    if (!el.isConnected) return;   // a parent was already removed
+    const cs = window.getComputedStyle(el);
+    if (cs.display === 'none' || cs.visibility === 'hidden') el.remove();
+  });
+}
+
 // `display` is deliberately never copied: carrying `flex` or `grid` across
 // would reintroduce the very stacking gridRowToTable exists to prevent.
 function inlineComputedStyles(root) {
@@ -7870,13 +7883,17 @@ async function exportSyllabusSheetToWord() {
     const clone = buildCleanSheetClone();
     clone.style.cssText = 'width: 750px !important; min-width: 750px !important; max-width: 750px !important; margin: 0 !important; padding: 0 !important; background: #ffffff !important; box-sizing: border-box !important; display: block !important; box-shadow: none !important; border: none !important;';
 
-    WORD_GRID_ROW_SELECTORS.forEach(sel => {
-      clone.querySelectorAll(sel).forEach(gridRowToTable);
-    });
-
     stage.appendChild(clone);
     document.body.appendChild(stage);
     await new Promise(resolve => setTimeout(resolve, 200));
+
+    // Drop what the print stylesheet hides before anything is measured or
+    // copied, so unticked activities and chapters cannot reach the document.
+    removeHiddenElements(clone);
+
+    WORD_GRID_ROW_SELECTORS.forEach(sel => {
+      clone.querySelectorAll(sel).forEach(gridRowToTable);
+    });
 
     setWordTableWidths(clone);
     inlineComputedStyles(clone);
