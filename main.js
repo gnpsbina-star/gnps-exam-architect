@@ -4229,7 +4229,13 @@ ${usesMark(2) ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
     }
   }
 
-  if (subjectName === "Hindi" || subjectName === "Hindi A") {
+  // The school's Hindi labels are "Hindi (R2 - Ganga)", "Hindi (R2)" and
+  // "Hindi Core", so guards written for "Hindi A" / "Hindi B" / "085" never
+  // matched and these word limits had never once been emitted. Matched loosely
+  // now; the two tables cover Classes 6-8 and 9-10 respectively and simply
+  // return nothing outside their own range, so Class 11-12 Hindi Core stays as
+  // it is until the school sets a length for it.
+  if (subjectName.includes("Hindi")) {
     const limits = {
       "Class 6": ["Passage 1 (Prose, approx. 100-150 words)", "Passage 2 (Poem, approx. 50-70 words, 8-10 lines)"],
       "Class 7": ["Passage 1 (Prose, approx. 150-200 words)", "Passage 2 (Poem, approx. 70-80 words, 10-12 lines)"],
@@ -4241,7 +4247,7 @@ ${usesMark(2) ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
     }
   }
 
-  if (subjectName === "Hindi B" || subjectName.includes("Hindi B") || subjectName.includes("085")) {
+  if (subjectName.includes("Hindi")) {
     const limits = {
       "Class 9": ["Passage 1 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)", "Passage 2 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)"],
       "Class 10": ["Passage 1 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)", "Passage 2 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)"]
@@ -4256,7 +4262,11 @@ ${usesMark(2) ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
     const limits = {
       "Class 6": ["1 Passage (approx. 40-50 words, 4-5 simple sentences)"],
       "Class 7": ["1 Passage (approx. 50-60 words)"],
-      "Class 8": ["1 Passage (approx. 60-80 words)"]
+      "Class 8": ["1 Passage (approx. 60-80 words)"],
+      "Class 9": ["1 Passage (approx. 100-120 words)"],
+      "Class 10": ["1 Passage (approx. 100-120 words)"],
+      "Class 11": ["1 Passage (approx. 100-120 words)"],
+      "Class 12": ["1 Passage (approx. 100-120 words)"]
     };
     const sanskritLimits = quoteLimitsFor(limits);
     if (sanskritLimits) {
