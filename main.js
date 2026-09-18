@@ -1618,7 +1618,7 @@ export function getExamDefaultDuration(examName, className = '', subjectName = '
 function getSubjectMarkProfile(className, subjectName) {
   const sub = (subjectName || '').toLowerCase();
   if ((className === 'Class 11' || className === 'Class 12') && sub.includes('account')) {
-    return { marks: accountancyPaper.markLadder, caseBased: false };
+    return { marks: accountancyPaper.markLadder, caseBased: false, letteredSections: false };
   }
   return null;
 }
@@ -3793,6 +3793,7 @@ export async function buildPromptString(activeBtn) {
   const markProfile = getSubjectMarkProfile(className, subjectName);
   const usesMark = n => !markProfile || markProfile.marks.includes(n);
   const usesCaseBased = !markProfile || markProfile.caseBased !== false;
+  const usesLetteredSections = !markProfile || markProfile.letteredSections !== false;
 
   const constructedResponseLines = [
     usesMark(2) ? `         - Very Short Answer (VSA - 2 Marks, 30\u2013\u200950 words, exactly 2 distinct marking scheme points).` : null,
@@ -3805,8 +3806,7 @@ export async function buildPromptString(activeBtn) {
     difficultyDistribution = `\n*   **Official CBSE Board Examination Typology & Weightage Matrix (BALANCED / STANDARD BOARD LEVEL):**
     - **Official CBSE Question Typology Distribution (Mandatory Board Pattern - NEP 2020):**
       1. **Competency-Focused Questions (CFQs - Minimum 50% Weightage):**
-         - Real-world Case-Based Questions (CBQs) / Source-Based Integrated Studies (Section E/D).
-         - High-quality conceptual Multiple Choice Questions (MCQs) with diagnostic distractors testing common student misconceptions.
+${usesCaseBased ? `         - Real-world Case-Based Questions (CBQs) / Source-Based Integrated Studies${usesLetteredSections ? ` (Section E/D)` : ``}.\n` : ``}         - High-quality conceptual Multiple Choice Questions (MCQs) with diagnostic distractors testing common student misconceptions.
          - Standard CBSE Assertion-Reasoning (A-R) questions with official 4-option rubric.
       2. **Select Response / Foundational Objective Questions (20% Weightage):**
          - Direct NCERT conceptual recall, standard definitions, scientific laws, SI units, and chemical/mathematical nomenclature.
@@ -3940,7 +3940,7 @@ ${blueprintPromptText}
 4.  **Alignment & Footer:** Ensure clean vertical alignment with right-aligned marks (e.g., [1], [2], [3], [5]) matching official board papers. **DO NOT add a page footer, page numbers, or "Page X of Y" text anywhere in the HTML** — you cannot know how the content will paginate, so any footer you write would land in the middle of a page. The running footer ("GNPS / ${examName.toUpperCase()} / ${fullSubjectDisplay.toUpperCase()} / SET A" on the left and "Page X of Y" on the right) is stamped automatically onto every page by the GNPS Exam Architect PDF converter. Simply leave the bottom of the document clean.
 5.  **Even-Page Budgeting & Page Breaks (Critical for Printing):**
     *   The final output for EACH PDF must fit EXACTLY into an even number of pages (e.g., exactly 2, 4, or 6 pages).
-    *   **NEVER force a page break between sections.** Do NOT put \`page-break-before: always;\` on Section banners/headings (Section A, B, C...). Sections must flow continuously down the page, one starting immediately after the previous one ends, otherwise the paper wastes half-empty pages. The ONLY permitted forced page break is between Set A and Set B (and those are separate documents anyway).
+    *   **NEVER force a page break between sections.** Do NOT put \`page-break-before: always;\` on any Section or Part banner/heading. They must flow continuously down the page, one starting immediately after the previous one ends, otherwise the paper wastes half-empty pages. The ONLY permitted forced page break is between Set A and Set B (and those are separate documents anyway).
     *   Compact your line gaps and format MCQ options into a 2x2 grid ((a) ... (b) ... / (c) ... (d) ...).
     *   **CRITICAL CSS RULE FOR PAGE BREAKS:** You must NOT apply 'page-break-inside: avoid;' globally to all table rows ('tr'). Doing so causes long text blocks (like Reading Passages) to jump entirely to the next page, leaving massive blank spaces. You must allow main question rows to break naturally across pages. You may ONLY apply 'page-break-inside: avoid;' strictly to small, nested elements such as the 2x2 MCQ option tables (e.g., '.mcq-table tr { page-break-inside: avoid; }'). The files must be completely ready for double-sided printing.
 6.  **Dual Balanced Sets (Set A & Set B):**
@@ -3953,8 +3953,9 @@ ${blueprintPromptText}
     *   **NCERT Main Textbooks** (in-text experiment activities, highlighted conceptual boxes, and exercise problems).
     *   **CBSE Previous 10 Years Board Papers (PYQs)**.
 8.  **Official CBSE Board Typology Framing & 100% Score Exam Guidelines (NEP 2020 & Latest Board SQP Pattern):**
-    *(Note: these typology rules apply to every question of the stated mark value, regardless of which lettered Section it physically appears in - some subjects group questions by type (Section A = all 1-mark, etc.), while Class 9/10 Science groups them by subject area instead (Section A = Biology, B = Chemistry, C = Physics), with every question type appearing inside each of those sections. Follow the "Section-wise Question Breakdown" blueprint above for the actual physical layout.)*
-    *   **1-Mark Objective & Assertion-Reasoning Questions:**
+${usesLetteredSections ? `    *(Note: these typology rules apply to every question of the stated mark value, regardless of which lettered Section it physically appears in - some subjects group questions by type (Section A = all 1-mark, etc.), while Class 9/10 Science groups them by subject area instead (Section A = Biology, B = Chemistry, C = Physics), with every question type appearing inside each of those sections. Follow the "Section-wise Question Breakdown" blueprint above for the actual physical layout.)*
+` : `    *(Note: these typology rules apply to every question of the stated mark value, wherever it sits in the paper. Follow the "Section-wise Question Breakdown" blueprint above for the actual physical layout.)*
+`}    *   **1-Mark Objective & Assertion-Reasoning Questions:**
         - **Diagnostic MCQs:** Options (a), (b), (c), (d) must feature plausible distractors targeting common student misconceptions documented in CBSE Board Evaluation Reports (e.g., reciprocal lens formula errors, Cartesian sign mistakes in mirror/coordinate geometry, incomplete definitions).
         - **Assertion-Reasoning:** Must strictly follow the official CBSE 4-option rubric:
           *(a) Both Assertion (A) and Reason (R) are true and Reason (R) is the correct explanation of Assertion (A).*
@@ -4098,7 +4099,7 @@ Anchor the passages in timeless human values:
     *   **In Grammar Section:** Strictly follow official CBSE MCQ / gap-filling / transformation formats (do NOT force artificial A-R templates into grammar).`;
   } else {
     promptText += `\n12. **Assertion-Reasoning Guidelines for Academic Subjects (Science/Math/SST/Physics/Chemistry/Commerce):**
-    *   **Section A Mandate:** Ensure Assertion-Reasoning questions use standard CBSE format: 'Assertion (A)' followed by 'Reason (R)', with options (a) Both A and R are true and R is correct explanation, (b) Both true but R is not correct explanation, (c) A is true R is false, (d) A is false R is true.`;
+    *   **${usesLetteredSections ? `Section A Mandate` : `Assertion-Reasoning Mandate`}:** Ensure Assertion-Reasoning questions use standard CBSE format: 'Assertion (A)' followed by 'Reason (R)', with options (a) Both A and R are true and R is correct explanation, (b) Both true but R is not correct explanation, (c) A is true R is false, (d) A is false R is true.`;
   }
 
   if (examName.includes("Unit Test") && isLanguageSubject) {
