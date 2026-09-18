@@ -53,8 +53,9 @@ The paper contains 34 questions, divided into two parts:
   Part A - Financial Accounting I (56 Marks): Theoretical Framework (12) and Accounting Process (44).
   Part B - Financial Accounting II (24 Marks): Financial Statements of Sole Proprietorship.
 Questions run on the same 1 / 3 / 4 / 6 mark ladder used at Class 12, numbered
-continuously across both parts, with internal choice in the 4-mark and 6-mark
-numericals. Accountancy never uses 2-mark or 5-mark questions.`
+continuously across both parts, and internal choice follows the Class 12 paper:
+12 questions in all - 7 of 1 mark, 2 of 3 marks, 1 of 4 marks and 2 of 6 marks.
+Accountancy never uses 2-mark or 5-mark questions.`
   }
 };
 

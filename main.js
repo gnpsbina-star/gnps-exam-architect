@@ -3600,7 +3600,13 @@ function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = fa
   const isCommerce = subLower.includes('economics') || subLower.includes('accountancy') || subLower.includes('business studies') || subLower.includes('030') || subLower.includes('055') || subLower.includes('054');
   const isEnglish = subLower.includes('english') || subLower.includes('184') || subLower.includes('301') || subLower.includes('001');
 
-  if (!isScience && !isMath && !isSst && !isCommerce && !isCS && !isEnglish) {
+  // Accountancy is a commerce subject with no figures of its own: a CBSE
+  // Accountancy paper carries ruled account formats, not curves or charts, and
+  // those formats are already specified in the Accountancy design block. The
+  // generic commerce quota would have it inventing supply-demand graphs.
+  const isAccountancy = subLower.includes('accountancy') || subLower.includes('055');
+
+  if (isAccountancy || (!isScience && !isMath && !isSst && !isCommerce && !isCS && !isEnglish)) {
     return "";
   }
 
@@ -4105,7 +4111,7 @@ ${isFullPaper
   ? `*   **Two Parts, not lettered sections:** The paper is divided into ${partALabel} and ${partBLabel}. Number the questions continuously from Q1 to Q34 across both parts — do NOT restart numbering in Part B and do NOT label the parts as "Section A/B/C/D/E".`
   : `*   **No Part A / Part B here:** that split belongs to the full ${className === "Class 12" ? "80-mark board-pattern" : "80-mark"} paper. This is a short internal test drawn from the selected chapters only, which may all sit within one part. Print it as ONE continuous run of questions numbered from Q1, with no Part or lettered Section headings.`}
 *   **Mark ladder:** Accountancy uses ONLY 1, 3, 4 and 6 mark questions. **NEVER set a 2-mark or a 5-mark question in this subject.**
-*   **Internal choice:** ${isFullPaper ? "Provide internal choice in exactly 7 questions, concentrated in the 4-mark and 6-mark numericals, exactly as CBSE does." : "Provide internal choice in the 6-mark numerical, and in one 3-mark or 4-mark question."}
+*   **Internal choice:** ${isFullPaper ? "Provide internal choice in 12 questions, exactly as CBSE does: 7 of the 1-mark questions, 2 of the 3-mark, 1 of the 4-mark and 2 of the 6-mark." : "Provide internal choice in the 6-mark numerical, and in one 3-mark or 4-mark question."}
 *   **This overrides the general typology guidance above for this subject:** ignore the 2-mark VSA and 5-mark LA rules entirely, and treat the 4-mark questions as numerical problems rather than case-based questions with (i)/(ii)/(iii) sub-parts.
 
 **NUMERICAL / PRACTICAL WEIGHTAGE (THE MOST COMMON FAILURE — READ CAREFULLY):**
@@ -4148,7 +4154,13 @@ ${isFullPaper
   }
 
   if (sqpData && sqpData.text) {
-    promptText += `\n\n**Reference Material (Official ${sqpData.year} Sample Paper Blueprint):**\nBelow is the General Instructions block extracted from the latest official CBSE sample question paper. This block outlines the exact paper pattern, number of sections, and mark distribution. Please strictly adhere to this exact structural template.\n\n**CRITICAL: DOWNSCALING REQUIRED:**\nSince this official reference pattern is for a full 80-mark / 3-hour exam, you MUST proportionally downscale the number of questions in each section to fit the target ${marks} Marks and ${duration} time limit requested above. Maintain the exact same ratio of MCQ vs Short Answer vs Long Answer questions, just fewer of them.\n\n<CBSE_PATTERN_BLUEPRINT>\n${sqpData.text}\n</CBSE_PATTERN_BLUEPRINT>`;
+    // Every stored pattern describes the full 80-mark board paper. Only a
+    // shorter paper needs scaling down; telling an 80-mark paper to shrink to
+    // 80 marks reads as a contradiction and invites the AI to drop questions.
+    const scalingNote = marks < 80
+      ? `\n\n**CRITICAL: DOWNSCALING REQUIRED:**\nSince this official reference pattern is for a full 80-mark / 3-hour exam, you MUST proportionally downscale the number of questions in each section to fit the target ${marks} Marks and ${duration} time limit requested above. Maintain the exact same ratio of MCQ vs Short Answer vs Long Answer questions, just fewer of them.`
+      : `\n\n**CRITICAL: MATCH THIS PATTERN EXACTLY:**\nThis paper is the same ${marks}-mark full-length format as the official reference below, so reproduce its structure exactly — the same number of questions, carrying the same marks, in the same order. Do NOT add, drop, merge or rescale any question.`;
+    promptText += `\n\n**Reference Material (Official ${sqpData.year} Sample Paper Blueprint):**\nBelow is the General Instructions block extracted from the latest official CBSE sample question paper. This block outlines the exact paper pattern, number of sections, and mark distribution. Please strictly adhere to this exact structural template.${scalingNote}\n\n<CBSE_PATTERN_BLUEPRINT>\n${sqpData.text}\n</CBSE_PATTERN_BLUEPRINT>`;
   } else {
     promptText += `\n\n**Reference Material:**\nPlease use your knowledge of the latest official CBSE sample question paper pattern to structure this paper, ensuring the correct ratio of competency-based questions and section-wise mark distribution.`;
   }
