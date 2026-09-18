@@ -4153,10 +4153,18 @@ ${isFullPaper
     promptText += `\n\n**BOARD EXAM CRITICAL INSTRUCTION:**\nSince this is for a Board Examination class (${className}), you MUST think hard, take your time, and double-check each and every question. Deeply analyze the Previous Year Question Papers (PYQs) and recent CBSE trends. Prioritize and include questions that have a very high probability of appearing in the upcoming CBSE board examination.`;
   }
 
-  if (sqpData && sqpData.text) {
-    // Every stored pattern describes the full 80-mark board paper. Only a
-    // shorter paper needs scaling down; telling an 80-mark paper to shrink to
-    // 80 marks reads as a contradiction and invites the AI to drop questions.
+  // The stored patterns describe the full-length board paper, and that is the
+  // only paper they should govern. A unit test or periodic assessment is a
+  // school exam with a shape of its own, already computed section by section
+  // above; handing it the board pattern as well gives the AI two competing
+  // structures and invites it to rebuild a 20-mark test as a 34-question board
+  // paper. Short exams fall through to the generic guidance instead.
+  const isFullLengthPaper = marks >= 75;
+
+  if (sqpData && sqpData.text && isFullLengthPaper) {
+    // Only a paper shorter than the 80-mark reference needs scaling down;
+    // telling an 80-mark paper to shrink to 80 marks reads as a contradiction
+    // and invites the AI to drop questions.
     const scalingNote = marks < 80
       ? `\n\n**CRITICAL: DOWNSCALING REQUIRED:**\nSince this official reference pattern is for a full 80-mark / 3-hour exam, you MUST proportionally downscale the number of questions in each section to fit the target ${marks} Marks and ${duration} time limit requested above. Maintain the exact same ratio of MCQ vs Short Answer vs Long Answer questions, just fewer of them.`
       : `\n\n**CRITICAL: MATCH THIS PATTERN EXACTLY:**\nThis paper is the same ${marks}-mark full-length format as the official reference below, so reproduce its structure exactly — the same number of questions, carrying the same marks, in the same order. Do NOT add, drop, merge or rescale any question.`;
