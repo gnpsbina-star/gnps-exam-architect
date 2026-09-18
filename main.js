@@ -1562,20 +1562,19 @@ function syncWorksheetDynamicScaling() {
 export function getExamDefaultDuration(examName, className = '', subjectName = '') {
   const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
   const subLower = (subjectName || '').toLowerCase().trim();
-  const exLower = (examName || '').toLowerCase().trim();
   if (isMiddle) {
     if (subLower.includes('robotics')) {
-      if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut") ||
-          exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+      if (isUnitTestExam(examName) ||
+          isPeriodicAssessmentExam(examName)) {
         return '20 Mins';
       }
       return '45 Minutes';
     }
     if (subLower.includes('general knowledge') || subLower.includes('gk')) {
-      if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+      if (isUnitTestExam(examName)) {
         return '20 Mins';
       }
-      if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+      if (isPeriodicAssessmentExam(examName)) {
         return '45 Mins';
       }
       return '90 Mins';
@@ -1591,19 +1590,19 @@ export function getExamDefaultDuration(examName, className = '', subjectName = '
                   subLower.includes("web app") || subLower.includes("yoga");
 
   if (isSkill) {
-    if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+    if (isUnitTestExam(examName)) {
       return "No Unit Test";
     }
-    if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+    if (isPeriodicAssessmentExam(examName)) {
       return "60 Mins";
     }
     return "120 Mins";
   }
 
-  if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+  if (isUnitTestExam(examName)) {
     return "45 Minutes";
   }
-  if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+  if (isPeriodicAssessmentExam(examName)) {
     return "90 Mins";
   }
 
@@ -1611,10 +1610,33 @@ export function getExamDefaultDuration(examName, className = '', subjectName = '
 }
 
 // Centralized helper to determine standard CBSE marks and duration for examinations
+// Which kind of exam a name refers to. getExamDefaultDetails sets the marks
+// from these, and the prompt builder decides from them whether a paper follows
+// the full board pattern, so both read the same definition.
+function isUnitTestExam(examName) {
+  const ex = (examName || '').toLowerCase().trim();
+  return ex.includes("unit test") || ex.includes("ut ") || ex.includes("ut-") || ex.startsWith("ut");
+}
+
+function isPeriodicAssessmentExam(examName) {
+  const ex = (examName || '').toLowerCase().trim();
+  return ex.includes("pa ") || ex.includes("periodic") || ex.includes("pt ") || ex.startsWith("pa") || ex.includes("pa-");
+}
+
+// Mid Term, Half Yearly, Pre Board, Annual and Final are all full-length papers
+// that follow the board pattern; unit tests, periodic assessments and
+// worksheets are school exams with a shape of their own. Decided from the exam
+// name, not the marks - a Class 12 Physics Final is 70 marks because of its
+// practical component and is still a board-pattern paper.
+function isBoardPatternExam(examName) {
+  if (!examName) return false;
+  if (isWorksheetMode(examName)) return false;
+  return !isUnitTestExam(examName) && !isPeriodicAssessmentExam(examName);
+}
+
 function getExamDefaultDetails(className, subjectName, examName) {
   const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
   const subLower = (subjectName || '').toLowerCase().trim();
-  const exLower = (examName || '').toLowerCase().trim();
 
   // Special School Configuration for Middle Wing GK & Robotics (Classes 6 to 8)
   if (isMiddle) {
@@ -1624,10 +1646,10 @@ function getExamDefaultDetails(className, subjectName, examName) {
       return { marks: 30, duration: "60 Mins" };
     }
     if (subLower.includes("general knowledge") || subLower.includes("gk")) {
-      if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+      if (isUnitTestExam(examName)) {
         return { marks: 10, duration: "20 Mins" };
       }
-      if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+      if (isPeriodicAssessmentExam(examName)) {
         return { marks: 20, duration: "45 Mins" };
       }
       return { marks: 40, duration: "90 Mins" };
@@ -1651,10 +1673,10 @@ function getExamDefaultDetails(className, subjectName, examName) {
   // - PA is half of 50M Annual = 25 Marks in 60 Mins
   // - Final / Pre-Board / Mid-Term = 50 Marks in 120 Mins
   if (isSkill) {
-    if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+    if (isUnitTestExam(examName)) {
       return { marks: 0, duration: "No Unit Test" };
     }
-    if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+    if (isPeriodicAssessmentExam(examName)) {
       return { marks: 25, duration: "60 Mins" };
     }
     return { marks: 50, duration: "120 Mins" };
@@ -1668,12 +1690,12 @@ function getExamDefaultDetails(className, subjectName, examName) {
   );
 
   // 1. Unit Tests: 45 Minutes (20 Marks standard)
-  if (exLower.includes("unit test") || exLower.includes("ut ") || exLower.includes("ut-") || exLower.startsWith("ut")) {
+  if (isUnitTestExam(examName)) {
     return { marks: 20, duration: "45 Minutes" };
   }
 
   // 2. Periodic Assessments (PA I, PA II, PT): 90 Mins
-  if (exLower.includes("pa ") || exLower.includes("periodic") || exLower.includes("pt ") || exLower.startsWith("pa") || exLower.includes("pa-")) {
+  if (isPeriodicAssessmentExam(examName)) {
     return { marks: 40, duration: "90 Mins" };
   }
 
@@ -4159,7 +4181,7 @@ ${isFullPaper
   // above; handing it the board pattern as well gives the AI two competing
   // structures and invites it to rebuild a 20-mark test as a 34-question board
   // paper. Short exams fall through to the generic guidance instead.
-  const isFullLengthPaper = marks >= 75;
+  const isFullLengthPaper = isBoardPatternExam(examName);
 
   if (sqpData && sqpData.text && isFullLengthPaper) {
     // Only a paper shorter than the 80-mark reference needs scaling down;
