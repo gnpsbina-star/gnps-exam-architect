@@ -1651,6 +1651,48 @@ function isBoardPatternExam(examName) {
   return !isUnitTestExam(examName) && !isPeriodicAssessmentExam(examName);
 }
 
+// Unseen reading is the one part of a language paper that scales with the exam
+// rather than with the chapters. A unit test carries none, a periodic
+// assessment carries exactly one passage, and only a full board-pattern paper
+// carries the whole set. The prompt module and the syllabus sheet both ask the
+// three helpers below, so the paper and the circular sent home cannot disagree
+// about how much reading a test contains.
+
+// "अपठित-अवबोधनम्" (unseen) contains "पठित-अवबोधनम्" (the seen textbook
+// comprehension section) as a substring, so the unseen test has to run first.
+// Checking for the seen section first silently classified every Sanskrit
+// reading section as literature, which is why Sanskrit unit tests kept their
+// unseen passage long after the other languages had lost theirs.
+function isUnseenReadingSectionKey(secKey) {
+  const s = String(secKey || '');
+  if (!s) return false;
+  if (s.includes('अपठित')) return true;
+  if (s.includes('पठित-अवबोधनम्')) return false;
+  return /reading/i.test(s);
+}
+
+// Within a reading section, only some rows are passages: Sanskrit lists the
+// passage and then the kinds of question asked about it. Single-select must
+// swap passages without taking the question-types row with it.
+function isUnseenPassageItem(itemText) {
+  const s = String(itemText || '');
+  if (!s) return false;
+  if (s.includes('गद्यांश') || s.includes('काव्यांश') || s.includes('पद्यांश')) return true;
+  return /unseen|passage|discursive|case-based/i.test(s);
+}
+
+// How many unseen passages this paper is allowed. Infinity means "whatever the
+// syllabus prescribes" - the full paper and worksheets are left exactly as they
+// were. marksVal is optional: the syllabus sheet has no marks field of its own
+// and decides on the exam name alone.
+function getAllowedUnseenPassages(examName, marksVal) {
+  if (isWorksheetMode(examName)) return Infinity;
+  const marks = parseInt(marksVal, 10);
+  if (isUnitTestExam(examName) || (!isNaN(marks) && marks <= 25)) return 0;
+  if (isPeriodicAssessmentExam(examName) || (!isNaN(marks) && marks <= 45)) return 1;
+  return Infinity;
+}
+
 function getExamDefaultDetails(className, subjectName, examName) {
   const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
   const subLower = (subjectName || '').toLowerCase().trim();
@@ -1757,14 +1799,42 @@ function updateExamDetails() {
   }
 }
 
+// A reading container is either one flat row with a single checkbox or a
+// collapsible group holding one per passage, so collect them all.
+function getReadingPassageCheckboxes() {
+  const seen = new Set();
+  const out = [];
+  document.querySelectorAll('.reading-section-item').forEach(container => {
+    container.querySelectorAll('input.chapter-cb').forEach(cb => {
+      if (seen.has(cb) || !isUnseenPassageItem(cb.value)) return;
+      seen.add(cb);
+      out.push(cb);
+    });
+  });
+  return out;
+}
+
+// Leaves exactly one passage ticked. keepCb is the one the teacher just picked,
+// so their choice wins over whatever happened to be ticked first.
+function enforceSingleReadingPassage(keepCb) {
+  const passages = getReadingPassageCheckboxes();
+  if (passages.length < 2) return null;
+
+  let keep = keepCb && passages.includes(keepCb) ? keepCb : passages.find(cb => cb.checked);
+  if (!keep) keep = passages[0];
+  passages.forEach(cb => { cb.checked = (cb === keep); });
+  return keep;
+}
+
 function toggleReadingSections() {
-  const examName = (examNameSelect.value || "").toLowerCase();
-  const marks = parseInt(marksInput.value, 10);
-  const isUnitTest = examName.includes("unit test") || (!isNaN(marks) && marks <= 25);
-  
+  const examName = examNameSelect.value || "";
+  const allowed = getAllowedUnseenPassages(examName, marksInput.value);
+  const hideReading = allowed === 0;
+  const singlePassage = allowed === 1;
+
   const readingHeaders = document.querySelectorAll('.reading-section-header');
   readingHeaders.forEach(header => {
-    if (isUnitTest) {
+    if (hideReading) {
       header.classList.add('unit-test-hidden');
       header.style.display = 'none';
     } else {
@@ -1775,38 +1845,43 @@ function toggleReadingSections() {
 
   const readingItems = document.querySelectorAll('.reading-section-item');
   readingItems.forEach(div => {
-    const cb = div.querySelector('input[type="checkbox"]');
-    if (isUnitTest) {
+    const cbs = Array.from(div.querySelectorAll('input[type="checkbox"]'));
+    if (hideReading) {
       div.classList.add('unit-test-hidden');
       div.style.display = 'none';
-      if (cb) {
-        cb.disabled = true;
-        cb.checked = false;
-      }
+      cbs.forEach(cb => { cb.disabled = true; cb.checked = false; });
     } else {
       div.classList.remove('unit-test-hidden');
-      div.style.display = 'flex';
+      // A flat row lays out as a flex line; a collapsible group is a card and
+      // must go back to its stylesheet default rather than being forced flex.
+      div.style.display = div.classList.contains('checkbox-item') ? 'flex' : '';
       div.style.opacity = '1';
-      if (cb) {
-        cb.disabled = false;
-      }
+      cbs.forEach(cb => { cb.disabled = false; });
     }
   });
 
+  if (singlePassage) enforceSingleReadingPassage(null);
+
   // Notice banner in syllabusContainer
   const existingNotice = document.getElementById('unitTestReadingNotice');
-  if (isUnitTest) {
-    if (!existingNotice && readingHeaders.length > 0) {
-      const notice = document.createElement('div');
-      notice.id = 'unitTestReadingNotice';
-      notice.style.cssText = "margin-bottom: 0.75rem; padding: 0.5rem 0.75rem; background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #f59e0b; border-radius: 6px; font-size: 0.8rem; color: #92400e; display: flex; align-items: center; gap: 8px;";
-      notice.innerHTML = `<span style="font-size: 1rem;">ℹ️</span> <span><strong>CBSE 20-Mark Unit Test Rule:</strong> Reading Section (Unseen Passages) is automatically disabled and excluded as per CBSE guidelines.</span>`;
-      const banner = syllabusContainer.querySelector('.prescribed-book-banner');
-      if (banner && banner.nextSibling) {
-        syllabusContainer.insertBefore(notice, banner.nextSibling);
-      } else {
-        syllabusContainer.prepend(notice);
+  const noticeText = hideReading
+    ? `<strong>Unit Test Rule:</strong> Reading Section (Unseen Passages) is automatically disabled and excluded as per CBSE guidelines.`
+    : `<strong>Periodic Assessment Rule:</strong> Only <strong>one</strong> unseen passage is set in a Periodic Assessment - ticking a passage releases the other.`;
+  if (hideReading || singlePassage) {
+    if (readingHeaders.length > 0) {
+      let notice = existingNotice;
+      if (!notice) {
+        notice = document.createElement('div');
+        notice.id = 'unitTestReadingNotice';
+        notice.style.cssText = "margin-bottom: 0.75rem; padding: 0.5rem 0.75rem; background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #f59e0b; border-radius: 6px; font-size: 0.8rem; color: #92400e; display: flex; align-items: center; gap: 8px;";
+        const banner = syllabusContainer.querySelector('.prescribed-book-banner');
+        if (banner && banner.nextSibling) {
+          syllabusContainer.insertBefore(notice, banner.nextSibling);
+        } else {
+          syllabusContainer.prepend(notice);
+        }
       }
+      notice.innerHTML = `<span style="font-size: 1rem;">ℹ️</span> <span>${noticeText}</span>`;
     }
   } else {
     if (existingNotice) {
@@ -1820,6 +1895,23 @@ function toggleReadingSections() {
   if (selectAllCb && allChapterCbs.length > 0) {
     selectAllCb.checked = allChapterCbs.every(cb => cb.checked);
   }
+}
+
+// A periodic assessment sets one unseen passage, so the passages behave as a
+// radio group: ticking one releases the other rather than refusing the click.
+// Registered on the capture phase because the bulk togglers (Select All, the
+// per-group badge) announce themselves with `new Event('change')`, which does
+// not bubble - a listener on the bubble phase would miss exactly the actions
+// most likely to hand back a second passage.
+if (syllabusContainer) {
+  syllabusContainer.addEventListener('change', (e) => {
+    const cb = e.target;
+    if (!cb || !cb.classList || !cb.classList.contains('chapter-cb')) return;
+    if (!cb.closest('.reading-section-item')) return;
+    if (!cb.checked || !isUnseenPassageItem(cb.value)) return;
+    if (getAllowedUnseenPassages(examNameSelect.value, marksInput.value) !== 1) return;
+    enforceSingleReadingPassage(cb);
+  }, true);
 }
 
 examNameSelect.addEventListener('change', () => {
@@ -2202,11 +2294,57 @@ function restoreMainPanelSyllabusState(cls, subj) {
   return true;
 }
 
+// Which passage the teacher picked while a one-passage exam was selected, keyed
+// by class, subject and section. Held apart from the selection store so that
+// choosing the case-based passage for a periodic assessment does not delete the
+// discursive one from the annual circular.
+const sheetPreferredPassage = {};
+
+function sheetPassageKey(cls, subjName, secKey) {
+  return `${cls}::${subjName}::${secKey || ''}`;
+}
+
+// The sheet stores what the teacher ticked; the exam decides how much of that
+// reaches the circular. Applied as a filtered view rather than by editing the
+// store, so switching a sheet from Unit Test back to Annual brings the second
+// passage back exactly as it was.
+function applySheetReadingPolicy(cls, subjName, checkedSet) {
+  const allowed = getAllowedUnseenPassages(getSelectedSheetExamName());
+  if (allowed === Infinity || !checkedSet) return checkedSet;
+
+  const readingItems = getFlatItemsForSubject(cls, subjName)
+    .filter(it => isUnseenReadingSectionKey(it.secKey));
+  if (readingItems.length === 0) return checkedSet;
+
+  const keysFor = it => it.secKey ? [it.value, `${it.secKey}: ${it.value}`] : [it.value];
+  const filtered = new Set(checkedSet);
+
+  if (allowed === 0) {
+    readingItems.forEach(it => keysFor(it).forEach(k => filtered.delete(k)));
+    return filtered;
+  }
+
+  // One passage only. The question-types rows that sit alongside the passage in
+  // the Sanskrit section are not passages and stay where they are.
+  const passages = readingItems.filter(it => isUnseenPassageItem(it.value));
+  const ticked = passages.filter(it => keysFor(it).some(k => filtered.has(k)));
+  if (ticked.length <= 1) return filtered;
+
+  const preferred = ticked.find(it =>
+    sheetPreferredPassage[sheetPassageKey(cls, subjName, it.secKey)] === it.value);
+  const keep = preferred || ticked[0];
+  ticked.forEach(it => {
+    if (it === keep) return;
+    keysFor(it).forEach(k => filtered.delete(k));
+  });
+  return filtered;
+}
+
 function getSubjectSelectionForSheet(cls, subjName) {
   const key = `${cls}::${subjName}`;
   const saved = sheetSelectionStore[key];
   if (saved && saved.initialized) {
-    return saved.checked;
+    return applySheetReadingPolicy(cls, subjName, saved.checked);
   }
 
   // Inherit active selections from Prompt Generation module if available (Unidirectional Sync)
@@ -2217,7 +2355,7 @@ function getSubjectSelectionForSheet(cls, subjName) {
       unchecked: new Set(promptSaved.unchecked),
       initialized: true
     };
-    return sheetSelectionStore[key].checked;
+    return applySheetReadingPolicy(cls, subjName, sheetSelectionStore[key].checked);
   }
 
   // Default to ALL prescribed items CHECKED for this subject on initial load
@@ -2232,7 +2370,7 @@ function getSubjectSelectionForSheet(cls, subjName) {
     unchecked: new Set(),
     initialized: true
   };
-  return sheetSelectionStore[key].checked;
+  return applySheetReadingPolicy(cls, subjName, sheetSelectionStore[key].checked);
 }
 
 // Render Syllabus Checklist in clean Sectionwise/Bookwise & Serial Order
@@ -2668,7 +2806,11 @@ function renderSyllabusChecklist(syllabusData) {
       );
 
       if (isChapterWithSubtopics) {
-        renderChapterWithSubtopics(key, value, syllabusContainer);
+        // Hindi and Sanskrit name their reading sections in Devanagari, so the
+        // heuristic above routes them through the collapsible renderer rather
+        // than the flat one. They are still reading sections and must carry the
+        // marker, or the unit-test and one-passage rules skip those languages.
+        renderChapterWithSubtopics(key, value, syllabusContainer, isUnseenReadingSectionKey(key));
       } else if (Array.isArray(value)) {
         const sectionHeader = document.createElement('div');
         sectionHeader.textContent = key;
@@ -2685,7 +2827,7 @@ function renderSyllabusChecklist(syllabusData) {
         sectionHeader.style.borderLeft = '4px solid #0284c7';
         sectionHeader.style.border = '1px solid #cbd5e1';
         sectionHeader.style.borderLeftWidth = '4px';
-        const isReadingSection = (key.includes("Reading") || key.includes("अपठित") || key.toLowerCase().includes("reading skills")) && !key.includes("पठित-अवबोधनम्");
+        const isReadingSection = isUnseenReadingSectionKey(key);
         if (isReadingSection) {
           sectionHeader.classList.add('reading-section-header');
         }
@@ -3627,8 +3769,23 @@ You MUST output the complete, publication-grade worksheet as a single, self-cont
   }
 }
 
+// Which of the prescribed unseen passages the teacher actually ticked, as
+// indexes into the syllabus's reading section in its own order. Every reading
+// instruction below is quoted for these passages only, so the prompt can never
+// ask the AI for a passage the paper does not contain - the contradiction that
+// had unit tests carrying "no reading section" and a Passage 2 word limit at
+// the same time.
+function getSelectedUnseenPassageIndexes() {
+  const passages = getReadingPassageCheckboxes();
+  const picked = [];
+  passages.forEach((cb, i) => {
+    if (cb.checked && !cb.disabled) picked.push(i);
+  });
+  return picked;
+}
+
 // Universal CBSE Diagram & Visual Protocol Generator (Inline Vector SVG)
-function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = false) {
+function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = false, unseenPassageCount = 2) {
   const subLower = (subjectName || '').toLowerCase();
   const marks = Number(marksVal) || 80;
   
@@ -3684,9 +3841,16 @@ function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = fa
     *   **Map Skill Frame (Section F / Geography):** When map questions are included, generate a clean schematic outline locator frame with labelled markers [A], [B], [C] representing specific Indian geographical/historical locations (e.g., dams, ports, major historical congress sessions) for identification.
     *   **Economics & Civics:** Comparative bar charts (e.g., GDP sector shares, formal vs informal credit) and flowcharts (e.g., judicial hierarchy, manufacturing stages).`;
   } else if (isEnglish) {
+    // No reading section means no passage to hang a chart on, and with a single
+    // passage the chart belongs in that one rather than in a Passage 2 the
+    // paper never sets.
+    if (unseenPassageCount < 1) return "";
+    const passageRef = unseenPassageCount >= 2
+      ? "Section A Passage 2 (Case-Based Factual Comprehension)"
+      : "Section A (the single unseen case-based / factual comprehension passage)";
     quotaText = `Mandate **1 clear statistical data infographic / chart** for Section A (Reading).`;
     subjectSpecificRules = `
-    *   **Case-Based Factual Passage Visual:** In Section A Passage 2 (Case-Based Factual Comprehension), generate an authentic inline vector SVG statistical infographic (bar graph, horizontal comparative chart, or pie chart with percentages and categories) illustrating the passage data. Include 2 to 3 questions in the passage that require students to read, extract, and interpret this visual chart.`;
+    *   **Case-Based Factual Passage Visual:** In ${passageRef}, generate an authentic inline vector SVG statistical infographic (bar graph, horizontal comparative chart, or pie chart with percentages and categories) illustrating the passage data. Include 2 to 3 questions in the passage that require students to read, extract, and interpret this visual chart.`;
   } else if (isCommerce) {
     let count = marks >= 70 ? "3 to 5" : "1 to 2";
     quotaText = `Mandate **${count} curve / flowchart / schedule diagrams**.`;
@@ -4001,18 +4165,32 @@ ${usesMark(2) ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
         ------------------------------------------------------------------------
 11. **NO ANSWERS OR MARKING SCHEMES (ZERO SOLUTION LEAKAGE):** Output ONLY the blank student question paper ready for direct printing. If any question asks the student to "Draw...", "Sketch...", "Construct...", or "Plot..." a diagram, output ONLY the question text—NEVER draw or print the completed diagram solution on the student question paper!`;
 
+  // Every reading instruction from here on is quoted for the passages the
+  // teacher actually ticked. A unit test ticks none, a periodic assessment
+  // ticks one, a full paper ticks the whole prescribed set - so the word
+  // limits, the chart mandate and the passage themes all describe the same
+  // paper the blueprint above describes.
+  const unseenPassageIdx = getSelectedUnseenPassageIndexes();
+  const unseenPassageCount = unseenPassageIdx.length;
+  const quoteLimitsFor = table => {
+    const row = table[className];
+    if (!row) return "";
+    return unseenPassageIdx.map(i => row[i]).filter(Boolean).join(' | ');
+  };
+
   if (subjectName.includes("English")) {
     const limits = {
-      "Class 6": "Passage 1 (Discursive, approx. 125 words) | Passage 2 (Case-based factual, approx. 75 words)",
-      "Class 7": "Passage 1 (Discursive, approx. 150 words) | Passage 2 (Case-based factual, approx. 100 words)",
-      "Class 8": "Passage 1 (Discursive, approx. 200 words) | Passage 2 (Case-based factual, approx. 100 words)",
-      "Class 9": "Passage 1 (Discursive, approx. 300 words) | Passage 2 (Case-based factual, approx. 150 words)",
-      "Class 10": "Passage 1 (Discursive, approx. 400 words) | Passage 2 (Case-based factual, approx. 200 words)",
-      "Class 11": "Passage 1 (Discursive, approx. 500 words) | Passage 2 (Case-based factual, approx. 300 words)",
-      "Class 12": "Passage 1 (Discursive, approx. 600 words) | Passage 2 (Case-based factual, approx. 400 words)"
+      "Class 6": ["Passage 1 (Discursive, approx. 125 words)", "Passage 2 (Case-based factual, approx. 75 words)"],
+      "Class 7": ["Passage 1 (Discursive, approx. 150 words)", "Passage 2 (Case-based factual, approx. 100 words)"],
+      "Class 8": ["Passage 1 (Discursive, approx. 200 words)", "Passage 2 (Case-based factual, approx. 100 words)"],
+      "Class 9": ["Passage 1 (Discursive, approx. 300 words)", "Passage 2 (Case-based factual, approx. 150 words)"],
+      "Class 10": ["Passage 1 (Discursive, approx. 400 words)", "Passage 2 (Case-based factual, approx. 200 words)"],
+      "Class 11": ["Passage 1 (Discursive, approx. 500 words)", "Passage 2 (Case-based factual, approx. 300 words)"],
+      "Class 12": ["Passage 1 (Discursive, approx. 600 words)", "Passage 2 (Case-based factual, approx. 400 words)"]
     };
-    if (limits[className]) {
-      promptText += `\n11. **English Reading Section Word Limits:** Ensure the unseen passages adhere to these limits: ${limits[className]}. These are approximate limits; you may increase the word limit by up to 10% if required to maintain passage quality.`;
+    const englishLimits = quoteLimitsFor(limits);
+    if (englishLimits) {
+      promptText += `\n11. **English Reading Section Word Limits:** Ensure the unseen passages adhere to these limits: ${englishLimits}. These are approximate limits; you may increase the word limit by up to 10% if required to maintain passage quality.`;
     }
 
     const selectedGrammarTopics = selectedChaptersData
@@ -4053,40 +4231,46 @@ ${usesMark(2) ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
 
   if (subjectName === "Hindi" || subjectName === "Hindi A") {
     const limits = {
-      "Class 6": "Passage 1 (Prose, approx. 100-150 words) | Passage 2 (Poem, approx. 50-70 words, 8-10 lines)",
-      "Class 7": "Passage 1 (Prose, approx. 150-200 words) | Passage 2 (Poem, approx. 70-80 words, 10-12 lines)",
-      "Class 8": "Passage 1 (Prose, approx. 200-220 words) | Passage 2 (Poem, approx. 80-100 words, 12-14 lines)"
+      "Class 6": ["Passage 1 (Prose, approx. 100-150 words)", "Passage 2 (Poem, approx. 50-70 words, 8-10 lines)"],
+      "Class 7": ["Passage 1 (Prose, approx. 150-200 words)", "Passage 2 (Poem, approx. 70-80 words, 10-12 lines)"],
+      "Class 8": ["Passage 1 (Prose, approx. 200-220 words)", "Passage 2 (Poem, approx. 80-100 words, 12-14 lines)"]
     };
-    if (limits[className]) {
-      promptText += `\n11. **Hindi Reading Section Word Limits:** Ensure the unseen passages adhere to these limits: ${limits[className]}. These are approximate limits; you may increase the word limit by up to 10% if required to maintain passage quality.`;
+    const hindiLimits = quoteLimitsFor(limits);
+    if (hindiLimits) {
+      promptText += `\n11. **Hindi Reading Section Word Limits:** Ensure the unseen passages adhere to these limits: ${hindiLimits}. These are approximate limits; you may increase the word limit by up to 10% if required to maintain passage quality.`;
     }
   }
 
   if (subjectName === "Hindi B" || subjectName.includes("Hindi B") || subjectName.includes("085")) {
     const limits = {
-      "Class 9": "Passage 1 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words) | Passage 2 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)",
-      "Class 10": "Passage 1 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words) | Passage 2 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)"
+      "Class 9": ["Passage 1 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)", "Passage 2 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)"],
+      "Class 10": ["Passage 1 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)", "Passage 2 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)"]
     };
-    if (limits[className]) {
-      promptText += `\n11. **Hindi Reading Section Word Limits:** Ensure the unseen passages strictly adhere to these limits: ${limits[className]}. Passages must be intellectually rich, engaging, and strictly NOT LESS THAN 200 words each.`;
+    const hindiBLimits = quoteLimitsFor(limits);
+    if (hindiBLimits) {
+      promptText += `\n11. **Hindi Reading Section Word Limits:** Ensure the unseen passages strictly adhere to these limits: ${hindiBLimits}. Passages must be intellectually rich, engaging, and strictly NOT LESS THAN 200 words each.`;
     }
   }
 
   if (subjectName.includes("Sanskrit")) {
     const limits = {
-      "Class 6": "1 Passage (approx. 40-50 words, 4-5 simple sentences)",
-      "Class 7": "1 Passage (approx. 50-60 words)",
-      "Class 8": "1 Passage (approx. 60-80 words)"
+      "Class 6": ["1 Passage (approx. 40-50 words, 4-5 simple sentences)"],
+      "Class 7": ["1 Passage (approx. 50-60 words)"],
+      "Class 8": ["1 Passage (approx. 60-80 words)"]
     };
-    if (limits[className]) {
-      promptText += `\n11. **Sanskrit Reading Section Word Limits:** Ensure the unseen passage adheres to these limits: ${limits[className]}. These are approximate limits; you may increase the word limit by up to 10% if required to maintain passage quality.`;
+    const sanskritLimits = quoteLimitsFor(limits);
+    if (sanskritLimits) {
+      promptText += `\n11. **Sanskrit Reading Section Word Limits:** Ensure the unseen passage adheres to these limits: ${sanskritLimits}. These are approximate limits; you may increase the word limit by up to 10% if required to maintain passage quality.`;
     }
   }
 
   const isLanguageSubject = subjectName.includes("English") || subjectName.includes("Hindi") || subjectName.includes("Sanskrit");
-  if (isLanguageSubject) {
+  if (isLanguageSubject && unseenPassageCount > 0) {
+    const passageScope = unseenPassageCount >= 2
+      ? `All unseen reading comprehension passages (both Discursive/Reflective and Case-Based)`
+      : `The unseen reading comprehension passage`;
     promptText += `\n\n**INSPIRATIONAL & VALUE-BASED PASSAGE THEMES (MANDATORY CHARACTER BUILDING):**
-All unseen reading comprehension passages (both Discursive/Reflective and Case-Based) MUST carry a powerful, subtle underlying theme that inspires students to be compassionate, resilient, and good human beings.
+${passageScope} MUST carry a powerful, subtle underlying theme that inspires students to be compassionate, resilient, and good human beings.
 Anchor the passages in timeless human values:
 1. **Empathy, Kindness & Inclusivity:** Treating everyone with dignity, supporting the vulnerable, and understanding another's struggle.
 2. **Moral Integrity & Honesty:** Living with truthfulness and moral courage, choosing what is right over what is easy.
@@ -4097,8 +4281,10 @@ Anchor the passages in timeless human values:
   }
 
   if (isLanguageSubject) {
-    promptText += `\n12. **Assertion-Reasoning & Statement Evaluation in Language Papers:**
-    *   **In Reading Section (Unseen Passages):** ${marks >= 75 ? "Embed 1–2 Statement-Evaluation / Assertion-Reasoning questions (testing author's intent, cause-and-effect, and inference)." : marks >= 40 ? "Embed 1 Statement-Evaluation / Cause-and-Effect question in the reading comprehension passage." : "Keep questions direct and focused on core comprehension within the 45-minute limit."}
+    const readingBullet = unseenPassageCount > 0
+      ? `\n    *   **In Reading Section (Unseen Passages):** ${marks >= 75 ? "Embed 1–2 Statement-Evaluation / Assertion-Reasoning questions (testing author's intent, cause-and-effect, and inference)." : marks >= 40 ? "Embed 1 Statement-Evaluation / Cause-and-Effect question in the reading comprehension passage." : "Keep questions direct and focused on core comprehension within the 45-minute limit."}`
+      : ``;
+    promptText += `\n12. **Assertion-Reasoning & Statement Evaluation in Language Papers:**${readingBullet}
     *   **In Literature Section (RTC Extracts):** ${marks >= 75 ? "Include 1 Statement 1 vs Statement 2 relationship analysis question in the prose/drama extract." : "Ensure RTC questions test contextual literary analysis."}
     *   **In Grammar Section:** Strictly follow official CBSE MCQ / gap-filling / transformation formats (do NOT force artificial A-R templates into grammar).`;
   } else {
@@ -4106,7 +4292,7 @@ Anchor the passages in timeless human values:
     *   **${usesLetteredSections ? `Section A Mandate` : `Assertion-Reasoning Mandate`}:** Ensure Assertion-Reasoning questions use standard CBSE format: 'Assertion (A)' followed by 'Reason (R)', with options (a) Both A and R are true and R is correct explanation, (b) Both true but R is not correct explanation, (c) A is true R is false, (d) A is false R is true.`;
   }
 
-  if (examName.includes("Unit Test") && isLanguageSubject) {
+  if (isLanguageSubject && unseenPassageCount === 0) {
     promptText += `\n13. **NO READING SECTION (UNIT TEST):** Since this is a 45-minute Unit Test, completely EXCLUDE the long Reading Section (no unseen passages). Distribute the marks originally allocated to the reading section among Grammar, Writing, and Literature.`;
   }
 
@@ -4199,7 +4385,7 @@ ${isFullPaper
     }
   }
 
-  const diagramProtocol = buildDiagramProtocol(className, subjectName, marks, false);
+  const diagramProtocol = buildDiagramProtocol(className, subjectName, marks, false, unseenPassageCount);
   if (diagramProtocol) {
     promptText += diagramProtocol;
   }
@@ -6152,6 +6338,15 @@ function handleInlineCheckboxChange(cb) {
   const sec = cb.dataset?.section || cb.getAttribute('data-section') || '';
   const subGroup = cb.dataset?.subgroup || cb.getAttribute('data-subgroup') || '';
   if (!subj || !val) return;
+
+  // A periodic assessment sets one unseen passage, so the passages in that grid
+  // behave as a radio group. Recording the choice - rather than unticking the
+  // sibling - keeps the other passage in the store, so the same sheet switched
+  // back to the annual exam still carries both.
+  const grid = cb.closest('.sheet-topic-selector-grid[data-single-passage="1"]');
+  if (grid && cb.checked && isUnseenPassageItem(val)) {
+    sheetPreferredPassage[sheetPassageKey(cls, subj, sec)] = val;
+  }
   const isChecked = cb.checked;
   const key = `${cls}::${subj}`;
 
@@ -6750,7 +6945,12 @@ function renderSyllabusSheetPaper() {
       const sectionBlocks = [];
 
       // A. Standard non-literature sections (Reading, Writing, Grammar, or standard book)
+      // A unit test sets no unseen passage at all, so its reading section is
+      // dropped from the circular outright rather than printed empty - a row of
+      // tickable passages that can never reach the paper only misleads.
+      const sheetPassageAllowance = getAllowedUnseenPassages(getSelectedSheetExamName());
       nonLitKeys.forEach(secKey => {
+        if (sheetPassageAllowance === 0 && isUnseenReadingSectionKey(secKey)) return;
         const secVal = subjSyllabus[secKey];
         const isWritingSection = /writing|लेखन|रचनात्मक/i.test(secKey);
         const isNestedGroup = typeof secVal === 'object' && !Array.isArray(secVal) && secVal !== null;
@@ -6838,7 +7038,7 @@ function renderSyllabusSheetPaper() {
             </div>
             <!-- On-screen view: only checkboxes -->
             <div class="portion-screen-selector">
-              <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}" data-section="${secKey}">
+              <div class="sheet-topic-selector-grid no-print" data-subject="${subjName}" data-section="${secKey}"${sheetPassageAllowance === 1 && isUnseenReadingSectionKey(secKey) ? ' data-single-passage="1"' : ''}>
                 ${parsed.map(it => `
                   <label class="sheet-ch-customizer-item">
                     <input type="checkbox" class="sheet-inline-cb no-print" data-subject="${subjName}" data-section="${secKey}" data-val="${it.raw.replace(/"/g, '&quot;')}" ${it.isChecked ? 'checked' : ''}>
