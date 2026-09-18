@@ -39,7 +39,8 @@ Mark distribution, numbered continuously across both parts:
   Questions 17 to 20, 31 and 32 carry 3 marks each.
   Questions 21, 22 and 33 carry 4 marks each.
   Questions 23 to 26 and 34 carry 6 marks each.
-There is no overall choice; internal choice is provided in 7 questions.
+There is no overall choice. Internal choice is provided in 12 questions:
+7 questions of 1 mark, 2 of 3 marks, 1 of 4 marks and 2 of 6 marks.
 Accountancy never uses 2-mark or 5-mark questions.`
   },
 
