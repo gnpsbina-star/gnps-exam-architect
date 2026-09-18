@@ -1,5 +1,5 @@
 import { cbseData } from './data.js?v=36';
-import { getSqpBlueprint } from './sqp_blueprints.js?v=1';
+import { getSqpBlueprint, accountancyPaper } from './sqp_blueprints.js?v=2';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
 
@@ -764,8 +764,8 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   }
   // 8. Accountancy (Class 11-12): CBSE does not use the generic A-E template
   // here. The real paper is split into Part A and Part B by syllabus content,
-  // and its questions run on a 1 / 3 / 4 / 6 mark ladder with no 2 or 5 mark
-  // questions at all. Class 11 mirrors the same ladder against its own 56 / 24
+  // and its questions run on the mark ladder declared by accountancyPaper in
+  // sqp_blueprints.js. Class 11 mirrors the same ladder against its own
   // syllabus weighting (Financial Accounting I and II).
   else if (marks >= 75 && (className === "Class 11" || className === "Class 12") && subLower.includes("account")) {
     const isTwelve = className === "Class 12";
@@ -1618,7 +1618,7 @@ export function getExamDefaultDuration(examName, className = '', subjectName = '
 function getSubjectMarkProfile(className, subjectName) {
   const sub = (subjectName || '').toLowerCase();
   if ((className === 'Class 11' || className === 'Class 12') && sub.includes('account')) {
-    return { marks: [1, 3, 4, 6], caseBased: false };
+    return { marks: accountancyPaper.markLadder, caseBased: false };
   }
   return null;
 }
@@ -4126,12 +4126,17 @@ Anchor the passages in timeless human values:
   const isMiddle = (className === 'Class 6' || className === 'Class 7' || className === 'Class 8');
   if (subLower.includes("account") && (className === "Class 11" || className === "Class 12")) {
     const isFullPaper = marks >= 75;
+    // Marks come from accountancyPaper; the wording is this prompt's own.
+    const accParts = accountancyPaper.parts[className] || accountancyPaper.parts["Class 12"];
     const partALabel = className === "Class 12"
-      ? "Part A (Accounting for Partnership Firms & Companies, 60 Marks)"
-      : "Part A (Financial Accounting - I, 56 Marks)";
+      ? `Part A (Accounting for Partnership Firms & Companies, ${accParts.a.marks} Marks)`
+      : `Part A (Financial Accounting - I, ${accParts.a.marks} Marks)`;
     const partBLabel = className === "Class 12"
-      ? "Part B (Analysis of Financial Statements, 20 Marks — state on the paper that candidates attempt EITHER this OR Computerised Accounting)"
-      : "Part B (Financial Accounting - II, 24 Marks)";
+      ? `Part B (Analysis of Financial Statements, ${accParts.b.marks} Marks — state on the paper that candidates attempt EITHER this OR Computerised Accounting)`
+      : `Part B (Financial Accounting - II, ${accParts.b.marks} Marks)`;
+    const accLadderText = accountancyPaper.markLadder.join(', ').replace(/, (\d+)$/, ' and $1');
+    const accExcludedText = accountancyPaper.excludedMarks.map(m => `a ${m}-mark`).join(' or ');
+    const accIC = accountancyPaper.internalChoice;
     const sixMarkTopics = className === "Class 12"
       ? "Admission / Retirement / Death of a partner, Dissolution of a firm, Issue & Forfeiture of Shares, Issue and Redemption of Debentures, Cash Flow Statement"
       : "Bank Reconciliation Statement, Depreciation (Straight Line & Written Down Value), Trial Balance & Rectification of Errors, Financial Statements of a Sole Proprietorship with adjustments";
@@ -4153,10 +4158,10 @@ Anchor the passages in timeless human values:
 
     promptText += `\n\n**CBSE ACCOUNTANCY PAPER DESIGN (MANDATORY — THIS SUBJECT DOES NOT USE THE GENERIC SECTION A-E TEMPLATE):**
 ${isFullPaper
-  ? `*   **Two Parts, not lettered sections:** The paper is divided into ${partALabel} and ${partBLabel}. Number the questions continuously from Q1 to Q34 across both parts — do NOT restart numbering in Part B and do NOT label the parts as "Section A/B/C/D/E".`
+  ? `*   **Two Parts, not lettered sections:** The paper is divided into ${partALabel} and ${partBLabel}. Number the questions continuously from Q1 to Q${accountancyPaper.totalQuestions} across both parts — do NOT restart numbering in Part B and do NOT label the parts as "Section A/B/C/D/E".`
   : `*   **No Part A / Part B here:** that split belongs to the full ${className === "Class 12" ? "80-mark board-pattern" : "80-mark"} paper. This is a short internal test drawn from the selected chapters only, which may all sit within one part. Print it as ONE continuous run of questions numbered from Q1, with no Part or lettered Section headings.`}
-*   **Mark ladder:** Accountancy uses ONLY 1, 3, 4 and 6 mark questions. **NEVER set a 2-mark or a 5-mark question in this subject.**
-*   **Internal choice:** ${isFullPaper ? "Provide internal choice in 12 questions, exactly as CBSE does: 7 of the 1-mark questions, 2 of the 3-mark, 1 of the 4-mark and 2 of the 6-mark." : "Provide internal choice in the 6-mark numerical, and in one 3-mark or 4-mark question."}
+*   **Mark ladder:** Accountancy uses ONLY ${accLadderText} mark questions. **NEVER set ${accExcludedText} question in this subject.**
+*   **Internal choice:** ${isFullPaper ? `Provide internal choice in ${accIC.total} questions, exactly as CBSE does: ${accIC.byMark[1]} of the 1-mark questions, ${accIC.byMark[3]} of the 3-mark, ${accIC.byMark[4]} of the 4-mark and ${accIC.byMark[6]} of the 6-mark.` : "Provide internal choice in the 6-mark numerical, and in one 3-mark or 4-mark question."}
 *   **4-mark questions are numericals**, not case-based questions with (i)/(ii)/(iii) sub-parts.
 
 **NUMERICAL / PRACTICAL WEIGHTAGE (THE MOST COMMON FAILURE — READ CAREFULLY):**
