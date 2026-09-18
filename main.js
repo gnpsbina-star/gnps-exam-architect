@@ -446,8 +446,12 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   if (isAccountancy && marks > 0 && marks < 75) {
     const isShortTest = marks <= 25;
     sections = isShortTest ? [
-      { name: "Objective", type: "MCQ / Assertion-Reasoning / Fill-ups", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "Compulsory" },
-      { name: "Short Answer", type: "Practical working (entries / ledger / short computation)", count: 3, unitMark: 3, marksPerQ: "3 Marks", total: 9, choice: "Internal choice in 1 Q" },
+      // Mirrors Part B of the board paper exactly (4 + 6 + 4 + 6 = 20), so a
+      // unit test drills the same four rungs as the full paper - including the
+      // 4-mark numerical, which the student would otherwise never meet here.
+      { name: "Objective", type: "MCQ / Assertion-Reasoning / Fill-ups", count: 4, unitMark: 1, marksPerQ: "1 Mark", total: 4, choice: "Compulsory" },
+      { name: "Short Answer", type: "Practical working (entries / ledger / short computation)", count: 2, unitMark: 3, marksPerQ: "3 Marks", total: 6, choice: "Internal choice in 1 Q" },
+      { name: "Short Answer - numerical", type: "Numerical problem", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "Internal choice" },
       { name: "Long Answer", type: "Full numerical problem", count: 1, unitMark: 6, marksPerQ: "6 Marks", total: 6, choice: "Internal choice" }
     ] : [
       { name: "Objective", type: "MCQ / Assertion-Reasoning / Fill-ups", count: 8, unitMark: 1, marksPerQ: "1 Mark", total: 8, choice: "Compulsory" },
