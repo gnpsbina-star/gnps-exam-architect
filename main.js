@@ -1610,6 +1610,19 @@ export function getExamDefaultDuration(examName, className = '', subjectName = '
 }
 
 // Centralized helper to determine standard CBSE marks and duration for examinations
+// Some CBSE subjects set their paper on a fixed ladder of mark values, and the
+// generic typology guidance is filtered against it so a paper is never handed
+// rules for a mark value it cannot contain. Accountancy is set only on 1, 3, 4
+// and 6 marks, and its 4-mark questions are numericals rather than the
+// case-based (i)/(ii)/(iii) format the generic rules describe.
+function getSubjectMarkProfile(className, subjectName) {
+  const sub = (subjectName || '').toLowerCase();
+  if ((className === 'Class 11' || className === 'Class 12') && sub.includes('account')) {
+    return { marks: [1, 3, 4, 6], caseBased: false };
+  }
+  return null;
+}
+
 // Which kind of exam a name refers to. getExamDefaultDetails sets the marks
 // from these, and the prompt builder decides from them whether a paper follows
 // the full board pattern, so both read the same definition.
@@ -3775,6 +3788,18 @@ export async function buildPromptString(activeBtn) {
     generateBtn.innerHTML = activeBtn._originalHtml;
   }
   
+  // Subjects with a fixed mark ladder only receive the typology rules that can
+  // actually apply to them (see getSubjectMarkProfile).
+  const markProfile = getSubjectMarkProfile(className, subjectName);
+  const usesMark = n => !markProfile || markProfile.marks.includes(n);
+  const usesCaseBased = !markProfile || markProfile.caseBased !== false;
+
+  const constructedResponseLines = [
+    usesMark(2) ? `         - Very Short Answer (VSA - 2 Marks, 30\u2013\u200950 words, exactly 2 distinct marking scheme points).` : null,
+    usesMark(3) ? `         - Short Answer (SA - 3 Marks, 50\u201380 words, exactly 3 distinct step-wise points).` : null,
+    usesMark(5) ? `         - Long Answer (LA - 5 Marks, sub-divided into structured sub-parts e.g. (a) 2M + (b) 2M + (c) 1M or (a) 3M + (b) 2M, with 100% internal choice).` : null
+  ].filter(Boolean).join('\n');
+
   let difficultyDistribution = "";
   if (difficulty === "Balanced") {
     difficultyDistribution = `\n*   **Official CBSE Board Examination Typology & Weightage Matrix (BALANCED / STANDARD BOARD LEVEL):**
@@ -3786,9 +3811,7 @@ export async function buildPromptString(activeBtn) {
       2. **Select Response / Foundational Objective Questions (20% Weightage):**
          - Direct NCERT conceptual recall, standard definitions, scientific laws, SI units, and chemical/mathematical nomenclature.
       3. **Constructed Response & Step-Marking Questions (30% Weightage):**
-         - Very Short Answer (VSA - 2 Marks, 30–50 words, exactly 2 distinct marking scheme points).
-         - Short Answer (SA - 3 Marks, 50–80 words, exactly 3 distinct step-wise points).
-         - Long Answer (LA - 5 Marks, sub-divided into structured sub-parts e.g. (a) 2M + (b) 2M + (c) 1M or (a) 3M + (b) 2M, with 100% internal choice).
+${constructedResponseLines}
     - **Official CBSE Sourcing Matrix (To guarantee 100% board score preparation):**
       1. **NCERT Main Textbooks** (In-text activities, solved examples, diagram activities, and chapter-end exercises) -> ~50% of questions.
       2. **NCERT Exemplar Problems** (Standard-level conceptual MCQs, Assertion-Reasoning & structured analytical questions) -> ~25% of questions.
@@ -3802,7 +3825,7 @@ export async function buildPromptString(activeBtn) {
          - Multi-variable conceptual MCQs and non-routine Assertion-Reasoning questions.
       2. **Structured Constructed Response & Step-Marking Questions (30% Weightage):**
          - Multi-step numerical calculations, derivations with step-marking, and analytical proofs requiring complete formulas, SI units, and Cartesian signs.
-         - Rigorous 5-Mark Long Answer questions with structured sub-parts and 100% internal choice.
+${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structured sub-parts and 100% internal choice.` : `         - Rigorous full-length questions at this subject's highest mark value, with structured working and 100% internal choice.`}
       3. **High-Precision Objective Questions (10% Weightage):**
          - Diagnostic MCQs with plausible distractors targeting tricky student misconceptions identified in CBSE Board Evaluation Reports.
     - **Official CBSE Sourcing Matrix (Advanced Rigor):**
@@ -3938,23 +3961,23 @@ ${blueprintPromptText}
           *(b) Both Assertion (A) and Reason (R) are true, but Reason (R) is NOT the correct explanation of Assertion (A).*
           *(c) Assertion (A) is true, but Reason (R) is false.*
           *(d) Assertion (A) is false, but Reason (R) is true.*
-    *   **2-Mark Very Short Answer (VSA) Questions:**
+${usesMark(2) ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
         - Word limit: 30–50 words. Formulate questions so students provide **exactly 2 distinct marking points** (1M each or 0.5M × 4), matching official CBSE Marking Scheme value points.
-    *   **3-Mark Short Answer (SA) Questions:**
+` : ''}${usesMark(3) ? `    *   **3-Mark Short Answer (SA) Questions:**
         - Word limit: 50–80 words. Formulate questions so answers require **3 distinct step-wise value points** (or a structured 2M + 1M split).
-    *   **5-Mark Long Answer (LA) Questions:**
+` : ''}${usesMark(5) ? `    *   **5-Mark Long Answer (LA) Questions:**
         - **CBSE Board Rule:** Never frame an unstructured single 5-mark essay. All 5-mark questions MUST be sub-divided into structured sub-parts (e.g., '(a) [2 Marks] + (b) [2 Marks] + (c) [1 Mark]' or '(a) [3 Marks] + (b) [2 Marks]'), exactly as official CBSE Board SQPs do.
         - **100% Internal Choice:** Provide mandatory internal choice between two questions testing the same chapter and skill level.
-    *   **4-Mark Case-Based Questions (CBQs):**
+` : ''}${usesCaseBased ? `    *   **4-Mark Case-Based Questions (CBQs):**
         - Authentic real-world case/scenario, diagram, or data table from NCERT or CBSE Question Bank followed by:
           - (i) 1 Mark (factual/conceptual)
           - (ii) 1 Mark (analytical/application)
           - (iii) 2 Marks (higher-order reasoning) with **Internal Choice: (iii) Option A (2M) OR Option B (2M)**.
-    *   **Miniature Scaling for Unit Tests (20 Marks) & Periodic Assessments (40 Marks):**
+` : ''}${(usesMark(2) && usesMark(5)) ? `    *   **Miniature Scaling for Unit Tests (20 Marks) & Periodic Assessments (40 Marks):**
         - For a 20-Mark Unit Test (45 Min): 5 Objective Questions (4 MCQs + 1 A/R) [5M], 2 VSA [4M], 2 SA [6M], 1 LA / Case Study with internal choice [5M] = 20 Marks.
         - For a 40-Mark Periodic Assessment (90 Min): 10 Objective Questions (8 MCQs + 2 A/R) [10M], 3 VSA [6M], 3 SA [9M], 1 LA [5M], 2 Case Studies [10M] = 40 Marks.
         - Every examination, regardless of duration, builds authentic board exam presentation habits and time-management skills from Day 1.
-    *   **100% Score Presentation Rigor (Marking Scheme Value Points):**
+` : ''}    *   **100% Score Presentation Rigor (Marking Scheme Value Points):**
         - Formulate questions requiring explicit formula statements, correct Cartesian sign conventions (+/-), final numerical answers with mandatory SI units (m, s, N, J, W, Pa, Ω, A, V, etc.), 100% balanced chemical equations with state symbols (s, l, g, aq), labeled biological diagrams with pointer lines, and clean schematic circuit symbols. Strict penalty cues train students for zero mark-deduction in board examinations.
 9.  **Strict Rationalization & Strict Syllabus Confinement:**
     *   Strictly **EXCLUDE** all deleted topics/chapters rationalized by CBSE/NCERT for ${fullSubjectDisplay} in ${className}.
@@ -4134,7 +4157,7 @@ ${isFullPaper
   : `*   **No Part A / Part B here:** that split belongs to the full ${className === "Class 12" ? "80-mark board-pattern" : "80-mark"} paper. This is a short internal test drawn from the selected chapters only, which may all sit within one part. Print it as ONE continuous run of questions numbered from Q1, with no Part or lettered Section headings.`}
 *   **Mark ladder:** Accountancy uses ONLY 1, 3, 4 and 6 mark questions. **NEVER set a 2-mark or a 5-mark question in this subject.**
 *   **Internal choice:** ${isFullPaper ? "Provide internal choice in 12 questions, exactly as CBSE does: 7 of the 1-mark questions, 2 of the 3-mark, 1 of the 4-mark and 2 of the 6-mark." : "Provide internal choice in the 6-mark numerical, and in one 3-mark or 4-mark question."}
-*   **This overrides the general typology guidance above for this subject:** ignore the 2-mark VSA and 5-mark LA rules entirely, and treat the 4-mark questions as numerical problems rather than case-based questions with (i)/(ii)/(iii) sub-parts.
+*   **4-mark questions are numericals**, not case-based questions with (i)/(ii)/(iii) sub-parts.
 
 **NUMERICAL / PRACTICAL WEIGHTAGE (THE MOST COMMON FAILURE — READ CAREFULLY):**
 *   Accountancy is a **practical, problem-solving subject**. A paper of definitions and theory is WRONG and will not prepare the student.
