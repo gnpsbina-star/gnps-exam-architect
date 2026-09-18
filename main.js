@@ -1474,7 +1474,7 @@ ${repoSqp.text}
       </div>
     </div>
 
-    <div style="overflow-x: auto; margin-top: 0.25rem;">
+    <div class="blueprint-table-wrap" style="overflow-x: auto; margin-top: 0.25rem;">
       <table class="blueprint-table">
         <thead>
           <tr>
