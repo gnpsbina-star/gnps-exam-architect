@@ -44,6 +44,8 @@
   --c-text-bright: #f1f5f9;
   --c-input-text: #ffffff;
   --c-success-bright: #4ade80;
+  --c-success-vivid: #22c55e;
+  --rgb-success: 34, 197, 94;
   --c-violet: #c084fc;
   --c-violet-soft: #a78bfa;
   --c-warn: #fbbf24;
@@ -4627,16 +4629,16 @@ div.portion-print-summary {
    Warm paper light theme.
    --------------------------------------------------------------- */
 :root[data-theme="light"] {
-  --c-accent: #1e3a5f;
-  --c-accent-bright: #1e3a5f;
-  --c-accent-deepest: #132538;
-  --c-accent-pale: #2d5580;
-  --c-accent-strong: #16293f;
+  --c-accent: #2e3092;
+  --c-accent-bright: #2e3092;
+  --c-accent-deepest: #191a52;
+  --c-accent-pale: #4a4cb0;
+  --c-accent-strong: #1f2168;
   --c-error: #b91c1c;
   --c-error-hard: #b91c1c;
   --c-error-soft: #b91c1c;
   --c-error-text: #b91c1c;
-  --c-info: #1e40af;
+  --c-info: #2e3092;
   --c-line-mid: #cfc7b8;
   --c-line-raised: #e7e2d9;
   --c-line-strong: #ddd5c7;
@@ -4657,28 +4659,30 @@ div.portion-print-summary {
   --c-text-bright: #292524;
   --c-input-text: #292524;
   --c-success-bright: #125c2c;
+  --c-success-vivid: #125c2c;
+  --rgb-success: 18, 92, 44;
   --c-violet: #5b3fa0;
   --c-violet-soft: #6d4fb8;
   --c-warn: #b45309;
   --c-warn-soft: #92400e;
-  --rgb-accent: 30, 58, 95;
-  --rgb-accent-deep: 22, 41, 63;
-  --rgb-accent-sky: 30, 58, 95;
+  --rgb-accent: 46, 48, 146;
+  --rgb-accent-deep: 31, 33, 104;
+  --rgb-accent-sky: 46, 48, 146;
   --rgb-shadow: 120, 103, 80;
   --rgb-surface: 252, 249, 243;
   --rgb-surface-alt: 246, 241, 232;
   --rgb-surface-ink: 250, 246, 238;
   --rgb-surface-ink2: 250, 246, 238;
   --rgb-veil: 120, 103, 80;
-  --primary: #1e3a5f;
-  --primary-hover: #16293f;
-  --primary-light: #2d5580;
+  --primary: #2e3092;
+  --primary-hover: #1f2168;
+  --primary-light: #4a4cb0;
   --secondary: #5b4b8a;
   --text-main: #292524;
   --text-muted: #78716c;
   --success: #15803d;
   --error: #b91c1c;
-  --input-focus: #1e3a5f;
+  --input-focus: #2e3092;
 
   /* Legacy variables from before the token layer. */
   --bg-gradient: linear-gradient(135deg, #faf8f4 0%, #f5f1e8 50%, #faf8f4 100%);
@@ -4686,7 +4690,7 @@ div.portion-print-summary {
   --glass-border: rgba(41, 37, 36, 0.10);
   --glass-shadow: 0 6px 24px -8px rgba(120, 103, 80, 0.22);
   --input-bg: #fffdf9;
-  --input-border: rgba(30, 58, 95, 0.28);
+  --input-border: rgba(46, 48, 146, 0.28);
 }
 
 /* Warm paper has no photograph behind it, so the page is a flat cream and the
@@ -4828,4 +4832,152 @@ div.portion-print-summary {
 
 :root[data-theme="light"] .chapter-toggle-icon {
   color: #6f6862;
+}
+
+/* ---------------------------------------------------------------
+   Light-theme legibility corrections (round 2)
+   Controls whose dark styling assumed a light-on-dark relationship and
+   collapsed to low contrast once the surface flipped.
+   --------------------------------------------------------------- */
+
+/* Placeholder grey was pale enough to read as an empty field. */
+:root[data-theme="light"] ::placeholder {
+  color: #6f6862;
+  opacity: 1;
+}
+
+/* This badge sits inside an accent-filled header, so a translucent accent
+   background left it the same colour as its own text. */
+:root[data-theme="light"] .qs-formula-badge {
+  background: #ffffff;
+  color: #2e3092;
+  border-color: rgba(46, 48, 146, 0.35);
+}
+
+:root[data-theme="light"] .qs-preset-btn {
+  background: #fffdf9;
+  border-color: #ddd5c7;
+  color: #4a443e;
+}
+
+:root[data-theme="light"] .qs-preset-btn:hover,
+:root[data-theme="light"] .qs-preset-btn.active {
+  background: #2e3092;
+  border-color: #2e3092;
+  color: #ffffff;
+}
+
+/* Count pills are white-on-veil, which becomes white on tan. */
+:root[data-theme="light"] .admin-count-pill {
+  background: #2e3092;
+  color: #ffffff;
+}
+
+/* Worksheet status chips: the mint and sky tints carry too little weight on
+   cream, so the text takes the ink value and the tint stays as the fill. */
+:root[data-theme="light"] .worksheet-tier-badge,
+:root[data-theme="light"] .worksheet-pill,
+:root[data-theme="light"] .blueprint-badge,
+:root[data-theme="light"] .worksheet-typology-table td {
+  color: #2f4a37;
+}
+
+:root[data-theme="light"] #blueprintBadge,
+:root[data-theme="light"] #blueprintBadge span {
+  color: #2f4a37;
+}
+
+/* ---------------------------------------------------------------
+   School colours from the crest: indigo #2e3092, lime #bed62f,
+   orange #f5821f. Lime and orange have too little contrast to carry text
+   on cream, so they are used the way the logo uses them - as a fill with
+   ink on top, or as a rule.
+   --------------------------------------------------------------- */
+:root[data-theme="light"] #sessionBadge {
+  background: #bed62f;
+  border-color: #a8c022;
+  color: #24290a;
+}
+
+:root[data-theme="light"] header {
+  border-bottom: 3px solid #bed62f;
+  padding-bottom: 1rem;
+}
+
+:root[data-theme="light"] .blueprint-card > div:first-child,
+:root[data-theme="light"] .paper-part-badge {
+  --brand-rule: #bed62f;
+}
+
+/* ---------------------------------------------------------------
+   School crest on the circular.
+   Built as a table rather than flex: Word's HTML importer ignores
+   display:flex, and this document is exported to .doc and emailed. The
+   empty third cell balances the crest so the school name stays optically
+   centred on the page.
+   --------------------------------------------------------------- */
+.paper-header-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  border: none !important;
+}
+
+.paper-header-table td {
+  border: none !important;
+  padding: 0 !important;
+  vertical-align: middle !important;
+}
+
+.paper-crest-cell,
+.paper-crest-spacer {
+  width: 72px !important;
+}
+
+.paper-crest {
+  width: 58px !important;
+  height: 57px !important;
+  display: inline-block !important;
+}
+
+.paper-header-text {
+  text-align: center !important;
+}
+
+/* App header lockup: crest beside the wordmark. */
+.brand-lockup {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-align: left;
+}
+
+.brand-crest {
+  width: 58px;
+  height: 57px;
+  flex-shrink: 0;
+}
+
+/* The crest is printed for white paper, so on the dark theme it sits on a
+   small light disc rather than floating on the photograph. */
+.brand-crest {
+  background: #ffffff;
+  border-radius: 50%;
+  padding: 3px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+}
+
+:root[data-theme="light"] .brand-crest {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+@media (max-width: 480px) {
+  .brand-lockup {
+    gap: 0.6rem;
+  }
+  .brand-crest {
+    width: 44px;
+    height: 43px;
+  }
 }

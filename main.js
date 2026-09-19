@@ -1,6 +1,7 @@
 import { cbseData } from './data.js?v=36';
 import { getSqpBlueprint, accountancyPaper } from './sqp_blueprints.js?v=2';
 import { getLiteratureContext } from './literature_context.js?v=1';
+import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
 
 // Persistent Custom Subjects state
@@ -138,6 +139,7 @@ export const WORKSHEET_OPTIONS = [
     tier: "CBSE_SEC_AB",
     marksRange: "1 & 2 Marks",
     color:  "#22c55e",
+    colorLight: "#0f5c2c",
     difficulty: "Balanced",
     summary: "High-Yield Foundation: Section A (1M Objective, Assertion-Reason, Laws/Rules & Terminology) + Section B (2M VSA, Tabular Distinctions & 'Explain Why')",
     verbs: ["Define", "State the law/rule of", "List", "Identify", "Give reasons why", "Distinguish between", "Solve single-step", "Classify"]
@@ -149,6 +151,7 @@ export const WORKSHEET_OPTIONS = [
     tier: "CBSE_HOTS",
     marksRange: "3, 4 & 5 Marks",
     color:  "#ef4444",
+    colorLight: "#b91c1c",
     difficulty: "Advanced",
     summary: "Higher Order Thinking Skills (HOTS): Multi-Concept Integration, 'Spot the Error in Student Working', Experimental/Procedural Design & Evaluative Derivations",
     verbs: ["Critique and troubleshoot error", "Justify with evidence", "Design a verification setup", "Synthesize multi-concept problem", "Evaluate outcomes"]
@@ -160,6 +163,7 @@ export const WORKSHEET_OPTIONS = [
     tier: "CBSE_FULL",
     marksRange: "1 to 5 Marks",
     color:  "#a855f7",
+    colorLight: "#7e22ce",
     difficulty: "Advanced",
     summary: "Full Board Paper Architecture: Section A (1M Objective & A/R) -> Section B (2M VSA) -> Section C (3M SA) -> Section D (5M LA Derivations) -> Section E (4M CBQ Units)",
     verbs: ["Full CBSE Spectrum (Objective -> VSA -> SA -> LA -> Case Studies)"]
@@ -171,6 +175,7 @@ export const WORKSHEET_OPTIONS = [
     tier: "CBSE_COMPETENCY",
     marksRange: "1, 3 & 4 Marks",
     color:  "#f97316",
+    colorLight: "#c2410c",
     difficulty: "Advanced",
     summary: "100% NEP 2020 Mandated Competency: Real-World Case Studies / Source Extracts (4M), Assertion-Reason (1M), and Contextual Problem Solving (3M)",
     verbs: ["Analyze contextual case", "Interpret source data/graph", "Deduce consequences", "Apply to real-life scenario"]
@@ -182,6 +187,7 @@ export const WORKSHEET_OPTIONS = [
     tier: "CBSE_PYQ",
     marksRange: "1, 2, 3 & 5 Marks",
     color:  "#eab308",
+    colorLight: "#a16207",
     difficulty: "Balanced",
     summary: "Official CBSE Board Paper Archives (2015–2026): High-frequency derivations, standard numerical/practical templates, and classic board question trends",
     verbs: ["Standard board derivations", "Frequent PYQ numericals", "Classic board distinctions", "High-probability templates"]
@@ -193,6 +199,7 @@ export const WORKSHEET_OPTIONS = [
     tier: "CBSE_SUBJECTIVE",
     marksRange: "2, 3 & 5 Marks",
     color:  "#38bdf8",
+    colorLight: "#2e3092",
     difficulty: "Balanced",
     summary: "Written Answer Mastery: Very Short Answer (2M), Short Answer (3M) & Long Answer Derivations (5M) with official CBSE step-marking rubrics",
     verbs: ["Solve with step-marking", "Derive step-by-step", "Present tabular differences", "Explain with keywords"]
@@ -232,6 +239,16 @@ function getWorksheetConfig(examVal) {
 }
 
 // Helper to filter out subjects not followed by the school (English R2 and Hindi R1)
+// A worksheet tier's identity colour is tuned for a dark panel; on the light
+// theme's cream it drops to roughly 2:1 against its own tint, so each tier
+// carries a darkened twin and this picks the one that matches the active
+// theme. The blueprint re-renders when the theme changes.
+export function getTierColor(ws) {
+  if (!ws) return '';
+  const light = document.documentElement.getAttribute('data-theme') === 'light';
+  return (light && ws.colorLight) ? ws.colorLight : ws.color;
+}
+
 export function isSchoolExcludedSubject(subjectName) {
   if (!subjectName || typeof subjectName !== 'string') return false;
   const clean = subjectName.toLowerCase().replace(/[\(\)\-_\s]+/g, ' ').trim();
@@ -1303,7 +1320,7 @@ function renderWorksheetBlueprintView(examVal) {
   const totalQs = subtopicCount * qsPerSubtopic;
   
   if (blueprintBadge) {
-    blueprintBadge.innerHTML = `<span style="color: ${ws.color}; font-weight: 700;">● ${ws.shortName}</span> • ${totalQs} Questions (${subtopicCount} Subtopic${subtopicCount > 1 ? 's' : ''})`;
+    blueprintBadge.innerHTML = `<span style="color: ${getTierColor(ws)}; font-weight: 700;">● ${ws.shortName}</span> • ${totalQs} Questions (${subtopicCount} Subtopic${subtopicCount > 1 ? 's' : ''})`;
   }
   
   const selectedSubject = subjectSelect ? subjectSelect.value : "";
@@ -1311,7 +1328,7 @@ function renderWorksheetBlueprintView(examVal) {
   
   const typologyRowsHtml = typologyRows.map(c => `
     <tr>
-      <td style="font-weight: 700; color: ${ws.color}; white-space: nowrap; font-size: 0.75rem;">${c.num}</td>
+      <td style="font-weight: 700; color: ${getTierColor(ws)}; white-space: nowrap; font-size: 0.75rem;">${c.num}</td>
       <td style="color: var(--c-text-bright); font-weight: 500; font-size: 0.78rem;">
         <span style="display: inline-block; font-size: 0.68rem; padding: 1px 5px; border-radius: 4px; background: rgba(var(--rgb-accent), 0.15); color: var(--c-accent-bright); margin-right: 4px; font-weight: 600;">${c.section}</span>
         ${c.name} (${c.count} Qs)
@@ -1323,10 +1340,10 @@ function renderWorksheetBlueprintView(examVal) {
 
   blueprintContainer.innerHTML = `
     <div class="worksheet-blueprint-card">
-      <div class="worksheet-tier-header" style="border-left: 4px solid ${ws.color};">
+      <div class="worksheet-tier-header" style="border-left: 4px solid ${getTierColor(ws)};">
         <div>
           <div style="display: flex; align-items: center; gap: 6px;">
-            <span class="worksheet-tier-badge" style="background: ${ws.color}22; color: ${ws.color}; border: 1px solid ${ws.color}55;">
+            <span class="worksheet-tier-badge" style="background: ${getTierColor(ws)}22; color: ${getTierColor(ws)}; border: 1px solid ${getTierColor(ws)}55;">
               ${ws.shortName}
             </span>
             <span style="font-size: 0.78rem; font-weight: 600; color: var(--c-text-strong);">
@@ -1354,7 +1371,7 @@ function renderWorksheetBlueprintView(examVal) {
       </div>
 
       <div class="worksheet-info-pills" style="margin-top: 0.25rem;">
-        <span class="worksheet-pill" style="border-color: #22c55e55; color: #22c55e; background: #22c55e11;">
+        <span class="worksheet-pill" style="border-color: rgba(var(--rgb-success), 0.33); color: var(--c-success-vivid); background: rgba(var(--rgb-success), 0.07);">
           🎯 Official CBSE Board Typology
         </span>
         <span class="worksheet-pill" style="border-color: #a855f755; color: var(--c-violet); background: #a855f711;">
@@ -1557,7 +1574,7 @@ function syncWorksheetDynamicScaling() {
   }
 
   if (blueprintBadge && ws) {
-    blueprintBadge.innerHTML = `<span style="color: ${ws.color}; font-weight: 700;">● ${ws.shortName}</span> • ${totalQs} Questions (${n} Subtopic${n > 1 ? 's' : ''})`;
+    blueprintBadge.innerHTML = `<span style="color: ${getTierColor(ws)}; font-weight: 700;">● ${ws.shortName}</span> • ${totalQs} Questions (${n} Subtopic${n > 1 ? 's' : ''})`;
   }
   
   renderWorksheetBlueprintView(exam);
@@ -1917,6 +1934,11 @@ function applyTheme(theme) {
   if (label) label.textContent = light ? 'Dark' : 'Light';
   const btn = document.getElementById('themeToggleBtn');
   if (btn) btn.title = light ? 'Switch to the dark theme' : 'Switch to the warm paper theme';
+  // The blueprint paints worksheet tier colours inline, and each tier has a
+  // separate value for each theme, so it has to be rebuilt rather than restyled.
+  if (typeof updateExamBlueprint === 'function') {
+    try { updateExamBlueprint(true); } catch (e) { /* nothing selected yet */ }
+  }
 }
 
 const themeToggleBtn = document.getElementById('themeToggleBtn');
@@ -4479,7 +4501,7 @@ function renderSinglePromptOutput(promptText, currentSub) {
   if (batchStatusBadge) {
     batchStatusBadge.textContent = isWs ? `Worksheet Ready (${currentSub})` : `Ready for AI (${currentSub})`;
     batchStatusBadge.style.background = isWs ? 'rgba(168, 85, 247, 0.18)' : 'rgba(var(--rgb-accent), 0.15)';
-    batchStatusBadge.style.color = isWs ? '#c084fc' : '#38bdf8';
+    batchStatusBadge.style.color = isWs ? 'var(--c-violet)' : 'var(--c-accent-bright)';
   }
 
   outputSection.classList.remove('hidden');
@@ -7607,9 +7629,19 @@ function renderSyllabusSheetPaper() {
 
     syllabusSheetPaper.innerHTML = `
       <div class="syllabus-paper-header">
-        <div class="paper-school-title">${school}</div>
-        <div class="paper-doc-subtitle">EXAMINATION DATE SHEET & SYLLABUS</div>
-        <div class="paper-session-tag">ACADEMIC SESSION ${session}</div>
+        <table class="paper-header-table" cellspacing="0" cellpadding="0" width="100%">
+          <tbody>
+            <tr>
+              <td class="paper-crest-cell" valign="middle" width="72"><img class="paper-crest" src="${GNPS_CREST_DATA_URI}" alt="" width="58" height="57"></td>
+              <td class="paper-header-text" valign="middle">
+                <div class="paper-school-title">${school}</div>
+                <div class="paper-doc-subtitle">EXAMINATION DATE SHEET &amp; SYLLABUS</div>
+                <div class="paper-session-tag">ACADEMIC SESSION ${session}</div>
+              </td>
+              <td class="paper-crest-spacer" width="72"></td>
+            </tr>
+          </tbody>
+        </table>
       </div>
 
       <div class="paper-meta-table">
@@ -7831,9 +7863,19 @@ function renderSyllabusSheetPaper() {
 
   syllabusSheetPaper.innerHTML = `
     <div class="syllabus-paper-header">
-      <div class="paper-school-title">${school}</div>
-      <div class="paper-doc-subtitle">EXAMINATION DATE SHEET & SYLLABUS</div>
-      <div class="paper-session-tag">ACADEMIC SESSION ${session}</div>
+      <table class="paper-header-table" cellspacing="0" cellpadding="0" width="100%">
+        <tbody>
+          <tr>
+            <td class="paper-crest-cell" valign="middle" width="72"><img class="paper-crest" src="${GNPS_CREST_DATA_URI}" alt="" width="58" height="57"></td>
+            <td class="paper-header-text" valign="middle">
+              <div class="paper-school-title">${school}</div>
+              <div class="paper-doc-subtitle">EXAMINATION DATE SHEET &amp; SYLLABUS</div>
+              <div class="paper-session-tag">ACADEMIC SESSION ${session}</div>
+            </td>
+            <td class="paper-crest-spacer" width="72"></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
     <div class="paper-meta-table">

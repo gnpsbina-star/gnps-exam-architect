@@ -19,7 +19,7 @@
       })();
     </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css?v=63" />
+    <link rel="stylesheet" href="./style.css?v=64" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -28,9 +28,12 @@
     <div class="container">
       <header>
         <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-          <div>
-            <h1>GNPS Exam Architect</h1>
-            <p>Generate 100% authentic, rationalized CBSE question papers instantly.</p>
+          <div class="brand-lockup">
+            <img class="brand-crest" src="./gnps-crest.png?v=1" alt="Gomti Nandan Public School crest" width="58" height="57">
+            <div>
+              <h1>GNPS Exam Architect</h1>
+              <p>Generate 100% authentic, rationalized CBSE question papers instantly.</p>
+            </div>
           </div>
           <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
             <button type="button" id="openSyllabusSheetBtn" class="btn-syllabus-sheet" onclick="window.openSyllabusSheetModal && window.openSyllabusSheetModal()" title="Generate unified Student Examination Syllabus Sheet for all subjects">
@@ -751,6 +754,6 @@
       </div>
     </div>
 
-    <script type="module" src="./main.js?v=264"></script>
+    <script type="module" src="./main.js?v=265"></script>
   </body>
 </html>
