@@ -4742,7 +4742,11 @@ div.portion-print-summary {
 }
 
 /* ---------------------------------------------------------------
-   Theme toggle
+   Theme toggle - dormant.
+   The app runs light-only, so index.html no longer renders this button.
+   The rules are kept because the dark theme's values are still defined
+   under :root: restoring the choice means putting the button back, not
+   rebuilding the palette.
    --------------------------------------------------------------- */
 .btn-theme-toggle {
   display: inline-flex;

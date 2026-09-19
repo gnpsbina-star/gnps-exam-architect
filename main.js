@@ -1914,46 +1914,11 @@ function toggleReadingSections() {
   }
 }
 
-// Theme. The inline script in index.html has already applied the stored choice
-// by the time this runs - it has to, or a light-mode user sees the dark theme
-// flash while main.js loads. All this adds is the toggle and the label.
-const THEME_STORAGE_KEY = 'gnps_theme';
-
-function getActiveTheme() {
-  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-}
-
-function applyTheme(theme) {
-  const light = theme === 'light';
-  if (light) {
-    document.documentElement.setAttribute('data-theme', 'light');
-  } else {
-    document.documentElement.removeAttribute('data-theme');
-  }
-  const label = document.querySelector('#themeToggleBtn .theme-toggle-label');
-  if (label) label.textContent = light ? 'Dark' : 'Light';
-  const btn = document.getElementById('themeToggleBtn');
-  if (btn) btn.title = light ? 'Switch to the dark theme' : 'Switch to the warm paper theme';
-  // The blueprint paints worksheet tier colours inline, and each tier has a
-  // separate value for each theme, so it has to be rebuilt rather than restyled.
-  if (typeof updateExamBlueprint === 'function') {
-    try { updateExamBlueprint(true); } catch (e) { /* nothing selected yet */ }
-  }
-}
-
-const themeToggleBtn = document.getElementById('themeToggleBtn');
-if (themeToggleBtn) {
-  applyTheme(getActiveTheme());
-  themeToggleBtn.addEventListener('click', () => {
-    const next = getActiveTheme() === 'light' ? 'dark' : 'light';
-    applyTheme(next);
-    try {
-      localStorage.setItem(THEME_STORAGE_KEY, next);
-    } catch (e) {
-      // Private mode or blocked storage: the choice holds for this visit only.
-    }
-  });
-}
+// The app runs in the school's light theme only: index.html pins
+// data-theme="light" on the root element, so there is nothing to resolve at
+// load and no stored preference to honour. The dark theme's values are still
+// in style.css under :root, dormant, so restoring the choice is a matter of
+// putting the toggle back rather than rebuilding the palette.
 
 // A periodic assessment sets one unseen passage, so the passages behave as a
 // radio group: ticking one releases the other rather than refusing the click.
