@@ -4981,3 +4981,9 @@ div.portion-print-summary {
     height: 43px;
   }
 }
+
+/* Inline SVG icons. A presentation attribute cannot resolve var(), so the
+   colour is set here and the markup carries stroke="currentColor". */
+.icon-accent { color: var(--c-accent-bright); }
+.icon-success { color: var(--c-success-bright); }
+.icon-violet { color: var(--c-violet); }
