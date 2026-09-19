@@ -6245,18 +6245,126 @@ function openSyllabusSheetModal() {
     // 3. Synchronize Exam, Marks, and Duration directly from Prompt Generation Module
     syncSyllabusSheetFromPromptModule();
 
+    // 4. A saved setup wins over both of the above: the school asked for the
+    //    screen to reopen exactly as it was last left, class and exam
+    //    included, rather than following whatever the prompt module is on.
+    restoreSheetSetup();
+
     if (sheetCustomExamInput) {
       sheetCustomExamInput.style.display = (sheetExamSelect && sheetExamSelect.value === 'custom') ? 'block' : 'none';
     }
 
-    if (sheetIncludeSubtopics) {
-      sheetIncludeSubtopics.checked = false;
-    }
-
     renderSyllabusSheetPaper();
+    showSheetSetupScreen();
   } catch (err) {
     console.error("Error populating syllabus sheet:", err);
   }
+}
+
+// ---------------------------------------------------------------------------
+// The sheet modal is two screens: setup, then the document. Every control kept
+// its id when it moved, so the code that drives them is unchanged - all that
+// is new is which screen is showing and remembering what was chosen.
+//
+// The per-part include toggles are deliberately absent from the saved set:
+// they already have their own per-class memory through isPartIncludedInSheet(),
+// and syncPartInclusionCheckboxes() rewrites them on every render, so saving
+// them here as well would only fight that.
+const SHEET_SETUP_STORAGE_KEY = 'gnps_sheet_settings';
+
+const SHEET_SETUP_VALUE_FIELDS = [
+  'sheetSchoolName', 'sheetClassSelect', 'sheetExamSelect', 'sheetCustomExamInput',
+  'sheetPart1Time', 'sheetPart1Marks', 'sheetPart1TimingStart', 'sheetPart1TimingEnd',
+  'sheetPart2Marks', 'sheetSEADateFrom', 'sheetSEADateTo',
+  'sheetPart2TimingStart', 'sheetPart2TimingEnd',
+  'sheetCoSchDateFrom', 'sheetCoSchDateTo', 'sheetPart3TimingStart', 'sheetPart3TimingEnd',
+  'sheetMaxMarks', 'sheetDuration', 'sheetSchoolTiming'
+];
+const SHEET_SETUP_CHECK_FIELDS = [
+  'sheetIncludeInstructions', 'sheetIncludeSubtopics', 'sheetIncludePrincipalSig'
+];
+
+function saveSheetSetup() {
+  const data = { values: {}, checks: {} };
+  SHEET_SETUP_VALUE_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) data.values[id] = el.value;
+  });
+  SHEET_SETUP_CHECK_FIELDS.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) data.checks[id] = el.checked;
+  });
+  try {
+    localStorage.setItem(SHEET_SETUP_STORAGE_KEY, JSON.stringify(data));
+  } catch (e) {
+    // Private mode or blocked storage: the setup simply holds for this visit.
+  }
+}
+
+// Returns true when a saved setup was applied, so the caller knows whether the
+// class came from storage or from the prompt module.
+function restoreSheetSetup() {
+  let data = null;
+  try {
+    data = JSON.parse(localStorage.getItem(SHEET_SETUP_STORAGE_KEY) || 'null');
+  } catch (e) {
+    data = null;
+  }
+  if (!data || typeof data !== 'object') return false;
+
+  // The class has to go in first: the exam list is rebuilt per class, so a
+  // saved exam would be dropped if it were applied against the old list.
+  const savedClass = data.values && data.values.sheetClassSelect;
+  if (savedClass && sheetClassSelect) {
+    const known = Array.from(sheetClassSelect.options).some(o => o.value === savedClass);
+    if (known) {
+      sheetClassSelect.value = savedClass;
+      populateSheetExamDropdown(savedClass);
+    }
+  }
+  Object.entries(data.values || {}).forEach(([id, val]) => {
+    if (id === 'sheetClassSelect') return;
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (el.tagName === 'SELECT' && !Array.from(el.options).some(o => o.value === val)) return;
+    el.value = val;
+  });
+  Object.entries(data.checks || {}).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.checked = !!val;
+  });
+  return true;
+}
+
+function getSheetSetupScreens() {
+  return {
+    setup: document.getElementById('sheetSetupScreen'),
+    doc: document.getElementById('sheetDocScreen')
+  };
+}
+
+function updateSheetSetupSummary() {
+  const cls = sheetClassSelect ? sheetClassSelect.value : '';
+  const exam = getSelectedSheetExamName();
+  const summary = document.getElementById('sheetSetupSummary');
+  if (summary) summary.textContent = [cls, exam].filter(Boolean).join('  \u00b7  ');
+  const badge = document.getElementById('sheetExamBadge');
+  if (badge) badge.textContent = exam || '';
+  if (sheetClassBadge && cls) sheetClassBadge.textContent = cls;
+}
+
+function showSheetSetupScreen() {
+  const { setup, doc } = getSheetSetupScreens();
+  if (setup) setup.classList.remove('hidden');
+  if (doc) doc.classList.add('hidden');
+  updateSheetSetupSummary();
+}
+
+function showSheetDocumentScreen() {
+  const { setup, doc } = getSheetSetupScreens();
+  if (setup) setup.classList.add('hidden');
+  if (doc) doc.classList.remove('hidden');
+  updateSheetSetupSummary();
 }
 
 function closeSyllabusSheetModal() {
@@ -6272,6 +6380,29 @@ if (typeof window !== 'undefined') {
   window.closeSyllabusSheetModal = closeSyllabusSheetModal;
 }
 
+// Setup screen buttons. Delegated, because the screens are swapped by class
+// rather than rebuilt, but delegation keeps this working either way.
+document.addEventListener('click', (e) => {
+  if (e.target.closest('#sheetBuildBtn')) {
+    e.preventDefault();
+    saveSheetSetup();
+    renderSyllabusSheetPaper();
+    showSheetDocumentScreen();
+    return;
+  }
+  if (e.target.closest('#sheetBackToSetupBtn')) {
+    e.preventDefault();
+    showSheetSetupScreen();
+    return;
+  }
+  if (e.target.closest('#closeSheetSetupBtn')) {
+    e.preventDefault();
+    saveSheetSetup();
+    closeSyllabusSheetModal();
+    return;
+  }
+});
+
 // Global delegated click handler guarantees that clicking anywhere on open button triggers modal
 document.addEventListener('click', (e) => {
   const openBtn = e.target.closest('#openSyllabusSheetBtn, #openSyllabusSheetFromCardBtn');
@@ -6283,6 +6414,7 @@ document.addEventListener('click', (e) => {
   const closeBtn = e.target.closest('#closeSyllabusSheetModalBtn');
   if (closeBtn) {
     e.preventDefault();
+    saveSheetSetup();
     closeSyllabusSheetModal();
     return;
   }
@@ -8536,12 +8668,16 @@ if (sheetClassSelect) {
     // 3. Synchronize all settings directly from Prompt Generation Module
     syncSyllabusSheetFromPromptModule();
 
+    // The exam list is rebuilt above, so the footer summary can only be
+    // accurate once that has settled.
+    updateSheetSetupSummary();
     renderSyllabusSheetPaper();
   });
 }
 
 if (sheetExamSelect) {
   sheetExamSelect.addEventListener('change', () => {
+    updateSheetSetupSummary();
     if (sheetExamSelect.value === 'custom') {
       if (sheetCustomExamInput) {
         sheetCustomExamInput.style.display = 'block';
