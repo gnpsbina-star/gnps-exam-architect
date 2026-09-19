@@ -4,8 +4,22 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GNPS Exam Architect</title>
+    <script>
+      // Applied before the stylesheet paints, so a light-mode user never sees
+      // the dark theme flash on load. main.js owns the toggle from here.
+      (function () {
+        try {
+          var saved = localStorage.getItem('gnps_theme');
+          if (!saved) {
+            saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches
+              ? 'light' : 'dark';
+          }
+          if (saved === 'light') document.documentElement.setAttribute('data-theme', 'light');
+        } catch (e) { /* private mode or blocked storage: keep the dark default */ }
+      })();
+    </script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css?v=62" />
+    <link rel="stylesheet" href="./style.css?v=63" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -22,6 +36,12 @@
             <button type="button" id="openSyllabusSheetBtn" class="btn-syllabus-sheet" onclick="window.openSyllabusSheetModal && window.openSyllabusSheetModal()" title="Generate unified Student Examination Syllabus Sheet for all subjects">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
               <span>📋 Student Syllabus Sheet (All Subjects)</span>
+            </button>
+
+            <button type="button" id="themeToggleBtn" class="btn-theme-toggle" title="Switch between dark and light theme" aria-label="Switch theme">
+              <svg class="theme-icon-moon" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+              <svg class="theme-icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+              <span class="theme-toggle-label">Light</span>
             </button>
 
             <!-- Super Admin Console Trigger (Visible for super_admin) -->
@@ -59,8 +79,8 @@
               
               <!-- Card 1: Academic & Exam Settings -->
               <div class="blueprint-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem;">
-                  <label style="margin-bottom: 0; display: flex; align-items: center; gap: 6px; font-weight: 600; color: #f8fafc;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; border-bottom: 1px solid rgba(var(--rgb-veil),0.08); padding-bottom: 0.5rem;">
+                  <label style="margin-bottom: 0; display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--c-text-strong);">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
                     <span>Academic & Exam Settings</span>
                   </label>
@@ -111,10 +131,10 @@
                 </div>
 
                 <!-- Card 1 Dynamic Worksheet Scaling Controls -->
-                <div id="worksheetQsConfigRow" class="form-row worksheet-qs-row" style="display: none; background: rgba(56, 189, 248, 0.06); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px; padding: 0.75rem 0.85rem; margin-bottom: 0.85rem;">
+                <div id="worksheetQsConfigRow" class="form-row worksheet-qs-row" style="display: none; background: rgba(var(--rgb-accent), 0.06); border: 1px solid rgba(var(--rgb-accent), 0.25); border-radius: 8px; padding: 0.75rem 0.85rem; margin-bottom: 0.85rem;">
                   <div style="width: 100%;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.45rem; flex-wrap: wrap; gap: 6px;">
-                      <label for="qsPerSubtopicInput" style="font-size: 0.82rem; font-weight: 700; color: #38bdf8; margin: 0; display: flex; align-items: center; gap: 6px;">
+                      <label for="qsPerSubtopicInput" style="font-size: 0.82rem; font-weight: 700; color: var(--c-accent-bright); margin: 0; display: flex; align-items: center; gap: 6px;">
                         <span>⚡ Questions per Subtopic / Topic:</span>
                       </label>
                       <span id="worksheetFormulaBadge" class="qs-formula-badge">30 Qs × 1 Subtopic = 30 Qs</span>
@@ -122,7 +142,7 @@
                     <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
                       <div class="qs-stepper-box">
                         <button type="button" class="btn-qs-step" id="btnQsMinus" title="Decrease questions by 1">−</button>
-                        <input type="number" id="qsPerSubtopicInput" min="1" max="100" step="1" value="30" style="width: 54px; text-align: center; font-weight: 700; font-size: 0.88rem; padding: 0.3rem 0.15rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 4px; color: #f8fafc;">
+                        <input type="number" id="qsPerSubtopicInput" min="1" max="100" step="1" value="30" style="width: 54px; text-align: center; font-weight: 700; font-size: 0.88rem; padding: 0.3rem 0.15rem; background: rgba(var(--rgb-surface), 0.8); border: 1px solid rgba(var(--rgb-accent), 0.3); border-radius: 4px; color: var(--c-text-strong);">
                         <button type="button" class="btn-qs-step" id="btnQsPlus" title="Increase questions by 1">+</button>
                       </div>
                       <div class="qs-presets-container">
@@ -156,8 +176,8 @@
 
               <!-- Card 2: Exam Blueprint & Paper Structure -->
               <div class="blueprint-card" id="blueprintGroup" style="margin-bottom: 0;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem;">
-                  <label style="margin-bottom: 0; display: flex; align-items: center; gap: 6px; font-weight: 600; color: #f8fafc;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(var(--rgb-veil),0.08); padding-bottom: 0.5rem;">
+                  <label style="margin-bottom: 0; display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--c-text-strong);">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     <span>Exam Blueprint & Paper Structure</span>
                   </label>
@@ -175,8 +195,8 @@
             <!-- Card 3: Syllabus & Chapter Selection -->
             <div class="form-right-col" style="display: flex; flex-direction: column;">
               <div class="blueprint-card" id="syllabusGroup" style="height: 100%; display: flex; flex-direction: column; margin-bottom: 0;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem;">
-                  <label style="margin-bottom: 0; display: flex; align-items: center; gap: 6px; font-weight: 600; color: #f8fafc;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(var(--rgb-veil),0.08); padding-bottom: 0.5rem;">
+                  <label style="margin-bottom: 0; display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--c-text-strong);">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                     <span>Syllabus (Chapters to Include)</span>
                   </label>
@@ -191,14 +211,14 @@
                     <span class="placeholder-text">Select a subject first</span>
                   </div>
                 </div>
-                <div id="subtopicFocusBox" style="margin-top: 0.75rem; padding-top: 0.6rem; border-top: 1px solid rgba(255,255,255,0.08);">
+                <div id="subtopicFocusBox" style="margin-top: 0.75rem; padding-top: 0.6rem; border-top: 1px solid rgba(var(--rgb-veil),0.08);">
                   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-                    <label for="subtopicFocusInput" style="font-size: 0.8rem; font-weight: 600; color: #38bdf8; margin: 0; display: flex; align-items: center; gap: 5px;">
+                    <label for="subtopicFocusInput" style="font-size: 0.8rem; font-weight: 600; color: var(--c-accent-bright); margin: 0; display: flex; align-items: center; gap: 5px;">
                       <span>🎯 Focus Specific Subtopic / Concept (Optional):</span>
                     </label>
-                    <span style="font-size: 0.72rem; color: #94a3b8;">Leave blank for all selected</span>
+                    <span style="font-size: 0.72rem; color: var(--c-text-muted);">Leave blank for all selected</span>
                   </div>
-                  <input type="text" id="subtopicFocusInput" placeholder="e.g. Ohm's Law & Resistance / Trigonometric Identities / Photoelectric Effect" style="width: 100%; font-size: 0.84rem; padding: 0.45rem 0.75rem; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 6px; color: #f8fafc;">
+                  <input type="text" id="subtopicFocusInput" placeholder="e.g. Ohm's Law & Resistance / Trigonometric Identities / Photoelectric Effect" style="width: 100%; font-size: 0.84rem; padding: 0.45rem 0.75rem; background: rgba(var(--rgb-surface), 0.6); border: 1px solid rgba(var(--rgb-accent), 0.25); border-radius: 6px; color: var(--c-text-strong);">
                 </div>
               </div>
             </div>
@@ -211,7 +231,7 @@
                 <span>Generate Expert Prompt</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               </button>
-              <button type="button" class="btn-secondary" id="appendSubjectBtn" style="padding: 0.68rem 1.15rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; font-weight: 600; cursor: pointer; transition: all 0.2s ease;" title="Configure another subject and append its prompt below the existing prompt">
+              <button type="button" class="btn-secondary" id="appendSubjectBtn" style="padding: 0.68rem 1.15rem; border-radius: 8px; display: inline-flex; align-items: center; gap: 6px; background: rgba(var(--rgb-accent), 0.12); border: 1px solid rgba(var(--rgb-accent), 0.35); color: var(--c-accent-bright); font-weight: 600; cursor: pointer; transition: all 0.2s ease;" title="Configure another subject and append its prompt below the existing prompt">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
                 <span>➕ Add Next Subject to Prompt</span>
               </button>
@@ -224,21 +244,21 @@
 
         <!-- Output Section: Your Generated Prompt Card -->
         <section id="output-section" class="blueprint-card output-panel hidden" style="margin-top: 2rem; padding: 1.25rem;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(var(--rgb-veil),0.08); padding-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
             <div>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
-                <h2 style="font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin: 0;">Your Generated Expert Prompt</h2>
+                <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--c-text-strong); margin: 0;">Your Generated Expert Prompt</h2>
               </div>
-              <p class="subtitle" style="margin: 4px 0 0 0; font-size: 0.8rem; color: #94a3b8;">Copy and paste this structured prompt into Google Gemini along with your reference materials.</p>
+              <p class="subtitle" style="margin: 4px 0 0 0; font-size: 0.8rem; color: var(--c-text-muted);">Copy and paste this structured prompt into Google Gemini along with your reference materials.</p>
             </div>
             <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-              <span id="batchStatusBadge" class="blueprint-badge" style="background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.35); color: #38bdf8;">Ready for AI</span>
-              <button id="addToMasterBtn" class="btn-secondary" style="padding: 0.45rem 0.9rem; font-size: 0.82rem; border-radius: 8px; background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.4); color: #c084fc; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;" title="Add this generated paper prompt to the Multi-Paper Master Queue">
+              <span id="batchStatusBadge" class="blueprint-badge" style="background: rgba(var(--rgb-accent), 0.15); border-color: rgba(var(--rgb-accent), 0.35); color: var(--c-accent-bright);">Ready for AI</span>
+              <button id="addToMasterBtn" class="btn-secondary" style="padding: 0.45rem 0.9rem; font-size: 0.82rem; border-radius: 8px; background: rgba(168, 85, 247, 0.15); border: 1px solid rgba(168, 85, 247, 0.4); color: var(--c-violet); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: 600;" title="Add this generated paper prompt to the Multi-Paper Master Queue">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                 <span id="addToMasterBtnText">➕ Add to Master Prompt Queue</span>
               </button>
-              <button id="clearPromptBtn" class="btn-secondary" style="padding: 0.45rem 0.8rem; font-size: 0.82rem; border-radius: 8px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Reset and clear current prompt">
+              <button id="clearPromptBtn" class="btn-secondary" style="padding: 0.45rem 0.8rem; font-size: 0.82rem; border-radius: 8px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--c-error); cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Reset and clear current prompt">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                 <span>Reset</span>
               </button>
@@ -253,25 +273,25 @@
             <textarea id="generatedPrompt" readonly style="height: 320px; font-family: monospace; font-size: 0.85rem; line-height: 1.6;"></textarea>
           </div>
 
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-size: 0.78rem; color: #94a3b8;">
-            <span>💡 Pro Tip: Open <a href="https://gemini.google.com" target="_blank" style="color: #38bdf8; text-decoration: underline; font-weight: 500;">gemini.google.com</a> and paste this prompt directly into the chat.</span>
-            <span id="promptCharCount" style="color: #94a3b8; font-family: monospace;"></span>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-size: 0.78rem; color: var(--c-text-muted);">
+            <span>💡 Pro Tip: Open <a href="https://gemini.google.com" target="_blank" style="color: var(--c-accent-bright); text-decoration: underline; font-weight: 500;">gemini.google.com</a> and paste this prompt directly into the chat.</span>
+            <span id="promptCharCount" style="color: var(--c-text-muted); font-family: monospace;"></span>
           </div>
         </section>
 
         <!-- Convert the AI's Answer into Ready-to-Print PDFs -->
-        <section id="ai-to-pdf-section" class="blueprint-card output-panel" style="margin-top: 2rem; padding: 1.25rem; border: 1px solid rgba(34, 197, 94, 0.35); background: linear-gradient(180deg, rgba(6, 78, 59, 0.55) 0%, rgba(15, 23, 42, 0.88) 100%); box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.15);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+        <section id="ai-to-pdf-section" class="blueprint-card output-panel" style="margin-top: 2rem; padding: 1.25rem; border: 1px solid rgba(34, 197, 94, 0.35); background: linear-gradient(180deg, rgba(6, 78, 59, 0.55) 0%, rgba(var(--rgb-surface), 0.88) 100%); box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.15);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(var(--rgb-veil),0.08); padding-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
             <div>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4ade80" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 18 15 15"></polyline></svg>
-                <h2 style="font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin: 0;">Convert AI Answer &rarr; Ready-to-Print PDF</h2>
+                <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--c-text-strong); margin: 0;">Convert AI Answer &rarr; Ready-to-Print PDF</h2>
               </div>
-              <p class="subtitle" style="margin: 4px 0 0 0; font-size: 0.8rem; color: #94a3b8;">Paste whatever Gemini / ChatGPT gave you (rendered page or raw HTML code &mdash; both work). If the paper has Set A and Set B, you get 2 separate PDFs.</p>
+              <p class="subtitle" style="margin: 4px 0 0 0; font-size: 0.8rem; color: var(--c-text-muted);">Paste whatever Gemini / ChatGPT gave you (rendered page or raw HTML code &mdash; both work). If the paper has Set A and Set B, you get 2 separate PDFs.</p>
             </div>
             <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-              <span id="aiPdfBadge" class="blueprint-badge" style="background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.35); color: #4ade80;">Awaiting Paste</span>
-              <button type="button" id="clearAiResponseBtn" class="btn-secondary" style="padding: 0.45rem 0.8rem; font-size: 0.82rem; border-radius: 8px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Clear the pasted AI response">
+              <span id="aiPdfBadge" class="blueprint-badge" style="background: rgba(34, 197, 94, 0.15); border-color: rgba(34, 197, 94, 0.35); color: var(--c-success-bright);">Awaiting Paste</span>
+              <button type="button" id="clearAiResponseBtn" class="btn-secondary" style="padding: 0.45rem 0.8rem; font-size: 0.82rem; border-radius: 8px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--c-error); cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Clear the pasted AI response">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                 <span>Clear</span>
               </button>
@@ -286,29 +306,29 @@
             <textarea id="aiResponseInput" placeholder="Paste the AI's full answer here, then click Generate PDF(s).&#10;&#10;Works with either:&#10;  • the whole reply copied from Gemini / ChatGPT (including the ```html code block), or&#10;  • just the raw HTML code copied from the code block."></textarea>
           </div>
 
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-size: 0.78rem; color: #94a3b8; gap: 1rem; flex-wrap: wrap;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-size: 0.78rem; color: var(--c-text-muted); gap: 1rem; flex-wrap: wrap;">
             <span id="aiPdfStatus">Tip: Set A and Set B are detected automatically and downloaded as two separate PDF files.</span>
-            <span id="aiResponseCharCount" style="color: #94a3b8; font-family: monospace;"></span>
+            <span id="aiResponseCharCount" style="color: var(--c-text-muted); font-family: monospace;"></span>
           </div>
         </section>
 
         <!-- Window 2: CBSE Multi-Paper Master Prompt (Sequential AI Generation) -->
-        <section id="master-prompt-section" class="blueprint-card output-panel hidden" style="margin-top: 2rem; padding: 1.25rem; border: 1px solid rgba(168, 85, 247, 0.35); background: linear-gradient(180deg, rgba(30, 27, 75, 0.4) 0%, rgba(15, 23, 42, 0.6) 100%); box-shadow: 0 10px 30px -10px rgba(147, 51, 234, 0.15);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
+        <section id="master-prompt-section" class="blueprint-card output-panel hidden" style="margin-top: 2rem; padding: 1.25rem; border: 1px solid rgba(168, 85, 247, 0.35); background: linear-gradient(180deg, rgba(30, 27, 75, 0.4) 0%, rgba(var(--rgb-surface), 0.6) 100%); box-shadow: 0 10px 30px -10px rgba(147, 51, 234, 0.15);">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(var(--rgb-veil),0.08); padding-bottom: 0.6rem; flex-wrap: wrap; gap: 0.5rem;">
             <div>
               <div style="display: flex; align-items: center; gap: 8px;">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path><polyline points="12 11 12 17 15 14"></polyline></svg>
-                <h2 style="font-size: 1.15rem; font-weight: 700; color: #f8fafc; margin: 0;">Multi-Paper Master Prompt (Sequential AI Generation)</h2>
+                <h2 style="font-size: 1.15rem; font-weight: 700; color: var(--c-text-strong); margin: 0;">Multi-Paper Master Prompt (Sequential AI Generation)</h2>
               </div>
-              <p class="subtitle" style="margin: 4px 0 0 0; font-size: 0.8rem; color: #cbd5e1;">Instructs ChatGPT / Gemini to generate papers one-by-one with an interactive confirmation checkpoint between each paper.</p>
+              <p class="subtitle" style="margin: 4px 0 0 0; font-size: 0.8rem; color: var(--c-text-soft);">Instructs ChatGPT / Gemini to generate papers one-by-one with an interactive confirmation checkpoint between each paper.</p>
             </div>
             <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
-              <span id="masterBadge" class="blueprint-badge" style="background: rgba(168, 85, 247, 0.2); border-color: rgba(168, 85, 247, 0.4); color: #c084fc;">0 Papers Queued</span>
-              <button id="clearMasterQueueBtn" class="btn-secondary" style="padding: 0.45rem 0.8rem; font-size: 0.82rem; border-radius: 8px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Clear all papers from the master queue">
+              <span id="masterBadge" class="blueprint-badge" style="background: rgba(168, 85, 247, 0.2); border-color: rgba(168, 85, 247, 0.4); color: var(--c-violet);">0 Papers Queued</span>
+              <button id="clearMasterQueueBtn" class="btn-secondary" style="padding: 0.45rem 0.8rem; font-size: 0.82rem; border-radius: 8px; background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.3); color: var(--c-error); cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Clear all papers from the master queue">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
                 <span>Clear Queue</span>
               </button>
-              <button id="downloadMasterBtn" class="btn-secondary" style="padding: 0.45rem 0.8rem; font-size: 0.82rem; border-radius: 8px; background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Download master prompt bundle as text file">
+              <button id="downloadMasterBtn" class="btn-secondary" style="padding: 0.45rem 0.8rem; font-size: 0.82rem; border-radius: 8px; background: rgba(var(--rgb-accent), 0.12); border: 1px solid rgba(var(--rgb-accent), 0.35); color: var(--c-accent-bright); cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Download master prompt bundle as text file">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
                 <span>Download (.txt)</span>
               </button>
@@ -321,9 +341,9 @@
 
           <!-- Queued Paper Badges / Chips -->
           <div style="margin-bottom: 0.85rem;">
-            <div style="font-size: 0.8rem; font-weight: 600; color: #a78bfa; margin-bottom: 0.4rem; display: flex; align-items: center; gap: 6px;">
+            <div style="font-size: 0.8rem; font-weight: 600; color: var(--c-violet-soft); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 6px;">
               <span>Queued Question Papers:</span>
-              <span style="font-weight: 400; color: #94a3b8; font-size: 0.74rem;">(Click ✖ on any chip to remove that paper from the master prompt)</span>
+              <span style="font-weight: 400; color: var(--c-text-muted); font-size: 0.74rem;">(Click ✖ on any chip to remove that paper from the master prompt)</span>
             </div>
             <div id="masterQueueChips" style="display: flex; flex-wrap: wrap; gap: 8px; min-height: 28px;">
               <!-- Populated by JS -->
@@ -331,12 +351,12 @@
           </div>
 
           <div class="output-wrapper">
-            <textarea id="masterPromptTextarea" readonly style="height: 380px; font-family: monospace; font-size: 0.85rem; line-height: 1.6; border: 1px solid rgba(168, 85, 247, 0.25); background: rgba(10, 15, 30, 0.8); color: #f8fafc;"></textarea>
+            <textarea id="masterPromptTextarea" readonly style="height: 380px; font-family: monospace; font-size: 0.85rem; line-height: 1.6; border: 1px solid rgba(168, 85, 247, 0.25); background: rgba(var(--rgb-surface-ink), 0.8); color: var(--c-text-strong);"></textarea>
           </div>
 
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-size: 0.78rem; color: #94a3b8;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 0.75rem; font-size: 0.78rem; color: var(--c-text-muted);">
             <span>🤖 Sequential AI Protocol: The AI generates Paper 1, stops for your review, and proceeds to Paper 2 only after you reply "CONTINUE".</span>
-            <span id="masterPromptCharCount" style="color: #a78bfa; font-family: monospace;"></span>
+            <span id="masterPromptCharCount" style="color: var(--c-violet-soft); font-family: monospace;"></span>
           </div>
         </section>
       </main>
@@ -413,7 +433,7 @@
               <select id="sheetExamSelect" class="sheet-select-compact">
                 <!-- Populated dynamically: Unit Test I, II, PA I, Half Yearly, Annual, etc. -->
               </select>
-              <input type="text" id="sheetCustomExamInput" placeholder="Custom exam title..." style="display: none; width: 120px; font-size: 0.78rem; padding: 0.22rem 0.45rem; background: #1e293b; border: 1px solid #38bdf8; border-radius: 4px; color: #fff;">
+              <input type="text" id="sheetCustomExamInput" placeholder="Custom exam title..." style="display: none; width: 120px; font-size: 0.78rem; padding: 0.22rem 0.45rem; background: var(--c-surface-raised); border: 1px solid var(--c-accent-bright); border-radius: 4px; color: #fff;">
             </div>
           </div>
 
@@ -731,6 +751,6 @@
       </div>
     </div>
 
-    <script type="module" src="./main.js?v=263"></script>
+    <script type="module" src="./main.js?v=264"></script>
   </body>
 </html>

@@ -137,7 +137,7 @@ export const WORKSHEET_OPTIONS = [
     shortName: "Section A & B Drill (1 & 2 Marks)",
     tier: "CBSE_SEC_AB",
     marksRange: "1 & 2 Marks",
-    color: "#22c55e",
+    color:  "#22c55e",
     difficulty: "Balanced",
     summary: "High-Yield Foundation: Section A (1M Objective, Assertion-Reason, Laws/Rules & Terminology) + Section B (2M VSA, Tabular Distinctions & 'Explain Why')",
     verbs: ["Define", "State the law/rule of", "List", "Identify", "Give reasons why", "Distinguish between", "Solve single-step", "Classify"]
@@ -148,7 +148,7 @@ export const WORKSHEET_OPTIONS = [
     shortName: "HOTS & Advanced Challenge (3M, 4M & 5M)",
     tier: "CBSE_HOTS",
     marksRange: "3, 4 & 5 Marks",
-    color: "#ef4444",
+    color:  "#ef4444",
     difficulty: "Advanced",
     summary: "Higher Order Thinking Skills (HOTS): Multi-Concept Integration, 'Spot the Error in Student Working', Experimental/Procedural Design & Evaluative Derivations",
     verbs: ["Critique and troubleshoot error", "Justify with evidence", "Design a verification setup", "Synthesize multi-concept problem", "Evaluate outcomes"]
@@ -159,7 +159,7 @@ export const WORKSHEET_OPTIONS = [
     shortName: "Complete Chapter Blueprint (Sections A–E)",
     tier: "CBSE_FULL",
     marksRange: "1 to 5 Marks",
-    color: "#a855f7",
+    color:  "#a855f7",
     difficulty: "Advanced",
     summary: "Full Board Paper Architecture: Section A (1M Objective & A/R) -> Section B (2M VSA) -> Section C (3M SA) -> Section D (5M LA Derivations) -> Section E (4M CBQ Units)",
     verbs: ["Full CBSE Spectrum (Objective -> VSA -> SA -> LA -> Case Studies)"]
@@ -170,7 +170,7 @@ export const WORKSHEET_OPTIONS = [
     shortName: "50% Competency Booster (CBQ Special)",
     tier: "CBSE_COMPETENCY",
     marksRange: "1, 3 & 4 Marks",
-    color: "#f97316",
+    color:  "#f97316",
     difficulty: "Advanced",
     summary: "100% NEP 2020 Mandated Competency: Real-World Case Studies / Source Extracts (4M), Assertion-Reason (1M), and Contextual Problem Solving (3M)",
     verbs: ["Analyze contextual case", "Interpret source data/graph", "Deduce consequences", "Apply to real-life scenario"]
@@ -181,7 +181,7 @@ export const WORKSHEET_OPTIONS = [
     shortName: "10-Year High-Yield PYQs (2015–2026)",
     tier: "CBSE_PYQ",
     marksRange: "1, 2, 3 & 5 Marks",
-    color: "#eab308",
+    color:  "#eab308",
     difficulty: "Balanced",
     summary: "Official CBSE Board Paper Archives (2015–2026): High-frequency derivations, standard numerical/practical templates, and classic board question trends",
     verbs: ["Standard board derivations", "Frequent PYQ numericals", "Classic board distinctions", "High-probability templates"]
@@ -192,7 +192,7 @@ export const WORKSHEET_OPTIONS = [
     shortName: "Subjective & Step-Marking Mastery",
     tier: "CBSE_SUBJECTIVE",
     marksRange: "2, 3 & 5 Marks",
-    color: "#38bdf8",
+    color:  "#38bdf8",
     difficulty: "Balanced",
     summary: "Written Answer Mastery: Very Short Answer (2M), Short Answer (3M) & Long Answer Derivations (5M) with official CBSE step-marking rubrics",
     verbs: ["Solve with step-marking", "Derive step-by-step", "Present tabular differences", "Explain with keywords"]
@@ -1312,12 +1312,12 @@ function renderWorksheetBlueprintView(examVal) {
   const typologyRowsHtml = typologyRows.map(c => `
     <tr>
       <td style="font-weight: 700; color: ${ws.color}; white-space: nowrap; font-size: 0.75rem;">${c.num}</td>
-      <td style="color: #f1f5f9; font-weight: 500; font-size: 0.78rem;">
-        <span style="display: inline-block; font-size: 0.68rem; padding: 1px 5px; border-radius: 4px; background: rgba(56, 189, 248, 0.15); color: #38bdf8; margin-right: 4px; font-weight: 600;">${c.section}</span>
+      <td style="color: var(--c-text-bright); font-weight: 500; font-size: 0.78rem;">
+        <span style="display: inline-block; font-size: 0.68rem; padding: 1px 5px; border-radius: 4px; background: rgba(var(--rgb-accent), 0.15); color: var(--c-accent-bright); margin-right: 4px; font-weight: 600;">${c.section}</span>
         ${c.name} (${c.count} Qs)
       </td>
-      <td style="color: #94a3b8; font-size: 0.74rem; text-align: center;">${c.marks}</td>
-      <td style="text-align: right; color: #38bdf8; font-size: 0.74rem; font-weight: 600;">${c.type}</td>
+      <td style="color: var(--c-text-muted); font-size: 0.74rem; text-align: center;">${c.marks}</td>
+      <td style="text-align: right; color: var(--c-accent-bright); font-size: 0.74rem; font-weight: 600;">${c.type}</td>
     </tr>
   `).join('');
 
@@ -1329,17 +1329,17 @@ function renderWorksheetBlueprintView(examVal) {
             <span class="worksheet-tier-badge" style="background: ${ws.color}22; color: ${ws.color}; border: 1px solid ${ws.color}55;">
               ${ws.shortName}
             </span>
-            <span style="font-size: 0.78rem; font-weight: 600; color: #f8fafc;">
+            <span style="font-size: 0.78rem; font-weight: 600; color: var(--c-text-strong);">
               Target: ${totalQs} Exhaustive Questions
             </span>
           </div>
-          <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 3px;">
+          <div style="font-size: 0.72rem; color: var(--c-text-muted); margin-top: 3px;">
             ${ws.summary}
           </div>
         </div>
         <div style="text-align: right;">
-          <div style="font-size: 0.7rem; color: #94a3b8;">Question Scaling Rule</div>
-          <div style="font-size: 0.82rem; font-weight: 700; color: #38bdf8;">
+          <div style="font-size: 0.7rem; color: var(--c-text-muted);">Question Scaling Rule</div>
+          <div style="font-size: 0.82rem; font-weight: 700; color: var(--c-accent-bright);">
             ${qsPerSubtopic} Qs × ${subtopicCount} Subtopic${subtopicCount > 1 ? 's' : ''} = ${totalQs} Qs
           </div>
           <div style="display: flex; gap: 4px; justify-content: flex-end; margin-top: 5px; flex-wrap: wrap;">
@@ -1357,16 +1357,16 @@ function renderWorksheetBlueprintView(examVal) {
         <span class="worksheet-pill" style="border-color: #22c55e55; color: #22c55e; background: #22c55e11;">
           🎯 Official CBSE Board Typology
         </span>
-        <span class="worksheet-pill" style="border-color: #a855f755; color: #c084fc; background: #a855f711;">
+        <span class="worksheet-pill" style="border-color: #a855f755; color: var(--c-violet); background: #a855f711;">
           🛡️ 2-Phase Anti-Truncation Delivery
         </span>
-        <span class="worksheet-pill" style="border-color: #38bdf855; color: #38bdf8; background: #38bdf811;">
+        <span class="worksheet-pill" style="border-color: #38bdf855; color: var(--c-accent-bright); background: #38bdf811;">
           📝 CBSE Step-by-Step Marking Rubric
         </span>
       </div>
 
       <div style="margin-top: 0.35rem;">
-        <div style="font-size: 0.74rem; font-weight: 600; color: #cbd5e1; margin-bottom: 0.25rem;">
+        <div style="font-size: 0.74rem; font-weight: 600; color: var(--c-text-soft); margin-bottom: 0.25rem;">
           CBSE Board Examination Typology & Marks Distribution (${qsPerSubtopic} Qs Per Subtopic):
         </div>
         <table class="worksheet-typology-table">
@@ -1384,7 +1384,7 @@ function renderWorksheetBlueprintView(examVal) {
         </table>
       </div>
 
-      <div style="margin-top: 0.25rem; font-size: 0.72rem; color: #94a3b8; line-height: 1.4; background: rgba(15, 23, 42, 0.4); padding: 0.4rem 0.6rem; border-radius: 6px; border: 1px dashed rgba(255,255,255,0.1);">
+      <div style="margin-top: 0.25rem; font-size: 0.72rem; color: var(--c-text-muted); line-height: 1.4; background: rgba(var(--rgb-surface), 0.4); padding: 0.4rem 0.6rem; border-radius: 6px; border: 1px dashed rgba(var(--rgb-veil),0.1);">
         💡 <em>Universal All-Subject Engine: Every question count dynamically scales across authentic CBSE sections with zero cluster labels. Works for Science, Maths, Commerce, Social Science, Languages & Computer Science!</em>
       </div>
     </div>
@@ -1410,10 +1410,10 @@ function renderBlueprintView() {
   blueprint.sections.forEach((sec, idx) => {
     tableRowsHtml += `
       <tr>
-        <td style="font-weight: 600; color: #38bdf8; white-space: nowrap;">${sec.name}</td>
+        <td style="font-weight: 600; color: var(--c-accent-bright); white-space: nowrap;">${sec.name}</td>
         <td>
-          <div style="font-weight: 500; color: #f1f5f9;">${sec.type}</div>
-          <div style="font-size: 0.72rem; color: #94a3b8; margin-top: 1px;">${sec.choice}</div>
+          <div style="font-weight: 500; color: var(--c-text-bright);">${sec.type}</div>
+          <div style="font-size: 0.72rem; color: var(--c-text-muted); margin-top: 1px;">${sec.choice}</div>
         </td>
         <td style="text-align: center; white-space: nowrap;">
           <div class="blueprint-stepper">
@@ -1422,8 +1422,8 @@ function renderBlueprintView() {
             <button type="button" class="btn-step" onclick="window.changeSectionQuestionCount(${idx}, 1)" title="Increase question count">▲</button>
           </div>
         </td>
-        <td style="text-align: center; color: #cbd5e1; font-size: 0.78rem;">${sec.marksPerQ}</td>
-        <td style="text-align: right; font-weight: 700; color: #34d399; font-size: 0.85rem;">${sec.total} M</td>
+        <td style="text-align: center; color: var(--c-text-soft); font-size: 0.78rem;">${sec.marksPerQ}</td>
+        <td style="text-align: right; font-weight: 700; color: var(--c-success); font-size: 0.85rem;">${sec.total} M</td>
       </tr>
     `;
   });
@@ -1433,7 +1433,7 @@ function renderBlueprintView() {
 
   if (repoSqp && repoSqp.text) {
     instructionsBlock = `
-      <div style="margin-top: 0.5rem; border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 0.5rem;">
+      <div style="margin-top: 0.5rem; border-top: 1px dashed rgba(var(--rgb-veil),0.1); padding-top: 0.5rem;">
         <button type="button" class="blueprint-instructions-toggle" onclick="document.getElementById('sqpInstructionsBox').classList.toggle('hidden')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
           <span>Official CBSE General Instructions (${repoSqp.year})</span>
@@ -1470,7 +1470,7 @@ ${repoSqp.text}
       </div>
       <div class="blueprint-stat-pill">
         <span class="label">Competency</span>
-        <span class="value" style="color: #34d399;">${blueprint.competencyRatio}</span>
+        <span class="value" style="color: var(--c-success);">${blueprint.competencyRatio}</span>
       </div>
     </div>
 
@@ -1897,6 +1897,42 @@ function toggleReadingSections() {
   }
 }
 
+// Theme. The inline script in index.html has already applied the stored choice
+// by the time this runs - it has to, or a light-mode user sees the dark theme
+// flash while main.js loads. All this adds is the toggle and the label.
+const THEME_STORAGE_KEY = 'gnps_theme';
+
+function getActiveTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+}
+
+function applyTheme(theme) {
+  const light = theme === 'light';
+  if (light) {
+    document.documentElement.setAttribute('data-theme', 'light');
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+  }
+  const label = document.querySelector('#themeToggleBtn .theme-toggle-label');
+  if (label) label.textContent = light ? 'Dark' : 'Light';
+  const btn = document.getElementById('themeToggleBtn');
+  if (btn) btn.title = light ? 'Switch to the dark theme' : 'Switch to the warm paper theme';
+}
+
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+if (themeToggleBtn) {
+  applyTheme(getActiveTheme());
+  themeToggleBtn.addEventListener('click', () => {
+    const next = getActiveTheme() === 'light' ? 'dark' : 'light';
+    applyTheme(next);
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, next);
+    } catch (e) {
+      // Private mode or blocked storage: the choice holds for this visit only.
+    }
+  });
+}
+
 // A periodic assessment sets one unseen passage, so the passages behave as a
 // radio group: ticking one releases the other rather than refusing the click.
 // Registered on the capture phase because the bulk togglers (Select All, the
@@ -1957,7 +1993,7 @@ function populateSubjectsDropdown(selectedClass, defaultSelectSubject = null) {
     option.textContent = isCustom ? `★ ${subject}` : subject;
     if (isCustom) {
       option.style.fontWeight = '600';
-      option.style.color = '#38bdf8';
+      option.style.color = 'var(--c-accent-bright)';
     }
     subjectSelect.appendChild(option);
   });
@@ -2388,14 +2424,14 @@ function renderSyllabusChecklist(syllabusData) {
   if (bookName) {
     const bookBanner = document.createElement('div');
     bookBanner.className = 'prescribed-book-banner';
-    bookBanner.style.cssText = "display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; padding: 0.5rem 0.75rem; background: #f0f9ff; border: 1px solid #bae6fd; border-left: 4px solid #0284c7; border-radius: 6px; font-size: 0.84rem; color: #0f172a;";
-    bookBanner.innerHTML = `<span style="font-size: 1.1rem;">📖</span> <span>Prescribed Textbook: <strong style="color: #0369a1; font-weight: 700;">${bookName}</strong></span>`;
+    bookBanner.style.cssText = "display: flex; align-items: center; gap: 8px; margin-bottom: 0.75rem; padding: 0.5rem 0.75rem; background: #f0f9ff; border: 1px solid #bae6fd; border-left: 4px solid var(--c-accent); border-radius: 6px; font-size: 0.84rem; color: #0f172a;";
+    bookBanner.innerHTML = `<span style="font-size: 1.1rem;">📖</span> <span>Prescribed Textbook: <strong style="color: var(--c-accent-strong); font-weight: 700;">${bookName}</strong></span>`;
     syllabusContainer.appendChild(bookBanner);
   }
   
   const selectAllDiv = document.createElement('div');
   selectAllDiv.className = 'checkbox-item';
-  selectAllDiv.style.borderBottom = '1px solid rgba(255,255,255,0.15)';
+  selectAllDiv.style.borderBottom = '1px solid rgba(var(--rgb-veil),0.15)';
   selectAllDiv.style.marginBottom = '0.75rem';
   selectAllDiv.style.borderBottom = '1px solid #e2e8f0';
   selectAllDiv.style.paddingBottom = '0.75rem';
@@ -2410,7 +2446,7 @@ function renderSyllabusChecklist(syllabusData) {
   selectAllLabel.style.margin = '0';
   selectAllLabel.style.cursor = 'pointer';
   selectAllLabel.style.fontWeight = '600';
-  selectAllLabel.style.color = '#0284c7';
+  selectAllLabel.style.color = 'var(--c-accent)';
   selectAllLabel.style.flex = '1';
   
   selectAllDiv.appendChild(selectAllCb);
@@ -2420,7 +2456,7 @@ function renderSyllabusChecklist(syllabusData) {
   expandCollapseBtn.type = 'button';
   expandCollapseBtn.id = 'toggleAllAccordionsBtn';
   expandCollapseBtn.textContent = '▾ Expand All';
-  expandCollapseBtn.style.cssText = "background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 3px 10px; font-size: 0.74rem; color: #0284c7; cursor: pointer; font-weight: 600; margin-left: auto; transition: all 0.15s ease;";
+  expandCollapseBtn.style.cssText = "background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 6px; padding: 3px 10px; font-size: 0.74rem; color: var(--c-accent); cursor: pointer; font-weight: 600; margin-left: auto; transition: all 0.15s ease;";
   selectAllDiv.appendChild(expandCollapseBtn);
 
   let areAllExpanded = false;
@@ -2429,8 +2465,8 @@ function renderSyllabusChecklist(syllabusData) {
     e.stopPropagation();
     areAllExpanded = !areAllExpanded;
     expandCollapseBtn.textContent = areAllExpanded ? '▴ Collapse All' : '▾ Expand All';
-    expandCollapseBtn.style.background = areAllExpanded ? '#0284c7' : '#f1f5f9';
-    expandCollapseBtn.style.color = areAllExpanded ? '#ffffff' : '#0284c7';
+    expandCollapseBtn.style.background = areAllExpanded ? 'var(--c-accent)' : '#f1f5f9';
+    expandCollapseBtn.style.color = areAllExpanded ? '#ffffff' : 'var(--c-accent)';
     document.querySelectorAll('.chapter-subtopic-group').forEach(group => {
       const body = group.querySelector('.chapter-subtopic-body');
       const icon = group.querySelector('.chapter-toggle-icon');
@@ -2454,21 +2490,21 @@ function renderSyllabusChecklist(syllabusData) {
   if (isScienceRelated) {
     const quickBar = document.createElement('div');
     quickBar.className = 'science-subdiscipline-quickbar';
-    quickBar.style.cssText = "display: flex; gap: 6px; margin-bottom: 0.85rem; padding: 0.45rem 0.65rem; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 8px; align-items: center; flex-wrap: wrap;";
+    quickBar.style.cssText = "display: flex; gap: 6px; margin-bottom: 0.85rem; padding: 0.45rem 0.65rem; background: rgba(var(--rgb-accent), 0.08); border: 1px solid rgba(var(--rgb-accent), 0.25); border-radius: 8px; align-items: center; flex-wrap: wrap;";
     
     const label = document.createElement('span');
-    label.style.cssText = "font-size: 0.76rem; font-weight: 700; color: #0284c7; margin-right: 4px; display: flex; align-items: center; gap: 4px;";
+    label.style.cssText = "font-size: 0.76rem; font-weight: 700; color: var(--c-accent); margin-right: 4px; display: flex; align-items: center; gap: 4px;";
     label.innerHTML = "<span>⚡ Discipline:</span>";
     quickBar.appendChild(label);
 
     const disciplines = [
-      { name: "Science", label: currentClass === 'Class 9' ? "🧭 Exploration (All Science)" : "🔬 All Science", color: "#0284c7", activeBg: "#0284c7" },
-      { name: "Science (Physics)", label: "⚡ Physics", color: "#0369a1", activeBg: "#0284c7" },
-      { name: "Science (Chemistry)", label: "🧪 Chemistry", color: "#047857", activeBg: "#059669" },
-      { name: "Science (Biology)", label: "🧬 Biology", color: "#7e22ce", activeBg: "#9333ea" }
+      { name: "Science", label: currentClass === 'Class 9' ? "🧭 Exploration (All Science)" : "🔬 All Science", color:  "#0284c7", activeBg: "#0284c7" },
+      { name: "Science (Physics)", label: "⚡ Physics", color:  "#0369a1", activeBg: "#0284c7" },
+      { name: "Science (Chemistry)", label: "🧪 Chemistry", color:  "#047857", activeBg: "#059669" },
+      { name: "Science (Biology)", label: "🧬 Biology", color:  "#7e22ce", activeBg: "#9333ea" }
     ];
     if (currentClass === 'Class 9') {
-      disciplines.push({ name: "Science (Rationalized 086 Legacy)", label: "📜 Legacy 086", color: "#64748b", activeBg: "#475569" });
+      disciplines.push({ name: "Science (Rationalized 086 Legacy)", label: "📜 Legacy 086", color:  "#64748b", activeBg: "#475569" });
     }
 
     disciplines.forEach(d => {
@@ -2824,7 +2860,7 @@ function renderSyllabusChecklist(syllabusData) {
         sectionHeader.style.padding = '0.4rem 0.65rem';
         sectionHeader.style.background = '#f1f5f9';
         sectionHeader.style.borderRadius = '6px';
-        sectionHeader.style.borderLeft = '4px solid #0284c7';
+        sectionHeader.style.borderLeft = '4px solid var(--c-accent)';
         sectionHeader.style.border = '1px solid #cbd5e1';
         sectionHeader.style.borderLeftWidth = '4px';
         const isReadingSection = isUnseenReadingSectionKey(key);
@@ -2853,7 +2889,7 @@ function renderSyllabusChecklist(syllabusData) {
           sectionHeader.style.padding = '0.4rem 0.65rem';
           sectionHeader.style.background = '#f1f5f9';
           sectionHeader.style.borderRadius = '6px';
-          sectionHeader.style.borderLeft = '4px solid #0284c7';
+          sectionHeader.style.borderLeft = '4px solid var(--c-accent)';
           sectionHeader.style.border = '1px solid #cbd5e1';
           sectionHeader.style.borderLeftWidth = '4px';
           syllabusContainer.appendChild(sectionHeader);
@@ -3082,7 +3118,7 @@ function renderFilteredCbseOptions(filterText = '') {
       
       if (isAlreadyAdded) {
         opt.textContent = `${sub.displayName || `${sub.name} (${sub.code})`} — (✓ Already in List)`;
-        opt.style.color = '#94a3b8';
+        opt.style.color = 'var(--c-text-muted)';
         opt.dataset.alreadyAdded = 'true';
       } else {
         opt.textContent = sub.displayName || `${sub.name} (${sub.code})`;
@@ -4442,7 +4478,7 @@ function renderSinglePromptOutput(promptText, currentSub) {
   const isWs = isWorksheetMode(examNameSelect ? examNameSelect.value : '');
   if (batchStatusBadge) {
     batchStatusBadge.textContent = isWs ? `Worksheet Ready (${currentSub})` : `Ready for AI (${currentSub})`;
-    batchStatusBadge.style.background = isWs ? 'rgba(168, 85, 247, 0.18)' : 'rgba(56, 189, 248, 0.15)';
+    batchStatusBadge.style.background = isWs ? 'rgba(168, 85, 247, 0.18)' : 'rgba(var(--rgb-accent), 0.15)';
     batchStatusBadge.style.color = isWs ? '#c084fc' : '#38bdf8';
   }
 
@@ -4547,7 +4583,7 @@ function renderMasterPromptWindow() {
     const removeBtn = document.createElement('button');
     removeBtn.type = "button";
     removeBtn.innerHTML = "&times;";
-    removeBtn.style.cssText = "background: rgba(239, 68, 68, 0.25); border: none; color: #fca5a5; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; line-height: 1; transition: all 0.2s;";
+    removeBtn.style.cssText = "background: rgba(239, 68, 68, 0.25); border: none; color: var(--c-error-soft); width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; cursor: pointer; line-height: 1; transition: all 0.2s;";
     removeBtn.title = "Remove this paper from master queue";
     removeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -5272,7 +5308,7 @@ async function handleGeneratePdfFromAi() {
       const statusEl = document.getElementById('aiPdfStatus');
       if (statusEl) {
         statusEl.textContent = 'Tip: Set A and Set B are detected automatically and downloaded as two separate PDF files.';
-        statusEl.style.color = '#94a3b8';
+        statusEl.style.color = 'var(--c-text-muted)';
       }
     });
   }
@@ -8813,7 +8849,7 @@ async function handleGoogleCredentialResponse(response) {
 function showGoogleSignInError(message) {
   const btnContainer = document.getElementById('googleSignInButton');
   if (btnContainer) {
-    btnContainer.innerHTML = `<div style="color: #fca5a5; font-size: 0.78rem; text-align: center; padding: 8px 12px; border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; background: rgba(239, 68, 68, 0.1);">${message}</div>`;
+    btnContainer.innerHTML = `<div style="color: var(--c-error-soft); font-size: 0.78rem; text-align: center; padding: 8px 12px; border: 1px solid rgba(239, 68, 68, 0.4); border-radius: 8px; background: rgba(239, 68, 68, 0.1);">${message}</div>`;
   }
 }
 
@@ -8953,7 +8989,7 @@ function renderAdminUsersTable(usersList) {
   if (!tbody) return;
 
   if (usersList.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: #94a3b8; padding: 2rem;">No faculty accounts found.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--c-text-muted); padding: 2rem;">No faculty accounts found.</td></tr>`;
     return;
   }
 
@@ -8971,9 +9007,9 @@ function renderAdminUsersTable(usersList) {
             <span>${escapeHtml(u.name)}</span>
           </div>
         </td>
-        <td style="font-family: monospace; color: #94a3b8;">${escapeHtml(u.username)}</td>
+        <td style="font-family: monospace; color: var(--c-text-muted);">${escapeHtml(u.username)}</td>
         <td>
-          <span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: ${isSuperAdmin ? 'rgba(245, 158, 11, 0.2)' : 'rgba(56, 189, 248, 0.2)'}; color: ${isSuperAdmin ? '#fde68a' : '#7dd3fc'}; border: 1px solid ${isSuperAdmin ? 'rgba(245, 158, 11, 0.4)' : 'rgba(56, 189, 248, 0.4)'};">
+          <span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: ${isSuperAdmin ? 'rgba(245, 158, 11, 0.2)' : 'rgba(var(--rgb-accent), 0.2)'}; color: ${isSuperAdmin ? '#fde68a' : '#7dd3fc'}; border: 1px solid ${isSuperAdmin ? 'rgba(245, 158, 11, 0.4)' : 'rgba(var(--rgb-accent), 0.4)'};">
             ${isSuperAdmin ? '👑 SUPER ADMIN' : '👨‍🏫 FACULTY'}
           </span>
         </td>
@@ -8982,7 +9018,7 @@ function renderAdminUsersTable(usersList) {
             <span>${isActive ? '🟢 PERMITTED' : '🔴 WITHDRAWN'}</span>
           </span>
         </td>
-        <td style="color: #94a3b8; font-size: 0.72rem;">${escapeHtml(u.last_login || 'Never')}</td>
+        <td style="color: var(--c-text-muted); font-size: 0.72rem;">${escapeHtml(u.last_login || 'Never')}</td>
       </tr>
     `;
   }).join('');
@@ -9016,39 +9052,39 @@ function renderAdminLogsTable(logsList) {
   if (!tbody) return;
 
   if (logsList.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94a3b8; padding: 2rem;">No matching audit logs found.</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--c-text-muted); padding: 2rem;">No matching audit logs found.</td></tr>`;
     return;
   }
 
   tbody.innerHTML = logsList.map(l => {
     let resultBadge = '';
     if (l.status === 'SUCCESS') {
-      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.3);">🟢 SUCCESS</span>';
+      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(16, 185, 129, 0.15); color: var(--c-success-text); border: 1px solid rgba(16, 185, 129, 0.3);">🟢 SUCCESS</span>';
     } else if (l.status === 'WRONG_DOMAIN') {
-      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(239, 68, 68, 0.2); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4);">⛔ NOT STAFF</span>';
+      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(239, 68, 68, 0.2); color: var(--c-error-soft); border: 1px solid rgba(239, 68, 68, 0.4);">⛔ NOT STAFF</span>';
     } else if (l.status === 'LOGOUT') {
-      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border: 1px solid rgba(148, 163, 184, 0.3);">🚪 LOGOUT</span>';
+      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(148, 163, 184, 0.15); color: var(--c-text-soft); border: 1px solid rgba(148, 163, 184, 0.3);">🚪 LOGOUT</span>';
     } else if (l.status === 'BLOCKED_RATE_LIMIT') {
-      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(245, 158, 11, 0.15); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.3);">🚫 RATE LIMITED</span>';
+      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(245, 158, 11, 0.15); color: var(--c-warn-soft); border: 1px solid rgba(245, 158, 11, 0.3);">🚫 RATE LIMITED</span>';
     } else {
-      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(245, 158, 11, 0.15); color: #fde68a; border: 1px solid rgba(245, 158, 11, 0.3);">🔴 INVALID TOKEN</span>';
+      resultBadge = '<span style="display: inline-block; padding: 2px 7px; border-radius: 4px; font-size: 0.65rem; font-weight: 900; background: rgba(245, 158, 11, 0.15); color: var(--c-warn-soft); border: 1px solid rgba(245, 158, 11, 0.3);">🔴 INVALID TOKEN</span>';
     }
 
     return `
       <tr>
-        <td style="font-family: monospace; color: #cbd5e1; font-size: 0.72rem; white-space: nowrap;">${escapeHtml(l.timestamp)}</td>
+        <td style="font-family: monospace; color: var(--c-text-soft); font-size: 0.72rem; white-space: nowrap;">${escapeHtml(l.timestamp)}</td>
         <td>
           <div style="font-weight: 700; color: #ffffff;">${escapeHtml(l.name || l.username)}</div>
-          <div style="font-family: monospace; font-size: 0.65rem; color: #64748b;">@${escapeHtml(l.username)}</div>
+          <div style="font-family: monospace; font-size: 0.65rem; color: var(--c-text-faint);">@${escapeHtml(l.username)}</div>
         </td>
         <td>${resultBadge}</td>
-        <td style="font-family: monospace; color: #38bdf8; font-size: 0.72rem;">${escapeHtml(l.ip)}</td>
-        <td style="color: #e2e8f0; font-size: 0.72rem;">
+        <td style="font-family: monospace; color: var(--c-accent-bright); font-size: 0.72rem;">${escapeHtml(l.ip)}</td>
+        <td style="color: var(--c-text-body); font-size: 0.72rem;">
           <div style="display: flex; align-items: center; gap: 6px;">
             <span>💻</span> <span>${escapeHtml(l.device || 'Standard Client')}</span>
           </div>
         </td>
-        <td style="color: #94a3b8; font-size: 0.72rem;">
+        <td style="color: var(--c-text-muted); font-size: 0.72rem;">
           <div style="display: flex; align-items: center; gap: 6px;">
             <span>📍</span> <span>${escapeHtml(l.location || 'Local School Network')}</span>
           </div>
