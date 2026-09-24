@@ -2379,8 +2379,13 @@ function getSubjectSelectionForSheet(cls, subjName) {
     return applySheetReadingPolicy(cls, subjName, saved.checked);
   }
 
-  // Inherit active selections from Prompt Generation module if available (Unidirectional Sync)
-  const promptSaved = syllabusSelectionStore[key];
+  // Inherit active selections from Prompt Generation module if available (Unidirectional Sync).
+  // The combined Class 10 Maths entry takes whichever Maths subject was ticked.
+  const promptKeys = subjName === SHEET_COMBINED_MATHS
+    ? SHEET_MATHS_PARTS.map(s => `${cls}::${s}`)
+    : [key];
+  const promptSaved = promptKeys.map(k => syllabusSelectionStore[k])
+    .find(sv => sv && sv.initialized && sv.checked.size > 0);
   if (promptSaved && promptSaved.initialized && promptSaved.checked.size > 0) {
     sheetSelectionStore[key] = {
       checked: new Set(promptSaved.checked),
@@ -6036,7 +6041,28 @@ function matchExamOption(examA, examB) {
 }
 
 // Helper to fetch and order subject list directly matching main panel for this class
+// Class 10 Maths is two subjects in the prompt panel, Standard (041) and Basic
+// (241), because CBSE sets a different paper for each. They share one NCERT
+// syllabus, so the circular lists them once, under this combined name.
+const SHEET_COMBINED_MATHS = 'Mathematics (Standard / Basic)';
+const SHEET_MATHS_PARTS = ['Mathematics (Standard)', 'Mathematics (Basic)'];
+
 function getSheetSubjectsData(cls) {
+  const subjects = collectSheetSubjectsData(cls);
+  if (cls !== 'Class 10' || !SHEET_MATHS_PARTS.some(s => subjects[s])) return subjects;
+
+  const merged = {};
+  for (const [k, v] of Object.entries(subjects)) {
+    if (SHEET_MATHS_PARTS.includes(k)) {
+      if (!merged[SHEET_COMBINED_MATHS]) merged[SHEET_COMBINED_MATHS] = v;
+    } else {
+      merged[k] = v;
+    }
+  }
+  return merged;
+}
+
+function collectSheetSubjectsData(cls) {
   const isExcluded = (subj) => isSchoolExcludedSubject(subj) || (cls === 'Class 8' && subj.toLowerCase().includes('computer science'));
 
   if (classSelect && classSelect.value === cls && subjectSelect && subjectSelect.options.length > 1) {
