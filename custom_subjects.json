@@ -1679,61 +1679,117 @@
     },
     "Mathematics": {
       "Chapter 1: Orienting Yourself - The Use of Coordinates": [
-        "1.1 Cartesian Coordinate System: x-axis, y-axis and the Origin",
-        "1.2 Plotting Points and the Four Quadrants (Sign Conventions)",
+        "1.1 Brief History of Coordinate Geometry and the 2-D Cartesian Coordinate System (x-axis, y-axis and the Origin)",
+        "1.2 Plotting Points and the Four Quadrants (Sign Conventions); Representing a Floor Plan on a Grid",
         "1.3 Distance Between Two Points: Baudhayana-Pythagoras Theorem and the Distance Formula",
-        "1.4 Section Formula and the Mid-Point of a Line Segment",
-        "1.5 Reflection of Points about the Axes"
+        "1.4 Mid-Point of the Line Segment Joining Two Points",
+        "1.5 Applications: Collinearity of Three Points and Checking whether a Triangle is Right-Angled"
       ],
       "Chapter 2: Introduction to Linear Polynomials": [
-        "2.1 Variables, Coefficients, Constants and Terms in Real-Life Contexts",
-        "2.2 Linear Polynomials and Linear Equations in One and Two Variables",
-        "2.3 Patterns of Growth and Decay: Representing Change with y = ax + b",
-        "2.4 Graph of a Linear Equation on the Cartesian Plane",
-        "2.5 Zero of a Linear Polynomial and its Graphical Meaning"
+        "2.1 Algebraic Expressions: Variables, Coefficients, Constants and Terms in Real-Life Contexts",
+        "2.2 Definition of a Polynomial; Degree, Terms and Coefficients of a Polynomial",
+        "2.3 Linear Polynomials: Exploring Linear Patterns and their Applications",
+        "2.4 Modelling Linear Growth and Linear Decay",
+        "2.5 Visualising Linear Relationships: Graph of y = ax + b, Slope and y-intercept"
       ],
       "Chapter 3: The World of Numbers": [
-        "3.1 Historical Development of Number Systems",
-        "3.2 Rational Numbers: Representation and Density on the Number Line",
-        "3.3 Decimal Expansions of Rational Numbers (Terminating and Non-Terminating Recurring)",
-        "3.4 Irrational Numbers and their Existence (sqrt(2), sqrt(3), sqrt(5))",
-        "3.5 Constructing the Square Root Spiral",
-        "3.6 Real Numbers, Operations on Real Numbers and Rationalising the Denominator",
-        "3.7 Laws of Exponents for Real Numbers"
+        "3.1 Introduction to Rational Numbers and their Properties",
+        "3.2 Representation of Rational Numbers on the Number Line",
+        "3.3 Density of Rational Numbers (with Proof) and Finding Rational Numbers between Any Two Rational Numbers",
+        "3.4 Decimal Representation of Rational Numbers (Terminating and Non-Terminating Recurring)",
+        "3.5 Introduction to Irrational Numbers and Proof of Irrationality of sqrt(2) and sqrt(3)",
+        "3.6 Constructing the Square Root Spiral"
       ],
       "Chapter 4: Exploring Algebraic Identities": [
-        "4.1 Standard Algebraic Identities: (a+b)^2, (a-b)^2 and (a+b)(a-b)",
-        "4.2 Geometric (Visual) Proofs of Algebraic Identities",
-        "4.3 Identities Involving Three Variables: (a+b+c)^2",
-        "4.4 Identities for Cubes: (a+b)^3, (a-b)^3 and a^3+b^3+c^3-3abc",
-        "4.5 Factorisation of Algebraic Expressions using Identities",
-        "4.6 Simplifying Rational Algebraic Expressions"
+        "4.1 Revisiting Algebraic Identities: (a+b)^2, (a-b)^2 and (a+b)(a-b)",
+        "4.2 Visualising Identities using Geometric Models",
+        "4.3 More Identities and their Applications: (a+b+c)^2, (a+b)^3, (a-b)^3 and a^3+b^3+c^3-3abc",
+        "4.4 Factorisation of Algebraic Expressions using Identities",
+        "4.5 Visualising Factorisation of Quadratic Expressions (with and without Algebra Tiles)",
+        "4.6 Finding New Identities and Simplifying Rational Expressions"
       ],
       "Chapter 5: I'm Up and Down, and Round and Round": [
-        "5.1 Circles and Related Terms: Centre, Radius, Diameter, Chord and Arc",
-        "5.2 Relationship between Equal Chords and their Distances from the Centre",
-        "5.3 Angle Subtended by a Chord or an Arc at the Centre",
-        "5.4 Perpendicular from the Centre to a Chord and its Converse",
-        "5.5 Concyclic Points and the Circle through Three Points",
-        "5.6 Angles in the Same Segment and Cyclic Quadrilaterals"
+        "5.1 Circles in Practice and Related Terms: Centre, Radius, Diameter, Chord, Arc, Segment and Sector",
+        "5.2 Chords and the Angles they Subtend at the Centre",
+        "5.3 Midpoints and Perpendicular Bisectors of Chords; the Unique Circle through Three Non-Collinear Points; Circumcircle and Circumcentre of a Triangle",
+        "5.4 Distance of Chords from the Centre (Equal Chords, Longer Chord Closer to the Centre, Diameter as the Longest Chord)",
+        "5.5 Angle Subtended by an Arc at the Centre and at the Remaining Part of the Circle; Angles in the Same Segment; Angle in a Semicircle",
+        "5.6 Cyclicity of Points: Concyclic Points and Cyclic Quadrilaterals (Opposite Angles Supplementary)"
       ],
       "Chapter 6: Measuring Space - Perimeter and Area": [
-        "6.1 Perimeter and Area of Triangles and Quadrilaterals",
-        "6.2 Heron's Formula and its Applications to Triangular Regions",
-        "6.3 Circumference and Area of a Circle",
-        "6.4 Area of Combinations of Plane Figures (Composite Shapes)",
-        "6.5 Real-Life Applications of Perimeter and Area"
+        "6.1 Perimeter of Shapes; Circumference of a Circle, pi and its Irrationality; Historical Approximations of pi",
+        "6.2 Length of an Arc and Real-World Applications",
+        "6.3 Area of Rectangles, Parallelograms and Triangles (a Median Divides a Triangle into Two Triangles of Equal Area)",
+        "6.4 Heron's Formula for the Area of a Triangle",
+        "6.5 Squaring a Rectangle: Proof from Baudhayana's Sulbasutras",
+        "6.6 Area of a Circle (Derivation), Area of a Sector and Problems on Sectors and Segments",
+        "6.7 Brahmagupta's Formula for the Area of a Cyclic Quadrilateral; Heron's Formula as a Special Case"
       ],
       "Chapter 7: The Mathematics of Maybe - Introduction to Probability": [
-        "7.1 Experimental (Empirical) Approach to Probability",
-        "7.2 Probability of an Event based on Observed Frequencies",
-        "7.3 Interpreting Probability as a Measure of Chance in Everyday Situations"
+        "7.1 Concept of Probability and Randomness; the Probability Scale",
+        "7.2 Empirical Probability: Analysing Statistical Data and Performing Experiments",
+        "7.3 Theoretical Probability: Sample Space and Events",
+        "7.4 Representing Probability through Tree Diagrams and Tables"
       ],
       "Chapter 8: Predicting What Comes Next - Exploring Sequences and Progressions": [
-        "8.1 Patterns and Sequences in Real Life",
-        "8.2 Describing Sequences using Explicit Rules (General Term)",
-        "8.3 Describing Sequences using Recursive Rules",
-        "8.4 Arithmetic Patterns and Common Differences"
+        "8.1 Introduction to Sequences and Patterns in Real Life",
+        "8.2 Explicit (General) Rule of a Sequence",
+        "8.3 Recursive Rule of a Sequence",
+        "8.4 Arithmetic Progressions: nth Term, Visualising an AP and Practical Contexts",
+        "8.5 Sum of the First n Natural Numbers",
+        "8.6 Geometric Progressions: nth Term, Visualising a GP and Practical Contexts",
+        "8.7 Applications of GP in Fractals and the Tower of Hanoi Puzzle"
+      ],
+      "Chapter 9: Linear Equations in Two Variables": [
+        "9.1 Introduction to Linear Equations in Two Variables through Practical Examples",
+        "9.2 Solutions of a Linear Equation in Two Variables and their Graphical Representation",
+        "9.3 Slope-Intercept Form; Drawing Graphs when x and y Take Only Certain Values",
+        "9.4 Pair of Linear Equations in Two Variables: Graphical Method of Solution",
+        "9.5 Nature of Solutions: Consistency and Inconsistency",
+        "9.6 Algebraic Methods: Substitution and Elimination; Modelling Contextual Problems"
+      ],
+      "Chapter 10: Introduction to Euclid's Geometry - Axioms and Postulates": [
+        "10.1 History of Geometry: Contributions of India, Egypt and Greece",
+        "10.2 Constructing a Square with a Given Side as in Baudhayana's Sulbasutras",
+        "10.3 Discovering Euclid's Definitions: Point, Line and Surface",
+        "10.4 Axioms: Axioms of Measurement and Rules for Geometric Objects",
+        "10.5 Euclid's Five Postulates and Parallelism; Justifying Simple Constructions using Axioms"
+      ],
+      "Chapter 11: Lines and Angles": [
+        "11.1 Rays and Angles; Measures of Angles (Acute, Right, Obtuse, Straight and Reflex)",
+        "11.2 Intersecting Lines and Pairs of Angles; Linear Pair Theorem and its Converse",
+        "11.3 Vertically Opposite Angles; Proof by Contradiction in Geometry",
+        "11.4 Parallel Lines and a Transversal: Corresponding, Alternate and Interior Angles; Transitivity of Parallelism",
+        "11.5 Theorems and Examples on Parallel Lines; Why a Triangle has at least Two Acute Angles"
+      ],
+      "Chapter 12: Triangles - Congruence Theorems": [
+        "12.1 Practical Applications of Triangles: Rigidity and Stability of Structures",
+        "12.2 Congruence of Triangles: Correspondence of Vertices, Sides and Angles",
+        "12.3 Congruence Conditions and their Proofs: SAS Axiom, SSS, ASA, AAS and RHS",
+        "12.4 Properties of Isosceles Triangles",
+        "12.5 Propositions and their Converses; Why SSA is Not in General a Valid Congruence Condition",
+        "12.6 Problems Based on Applications of Theorems on Triangles"
+      ],
+      "Chapter 13: 4-gons (Quadrilaterals)": [
+        "13.1 Definition of a 4-gon and Properties of Parallelograms",
+        "13.2 Theorems Characterising a Parallelogram and their Proofs",
+        "13.3 Midpoint Theorem and its Converse, with Applications",
+        "13.4 Medians of a Triangle are Concurrent (2:1 Ratio); the Midpoint 4-gon is a Parallelogram",
+        "13.5 Coordinates: Midpoint of a Segment and the Fourth Vertex of a Parallelogram",
+        "13.6 Central Symmetry, Reflection and Rotation Symmetries of 4-gons; Tiling the Plane"
+      ],
+      "Chapter 14: Surface Area and Volume": [
+        "14.1 Surface Area and Volume of Cuboids and Cubes (the Cube as a Special Case)",
+        "14.2 Surface Area and Volume of a Right Circular Cylinder",
+        "14.3 Surface Area and Volume of a Right Circular Cone",
+        "14.4 Surface Area and Volume of a Pyramid",
+        "14.5 Surface Area and Volume of Spheres and Hemispheres"
+      ],
+      "Chapter 15: Statistics": [
+        "15.1 Statistical Investigative Questions: Collecting and Organising Data",
+        "15.2 Graphical Representation of Data: Stacked Bar Graphs and 100% Stacked Bar Graphs",
+        "15.3 Measures of Central Tendency: Mean, Median and Mode",
+        "15.4 Weighted Average and its Applications"
       ]
     },
     "Social Science": {
@@ -2214,10 +2270,9 @@
       "Chapter 4: Quadratic Equations": [
         "4.1 Standard Form of Quadratic Equation: ax^2 + bx + c = 0 (a != 0) and Checking Quadratic Nature",
         "4.2 Solution of Quadratic Equations by Factorisation (Splitting the Middle Term)",
-        "4.3 Derivation of Quadratic Formula (Sridharacharya's Rule) by Completing Square Method",
-        "4.4 Solving Equations using Quadratic Formula: x = [-b +- sqrt(b^2 - 4ac)] / (2a)",
-        "4.5 Nature of Roots and Discriminant (D = b^2 - 4ac): D > 0 (Two Distinct Real Roots), D = 0 (Two Equal Real Roots), D < 0 (No Real Roots)",
-        "4.6 Word Problems on Consecutive Integers, Pythagorean Triangles, Time & Work, Speed, Distance and Economics"
+        "4.3 Solving Equations using Quadratic Formula: x = [-b +- sqrt(b^2 - 4ac)] / (2a)",
+        "4.4 Nature of Roots and Discriminant (D = b^2 - 4ac): D > 0 (Two Distinct Real Roots), D = 0 (Two Equal Real Roots), D < 0 (No Real Roots)",
+        "4.5 Word Problems on Consecutive Integers, Pythagorean Triangles, Time & Work, Speed, Distance and Economics"
       ],
       "Chapter 5: Arithmetic Progressions": [
         "5.1 Understanding Sequence, Series and Definition of Arithmetic Progression (AP)",
@@ -2240,8 +2295,7 @@
         "7.2 Distance of a Point from the Origin: d = sqrt[x^2 + y^2] and Collinearity of Three Points",
         "7.3 Testing Geometric Shapes (Isosceles, Equilateral, Right Triangle, Square, Rhombus, Parallelogram)",
         "7.4 Section Formula for Internal Division: P(x, y) = [(m1*x2 + m2*x1)/(m1+m2), (m1*y2 + m2*y1)/(m1+m2)]",
-        "7.5 Mid-Point Formula: M(x, y) = [(x1 + x2)/2, (y1 + y2)/2] and Points of Trisection of a Line Segment",
-        "7.6 Centroid of a Triangle Formula: G(x, y) = [(x1+x2+x3)/3, (y1+y2+y3)/3]"
+        "7.5 Mid-Point Formula: M(x, y) = [(x1 + x2)/2, (y1 + y2)/2] and Points of Trisection of a Line Segment"
       ],
       "Chapter 8: Introduction to Trigonometry": [
         "8.1 Trigonometric Ratios of an Acute Angle in a Right-Angled Triangle (sin, cos, tan, cot, sec, cosec)",
@@ -2249,7 +2303,7 @@
         "8.3 Trigonometric Ratios of Specific Angles: 0°, 30°, 45°, 60° and 90° Values Table",
         "8.4 Evaluation of Algebraic Expressions Involving Specific Trigonometric Angles",
         "8.5 Fundamental Trigonometric Identities: sin^2 theta + cos^2 theta = 1, 1 + tan^2 theta = sec^2 theta, 1 + cot^2 theta = cosec^2 theta",
-        "8.6 Proving Complex Trigonometric Identities using Fundamental Identities"
+        "8.6 Proving Simple Trigonometric Identities using sin^2 A + cos^2 A = 1 and the Related Identities"
       ],
       "Chapter 9: Some Applications of Trigonometry": [
         "9.1 Line of Sight, Horizontal Level, Angle of Elevation and Angle of Depression",
@@ -2274,13 +2328,12 @@
       "Chapter 12: Surface Areas and Volumes": [
         "12.1 Surface Area of a Combination of Solids (Cubes, Cuboids, Spheres, Hemispheres, Right Circular Cylinders, Cones)",
         "12.2 Total Surface Area of Composite Toys, Tents, Storage Silos and Capsules",
-        "12.3 Volume of a Combination of Solids: Solid Placed inside Cylinder, Gulab Jamuns, Ice Cream Cones, Decorative Pen Stands",
-        "12.4 Conversion of Solids from One Shape to Another (Melting & Recasting Problems)"
+        "12.3 Volume of a Combination of Solids: Solid Placed inside Cylinder, Gulab Jamuns, Ice Cream Cones, Decorative Pen Stands"
       ],
       "Chapter 13: Statistics": [
         "13.1 Grouped Data Frequency Distributions and Class Marks",
         "13.2 Mean of Grouped Data by Direct Method: bar_x = sum(f_i * x_i) / sum(f_i)",
-        "13.3 Mean of Grouped Data by Assumed Mean Method: bar_x = a + [sum(f_i * d_i) / sum(f_i)]",
+        "13.3 Mean of Grouped Data by Assumed Mean and Step-Deviation Methods",
         "13.4 Mode of Grouped Data: Mode = l + [(f1 - f0)/(2f1 - f0 - f2)] * h",
         "13.5 Median of Grouped Data: Median = l + [((n/2) - cf)/f] * h",
         "13.6 Empirical Relationship Between the Three Measures of Central Tendency: 3 * Median = Mode + 2 * Mean",
@@ -2320,10 +2373,9 @@
       "Chapter 4: Quadratic Equations": [
         "4.1 Standard Form of Quadratic Equation: ax^2 + bx + c = 0 (a != 0) and Checking Quadratic Nature",
         "4.2 Solution of Quadratic Equations by Factorisation (Splitting the Middle Term)",
-        "4.3 Derivation of Quadratic Formula (Sridharacharya's Rule) by Completing Square Method",
-        "4.4 Solving Equations using Quadratic Formula: x = [-b +- sqrt(b^2 - 4ac)] / (2a)",
-        "4.5 Nature of Roots and Discriminant (D = b^2 - 4ac): D > 0 (Two Distinct Real Roots), D = 0 (Two Equal Real Roots), D < 0 (No Real Roots)",
-        "4.6 Word Problems on Consecutive Integers, Pythagorean Triangles, Time & Work, Speed, Distance and Economics"
+        "4.3 Solving Equations using Quadratic Formula: x = [-b +- sqrt(b^2 - 4ac)] / (2a)",
+        "4.4 Nature of Roots and Discriminant (D = b^2 - 4ac): D > 0 (Two Distinct Real Roots), D = 0 (Two Equal Real Roots), D < 0 (No Real Roots)",
+        "4.5 Word Problems on Consecutive Integers, Pythagorean Triangles, Time & Work, Speed, Distance and Economics"
       ],
       "Chapter 5: Arithmetic Progressions": [
         "5.1 Understanding Sequence, Series and Definition of Arithmetic Progression (AP)",
@@ -2346,8 +2398,7 @@
         "7.2 Distance of a Point from the Origin: d = sqrt[x^2 + y^2] and Collinearity of Three Points",
         "7.3 Testing Geometric Shapes (Isosceles, Equilateral, Right Triangle, Square, Rhombus, Parallelogram)",
         "7.4 Section Formula for Internal Division: P(x, y) = [(m1*x2 + m2*x1)/(m1+m2), (m1*y2 + m2*y1)/(m1+m2)]",
-        "7.5 Mid-Point Formula: M(x, y) = [(x1 + x2)/2, (y1 + y2)/2] and Points of Trisection of a Line Segment",
-        "7.6 Centroid of a Triangle Formula: G(x, y) = [(x1+x2+x3)/3, (y1+y2+y3)/3]"
+        "7.5 Mid-Point Formula: M(x, y) = [(x1 + x2)/2, (y1 + y2)/2] and Points of Trisection of a Line Segment"
       ],
       "Chapter 8: Introduction to Trigonometry": [
         "8.1 Trigonometric Ratios of an Acute Angle in a Right-Angled Triangle (sin, cos, tan, cot, sec, cosec)",
@@ -2355,7 +2406,7 @@
         "8.3 Trigonometric Ratios of Specific Angles: 0°, 30°, 45°, 60° and 90° Values Table",
         "8.4 Evaluation of Algebraic Expressions Involving Specific Trigonometric Angles",
         "8.5 Fundamental Trigonometric Identities: sin^2 theta + cos^2 theta = 1, 1 + tan^2 theta = sec^2 theta, 1 + cot^2 theta = cosec^2 theta",
-        "8.6 Proving Complex Trigonometric Identities using Fundamental Identities"
+        "8.6 Proving Simple Trigonometric Identities using sin^2 A + cos^2 A = 1 and the Related Identities"
       ],
       "Chapter 9: Some Applications of Trigonometry": [
         "9.1 Line of Sight, Horizontal Level, Angle of Elevation and Angle of Depression",
@@ -2380,13 +2431,12 @@
       "Chapter 12: Surface Areas and Volumes": [
         "12.1 Surface Area of a Combination of Solids (Cubes, Cuboids, Spheres, Hemispheres, Right Circular Cylinders, Cones)",
         "12.2 Total Surface Area of Composite Toys, Tents, Storage Silos and Capsules",
-        "12.3 Volume of a Combination of Solids: Solid Placed inside Cylinder, Gulab Jamuns, Ice Cream Cones, Decorative Pen Stands",
-        "12.4 Conversion of Solids from One Shape to Another (Melting & Recasting Problems)"
+        "12.3 Volume of a Combination of Solids: Solid Placed inside Cylinder, Gulab Jamuns, Ice Cream Cones, Decorative Pen Stands"
       ],
       "Chapter 13: Statistics": [
         "13.1 Grouped Data Frequency Distributions and Class Marks",
         "13.2 Mean of Grouped Data by Direct Method: bar_x = sum(f_i * x_i) / sum(f_i)",
-        "13.3 Mean of Grouped Data by Assumed Mean Method: bar_x = a + [sum(f_i * d_i) / sum(f_i)]",
+        "13.3 Mean of Grouped Data by Assumed Mean and Step-Deviation Methods",
         "13.4 Mode of Grouped Data: Mode = l + [(f1 - f0)/(2f1 - f0 - f2)] * h",
         "13.5 Median of Grouped Data: Median = l + [((n/2) - cf)/f] * h",
         "13.6 Empirical Relationship Between the Three Measures of Central Tendency: 3 * Median = Mode + 2 * Mean",

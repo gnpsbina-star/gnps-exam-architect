@@ -359,6 +359,46 @@ def _split_class10_maths():
 
 _split_class10_maths()
 
+# Subjects whose chapter lists were rewritten from a CBSE curriculum document.
+# The live copy on DATA_DIR keeps whatever it was seeded with, and it overrides
+# data.js in the browser, so each rewrite is copied across from the shipped
+# baseline once. The applied update ids are recorded beside it so a later admin
+# edit to the same subject is never overwritten again.
+CURRICULUM_UPDATES = [
+    ("2026-27-maths", [("Class 9", "Mathematics"),
+                       ("Class 10", "Mathematics (Standard)"),
+                       ("Class 10", "Mathematics (Basic)")]),
+]
+CURRICULUM_UPDATES_FILE = os.path.join(DATA_DIR, "curriculum_updates_applied.json")
+
+def _apply_curriculum_updates():
+    if os.path.abspath(CUSTOM_FILE) == os.path.abspath(CUSTOM_FILE_BASELINE):
+        return
+    try:
+        with open(CURRICULUM_UPDATES_FILE, 'r', encoding='utf-8') as f:
+            applied = set(json.load(f))
+    except Exception:
+        applied = set()
+    pending = [(uid, subjects) for uid, subjects in CURRICULUM_UPDATES if uid not in applied]
+    if not pending:
+        return
+    try:
+        with open(CUSTOM_FILE_BASELINE, 'r', encoding='utf-8') as f:
+            baseline = json.load(f)
+        data = get_custom_data()
+        for uid, subjects in pending:
+            for cls, subj in subjects:
+                if subj in baseline.get(cls, {}):
+                    data.setdefault(cls, {})[subj] = baseline[cls][subj]
+            applied.add(uid)
+        save_custom_data(data)
+        with open(CURRICULUM_UPDATES_FILE, 'w', encoding='utf-8') as f:
+            json.dump(sorted(applied), f)
+    except Exception as e:
+        print(f"Error applying curriculum updates to {CUSTOM_FILE}: {e}")
+
+_apply_curriculum_updates()
+
 def fetch_cbse_subjects_list(cls):
     is_senior = cls in ['Class 11', 'Class 12']
     is_middle = cls in ['Class 6', 'Class 7', 'Class 8']
