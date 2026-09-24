@@ -2189,7 +2189,113 @@
         "13.5 Waste Disposal Management: Biodegradable and Non-Biodegradable Wastes and Solid Waste Management Practices"
       ]
     },
-    "Mathematics": {
+    "Mathematics (Standard)": {
+      "Chapter 1: Real Numbers": [
+        "1.1 Fundamental Theorem of Arithmetic (Unique Prime Factorisation of Composite Numbers)",
+        "1.2 Finding HCF and LCM using Prime Factorisation & Verification: HCF(a,b) * LCM(a,b) = a * b",
+        "1.3 Revisiting Irrational Numbers: Complete Proofs of Irrationality of sqrt(2), sqrt(3), sqrt(5)",
+        "1.4 Proofs of Irrationality of Numbers in the form a + b*sqrt(c) and a / sqrt(b)"
+      ],
+      "Chapter 2: Polynomials": [
+        "2.1 Geometrical Meaning of the Zeroes of a Linear, Quadratic and Cubic Polynomial",
+        "2.2 Number of Zeroes from Graph of y = p(x) (Points of Intersection with x-axis)",
+        "2.3 Relationship between Zeroes and Coefficients of a Quadratic Polynomial: Sum (alpha + beta = -b/a), Product (alpha * beta = c/a)",
+        "2.4 Formation of Quadratic Polynomials when Sum and Product of Zeroes are Given: k[x^2 - (alpha+beta)x + alpha*beta]",
+        "2.5 Symmetric Expressions of Zeroes (alpha^2 + beta^2, 1/alpha + 1/beta, alpha^3 + beta^3)"
+      ],
+      "Chapter 3: Pair of Linear Equations in Two Variables": [
+        "3.1 Pair of Linear Equations in Two Variables: Standard Form a1*x + b1*y + c1 = 0 and a2*x + b2*y + c2 = 0",
+        "3.2 Graphical Method of Solution: Intersecting Lines (Unique Solution), Coincident Lines (Infinitely Many Solutions), Parallel Lines (No Solution)",
+        "3.3 Algebraic Conditions for Consistency and Inconsistency (a1/a2 != b1/b2, a1/a2 = b1/b2 = c1/c2, a1/a2 = b1/b2 != c1/c2)",
+        "3.4 Algebraic Method: Substitution Method Step-by-Step",
+        "3.5 Algebraic Method: Elimination Method by Equating Coefficients",
+        "3.6 Word Problems: Numbers and Digits, Age Problems, Speed-Distance-Time (Boats & Streams, Trains), Geometry and Commercial Costing"
+      ],
+      "Chapter 4: Quadratic Equations": [
+        "4.1 Standard Form of Quadratic Equation: ax^2 + bx + c = 0 (a != 0) and Checking Quadratic Nature",
+        "4.2 Solution of Quadratic Equations by Factorisation (Splitting the Middle Term)",
+        "4.3 Derivation of Quadratic Formula (Sridharacharya's Rule) by Completing Square Method",
+        "4.4 Solving Equations using Quadratic Formula: x = [-b +- sqrt(b^2 - 4ac)] / (2a)",
+        "4.5 Nature of Roots and Discriminant (D = b^2 - 4ac): D > 0 (Two Distinct Real Roots), D = 0 (Two Equal Real Roots), D < 0 (No Real Roots)",
+        "4.6 Word Problems on Consecutive Integers, Pythagorean Triangles, Time & Work, Speed, Distance and Economics"
+      ],
+      "Chapter 5: Arithmetic Progressions": [
+        "5.1 Understanding Sequence, Series and Definition of Arithmetic Progression (AP)",
+        "5.2 First Term (a), Common Difference (d) and Checking whether a Given Sequence is an AP",
+        "5.3 nth Term of an AP Formula: a_n = a + (n - 1)d and nth Term from the End: l - (n - 1)d",
+        "5.4 Sum of First n Terms of an AP: S_n = n/2 [2a + (n-1)d] and S_n = n/2 [a + l]",
+        "5.5 Relationship between a_n and S_n: a_n = S_n - S_(n-1)",
+        "5.6 Practical Applications and Word Problems Involving Arithmetic Progressions in Daily Life"
+      ],
+      "Chapter 6: Triangles": [
+        "6.1 Similarity of Geometric Figures and Necessary Conditions for Similarity of Polygons",
+        "6.2 Basic Proportionality Theorem (Thales Theorem) with Complete Geometric Proof",
+        "6.3 Converse of Basic Proportionality Theorem and Applications",
+        "6.4 Criteria for Similarity of Triangles: AAA (Angle-Angle-Angle) and AA Similarity Criterion",
+        "6.5 Criteria for Similarity of Triangles: SSS (Side-Side-Side) Similarity Criterion",
+        "6.6 Criteria for Similarity of Triangles: SAS (Side-Angle-Side) Similarity Criterion and Multi-Step Proofs"
+      ],
+      "Chapter 7: Coordinate Geometry": [
+        "7.1 Cartesian Plane Review and Distance Formula: d = sqrt[(x2 - x1)^2 + (y2 - y1)^2]",
+        "7.2 Distance of a Point from the Origin: d = sqrt[x^2 + y^2] and Collinearity of Three Points",
+        "7.3 Testing Geometric Shapes (Isosceles, Equilateral, Right Triangle, Square, Rhombus, Parallelogram)",
+        "7.4 Section Formula for Internal Division: P(x, y) = [(m1*x2 + m2*x1)/(m1+m2), (m1*y2 + m2*y1)/(m1+m2)]",
+        "7.5 Mid-Point Formula: M(x, y) = [(x1 + x2)/2, (y1 + y2)/2] and Points of Trisection of a Line Segment",
+        "7.6 Centroid of a Triangle Formula: G(x, y) = [(x1+x2+x3)/3, (y1+y2+y3)/3]"
+      ],
+      "Chapter 8: Introduction to Trigonometry": [
+        "8.1 Trigonometric Ratios of an Acute Angle in a Right-Angled Triangle (sin, cos, tan, cot, sec, cosec)",
+        "8.2 Reciprocal Relations and Quotient Relations (tan theta = sin/cos, cot theta = cos/sin)",
+        "8.3 Trigonometric Ratios of Specific Angles: 0°, 30°, 45°, 60° and 90° Values Table",
+        "8.4 Evaluation of Algebraic Expressions Involving Specific Trigonometric Angles",
+        "8.5 Fundamental Trigonometric Identities: sin^2 theta + cos^2 theta = 1, 1 + tan^2 theta = sec^2 theta, 1 + cot^2 theta = cosec^2 theta",
+        "8.6 Proving Complex Trigonometric Identities using Fundamental Identities"
+      ],
+      "Chapter 9: Some Applications of Trigonometry": [
+        "9.1 Line of Sight, Horizontal Level, Angle of Elevation and Angle of Depression",
+        "9.2 Single Right-Triangle Height and Distance Problems (Towers, Trees, Poles, Kites)",
+        "9.3 Two Right-Triangles Height and Distance Problems (Observation from Building, Ships in Sea, Flying Birds)",
+        "9.4 Applications Involving Angles of Elevation and Depression Combined in Single Word Problems"
+      ],
+      "Chapter 10: Circles": [
+        "10.1 Secant, Tangent to a Circle and Point of Contact",
+        "10.2 Theorem 10.1: Tangent at Any Point of a Circle is Perpendicular to the Radius through the Point of Contact",
+        "10.3 Number of Tangents from a Point to a Circle (Inside, On the Circle, Outside the Circle)",
+        "10.4 Theorem 10.2: Lengths of Tangents Drawn from an External Point to a Circle are Equal",
+        "10.5 Geometric Proofs: Circumscribed Quadrilaterals, Concentric Circles and Tangent Properties"
+      ],
+      "Chapter 11: Areas Related to Circles": [
+        "11.1 Perimeter (Circumference = 2*pi*r) and Area of a Circle (A = pi*r^2) Review",
+        "11.2 Sector of a Circle and Formula for Length of an Arc of a Sector: l = (theta/360) * 2*pi*r",
+        "11.3 Area of Minor Sector and Major Sector of a Circle: A = (theta/360) * pi*r^2",
+        "11.4 Segment of a Circle (Minor and Major Segments) and Calculation: Area of Sector - Area of Triangle",
+        "11.5 Combination of Plane Figures (Circles with Squares, Triangles, Rectangles and Shaded Regions)"
+      ],
+      "Chapter 12: Surface Areas and Volumes": [
+        "12.1 Surface Area of a Combination of Solids (Cubes, Cuboids, Spheres, Hemispheres, Right Circular Cylinders, Cones)",
+        "12.2 Total Surface Area of Composite Toys, Tents, Storage Silos and Capsules",
+        "12.3 Volume of a Combination of Solids: Solid Placed inside Cylinder, Gulab Jamuns, Ice Cream Cones, Decorative Pen Stands",
+        "12.4 Conversion of Solids from One Shape to Another (Melting & Recasting Problems)"
+      ],
+      "Chapter 13: Statistics": [
+        "13.1 Grouped Data Frequency Distributions and Class Marks",
+        "13.2 Mean of Grouped Data by Direct Method: bar_x = sum(f_i * x_i) / sum(f_i)",
+        "13.3 Mean of Grouped Data by Assumed Mean Method: bar_x = a + [sum(f_i * d_i) / sum(f_i)]",
+        "13.4 Mode of Grouped Data: Mode = l + [(f1 - f0)/(2f1 - f0 - f2)] * h",
+        "13.5 Median of Grouped Data: Median = l + [((n/2) - cf)/f] * h",
+        "13.6 Empirical Relationship Between the Three Measures of Central Tendency: 3 * Median = Mode + 2 * Mean",
+        "13.7 Finding Missing Frequencies from Given Mean, Median or Mode"
+      ],
+      "Chapter 14: Probability": [
+        "14.1 Classical (Theoretical) Probability Definition: P(E) = (Number of outcomes favorable to E) / (Total number of possible outcomes)",
+        "14.2 Range of Probability: 0 <= P(E) <= 1, Sure / Certain Event (P=1) and Impossible Event (P=0)",
+        "14.3 Complementary Events: P(E) + P(not E) = 1",
+        "14.4 Equally Likely Outcomes & Sample Space for Coin Tossing (1, 2 and 3 Coins)",
+        "14.5 Sample Space and Outcomes for Rolling a Single Die and Pair of Dice (36 Outcomes Table)",
+        "14.6 Well-Shuffled Pack of 52 Playing Cards (Suits, Face Cards, Number Cards) and Mixed Drawing Problems"
+      ]
+    },
+    "Mathematics (Basic)": {
       "Chapter 1: Real Numbers": [
         "1.1 Fundamental Theorem of Arithmetic (Unique Prime Factorisation of Composite Numbers)",
         "1.2 Finding HCF and LCM using Prime Factorisation & Verification: HCF(a,b) * LCM(a,b) = a * b",

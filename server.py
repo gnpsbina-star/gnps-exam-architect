@@ -334,6 +334,31 @@ def save_custom_data(data):
         json.dump(data, f, indent=2, ensure_ascii=False)
     os.replace(temp_path, CUSTOM_FILE)
 
+# From 2026-27, Class 10 Mathematics is two subjects, Standard (041) and Basic
+# (241), each with its own CBSE sample paper. The live copy on DATA_DIR was
+# seeded before that split, so it still holds a single "Mathematics" that would
+# reappear in the dropdown. Both papers use the same NCERT syllabus, so the old
+# entry (including any admin edits to it) becomes the chapter list of both.
+def _split_class10_maths():
+    data = get_custom_data()
+    class10 = data.get("Class 10")
+    if not isinstance(class10, dict) or "Mathematics" not in class10:
+        return
+    migrated = {}
+    for subj, chapters in class10.items():
+        if subj == "Mathematics":
+            migrated.setdefault("Mathematics (Standard)", chapters)
+            migrated.setdefault("Mathematics (Basic)", chapters)
+        elif subj not in migrated:
+            migrated[subj] = chapters
+    data["Class 10"] = migrated
+    try:
+        save_custom_data(data)
+    except Exception as e:
+        print(f"Error splitting Class 10 Mathematics in {CUSTOM_FILE}: {e}")
+
+_split_class10_maths()
+
 def fetch_cbse_subjects_list(cls):
     is_senior = cls in ['Class 11', 'Class 12']
     is_middle = cls in ['Class 6', 'Class 7', 'Class 8']

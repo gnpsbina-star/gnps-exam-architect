@@ -262,7 +262,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_exam_marks_duration_sync_v17';
+      const CURRENT_SYLLABUS_VER = '2026_27_class10_maths_standard_basic_v18';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -321,6 +321,15 @@ async function loadCustomSubjects() {
           }
         }
       }
+    }
+    // Class 10 Mathematics is now Standard (041) and Basic (241). The server
+    // migrates its own copy, but an older cached copy can still carry the
+    // single subject, which would otherwise show up as a third Maths option.
+    const class10 = customSubjectsData['Class 10'];
+    if (class10 && typeof class10 === 'object' && class10['Mathematics']) {
+      class10['Mathematics (Standard)'] = class10['Mathematics (Standard)'] || class10['Mathematics'];
+      class10['Mathematics (Basic)'] = class10['Mathematics (Basic)'] || class10['Mathematics'];
+      delete class10['Mathematics'];
     }
     try {
       if (typeof localStorage !== 'undefined') {
