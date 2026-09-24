@@ -138,6 +138,118 @@ export function getSecondaryMaths(className, subjectName) {
   return secondaryMaths[`${className} || ${subjectName}`] || null;
 }
 
+// Class 9 and 10 Science (086), from the CBSE 2026-27 curriculum documents
+// (Science_SecP1_2026-27 for Class X, ScienceSt_SecP1_2026-27 for Class IX)
+// and the Class X 2026-27 sample paper. The paper is split into sections by
+// DISCIPLINE, each with its own mix of question types; `counts` is that mix,
+// read question by question from the sample paper (7+2+3+2+1+1 = 16 questions
+// and 30 marks in Biology, and so on). Class 9 has no CBSE sample paper: it is
+// set on the Class 10 layout (school policy), with Earth as a System (5 marks)
+// placed in the Biology section just as Class 10 places Our Environment there,
+// so its sections carry the Class 9 unit marks 32 / 25 / 23 in the same 39
+// questions.
+//
+// `chapters` are words matched against data.js chapter titles (longest match
+// wins) to decide which section a selected chapter belongs to.
+export const scienceQuestionMarks = { mcq: 1, ar: 1, vsa: 2, sa: 3, cbq: 4, la: 5 };
+
+const scienceDesign = {
+  understanding: 50, applying: 30, analysing: 20,
+  labels: ["Demonstrate Knowledge and Understanding (state, name, list, identify, define, describe, outline, summarise)",
+           "Application of Knowledge / Concepts (calculate, illustrate, show, adapt, explain, distinguish)",
+           "Formulate, Analyse, Evaluate and Create (interpret, analyse, compare, contrast, examine, evaluate, discuss, construct)"]
+};
+
+const class10ScienceScope = [
+  "Chemical Substances: Periodic Classification of Elements is NOT assessed in the year-end examination.",
+  "Acids, Bases and Salts: the pH scale without its logarithm definition.",
+  "Carbon and its Compounds: ethanol and ethanoic acid - properties and uses only.",
+  "Heredity: Mendel's laws and sex determination. Evolution (acquired and inherited traits, speciation, fossils, evolution by stages, human evolution) is NOT assessed.",
+  "Light: the mirror formula and lens formula are applied, never derived.",
+  "Human Eye and the Colourful World: do not ask about the colour of the Sun at sunrise and sunset.",
+  "Magnetic Effects of Electric Current: the electric motor, electromagnetic induction and the electric generator are NOT assessed.",
+  "Information given in boxes in the NCERT textbook is not assessed."
+];
+
+const class9ScienceScope = [
+  "Chapter 1 (Exploration: Entering the World of Secondary Science) is not part of the annual examination's course structure: set NO question from it in a full-length paper.",
+  "Cell: the key organelles are the nucleus, mitochondria, chloroplast, endoplasmic reticulum, vacuoles, plasma membrane and cell wall.",
+  "Mixtures: express concentration only as mass by mass, mass by volume or volume by volume percentage.",
+  "Structure of an Atom: electron distribution for the first 18 elements only.",
+  "Motion: kinematic equations derived by the graphical method; only an elementary idea of uniform circular motion.",
+  "Force and Laws of Motion: universal gravitation is not in this chapter. Work, Energy and Simple Machines: no pressure, thrust or floatation. Sound: no ultrasound or SONAR."
+];
+
+export const secondaryScience = {
+  "Class 10": {
+    design: scienceDesign,
+    scope: class10ScienceScope,
+    sections: [
+      { key: "biology", label: "Biology", units: "World of Living + Our Environment", marks: 30,
+        counts: { mcq: 7, ar: 2, vsa: 3, sa: 2, cbq: 1, la: 1 },
+        chapters: ["Life Processes", "Control and Coordination", "Reproduce", "Heredity", "Our Environment"] },
+      { key: "chemistry", label: "Chemistry", units: "Chemical Substances - Nature and Behaviour", marks: 25,
+        counts: { mcq: 7, ar: 1, vsa: 1, sa: 2, cbq: 1, la: 1 },
+        chapters: ["Chemical Reactions", "Acids, Bases", "Metals and Non-metals", "Carbon and its Compounds"] },
+      { key: "physics", label: "Physics", units: "Natural Phenomena + Effects of Current", marks: 25,
+        counts: { mcq: 2, ar: 1, vsa: 2, sa: 3, cbq: 1, la: 1 },
+        chapters: ["Light", "Human Eye", "Electricity", "Magnetic Effects"] }
+    ]
+  },
+  "Class 9": {
+    design: scienceDesign,
+    scope: class9ScienceScope,
+    notAssessed: ["Exploration"],
+    sections: [
+      { key: "biology", label: "Biology", units: "World of Living + Earth as a System", marks: 32,
+        counts: { mcq: 7, ar: 2, vsa: 4, sa: 2, cbq: 1, la: 1 },
+        chapters: ["Cell", "Tissues", "Reproduction", "Diversity", "Earth as a System"] },
+      { key: "chemistry", label: "Chemistry", units: "Matter - Its Nature and Behaviour", marks: 25,
+        counts: { mcq: 7, ar: 1, vsa: 1, sa: 2, cbq: 1, la: 1 },
+        chapters: ["Mixtures", "Inside the Atom", "Atomic Foundations"] },
+      { key: "physics", label: "Physics", units: "Motion, Force, Work and Sound", marks: 23,
+        counts: { mcq: 2, ar: 1, vsa: 1, sa: 3, cbq: 1, la: 1 },
+        chapters: ["Motion", "Forces", "Work, Energy", "Sound"] }
+    ]
+  }
+};
+
+// The combined Science subject only: the Physics / Chemistry / Biology
+// sub-subjects and the legacy 086 syllabus are not set on this layout.
+export function getSecondaryScience(className, subjectName) {
+  if (subjectName !== "Science") return null;
+  return secondaryScience[className] || null;
+}
+
+// Which section a chapter title belongs to, or null (also for chapters that
+// are not assessed in the annual examination).
+export function scienceSectionOf(spec, chapterTitle) {
+  const title = String(chapterTitle).toLowerCase();
+  if ((spec.notAssessed || []).some(k => title.includes(k.toLowerCase()))) return null;
+  let best = null, bestLen = 0;
+  spec.sections.forEach(sec => sec.chapters.forEach(k => {
+    if (title.includes(k.toLowerCase()) && k.length > bestLen) { best = sec; bestLen = k.length; }
+  }));
+  return best;
+}
+
+const class10SciencePattern = `This question paper consists of 39 questions in 3 sections. Section A is Biology,
+Section B is Chemistry and Section C is Physics. Questions are numbered 1 to 39 continuously.
+All questions are compulsory. However, an internal choice is provided in some questions.
+A student is expected to attempt only one of the alternatives in these questions.
+  Section A - Biology (30 marks), Q1-Q16: 7 MCQs and 2 Assertion-Reason (1 mark each),
+              3 questions of 2 marks, 2 of 3 marks, 1 case-based question of 4 marks, 1 long answer of 5 marks.
+  Section B - Chemistry (25 marks), Q17-Q29: 7 MCQs and 1 Assertion-Reason, 1 question of 2 marks,
+              2 of 3 marks, 1 case-based question of 4 marks, 1 long answer of 5 marks.
+  Section C - Physics (25 marks), Q30-Q39: 2 MCQs and 1 Assertion-Reason, 2 questions of 2 marks,
+              3 of 3 marks, 1 case-based question of 4 marks, 1 long answer of 5 marks.
+Internal choice (about 33%, 9 questions): in every section, the long answer, the 2-mark sub-part
+of the case-based question, and one 2- or 3-mark question.
+Case-based questions have sub-parts A (1 mark), B (1 mark) and C OR D (2 marks).
+Long answers are split into sub-parts (for example I and II, or I to IV).
+Figures: 9 questions carry a figure, 3 in each section, and every figure-based question has an
+alternative for visually impaired students. 2 questions ask the student to draw.`;
+
 const acc = accountancyPaper;
 const accIC = acc.internalChoice;
 const accLadder = acc.markLadder.join(', ').replace(/, (\d+)$/, ' and $1');
@@ -145,15 +257,27 @@ const accExcluded = acc.excludedMarks.map(m => `${m}-mark`).join(' or ');
 
 export const sqpBlueprints = {
   "Class 10 || Science": {
-    year: "2025-26",
-    text: `The question paper comprises 39 questions. All questions are compulsory.
-The paper is divided into three sections by SUBJECT, not by question type:
-  Section A - Biology (30 Marks): the "World of Living" and "Our Environment" units.
-  Section B - Chemistry (25 Marks): "Chemical Substances - Nature and Behaviour".
-  Section C - Physics (25 Marks): "Natural Phenomena" and "Effects of Current".
-Each of those three sections internally contains its own mix of multiple choice,
-assertion-reasoning, very short answer, short answer, long answer and case-based
-questions. Internal choice is provided in some questions.`
+    year: "2026-27",
+    text: `SCIENCE - CODE NO. 086, Class X, Maximum Marks 80, Time Allowed 3 hours.
+${class10SciencePattern}
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 9 || Science": {
+    year: "2026-27",
+    text: `Class 9 is a school examination, so CBSE publishes no sample paper for it. This paper is set
+on the Class 10 Science 2026-27 sample paper layout against the Class 9 curriculum. The Class 9
+units give the sections different marks, in the same 39 questions:
+  Section A - Biology with Earth as a System (32 marks), Q1-Q17: 7 MCQs and 2 Assertion-Reason,
+              4 questions of 2 marks, 2 of 3 marks, 1 case-based question of 4 marks, 1 long answer of 5 marks.
+  Section B - Chemistry (25 marks), Q18-Q30: 7 MCQs and 1 Assertion-Reason, 1 question of 2 marks,
+              2 of 3 marks, 1 case-based question of 4 marks, 1 long answer of 5 marks.
+  Section C - Physics (23 marks), Q31-Q39: 2 MCQs and 1 Assertion-Reason, 1 question of 2 marks,
+              3 of 3 marks, 1 case-based question of 4 marks, 1 long answer of 5 marks.
+Everything else follows the Class 10 paper: all questions compulsory, internal choice in each
+section's long answer, case-study 2-mark sub-part and one 2- or 3-mark question; case-based
+sub-parts of 1, 1 and 2 marks; 9 figure-based questions (3 per section), each with an alternative
+for visually impaired students; 2 questions in which the student draws.`
   },
 
   "Class 10 || Mathematics (Standard)": {

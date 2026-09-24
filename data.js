@@ -1375,12 +1375,12 @@ export const cbseData = {
                 "1.4 Indian Scientific Heritage & Modern Frontiers (Ancient Indian contributions and contemporary breakthroughs)"
             ],
             "Chapter 2: Cell: The Building Block of Life": [
-                "2.1 Discovery and Cell Theory (Hooke, Leeuwenhoek, Schleiden, Schwann, Virchow)",
-                "2.2 Microscopic World: Cell Structure & Organisation (Compound microscope, prokaryotic vs eukaryotic cells)",
-                "2.3 Plasma Membrane & Cellular Transport (Fluid mosaic model, diffusion, osmosis, tonicity: hypotonic, isotonic, hypertonic)",
-                "2.4 Cell Wall & Nucleus (Cellulose wall, turgor pressure, chromatin, DNA, genes, chromosomes)",
-                "2.5 Cytoplasmic Organelles (Endoplasmic reticulum, Golgi body, lysosomes, mitochondria, plastids, vacuoles)",
-                "2.6 Cell Division (Mitosis for somatic growth vs Meiosis for gamete production)"
+                "2.1 Discovery of the Cell and Cell Theory (Hooke, Leeuwenhoek, Schleiden, Schwann, Virchow)",
+                "2.2 Plant and Animal Cells; Prokaryotic vs Eukaryotic Cells (Compound microscope, preparing slides)",
+                "2.3 Plasma Membrane and its Permeability (Diffusion, osmosis, hypotonic, isotonic and hypertonic solutions)",
+                "2.4 Cell Wall and Nucleus (Cellulose wall, turgor, chromatin, DNA, genes, chromosomes)",
+                "2.5 Key Organelles: Structure and Function of Mitochondria, Chloroplast, Endoplasmic Reticulum and Vacuoles",
+                "2.6 Cell Division (Mitosis and Meiosis), Cancer as Uncontrolled Cell Division, and Recent Advances in Cell Biology"
             ],
             "Chapter 3: Tissues in Action": [
                 "3.1 Division of Labour in Multicellular Systems (From cells to tissues, organs, and organ systems)",
@@ -1388,7 +1388,9 @@ export const cbseData = {
                 "3.3 Simple Permanent Plant Tissues (Parenchyma, collenchyma, sclerenchyma, and epidermal protection with stomata)",
                 "3.4 Complex Conducting Tissues (Xylem tracheids/vessels and phloem sieve tubes/companion cells)",
                 "3.5 Animal Epithelial & Connective Tissues (Squamous, cuboidal, columnar epithelium; areolar, adipose, skeletal, blood)",
-                "3.6 Animal Muscular & Nervous Tissues (Striated, smooth, cardiac muscles; neuron anatomy and nerve impulse transmission)"
+                "3.6 Animal Muscular & Nervous Tissues (Striated, smooth, cardiac muscles; neuron anatomy and nerve impulse transmission)",
+                "3.7 Elementary Idea of the Musculoskeletal System (Bones, cartilage, joints and muscles)",
+                "3.8 Care of the Musculoskeletal System (Injuries, postural care, nutrition, exercise and yoga)"
             ],
             "Chapter 4: Describing Motion Around Us": [
                 "4.1 Frame of Reference, Distance and Displacement (Reference points, vectors and scalars)",
@@ -1399,26 +1401,26 @@ export const cbseData = {
                 "4.6 Uniform Circular Motion (Centripetal acceleration and everyday circular motion)"
             ],
             "Chapter 5: Exploring Mixtures and their Separation": [
-                "5.1 Pure Substances vs Mixtures (Elements, chemical compounds, homogeneous vs heterogeneous mixtures)",
-                "5.2 Solutions, Colloids and Suspensions (Solubility, concentration %, Tyndall effect, Brownian motion)",
-                "5.3 Methods of Separation (Filtration, evaporation, crystallization, centrifugation, chromatography, simple & fractional distillation)",
-                "5.4 Physical vs Chemical Changes (Conservation of mass, distinguishing mixtures from compounds)"
+                "5.1 Pure Substances vs Mixtures (Elements, compounds, homogeneous vs heterogeneous mixtures)",
+                "5.2 Solutions, Colloids and Suspensions and their Properties (Solubility, Tyndall effect, Brownian motion)",
+                "5.3 Expressing the Concentration of a Solution (Mass by mass, mass by volume and volume by volume percentage)",
+                "5.4 Separation Techniques based on Physical Properties (Filtration, evaporation, crystallisation, distillation, paper chromatography, sublimation, centrifugation and coagulation)"
             ],
             "Chapter 6: How Forces Affect Motion": [
-                "6.1 Balanced and Unbalanced Forces (Concept of resultant force, Galileo's inertia experiments)",
-                "6.2 Newton's First Law of Motion (Inertia of rest, motion, and direction; mass as measure of inertia)",
-                "6.3 Newton's Second Law of Motion (Momentum p = mv, mathematical formulation F = ma, SI unit Newton)",
-                "6.4 Everyday Applications of Newton's Laws (Impulse, shock absorbers, sports safety)",
+                "6.1 Force; Balanced and Unbalanced Forces (Resultant force, Galileo's inertia experiments)",
+                "6.2 Force of Friction (Static and sliding friction, factors affecting friction, everyday examples)",
+                "6.3 Newton's First Law of Motion (Inertia of rest, motion and direction; mass as a measure of inertia)",
+                "6.4 Newton's Second Law of Motion (Momentum p = mv, F = ma, SI unit newton)",
                 "6.5 Newton's Third Law of Motion (Action and reaction pairs, rocket propulsion, recoil)",
-                "6.6 Universal Gravitation (Newton's law of gravitation, gravitational constant G, gravity and free fall, acceleration due to gravity g)"
+                "6.6 Applying Newton's Laws to Real-Life Situations (Sports, vehicles and safety devices)"
             ],
             "Chapter 7: Work, Energy and Simple Machines": [
-                "7.1 Scientific Conception of Work (Force, displacement, positive, negative, zero work)",
-                "7.2 Kinetic and Potential Energy (Derivation of E_k = 1/2 mv^2 and gravitational E_p = mgh)",
-                "7.3 Law of Conservation of Energy (Energy transformations, mechanical energy conservation)",
-                "7.4 Power (Rate of doing work, Watt, kilowatt)",
-                "7.5 Simple Machines (Principles of mechanical advantage, levers: classes 1, 2, 3, pulley systems, inclined planes)",
-                "7.6 Fluids, Pressure and Floatation (Thrust, pressure P = F/A, Archimedes' principle, buoyancy, floatation)"
+                "7.1 Scientific Conception of Work (Work done by a constant force; positive, negative and zero work)",
+                "7.2 Work-Energy Theorem",
+                "7.3 Kinetic and Potential Energy (E_k = 1/2 mv^2 and E_p = mgh)",
+                "7.4 Conversion between Potential and Kinetic Energy and the Law of Conservation of Energy (Free fall, simple pendulum)",
+                "7.5 Power (Rate of doing work, watt, kilowatt)",
+                "7.6 Simple Machines and Mechanical Advantage (Levers: classes 1, 2, 3; pulleys; inclined plane; M.A. = Load / Effort)"
             ],
             "Chapter 8: Journey Inside the Atom": [
                 "8.1 Discovery of Subatomic Particles (Cathode ray tubes, electrons, canal rays, protons, neutrons)",
@@ -1437,18 +1439,18 @@ export const cbseData = {
                 "9.6 Introduction to Chemical Reactivity (Valence electrons, noble gas stability, ionic vs covalent bonding overview)"
             ],
             "Chapter 10: Sound Waves: Characteristics and Applications": [
-                "10.1 Generation and Longitudinal Propagation of Sound (Mechanical vibration, compressions and rarefactions)",
-                "10.2 Wave Characteristics (Wavelength lambda, frequency nu, time period T, amplitude A, speed v = nu * lambda)",
-                "10.3 Auditory Perception (Pitch, loudness, quality / timbre of musical notes)",
-                "10.4 Speed of Sound Across Media (Solids, liquids, gases, temperature effects, supersonic flights)",
-                "10.5 Reflection, Echo and Reverberation (Echo condition d >= 17.2 m, acoustic design of halls)",
-                "10.6 Ultrasound Applications & SONAR (Medical ultrasound scans, industrial testing, echolocation, SONAR depth calculation)"
+                "10.1 Production of Sound and its Propagation as a Longitudinal Wave through a Medium (Compressions and rarefactions)",
+                "10.2 Graphical Representation of a Sound Wave",
+                "10.3 Characteristics of a Sound Wave (Wavelength, frequency, time period, amplitude, intensity and speed v = frequency x wavelength)",
+                "10.4 Human Perception of Sound (Pitch and loudness)",
+                "10.5 Propagation of Sound in Different Media (Solids, liquids and gases)",
+                "10.6 Reflection of Sound: Echo, Reverberation and Echolocation"
             ],
             "Chapter 11: Reproduction: How Life Continues": [
                 "11.1 Significance of Reproduction in Living Beings (Species continuity, cellular division, genetic material transfer)",
                 "11.2 Asexual Reproduction in Organisms (Fission in Amoeba/Leishmania, budding in Yeast/Hydra, spore formation, fragmentation, regeneration)",
                 "11.3 Vegetative Propagation in Plants (Natural: tubers, runners, rhizomes; artificial: cutting, layering, grafting, tissue culture)",
-                "11.4 Sexual Reproduction in Flowering Plants (Structure of flower, stamen & pistil, pollination, fertilization, seed & fruit formation)",
+                "11.4 Sexual Reproduction in Flowering Plants (Structure of flower, stamen & pistil, pollination, fertilisation, seed & fruit formation, seed dispersal by biotic and abiotic agents)",
                 "11.5 Human Reproductive Systems (Male and female reproductive anatomy, gametogenesis overview)",
                 "11.6 Adolescence, Puberty and Reproductive Health (Hormonal changes, secondary sexual traits, menstrual cycle, contraception and disease prevention)"
             ],
@@ -1458,15 +1460,16 @@ export const cbseData = {
                 "12.3 Plant Kingdom Diversity (Thallophyta, Bryophyta, Pteridophyta, Gymnosperms, Angiosperms - monocots vs dicots)",
                 "12.4 Animal Kingdom Diversity: Invertebrates (Porifera, Coelenterata, Platyhelminthes, Nematoda, Annelida, Arthropoda, Mollusca, Echinodermata)",
                 "12.5 Animal Kingdom Diversity: Chordates & Vertebrates (Protochordata, Pisces, Amphibia, Reptilia, Aves, Mammalia)",
-                "12.6 Binomial Nomenclature (Carolus Linnaeus system: Genus and species naming conventions)"
+                "12.6 Binomial Nomenclature (Carolus Linnaeus system: Genus and species naming conventions)",
+                "12.7 Acellular Entities: Viruses; Recognising the Three Domains of Classification"
             ],
             "Chapter 13: Earth as a System: Energy, Matter, and Life": [
-                "13.1 Earth's Interconnected Spheres (Lithosphere, Hydrosphere, Atmosphere, and Biosphere interactions)",
-                "13.2 Energy Flow and Matter Cycles (Solar energy budget, food webs, biogeochemical cycles: Carbon cycle, Nitrogen cycle, Water cycle)",
-                "13.3 The Atmosphere & Climate Regulation (Greenhouse effect, ozone layer protection and depletion, atmospheric circulation)",
-                "13.4 Soil and Water Systems (Soil genesis, weathering, humus, groundwater tables, hydrological balance)",
-                "13.5 Human Impact and Ecological Balance (Deforestation, pollution, carbon footprint, biodiversity loss, global warming)",
-                "13.6 Sustainable Management of Natural Systems (Conservation strategies, renewable resources, circular economy, climate action)"
+                "13.1 Earth as an Interconnected System (Geosphere, Hydrosphere, Atmosphere, Cryosphere and Biosphere)",
+                "13.2 Nature of Solar Energy (Solar radiation, the electromagnetic spectrum and the speed of light)",
+                "13.3 Interaction of Solar Energy with the Earth's Surface and Differential Heating of the Earth (Role of the atmosphere, land and water)",
+                "13.4 Differential Warming of the Earth Causes Winds (Land and sea breezes, valley and mountain breezes)",
+                "13.5 Biogeochemical Cycles (Water, carbon, nitrogen and oxygen cycles)",
+                "13.6 Human Impact on the Earth's System"
             ]
         },
         "Science (Physics)": {
@@ -1479,36 +1482,36 @@ export const cbseData = {
                 "4.6 Uniform Circular Motion (Centripetal acceleration and everyday circular motion)"
             ],
             "Chapter 6: How Forces Affect Motion": [
-                "6.1 Balanced and Unbalanced Forces (Concept of resultant force, Galileo's inertia experiments)",
-                "6.2 Newton's First Law of Motion (Inertia of rest, motion, and direction; mass as measure of inertia)",
-                "6.3 Newton's Second Law of Motion (Momentum p = mv, mathematical formulation F = ma, SI unit Newton)",
-                "6.4 Everyday Applications of Newton's Laws (Impulse, shock absorbers, sports safety)",
+                "6.1 Force; Balanced and Unbalanced Forces (Resultant force, Galileo's inertia experiments)",
+                "6.2 Force of Friction (Static and sliding friction, factors affecting friction, everyday examples)",
+                "6.3 Newton's First Law of Motion (Inertia of rest, motion and direction; mass as a measure of inertia)",
+                "6.4 Newton's Second Law of Motion (Momentum p = mv, F = ma, SI unit newton)",
                 "6.5 Newton's Third Law of Motion (Action and reaction pairs, rocket propulsion, recoil)",
-                "6.6 Universal Gravitation (Newton's law of gravitation, gravitational constant G, gravity and free fall, acceleration due to gravity g)"
+                "6.6 Applying Newton's Laws to Real-Life Situations (Sports, vehicles and safety devices)"
             ],
             "Chapter 7: Work, Energy and Simple Machines": [
-                "7.1 Scientific Conception of Work (Force, displacement, positive, negative, zero work)",
-                "7.2 Kinetic and Potential Energy (Derivation of E_k = 1/2 mv^2 and gravitational E_p = mgh)",
-                "7.3 Law of Conservation of Energy (Energy transformations, mechanical energy conservation)",
-                "7.4 Power (Rate of doing work, Watt, kilowatt)",
-                "7.5 Simple Machines (Principles of mechanical advantage, levers: classes 1, 2, 3, pulley systems, inclined planes)",
-                "7.6 Fluids, Pressure and Floatation (Thrust, pressure P = F/A, Archimedes' principle, buoyancy, floatation)"
+                "7.1 Scientific Conception of Work (Work done by a constant force; positive, negative and zero work)",
+                "7.2 Work-Energy Theorem",
+                "7.3 Kinetic and Potential Energy (E_k = 1/2 mv^2 and E_p = mgh)",
+                "7.4 Conversion between Potential and Kinetic Energy and the Law of Conservation of Energy (Free fall, simple pendulum)",
+                "7.5 Power (Rate of doing work, watt, kilowatt)",
+                "7.6 Simple Machines and Mechanical Advantage (Levers: classes 1, 2, 3; pulleys; inclined plane; M.A. = Load / Effort)"
             ],
             "Chapter 10: Sound Waves: Characteristics and Applications": [
-                "10.1 Generation and Longitudinal Propagation of Sound (Mechanical vibration, compressions and rarefactions)",
-                "10.2 Wave Characteristics (Wavelength lambda, frequency nu, time period T, amplitude A, speed v = nu * lambda)",
-                "10.3 Auditory Perception (Pitch, loudness, quality / timbre of musical notes)",
-                "10.4 Speed of Sound Across Media (Solids, liquids, gases, temperature effects, supersonic flights)",
-                "10.5 Reflection, Echo and Reverberation (Echo condition d >= 17.2 m, acoustic design of halls)",
-                "10.6 Ultrasound Applications & SONAR (Medical ultrasound scans, industrial testing, echolocation, SONAR depth calculation)"
+                "10.1 Production of Sound and its Propagation as a Longitudinal Wave through a Medium (Compressions and rarefactions)",
+                "10.2 Graphical Representation of a Sound Wave",
+                "10.3 Characteristics of a Sound Wave (Wavelength, frequency, time period, amplitude, intensity and speed v = frequency x wavelength)",
+                "10.4 Human Perception of Sound (Pitch and loudness)",
+                "10.5 Propagation of Sound in Different Media (Solids, liquids and gases)",
+                "10.6 Reflection of Sound: Echo, Reverberation and Echolocation"
             ]
         },
         "Science (Chemistry)": {
             "Chapter 5: Exploring Mixtures and their Separation": [
-                "5.1 Pure Substances vs Mixtures (Elements, chemical compounds, homogeneous vs heterogeneous mixtures)",
-                "5.2 Solutions, Colloids and Suspensions (Solubility, concentration %, Tyndall effect, Brownian motion)",
-                "5.3 Methods of Separation (Filtration, evaporation, crystallization, centrifugation, chromatography, simple & fractional distillation)",
-                "5.4 Physical vs Chemical Changes (Conservation of mass, distinguishing mixtures from compounds)"
+                "5.1 Pure Substances vs Mixtures (Elements, compounds, homogeneous vs heterogeneous mixtures)",
+                "5.2 Solutions, Colloids and Suspensions and their Properties (Solubility, Tyndall effect, Brownian motion)",
+                "5.3 Expressing the Concentration of a Solution (Mass by mass, mass by volume and volume by volume percentage)",
+                "5.4 Separation Techniques based on Physical Properties (Filtration, evaporation, crystallisation, distillation, paper chromatography, sublimation, centrifugation and coagulation)"
             ],
             "Chapter 8: Journey Inside the Atom": [
                 "8.1 Discovery of Subatomic Particles (Cathode ray tubes, electrons, canal rays, protons, neutrons)",
@@ -1529,12 +1532,12 @@ export const cbseData = {
         },
         "Science (Biology)": {
             "Chapter 2: Cell: The Building Block of Life": [
-                "2.1 Discovery and Cell Theory (Hooke, Leeuwenhoek, Schleiden, Schwann, Virchow)",
-                "2.2 Microscopic World: Cell Structure & Organisation (Compound microscope, prokaryotic vs eukaryotic cells)",
-                "2.3 Plasma Membrane & Cellular Transport (Fluid mosaic model, diffusion, osmosis, tonicity: hypotonic, isotonic, hypertonic)",
-                "2.4 Cell Wall & Nucleus (Cellulose wall, turgor pressure, chromatin, DNA, genes, chromosomes)",
-                "2.5 Cytoplasmic Organelles (Endoplasmic reticulum, Golgi body, lysosomes, mitochondria, plastids, vacuoles)",
-                "2.6 Cell Division (Mitosis for somatic growth vs Meiosis for gamete production)"
+                "2.1 Discovery of the Cell and Cell Theory (Hooke, Leeuwenhoek, Schleiden, Schwann, Virchow)",
+                "2.2 Plant and Animal Cells; Prokaryotic vs Eukaryotic Cells (Compound microscope, preparing slides)",
+                "2.3 Plasma Membrane and its Permeability (Diffusion, osmosis, hypotonic, isotonic and hypertonic solutions)",
+                "2.4 Cell Wall and Nucleus (Cellulose wall, turgor, chromatin, DNA, genes, chromosomes)",
+                "2.5 Key Organelles: Structure and Function of Mitochondria, Chloroplast, Endoplasmic Reticulum and Vacuoles",
+                "2.6 Cell Division (Mitosis and Meiosis), Cancer as Uncontrolled Cell Division, and Recent Advances in Cell Biology"
             ],
             "Chapter 3: Tissues in Action": [
                 "3.1 Division of Labour in Multicellular Systems (From cells to tissues, organs, and organ systems)",
@@ -1542,13 +1545,15 @@ export const cbseData = {
                 "3.3 Simple Permanent Plant Tissues (Parenchyma, collenchyma, sclerenchyma, and epidermal protection with stomata)",
                 "3.4 Complex Conducting Tissues (Xylem tracheids/vessels and phloem sieve tubes/companion cells)",
                 "3.5 Animal Epithelial & Connective Tissues (Squamous, cuboidal, columnar epithelium; areolar, adipose, skeletal, blood)",
-                "3.6 Animal Muscular & Nervous Tissues (Striated, smooth, cardiac muscles; neuron anatomy and nerve impulse transmission)"
+                "3.6 Animal Muscular & Nervous Tissues (Striated, smooth, cardiac muscles; neuron anatomy and nerve impulse transmission)",
+                "3.7 Elementary Idea of the Musculoskeletal System (Bones, cartilage, joints and muscles)",
+                "3.8 Care of the Musculoskeletal System (Injuries, postural care, nutrition, exercise and yoga)"
             ],
             "Chapter 11: Reproduction: How Life Continues": [
                 "11.1 Significance of Reproduction in Living Beings (Species continuity, cellular division, genetic material transfer)",
                 "11.2 Asexual Reproduction in Organisms (Fission in Amoeba/Leishmania, budding in Yeast/Hydra, spore formation, fragmentation, regeneration)",
                 "11.3 Vegetative Propagation in Plants (Natural: tubers, runners, rhizomes; artificial: cutting, layering, grafting, tissue culture)",
-                "11.4 Sexual Reproduction in Flowering Plants (Structure of flower, stamen & pistil, pollination, fertilization, seed & fruit formation)",
+                "11.4 Sexual Reproduction in Flowering Plants (Structure of flower, stamen & pistil, pollination, fertilisation, seed & fruit formation, seed dispersal by biotic and abiotic agents)",
                 "11.5 Human Reproductive Systems (Male and female reproductive anatomy, gametogenesis overview)",
                 "11.6 Adolescence, Puberty and Reproductive Health (Hormonal changes, secondary sexual traits, menstrual cycle, contraception and disease prevention)"
             ],
@@ -1558,15 +1563,16 @@ export const cbseData = {
                 "12.3 Plant Kingdom Diversity (Thallophyta, Bryophyta, Pteridophyta, Gymnosperms, Angiosperms - monocots vs dicots)",
                 "12.4 Animal Kingdom Diversity: Invertebrates (Porifera, Coelenterata, Platyhelminthes, Nematoda, Annelida, Arthropoda, Mollusca, Echinodermata)",
                 "12.5 Animal Kingdom Diversity: Chordates & Vertebrates (Protochordata, Pisces, Amphibia, Reptilia, Aves, Mammalia)",
-                "12.6 Binomial Nomenclature (Carolus Linnaeus system: Genus and species naming conventions)"
+                "12.6 Binomial Nomenclature (Carolus Linnaeus system: Genus and species naming conventions)",
+                "12.7 Acellular Entities: Viruses; Recognising the Three Domains of Classification"
             ],
             "Chapter 13: Earth as a System: Energy, Matter, and Life": [
-                "13.1 Earth's Interconnected Spheres (Lithosphere, Hydrosphere, Atmosphere, and Biosphere interactions)",
-                "13.2 Energy Flow and Matter Cycles (Solar energy budget, food webs, biogeochemical cycles: Carbon cycle, Nitrogen cycle, Water cycle)",
-                "13.3 The Atmosphere & Climate Regulation (Greenhouse effect, ozone layer protection and depletion, atmospheric circulation)",
-                "13.4 Soil and Water Systems (Soil genesis, weathering, humus, groundwater tables, hydrological balance)",
-                "13.5 Human Impact and Ecological Balance (Deforestation, pollution, carbon footprint, biodiversity loss, global warming)",
-                "13.6 Sustainable Management of Natural Systems (Conservation strategies, renewable resources, circular economy, climate action)"
+                "13.1 Earth as an Interconnected System (Geosphere, Hydrosphere, Atmosphere, Cryosphere and Biosphere)",
+                "13.2 Nature of Solar Energy (Solar radiation, the electromagnetic spectrum and the speed of light)",
+                "13.3 Interaction of Solar Energy with the Earth's Surface and Differential Heating of the Earth (Role of the atmosphere, land and water)",
+                "13.4 Differential Warming of the Earth Causes Winds (Land and sea breezes, valley and mountain breezes)",
+                "13.5 Biogeochemical Cycles (Water, carbon, nitrogen and oxygen cycles)",
+                "13.6 Human Impact on the Earth's System"
             ]
         },
         "Science (Rationalized 086 Legacy)": {
@@ -2081,11 +2087,11 @@ export const cbseData = {
       "Chapter 10: The Human Eye and the Colourful World": [
         "10.1 Structure and Function of Human Eye (Cornea, Iris, Pupil, Crystalline Lens, Ciliary Muscles, Retina, Blind Spot)",
         "10.2 Power of Accommodation of the Human Eye and Near Point / Far Point",
-        "10.3 Defects of Vision and their Correction: Myopia (Short-Sightedness), Hypermetropia (Far-Sightedness), Presbyopia and Astigmatism",
+        "10.3 Defects of Vision and their Correction: Myopia (Short-Sightedness), Hypermetropia (Far-Sightedness) and Presbyopia",
         "10.4 Refraction of Light through a Triangular Glass Prism: Angle of Deviation and Angle of Incidence",
         "10.5 Dispersion of White Light by a Glass Prism (VIBGYOR), Recombination of Spectrum (Newton's Disc) and Rainbow Formation",
         "10.6 Atmospheric Refraction: Twinkling of Stars, Apparent Position of Stars, Advanced Sunrise and Delayed Sunset",
-        "10.7 Scattering of Light and Tyndall Effect: Why is the Sky Blue? Why do Clouds Appear White? Colour of Sun at Sunrise and Sunset"
+        "10.7 Scattering of Light and Tyndall Effect: Why is the Sky Blue? Why do Clouds Appear White? Why are Danger Signals Red?"
       ],
       "Chapter 11: Electricity": [
         "11.1 Electric Current (I = Q/t), Electric Charge (Q = ne), Electric Circuit and Ammeter",
@@ -2105,7 +2111,7 @@ export const cbseData = {
         "12.4 Magnetic Field due to a Current in a Solenoid and Electromagnet vs Permanent Magnet",
         "12.5 Force on a Current-Carrying Conductor in a Magnetic Field (Ampere's Suggestion) & Factors Affecting Force",
         "12.6 Fleming's Left-Hand Rule and its Application to Force Direction",
-        "12.7 Domestic Electric Circuits: Live Wire, Neutral Wire, Earth Wire, Potential Difference (220 V, 50 Hz)",
+        "12.7 Direct and Alternating Current (Frequency of AC, Advantage of AC over DC) and Domestic Electric Circuits: Live, Neutral and Earth Wires (220 V, 50 Hz)",
         "12.8 Role of Earth Wire and Safety Devices: Electric Fuse, Miniature Circuit Breakers (MCB), Overloading and Short-Circuiting"
       ],
       "Chapter 13: Our Environment": [
@@ -2131,11 +2137,11 @@ export const cbseData = {
       "Chapter 10: The Human Eye and the Colourful World": [
         "10.1 Structure and Function of Human Eye (Cornea, Iris, Pupil, Crystalline Lens, Ciliary Muscles, Retina, Blind Spot)",
         "10.2 Power of Accommodation of the Human Eye and Near Point / Far Point",
-        "10.3 Defects of Vision and their Correction: Myopia (Short-Sightedness), Hypermetropia (Far-Sightedness), Presbyopia and Astigmatism",
+        "10.3 Defects of Vision and their Correction: Myopia (Short-Sightedness), Hypermetropia (Far-Sightedness) and Presbyopia",
         "10.4 Refraction of Light through a Triangular Glass Prism: Angle of Deviation and Angle of Incidence",
         "10.5 Dispersion of White Light by a Glass Prism (VIBGYOR), Recombination of Spectrum (Newton's Disc) and Rainbow Formation",
         "10.6 Atmospheric Refraction: Twinkling of Stars, Apparent Position of Stars, Advanced Sunrise and Delayed Sunset",
-        "10.7 Scattering of Light and Tyndall Effect: Why is the Sky Blue? Why do Clouds Appear White? Colour of Sun at Sunrise and Sunset"
+        "10.7 Scattering of Light and Tyndall Effect: Why is the Sky Blue? Why do Clouds Appear White? Why are Danger Signals Red?"
       ],
       "Chapter 11: Electricity": [
         "11.1 Electric Current (I = Q/t), Electric Charge (Q = ne), Electric Circuit and Ammeter",
@@ -2155,7 +2161,7 @@ export const cbseData = {
         "12.4 Magnetic Field due to a Current in a Solenoid and Electromagnet vs Permanent Magnet",
         "12.5 Force on a Current-Carrying Conductor in a Magnetic Field (Ampere's Suggestion) & Factors Affecting Force",
         "12.6 Fleming's Left-Hand Rule and its Application to Force Direction",
-        "12.7 Domestic Electric Circuits: Live Wire, Neutral Wire, Earth Wire, Potential Difference (220 V, 50 Hz)",
+        "12.7 Direct and Alternating Current (Frequency of AC, Advantage of AC over DC) and Domestic Electric Circuits: Live, Neutral and Earth Wires (220 V, 50 Hz)",
         "12.8 Role of Earth Wire and Safety Devices: Electric Fuse, Miniature Circuit Breakers (MCB), Overloading and Short-Circuiting"
       ]
     },
