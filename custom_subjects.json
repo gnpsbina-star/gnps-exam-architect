@@ -1375,12 +1375,12 @@
         "1.4 Indian Scientific Heritage & Modern Frontiers (Ancient Indian contributions and contemporary breakthroughs)"
       ],
       "Chapter 2: Cell: The Building Block of Life": [
-        "2.1 Discovery and Cell Theory (Hooke, Leeuwenhoek, Schleiden, Schwann, Virchow)",
-        "2.2 Microscopic World: Cell Structure & Organisation (Compound microscope, prokaryotic vs eukaryotic cells)",
-        "2.3 Plasma Membrane & Cellular Transport (Fluid mosaic model, diffusion, osmosis, tonicity: hypotonic, isotonic, hypertonic)",
-        "2.4 Cell Wall & Nucleus (Cellulose wall, turgor pressure, chromatin, DNA, genes, chromosomes)",
-        "2.5 Cytoplasmic Organelles (Endoplasmic reticulum, Golgi body, lysosomes, mitochondria, plastids, vacuoles)",
-        "2.6 Cell Division (Mitosis for somatic growth vs Meiosis for gamete production)"
+        "2.1 Discovery of the Cell and Cell Theory (Hooke, Leeuwenhoek, Schleiden, Schwann, Virchow)",
+        "2.2 Plant and Animal Cells; Prokaryotic vs Eukaryotic Cells (Compound microscope, preparing slides)",
+        "2.3 Plasma Membrane and its Permeability (Diffusion, osmosis, hypotonic, isotonic and hypertonic solutions)",
+        "2.4 Cell Wall and Nucleus (Cellulose wall, turgor, chromatin, DNA, genes, chromosomes)",
+        "2.5 Key Organelles: Structure and Function of Mitochondria, Chloroplast, Endoplasmic Reticulum and Vacuoles",
+        "2.6 Cell Division (Mitosis and Meiosis), Cancer as Uncontrolled Cell Division, and Recent Advances in Cell Biology"
       ],
       "Chapter 3: Tissues in Action": [
         "3.1 Division of Labour in Multicellular Systems (From cells to tissues, organs, and organ systems)",
@@ -1388,7 +1388,9 @@
         "3.3 Simple Permanent Plant Tissues (Parenchyma, collenchyma, sclerenchyma, and epidermal protection with stomata)",
         "3.4 Complex Conducting Tissues (Xylem tracheids/vessels and phloem sieve tubes/companion cells)",
         "3.5 Animal Epithelial & Connective Tissues (Squamous, cuboidal, columnar epithelium; areolar, adipose, skeletal, blood)",
-        "3.6 Animal Muscular & Nervous Tissues (Striated, smooth, cardiac muscles; neuron anatomy and nerve impulse transmission)"
+        "3.6 Animal Muscular & Nervous Tissues (Striated, smooth, cardiac muscles; neuron anatomy and nerve impulse transmission)",
+        "3.7 Elementary Idea of the Musculoskeletal System (Bones, cartilage, joints and muscles)",
+        "3.8 Care of the Musculoskeletal System (Injuries, postural care, nutrition, exercise and yoga)"
       ],
       "Chapter 4: Describing Motion Around Us": [
         "4.1 Frame of Reference, Distance and Displacement (Reference points, vectors and scalars)",
@@ -1399,26 +1401,26 @@
         "4.6 Uniform Circular Motion (Centripetal acceleration and everyday circular motion)"
       ],
       "Chapter 5: Exploring Mixtures and their Separation": [
-        "5.1 Pure Substances vs Mixtures (Elements, chemical compounds, homogeneous vs heterogeneous mixtures)",
-        "5.2 Solutions, Colloids and Suspensions (Solubility, concentration %, Tyndall effect, Brownian motion)",
-        "5.3 Methods of Separation (Filtration, evaporation, crystallization, centrifugation, chromatography, simple & fractional distillation)",
-        "5.4 Physical vs Chemical Changes (Conservation of mass, distinguishing mixtures from compounds)"
+        "5.1 Pure Substances vs Mixtures (Elements, compounds, homogeneous vs heterogeneous mixtures)",
+        "5.2 Solutions, Colloids and Suspensions and their Properties (Solubility, Tyndall effect, Brownian motion)",
+        "5.3 Expressing the Concentration of a Solution (Mass by mass, mass by volume and volume by volume percentage)",
+        "5.4 Separation Techniques based on Physical Properties (Filtration, evaporation, crystallisation, distillation, paper chromatography, sublimation, centrifugation and coagulation)"
       ],
       "Chapter 6: How Forces Affect Motion": [
-        "6.1 Balanced and Unbalanced Forces (Concept of resultant force, Galileo's inertia experiments)",
-        "6.2 Newton's First Law of Motion (Inertia of rest, motion, and direction; mass as measure of inertia)",
-        "6.3 Newton's Second Law of Motion (Momentum p = mv, mathematical formulation F = ma, SI unit Newton)",
-        "6.4 Everyday Applications of Newton's Laws (Impulse, shock absorbers, sports safety)",
+        "6.1 Force; Balanced and Unbalanced Forces (Resultant force, Galileo's inertia experiments)",
+        "6.2 Force of Friction (Static and sliding friction, factors affecting friction, everyday examples)",
+        "6.3 Newton's First Law of Motion (Inertia of rest, motion and direction; mass as a measure of inertia)",
+        "6.4 Newton's Second Law of Motion (Momentum p = mv, F = ma, SI unit newton)",
         "6.5 Newton's Third Law of Motion (Action and reaction pairs, rocket propulsion, recoil)",
-        "6.6 Universal Gravitation (Newton's law of gravitation, gravitational constant G, gravity and free fall, acceleration due to gravity g)"
+        "6.6 Applying Newton's Laws to Real-Life Situations (Sports, vehicles and safety devices)"
       ],
       "Chapter 7: Work, Energy and Simple Machines": [
-        "7.1 Scientific Conception of Work (Force, displacement, positive, negative, zero work)",
-        "7.2 Kinetic and Potential Energy (Derivation of E_k = 1/2 mv^2 and gravitational E_p = mgh)",
-        "7.3 Law of Conservation of Energy (Energy transformations, mechanical energy conservation)",
-        "7.4 Power (Rate of doing work, Watt, kilowatt)",
-        "7.5 Simple Machines (Principles of mechanical advantage, levers: classes 1, 2, 3, pulley systems, inclined planes)",
-        "7.6 Fluids, Pressure and Floatation (Thrust, pressure P = F/A, Archimedes' principle, buoyancy, floatation)"
+        "7.1 Scientific Conception of Work (Work done by a constant force; positive, negative and zero work)",
+        "7.2 Work-Energy Theorem",
+        "7.3 Kinetic and Potential Energy (E_k = 1/2 mv^2 and E_p = mgh)",
+        "7.4 Conversion between Potential and Kinetic Energy and the Law of Conservation of Energy (Free fall, simple pendulum)",
+        "7.5 Power (Rate of doing work, watt, kilowatt)",
+        "7.6 Simple Machines and Mechanical Advantage (Levers: classes 1, 2, 3; pulleys; inclined plane; M.A. = Load / Effort)"
       ],
       "Chapter 8: Journey Inside the Atom": [
         "8.1 Discovery of Subatomic Particles (Cathode ray tubes, electrons, canal rays, protons, neutrons)",
@@ -1437,18 +1439,18 @@
         "9.6 Introduction to Chemical Reactivity (Valence electrons, noble gas stability, ionic vs covalent bonding overview)"
       ],
       "Chapter 10: Sound Waves: Characteristics and Applications": [
-        "10.1 Generation and Longitudinal Propagation of Sound (Mechanical vibration, compressions and rarefactions)",
-        "10.2 Wave Characteristics (Wavelength lambda, frequency nu, time period T, amplitude A, speed v = nu * lambda)",
-        "10.3 Auditory Perception (Pitch, loudness, quality / timbre of musical notes)",
-        "10.4 Speed of Sound Across Media (Solids, liquids, gases, temperature effects, supersonic flights)",
-        "10.5 Reflection, Echo and Reverberation (Echo condition d >= 17.2 m, acoustic design of halls)",
-        "10.6 Ultrasound Applications & SONAR (Medical ultrasound scans, industrial testing, echolocation, SONAR depth calculation)"
+        "10.1 Production of Sound and its Propagation as a Longitudinal Wave through a Medium (Compressions and rarefactions)",
+        "10.2 Graphical Representation of a Sound Wave",
+        "10.3 Characteristics of a Sound Wave (Wavelength, frequency, time period, amplitude, intensity and speed v = frequency x wavelength)",
+        "10.4 Human Perception of Sound (Pitch and loudness)",
+        "10.5 Propagation of Sound in Different Media (Solids, liquids and gases)",
+        "10.6 Reflection of Sound: Echo, Reverberation and Echolocation"
       ],
       "Chapter 11: Reproduction: How Life Continues": [
         "11.1 Significance of Reproduction in Living Beings (Species continuity, cellular division, genetic material transfer)",
         "11.2 Asexual Reproduction in Organisms (Fission in Amoeba/Leishmania, budding in Yeast/Hydra, spore formation, fragmentation, regeneration)",
         "11.3 Vegetative Propagation in Plants (Natural: tubers, runners, rhizomes; artificial: cutting, layering, grafting, tissue culture)",
-        "11.4 Sexual Reproduction in Flowering Plants (Structure of flower, stamen & pistil, pollination, fertilization, seed & fruit formation)",
+        "11.4 Sexual Reproduction in Flowering Plants (Structure of flower, stamen & pistil, pollination, fertilisation, seed & fruit formation, seed dispersal by biotic and abiotic agents)",
         "11.5 Human Reproductive Systems (Male and female reproductive anatomy, gametogenesis overview)",
         "11.6 Adolescence, Puberty and Reproductive Health (Hormonal changes, secondary sexual traits, menstrual cycle, contraception and disease prevention)"
       ],
@@ -1458,15 +1460,16 @@
         "12.3 Plant Kingdom Diversity (Thallophyta, Bryophyta, Pteridophyta, Gymnosperms, Angiosperms - monocots vs dicots)",
         "12.4 Animal Kingdom Diversity: Invertebrates (Porifera, Coelenterata, Platyhelminthes, Nematoda, Annelida, Arthropoda, Mollusca, Echinodermata)",
         "12.5 Animal Kingdom Diversity: Chordates & Vertebrates (Protochordata, Pisces, Amphibia, Reptilia, Aves, Mammalia)",
-        "12.6 Binomial Nomenclature (Carolus Linnaeus system: Genus and species naming conventions)"
+        "12.6 Binomial Nomenclature (Carolus Linnaeus system: Genus and species naming conventions)",
+        "12.7 Acellular Entities: Viruses; Recognising the Three Domains of Classification"
       ],
       "Chapter 13: Earth as a System: Energy, Matter, and Life": [
-        "13.1 Earth's Interconnected Spheres (Lithosphere, Hydrosphere, Atmosphere, and Biosphere interactions)",
-        "13.2 Energy Flow and Matter Cycles (Solar energy budget, food webs, biogeochemical cycles: Carbon cycle, Nitrogen cycle, Water cycle)",
-        "13.3 The Atmosphere & Climate Regulation (Greenhouse effect, ozone layer protection and depletion, atmospheric circulation)",
-        "13.4 Soil and Water Systems (Soil genesis, weathering, humus, groundwater tables, hydrological balance)",
-        "13.5 Human Impact and Ecological Balance (Deforestation, pollution, carbon footprint, biodiversity loss, global warming)",
-        "13.6 Sustainable Management of Natural Systems (Conservation strategies, renewable resources, circular economy, climate action)"
+        "13.1 Earth as an Interconnected System (Geosphere, Hydrosphere, Atmosphere, Cryosphere and Biosphere)",
+        "13.2 Nature of Solar Energy (Solar radiation, the electromagnetic spectrum and the speed of light)",
+        "13.3 Interaction of Solar Energy with the Earth's Surface and Differential Heating of the Earth (Role of the atmosphere, land and water)",
+        "13.4 Differential Warming of the Earth Causes Winds (Land and sea breezes, valley and mountain breezes)",
+        "13.5 Biogeochemical Cycles (Water, carbon, nitrogen and oxygen cycles)",
+        "13.6 Human Impact on the Earth's System"
       ]
     },
     "Science (Physics)": {
@@ -1479,36 +1482,36 @@
         "4.6 Uniform Circular Motion (Centripetal acceleration and everyday circular motion)"
       ],
       "Chapter 6: How Forces Affect Motion": [
-        "6.1 Balanced and Unbalanced Forces (Concept of resultant force, Galileo's inertia experiments)",
-        "6.2 Newton's First Law of Motion (Inertia of rest, motion, and direction; mass as measure of inertia)",
-        "6.3 Newton's Second Law of Motion (Momentum p = mv, mathematical formulation F = ma, SI unit Newton)",
-        "6.4 Everyday Applications of Newton's Laws (Impulse, shock absorbers, sports safety)",
+        "6.1 Force; Balanced and Unbalanced Forces (Resultant force, Galileo's inertia experiments)",
+        "6.2 Force of Friction (Static and sliding friction, factors affecting friction, everyday examples)",
+        "6.3 Newton's First Law of Motion (Inertia of rest, motion and direction; mass as a measure of inertia)",
+        "6.4 Newton's Second Law of Motion (Momentum p = mv, F = ma, SI unit newton)",
         "6.5 Newton's Third Law of Motion (Action and reaction pairs, rocket propulsion, recoil)",
-        "6.6 Universal Gravitation (Newton's law of gravitation, gravitational constant G, gravity and free fall, acceleration due to gravity g)"
+        "6.6 Applying Newton's Laws to Real-Life Situations (Sports, vehicles and safety devices)"
       ],
       "Chapter 7: Work, Energy and Simple Machines": [
-        "7.1 Scientific Conception of Work (Force, displacement, positive, negative, zero work)",
-        "7.2 Kinetic and Potential Energy (Derivation of E_k = 1/2 mv^2 and gravitational E_p = mgh)",
-        "7.3 Law of Conservation of Energy (Energy transformations, mechanical energy conservation)",
-        "7.4 Power (Rate of doing work, Watt, kilowatt)",
-        "7.5 Simple Machines (Principles of mechanical advantage, levers: classes 1, 2, 3, pulley systems, inclined planes)",
-        "7.6 Fluids, Pressure and Floatation (Thrust, pressure P = F/A, Archimedes' principle, buoyancy, floatation)"
+        "7.1 Scientific Conception of Work (Work done by a constant force; positive, negative and zero work)",
+        "7.2 Work-Energy Theorem",
+        "7.3 Kinetic and Potential Energy (E_k = 1/2 mv^2 and E_p = mgh)",
+        "7.4 Conversion between Potential and Kinetic Energy and the Law of Conservation of Energy (Free fall, simple pendulum)",
+        "7.5 Power (Rate of doing work, watt, kilowatt)",
+        "7.6 Simple Machines and Mechanical Advantage (Levers: classes 1, 2, 3; pulleys; inclined plane; M.A. = Load / Effort)"
       ],
       "Chapter 10: Sound Waves: Characteristics and Applications": [
-        "10.1 Generation and Longitudinal Propagation of Sound (Mechanical vibration, compressions and rarefactions)",
-        "10.2 Wave Characteristics (Wavelength lambda, frequency nu, time period T, amplitude A, speed v = nu * lambda)",
-        "10.3 Auditory Perception (Pitch, loudness, quality / timbre of musical notes)",
-        "10.4 Speed of Sound Across Media (Solids, liquids, gases, temperature effects, supersonic flights)",
-        "10.5 Reflection, Echo and Reverberation (Echo condition d >= 17.2 m, acoustic design of halls)",
-        "10.6 Ultrasound Applications & SONAR (Medical ultrasound scans, industrial testing, echolocation, SONAR depth calculation)"
+        "10.1 Production of Sound and its Propagation as a Longitudinal Wave through a Medium (Compressions and rarefactions)",
+        "10.2 Graphical Representation of a Sound Wave",
+        "10.3 Characteristics of a Sound Wave (Wavelength, frequency, time period, amplitude, intensity and speed v = frequency x wavelength)",
+        "10.4 Human Perception of Sound (Pitch and loudness)",
+        "10.5 Propagation of Sound in Different Media (Solids, liquids and gases)",
+        "10.6 Reflection of Sound: Echo, Reverberation and Echolocation"
       ]
     },
     "Science (Chemistry)": {
       "Chapter 5: Exploring Mixtures and their Separation": [
-        "5.1 Pure Substances vs Mixtures (Elements, chemical compounds, homogeneous vs heterogeneous mixtures)",
-        "5.2 Solutions, Colloids and Suspensions (Solubility, concentration %, Tyndall effect, Brownian motion)",
-        "5.3 Methods of Separation (Filtration, evaporation, crystallization, centrifugation, chromatography, simple & fractional distillation)",
-        "5.4 Physical vs Chemical Changes (Conservation of mass, distinguishing mixtures from compounds)"
+        "5.1 Pure Substances vs Mixtures (Elements, compounds, homogeneous vs heterogeneous mixtures)",
+        "5.2 Solutions, Colloids and Suspensions and their Properties (Solubility, Tyndall effect, Brownian motion)",
+        "5.3 Expressing the Concentration of a Solution (Mass by mass, mass by volume and volume by volume percentage)",
+        "5.4 Separation Techniques based on Physical Properties (Filtration, evaporation, crystallisation, distillation, paper chromatography, sublimation, centrifugation and coagulation)"
       ],
       "Chapter 8: Journey Inside the Atom": [
         "8.1 Discovery of Subatomic Particles (Cathode ray tubes, electrons, canal rays, protons, neutrons)",
@@ -1529,12 +1532,12 @@
     },
     "Science (Biology)": {
       "Chapter 2: Cell: The Building Block of Life": [
-        "2.1 Discovery and Cell Theory (Hooke, Leeuwenhoek, Schleiden, Schwann, Virchow)",
-        "2.2 Microscopic World: Cell Structure & Organisation (Compound microscope, prokaryotic vs eukaryotic cells)",
-        "2.3 Plasma Membrane & Cellular Transport (Fluid mosaic model, diffusion, osmosis, tonicity: hypotonic, isotonic, hypertonic)",
-        "2.4 Cell Wall & Nucleus (Cellulose wall, turgor pressure, chromatin, DNA, genes, chromosomes)",
-        "2.5 Cytoplasmic Organelles (Endoplasmic reticulum, Golgi body, lysosomes, mitochondria, plastids, vacuoles)",
-        "2.6 Cell Division (Mitosis for somatic growth vs Meiosis for gamete production)"
+        "2.1 Discovery of the Cell and Cell Theory (Hooke, Leeuwenhoek, Schleiden, Schwann, Virchow)",
+        "2.2 Plant and Animal Cells; Prokaryotic vs Eukaryotic Cells (Compound microscope, preparing slides)",
+        "2.3 Plasma Membrane and its Permeability (Diffusion, osmosis, hypotonic, isotonic and hypertonic solutions)",
+        "2.4 Cell Wall and Nucleus (Cellulose wall, turgor, chromatin, DNA, genes, chromosomes)",
+        "2.5 Key Organelles: Structure and Function of Mitochondria, Chloroplast, Endoplasmic Reticulum and Vacuoles",
+        "2.6 Cell Division (Mitosis and Meiosis), Cancer as Uncontrolled Cell Division, and Recent Advances in Cell Biology"
       ],
       "Chapter 3: Tissues in Action": [
         "3.1 Division of Labour in Multicellular Systems (From cells to tissues, organs, and organ systems)",
@@ -1542,13 +1545,15 @@
         "3.3 Simple Permanent Plant Tissues (Parenchyma, collenchyma, sclerenchyma, and epidermal protection with stomata)",
         "3.4 Complex Conducting Tissues (Xylem tracheids/vessels and phloem sieve tubes/companion cells)",
         "3.5 Animal Epithelial & Connective Tissues (Squamous, cuboidal, columnar epithelium; areolar, adipose, skeletal, blood)",
-        "3.6 Animal Muscular & Nervous Tissues (Striated, smooth, cardiac muscles; neuron anatomy and nerve impulse transmission)"
+        "3.6 Animal Muscular & Nervous Tissues (Striated, smooth, cardiac muscles; neuron anatomy and nerve impulse transmission)",
+        "3.7 Elementary Idea of the Musculoskeletal System (Bones, cartilage, joints and muscles)",
+        "3.8 Care of the Musculoskeletal System (Injuries, postural care, nutrition, exercise and yoga)"
       ],
       "Chapter 11: Reproduction: How Life Continues": [
         "11.1 Significance of Reproduction in Living Beings (Species continuity, cellular division, genetic material transfer)",
         "11.2 Asexual Reproduction in Organisms (Fission in Amoeba/Leishmania, budding in Yeast/Hydra, spore formation, fragmentation, regeneration)",
         "11.3 Vegetative Propagation in Plants (Natural: tubers, runners, rhizomes; artificial: cutting, layering, grafting, tissue culture)",
-        "11.4 Sexual Reproduction in Flowering Plants (Structure of flower, stamen & pistil, pollination, fertilization, seed & fruit formation)",
+        "11.4 Sexual Reproduction in Flowering Plants (Structure of flower, stamen & pistil, pollination, fertilisation, seed & fruit formation, seed dispersal by biotic and abiotic agents)",
         "11.5 Human Reproductive Systems (Male and female reproductive anatomy, gametogenesis overview)",
         "11.6 Adolescence, Puberty and Reproductive Health (Hormonal changes, secondary sexual traits, menstrual cycle, contraception and disease prevention)"
       ],
@@ -1558,15 +1563,16 @@
         "12.3 Plant Kingdom Diversity (Thallophyta, Bryophyta, Pteridophyta, Gymnosperms, Angiosperms - monocots vs dicots)",
         "12.4 Animal Kingdom Diversity: Invertebrates (Porifera, Coelenterata, Platyhelminthes, Nematoda, Annelida, Arthropoda, Mollusca, Echinodermata)",
         "12.5 Animal Kingdom Diversity: Chordates & Vertebrates (Protochordata, Pisces, Amphibia, Reptilia, Aves, Mammalia)",
-        "12.6 Binomial Nomenclature (Carolus Linnaeus system: Genus and species naming conventions)"
+        "12.6 Binomial Nomenclature (Carolus Linnaeus system: Genus and species naming conventions)",
+        "12.7 Acellular Entities: Viruses; Recognising the Three Domains of Classification"
       ],
       "Chapter 13: Earth as a System: Energy, Matter, and Life": [
-        "13.1 Earth's Interconnected Spheres (Lithosphere, Hydrosphere, Atmosphere, and Biosphere interactions)",
-        "13.2 Energy Flow and Matter Cycles (Solar energy budget, food webs, biogeochemical cycles: Carbon cycle, Nitrogen cycle, Water cycle)",
-        "13.3 The Atmosphere & Climate Regulation (Greenhouse effect, ozone layer protection and depletion, atmospheric circulation)",
-        "13.4 Soil and Water Systems (Soil genesis, weathering, humus, groundwater tables, hydrological balance)",
-        "13.5 Human Impact and Ecological Balance (Deforestation, pollution, carbon footprint, biodiversity loss, global warming)",
-        "13.6 Sustainable Management of Natural Systems (Conservation strategies, renewable resources, circular economy, climate action)"
+        "13.1 Earth as an Interconnected System (Geosphere, Hydrosphere, Atmosphere, Cryosphere and Biosphere)",
+        "13.2 Nature of Solar Energy (Solar radiation, the electromagnetic spectrum and the speed of light)",
+        "13.3 Interaction of Solar Energy with the Earth's Surface and Differential Heating of the Earth (Role of the atmosphere, land and water)",
+        "13.4 Differential Warming of the Earth Causes Winds (Land and sea breezes, valley and mountain breezes)",
+        "13.5 Biogeochemical Cycles (Water, carbon, nitrogen and oxygen cycles)",
+        "13.6 Human Impact on the Earth's System"
       ]
     },
     "Science (Rationalized 086 Legacy)": {
@@ -1679,61 +1685,117 @@
     },
     "Mathematics": {
       "Chapter 1: Orienting Yourself - The Use of Coordinates": [
-        "1.1 Cartesian Coordinate System: x-axis, y-axis and the Origin",
-        "1.2 Plotting Points and the Four Quadrants (Sign Conventions)",
+        "1.1 Brief History of Coordinate Geometry and the 2-D Cartesian Coordinate System (x-axis, y-axis and the Origin)",
+        "1.2 Plotting Points and the Four Quadrants (Sign Conventions); Representing a Floor Plan on a Grid",
         "1.3 Distance Between Two Points: Baudhayana-Pythagoras Theorem and the Distance Formula",
-        "1.4 Section Formula and the Mid-Point of a Line Segment",
-        "1.5 Reflection of Points about the Axes"
+        "1.4 Mid-Point of the Line Segment Joining Two Points",
+        "1.5 Applications: Collinearity of Three Points and Checking whether a Triangle is Right-Angled"
       ],
       "Chapter 2: Introduction to Linear Polynomials": [
-        "2.1 Variables, Coefficients, Constants and Terms in Real-Life Contexts",
-        "2.2 Linear Polynomials and Linear Equations in One and Two Variables",
-        "2.3 Patterns of Growth and Decay: Representing Change with y = ax + b",
-        "2.4 Graph of a Linear Equation on the Cartesian Plane",
-        "2.5 Zero of a Linear Polynomial and its Graphical Meaning"
+        "2.1 Algebraic Expressions: Variables, Coefficients, Constants and Terms in Real-Life Contexts",
+        "2.2 Definition of a Polynomial; Degree, Terms and Coefficients of a Polynomial",
+        "2.3 Linear Polynomials: Exploring Linear Patterns and their Applications",
+        "2.4 Modelling Linear Growth and Linear Decay",
+        "2.5 Visualising Linear Relationships: Graph of y = ax + b, Slope and y-intercept"
       ],
       "Chapter 3: The World of Numbers": [
-        "3.1 Historical Development of Number Systems",
-        "3.2 Rational Numbers: Representation and Density on the Number Line",
-        "3.3 Decimal Expansions of Rational Numbers (Terminating and Non-Terminating Recurring)",
-        "3.4 Irrational Numbers and their Existence (sqrt(2), sqrt(3), sqrt(5))",
-        "3.5 Constructing the Square Root Spiral",
-        "3.6 Real Numbers, Operations on Real Numbers and Rationalising the Denominator",
-        "3.7 Laws of Exponents for Real Numbers"
+        "3.1 Introduction to Rational Numbers and their Properties",
+        "3.2 Representation of Rational Numbers on the Number Line",
+        "3.3 Density of Rational Numbers (with Proof) and Finding Rational Numbers between Any Two Rational Numbers",
+        "3.4 Decimal Representation of Rational Numbers (Terminating and Non-Terminating Recurring)",
+        "3.5 Introduction to Irrational Numbers and Proof of Irrationality of sqrt(2) and sqrt(3)",
+        "3.6 Constructing the Square Root Spiral"
       ],
       "Chapter 4: Exploring Algebraic Identities": [
-        "4.1 Standard Algebraic Identities: (a+b)^2, (a-b)^2 and (a+b)(a-b)",
-        "4.2 Geometric (Visual) Proofs of Algebraic Identities",
-        "4.3 Identities Involving Three Variables: (a+b+c)^2",
-        "4.4 Identities for Cubes: (a+b)^3, (a-b)^3 and a^3+b^3+c^3-3abc",
-        "4.5 Factorisation of Algebraic Expressions using Identities",
-        "4.6 Simplifying Rational Algebraic Expressions"
+        "4.1 Revisiting Algebraic Identities: (a+b)^2, (a-b)^2 and (a+b)(a-b)",
+        "4.2 Visualising Identities using Geometric Models",
+        "4.3 More Identities and their Applications: (a+b+c)^2, (a+b)^3, (a-b)^3 and a^3+b^3+c^3-3abc",
+        "4.4 Factorisation of Algebraic Expressions using Identities",
+        "4.5 Visualising Factorisation of Quadratic Expressions (with and without Algebra Tiles)",
+        "4.6 Finding New Identities and Simplifying Rational Expressions"
       ],
       "Chapter 5: I'm Up and Down, and Round and Round": [
-        "5.1 Circles and Related Terms: Centre, Radius, Diameter, Chord and Arc",
-        "5.2 Relationship between Equal Chords and their Distances from the Centre",
-        "5.3 Angle Subtended by a Chord or an Arc at the Centre",
-        "5.4 Perpendicular from the Centre to a Chord and its Converse",
-        "5.5 Concyclic Points and the Circle through Three Points",
-        "5.6 Angles in the Same Segment and Cyclic Quadrilaterals"
+        "5.1 Circles in Practice and Related Terms: Centre, Radius, Diameter, Chord, Arc, Segment and Sector",
+        "5.2 Chords and the Angles they Subtend at the Centre",
+        "5.3 Midpoints and Perpendicular Bisectors of Chords; the Unique Circle through Three Non-Collinear Points; Circumcircle and Circumcentre of a Triangle",
+        "5.4 Distance of Chords from the Centre (Equal Chords, Longer Chord Closer to the Centre, Diameter as the Longest Chord)",
+        "5.5 Angle Subtended by an Arc at the Centre and at the Remaining Part of the Circle; Angles in the Same Segment; Angle in a Semicircle",
+        "5.6 Cyclicity of Points: Concyclic Points and Cyclic Quadrilaterals (Opposite Angles Supplementary)"
       ],
       "Chapter 6: Measuring Space - Perimeter and Area": [
-        "6.1 Perimeter and Area of Triangles and Quadrilaterals",
-        "6.2 Heron's Formula and its Applications to Triangular Regions",
-        "6.3 Circumference and Area of a Circle",
-        "6.4 Area of Combinations of Plane Figures (Composite Shapes)",
-        "6.5 Real-Life Applications of Perimeter and Area"
+        "6.1 Perimeter of Shapes; Circumference of a Circle, pi and its Irrationality; Historical Approximations of pi",
+        "6.2 Length of an Arc and Real-World Applications",
+        "6.3 Area of Rectangles, Parallelograms and Triangles (a Median Divides a Triangle into Two Triangles of Equal Area)",
+        "6.4 Heron's Formula for the Area of a Triangle",
+        "6.5 Squaring a Rectangle: Proof from Baudhayana's Sulbasutras",
+        "6.6 Area of a Circle (Derivation), Area of a Sector and Problems on Sectors and Segments",
+        "6.7 Brahmagupta's Formula for the Area of a Cyclic Quadrilateral; Heron's Formula as a Special Case"
       ],
       "Chapter 7: The Mathematics of Maybe - Introduction to Probability": [
-        "7.1 Experimental (Empirical) Approach to Probability",
-        "7.2 Probability of an Event based on Observed Frequencies",
-        "7.3 Interpreting Probability as a Measure of Chance in Everyday Situations"
+        "7.1 Concept of Probability and Randomness; the Probability Scale",
+        "7.2 Empirical Probability: Analysing Statistical Data and Performing Experiments",
+        "7.3 Theoretical Probability: Sample Space and Events",
+        "7.4 Representing Probability through Tree Diagrams and Tables"
       ],
       "Chapter 8: Predicting What Comes Next - Exploring Sequences and Progressions": [
-        "8.1 Patterns and Sequences in Real Life",
-        "8.2 Describing Sequences using Explicit Rules (General Term)",
-        "8.3 Describing Sequences using Recursive Rules",
-        "8.4 Arithmetic Patterns and Common Differences"
+        "8.1 Introduction to Sequences and Patterns in Real Life",
+        "8.2 Explicit (General) Rule of a Sequence",
+        "8.3 Recursive Rule of a Sequence",
+        "8.4 Arithmetic Progressions: nth Term, Visualising an AP and Practical Contexts",
+        "8.5 Sum of the First n Natural Numbers",
+        "8.6 Geometric Progressions: nth Term, Visualising a GP and Practical Contexts",
+        "8.7 Applications of GP in Fractals and the Tower of Hanoi Puzzle"
+      ],
+      "Chapter 9: Linear Equations in Two Variables": [
+        "9.1 Introduction to Linear Equations in Two Variables through Practical Examples",
+        "9.2 Solutions of a Linear Equation in Two Variables and their Graphical Representation",
+        "9.3 Slope-Intercept Form; Drawing Graphs when x and y Take Only Certain Values",
+        "9.4 Pair of Linear Equations in Two Variables: Graphical Method of Solution",
+        "9.5 Nature of Solutions: Consistency and Inconsistency",
+        "9.6 Algebraic Methods: Substitution and Elimination; Modelling Contextual Problems"
+      ],
+      "Chapter 10: Introduction to Euclid's Geometry - Axioms and Postulates": [
+        "10.1 History of Geometry: Contributions of India, Egypt and Greece",
+        "10.2 Constructing a Square with a Given Side as in Baudhayana's Sulbasutras",
+        "10.3 Discovering Euclid's Definitions: Point, Line and Surface",
+        "10.4 Axioms: Axioms of Measurement and Rules for Geometric Objects",
+        "10.5 Euclid's Five Postulates and Parallelism; Justifying Simple Constructions using Axioms"
+      ],
+      "Chapter 11: Lines and Angles": [
+        "11.1 Rays and Angles; Measures of Angles (Acute, Right, Obtuse, Straight and Reflex)",
+        "11.2 Intersecting Lines and Pairs of Angles; Linear Pair Theorem and its Converse",
+        "11.3 Vertically Opposite Angles; Proof by Contradiction in Geometry",
+        "11.4 Parallel Lines and a Transversal: Corresponding, Alternate and Interior Angles; Transitivity of Parallelism",
+        "11.5 Theorems and Examples on Parallel Lines; Why a Triangle has at least Two Acute Angles"
+      ],
+      "Chapter 12: Triangles - Congruence Theorems": [
+        "12.1 Practical Applications of Triangles: Rigidity and Stability of Structures",
+        "12.2 Congruence of Triangles: Correspondence of Vertices, Sides and Angles",
+        "12.3 Congruence Conditions and their Proofs: SAS Axiom, SSS, ASA, AAS and RHS",
+        "12.4 Properties of Isosceles Triangles",
+        "12.5 Propositions and their Converses; Why SSA is Not in General a Valid Congruence Condition",
+        "12.6 Problems Based on Applications of Theorems on Triangles"
+      ],
+      "Chapter 13: 4-gons (Quadrilaterals)": [
+        "13.1 Definition of a 4-gon and Properties of Parallelograms",
+        "13.2 Theorems Characterising a Parallelogram and their Proofs",
+        "13.3 Midpoint Theorem and its Converse, with Applications",
+        "13.4 Medians of a Triangle are Concurrent (2:1 Ratio); the Midpoint 4-gon is a Parallelogram",
+        "13.5 Coordinates: Midpoint of a Segment and the Fourth Vertex of a Parallelogram",
+        "13.6 Central Symmetry, Reflection and Rotation Symmetries of 4-gons; Tiling the Plane"
+      ],
+      "Chapter 14: Surface Area and Volume": [
+        "14.1 Surface Area and Volume of Cuboids and Cubes (the Cube as a Special Case)",
+        "14.2 Surface Area and Volume of a Right Circular Cylinder",
+        "14.3 Surface Area and Volume of a Right Circular Cone",
+        "14.4 Surface Area and Volume of a Pyramid",
+        "14.5 Surface Area and Volume of Spheres and Hemispheres"
+      ],
+      "Chapter 15: Statistics": [
+        "15.1 Statistical Investigative Questions: Collecting and Organising Data",
+        "15.2 Graphical Representation of Data: Stacked Bar Graphs and 100% Stacked Bar Graphs",
+        "15.3 Measures of Central Tendency: Mean, Median and Mode",
+        "15.4 Weighted Average and its Applications"
       ]
     },
     "Social Science": {
@@ -2025,11 +2087,11 @@
       "Chapter 10: The Human Eye and the Colourful World": [
         "10.1 Structure and Function of Human Eye (Cornea, Iris, Pupil, Crystalline Lens, Ciliary Muscles, Retina, Blind Spot)",
         "10.2 Power of Accommodation of the Human Eye and Near Point / Far Point",
-        "10.3 Defects of Vision and their Correction: Myopia (Short-Sightedness), Hypermetropia (Far-Sightedness), Presbyopia and Astigmatism",
+        "10.3 Defects of Vision and their Correction: Myopia (Short-Sightedness), Hypermetropia (Far-Sightedness) and Presbyopia",
         "10.4 Refraction of Light through a Triangular Glass Prism: Angle of Deviation and Angle of Incidence",
         "10.5 Dispersion of White Light by a Glass Prism (VIBGYOR), Recombination of Spectrum (Newton's Disc) and Rainbow Formation",
         "10.6 Atmospheric Refraction: Twinkling of Stars, Apparent Position of Stars, Advanced Sunrise and Delayed Sunset",
-        "10.7 Scattering of Light and Tyndall Effect: Why is the Sky Blue? Why do Clouds Appear White? Colour of Sun at Sunrise and Sunset"
+        "10.7 Scattering of Light and Tyndall Effect: Why is the Sky Blue? Why do Clouds Appear White? Why are Danger Signals Red?"
       ],
       "Chapter 11: Electricity": [
         "11.1 Electric Current (I = Q/t), Electric Charge (Q = ne), Electric Circuit and Ammeter",
@@ -2049,7 +2111,7 @@
         "12.4 Magnetic Field due to a Current in a Solenoid and Electromagnet vs Permanent Magnet",
         "12.5 Force on a Current-Carrying Conductor in a Magnetic Field (Ampere's Suggestion) & Factors Affecting Force",
         "12.6 Fleming's Left-Hand Rule and its Application to Force Direction",
-        "12.7 Domestic Electric Circuits: Live Wire, Neutral Wire, Earth Wire, Potential Difference (220 V, 50 Hz)",
+        "12.7 Direct and Alternating Current (Frequency of AC, Advantage of AC over DC) and Domestic Electric Circuits: Live, Neutral and Earth Wires (220 V, 50 Hz)",
         "12.8 Role of Earth Wire and Safety Devices: Electric Fuse, Miniature Circuit Breakers (MCB), Overloading and Short-Circuiting"
       ],
       "Chapter 13: Our Environment": [
@@ -2075,11 +2137,11 @@
       "Chapter 10: The Human Eye and the Colourful World": [
         "10.1 Structure and Function of Human Eye (Cornea, Iris, Pupil, Crystalline Lens, Ciliary Muscles, Retina, Blind Spot)",
         "10.2 Power of Accommodation of the Human Eye and Near Point / Far Point",
-        "10.3 Defects of Vision and their Correction: Myopia (Short-Sightedness), Hypermetropia (Far-Sightedness), Presbyopia and Astigmatism",
+        "10.3 Defects of Vision and their Correction: Myopia (Short-Sightedness), Hypermetropia (Far-Sightedness) and Presbyopia",
         "10.4 Refraction of Light through a Triangular Glass Prism: Angle of Deviation and Angle of Incidence",
         "10.5 Dispersion of White Light by a Glass Prism (VIBGYOR), Recombination of Spectrum (Newton's Disc) and Rainbow Formation",
         "10.6 Atmospheric Refraction: Twinkling of Stars, Apparent Position of Stars, Advanced Sunrise and Delayed Sunset",
-        "10.7 Scattering of Light and Tyndall Effect: Why is the Sky Blue? Why do Clouds Appear White? Colour of Sun at Sunrise and Sunset"
+        "10.7 Scattering of Light and Tyndall Effect: Why is the Sky Blue? Why do Clouds Appear White? Why are Danger Signals Red?"
       ],
       "Chapter 11: Electricity": [
         "11.1 Electric Current (I = Q/t), Electric Charge (Q = ne), Electric Circuit and Ammeter",
@@ -2099,7 +2161,7 @@
         "12.4 Magnetic Field due to a Current in a Solenoid and Electromagnet vs Permanent Magnet",
         "12.5 Force on a Current-Carrying Conductor in a Magnetic Field (Ampere's Suggestion) & Factors Affecting Force",
         "12.6 Fleming's Left-Hand Rule and its Application to Force Direction",
-        "12.7 Domestic Electric Circuits: Live Wire, Neutral Wire, Earth Wire, Potential Difference (220 V, 50 Hz)",
+        "12.7 Direct and Alternating Current (Frequency of AC, Advantage of AC over DC) and Domestic Electric Circuits: Live, Neutral and Earth Wires (220 V, 50 Hz)",
         "12.8 Role of Earth Wire and Safety Devices: Electric Fuse, Miniature Circuit Breakers (MCB), Overloading and Short-Circuiting"
       ]
     },
@@ -2189,7 +2251,7 @@
         "13.5 Waste Disposal Management: Biodegradable and Non-Biodegradable Wastes and Solid Waste Management Practices"
       ]
     },
-    "Mathematics": {
+    "Mathematics (Standard)": {
       "Chapter 1: Real Numbers": [
         "1.1 Fundamental Theorem of Arithmetic (Unique Prime Factorisation of Composite Numbers)",
         "1.2 Finding HCF and LCM using Prime Factorisation & Verification: HCF(a,b) * LCM(a,b) = a * b",
@@ -2214,10 +2276,9 @@
       "Chapter 4: Quadratic Equations": [
         "4.1 Standard Form of Quadratic Equation: ax^2 + bx + c = 0 (a != 0) and Checking Quadratic Nature",
         "4.2 Solution of Quadratic Equations by Factorisation (Splitting the Middle Term)",
-        "4.3 Derivation of Quadratic Formula (Sridharacharya's Rule) by Completing Square Method",
-        "4.4 Solving Equations using Quadratic Formula: x = [-b +- sqrt(b^2 - 4ac)] / (2a)",
-        "4.5 Nature of Roots and Discriminant (D = b^2 - 4ac): D > 0 (Two Distinct Real Roots), D = 0 (Two Equal Real Roots), D < 0 (No Real Roots)",
-        "4.6 Word Problems on Consecutive Integers, Pythagorean Triangles, Time & Work, Speed, Distance and Economics"
+        "4.3 Solving Equations using Quadratic Formula: x = [-b +- sqrt(b^2 - 4ac)] / (2a)",
+        "4.4 Nature of Roots and Discriminant (D = b^2 - 4ac): D > 0 (Two Distinct Real Roots), D = 0 (Two Equal Real Roots), D < 0 (No Real Roots)",
+        "4.5 Word Problems on Consecutive Integers, Pythagorean Triangles, Time & Work, Speed, Distance and Economics"
       ],
       "Chapter 5: Arithmetic Progressions": [
         "5.1 Understanding Sequence, Series and Definition of Arithmetic Progression (AP)",
@@ -2240,8 +2301,7 @@
         "7.2 Distance of a Point from the Origin: d = sqrt[x^2 + y^2] and Collinearity of Three Points",
         "7.3 Testing Geometric Shapes (Isosceles, Equilateral, Right Triangle, Square, Rhombus, Parallelogram)",
         "7.4 Section Formula for Internal Division: P(x, y) = [(m1*x2 + m2*x1)/(m1+m2), (m1*y2 + m2*y1)/(m1+m2)]",
-        "7.5 Mid-Point Formula: M(x, y) = [(x1 + x2)/2, (y1 + y2)/2] and Points of Trisection of a Line Segment",
-        "7.6 Centroid of a Triangle Formula: G(x, y) = [(x1+x2+x3)/3, (y1+y2+y3)/3]"
+        "7.5 Mid-Point Formula: M(x, y) = [(x1 + x2)/2, (y1 + y2)/2] and Points of Trisection of a Line Segment"
       ],
       "Chapter 8: Introduction to Trigonometry": [
         "8.1 Trigonometric Ratios of an Acute Angle in a Right-Angled Triangle (sin, cos, tan, cot, sec, cosec)",
@@ -2249,7 +2309,7 @@
         "8.3 Trigonometric Ratios of Specific Angles: 0°, 30°, 45°, 60° and 90° Values Table",
         "8.4 Evaluation of Algebraic Expressions Involving Specific Trigonometric Angles",
         "8.5 Fundamental Trigonometric Identities: sin^2 theta + cos^2 theta = 1, 1 + tan^2 theta = sec^2 theta, 1 + cot^2 theta = cosec^2 theta",
-        "8.6 Proving Complex Trigonometric Identities using Fundamental Identities"
+        "8.6 Proving Simple Trigonometric Identities using sin^2 A + cos^2 A = 1 and the Related Identities"
       ],
       "Chapter 9: Some Applications of Trigonometry": [
         "9.1 Line of Sight, Horizontal Level, Angle of Elevation and Angle of Depression",
@@ -2274,13 +2334,115 @@
       "Chapter 12: Surface Areas and Volumes": [
         "12.1 Surface Area of a Combination of Solids (Cubes, Cuboids, Spheres, Hemispheres, Right Circular Cylinders, Cones)",
         "12.2 Total Surface Area of Composite Toys, Tents, Storage Silos and Capsules",
-        "12.3 Volume of a Combination of Solids: Solid Placed inside Cylinder, Gulab Jamuns, Ice Cream Cones, Decorative Pen Stands",
-        "12.4 Conversion of Solids from One Shape to Another (Melting & Recasting Problems)"
+        "12.3 Volume of a Combination of Solids: Solid Placed inside Cylinder, Gulab Jamuns, Ice Cream Cones, Decorative Pen Stands"
       ],
       "Chapter 13: Statistics": [
         "13.1 Grouped Data Frequency Distributions and Class Marks",
         "13.2 Mean of Grouped Data by Direct Method: bar_x = sum(f_i * x_i) / sum(f_i)",
-        "13.3 Mean of Grouped Data by Assumed Mean Method: bar_x = a + [sum(f_i * d_i) / sum(f_i)]",
+        "13.3 Mean of Grouped Data by Assumed Mean and Step-Deviation Methods",
+        "13.4 Mode of Grouped Data: Mode = l + [(f1 - f0)/(2f1 - f0 - f2)] * h",
+        "13.5 Median of Grouped Data: Median = l + [((n/2) - cf)/f] * h",
+        "13.6 Empirical Relationship Between the Three Measures of Central Tendency: 3 * Median = Mode + 2 * Mean",
+        "13.7 Finding Missing Frequencies from Given Mean, Median or Mode"
+      ],
+      "Chapter 14: Probability": [
+        "14.1 Classical (Theoretical) Probability Definition: P(E) = (Number of outcomes favorable to E) / (Total number of possible outcomes)",
+        "14.2 Range of Probability: 0 <= P(E) <= 1, Sure / Certain Event (P=1) and Impossible Event (P=0)",
+        "14.3 Complementary Events: P(E) + P(not E) = 1",
+        "14.4 Equally Likely Outcomes & Sample Space for Coin Tossing (1, 2 and 3 Coins)",
+        "14.5 Sample Space and Outcomes for Rolling a Single Die and Pair of Dice (36 Outcomes Table)",
+        "14.6 Well-Shuffled Pack of 52 Playing Cards (Suits, Face Cards, Number Cards) and Mixed Drawing Problems"
+      ]
+    },
+    "Mathematics (Basic)": {
+      "Chapter 1: Real Numbers": [
+        "1.1 Fundamental Theorem of Arithmetic (Unique Prime Factorisation of Composite Numbers)",
+        "1.2 Finding HCF and LCM using Prime Factorisation & Verification: HCF(a,b) * LCM(a,b) = a * b",
+        "1.3 Revisiting Irrational Numbers: Complete Proofs of Irrationality of sqrt(2), sqrt(3), sqrt(5)",
+        "1.4 Proofs of Irrationality of Numbers in the form a + b*sqrt(c) and a / sqrt(b)"
+      ],
+      "Chapter 2: Polynomials": [
+        "2.1 Geometrical Meaning of the Zeroes of a Linear, Quadratic and Cubic Polynomial",
+        "2.2 Number of Zeroes from Graph of y = p(x) (Points of Intersection with x-axis)",
+        "2.3 Relationship between Zeroes and Coefficients of a Quadratic Polynomial: Sum (alpha + beta = -b/a), Product (alpha * beta = c/a)",
+        "2.4 Formation of Quadratic Polynomials when Sum and Product of Zeroes are Given: k[x^2 - (alpha+beta)x + alpha*beta]",
+        "2.5 Symmetric Expressions of Zeroes (alpha^2 + beta^2, 1/alpha + 1/beta, alpha^3 + beta^3)"
+      ],
+      "Chapter 3: Pair of Linear Equations in Two Variables": [
+        "3.1 Pair of Linear Equations in Two Variables: Standard Form a1*x + b1*y + c1 = 0 and a2*x + b2*y + c2 = 0",
+        "3.2 Graphical Method of Solution: Intersecting Lines (Unique Solution), Coincident Lines (Infinitely Many Solutions), Parallel Lines (No Solution)",
+        "3.3 Algebraic Conditions for Consistency and Inconsistency (a1/a2 != b1/b2, a1/a2 = b1/b2 = c1/c2, a1/a2 = b1/b2 != c1/c2)",
+        "3.4 Algebraic Method: Substitution Method Step-by-Step",
+        "3.5 Algebraic Method: Elimination Method by Equating Coefficients",
+        "3.6 Word Problems: Numbers and Digits, Age Problems, Speed-Distance-Time (Boats & Streams, Trains), Geometry and Commercial Costing"
+      ],
+      "Chapter 4: Quadratic Equations": [
+        "4.1 Standard Form of Quadratic Equation: ax^2 + bx + c = 0 (a != 0) and Checking Quadratic Nature",
+        "4.2 Solution of Quadratic Equations by Factorisation (Splitting the Middle Term)",
+        "4.3 Solving Equations using Quadratic Formula: x = [-b +- sqrt(b^2 - 4ac)] / (2a)",
+        "4.4 Nature of Roots and Discriminant (D = b^2 - 4ac): D > 0 (Two Distinct Real Roots), D = 0 (Two Equal Real Roots), D < 0 (No Real Roots)",
+        "4.5 Word Problems on Consecutive Integers, Pythagorean Triangles, Time & Work, Speed, Distance and Economics"
+      ],
+      "Chapter 5: Arithmetic Progressions": [
+        "5.1 Understanding Sequence, Series and Definition of Arithmetic Progression (AP)",
+        "5.2 First Term (a), Common Difference (d) and Checking whether a Given Sequence is an AP",
+        "5.3 nth Term of an AP Formula: a_n = a + (n - 1)d and nth Term from the End: l - (n - 1)d",
+        "5.4 Sum of First n Terms of an AP: S_n = n/2 [2a + (n-1)d] and S_n = n/2 [a + l]",
+        "5.5 Relationship between a_n and S_n: a_n = S_n - S_(n-1)",
+        "5.6 Practical Applications and Word Problems Involving Arithmetic Progressions in Daily Life"
+      ],
+      "Chapter 6: Triangles": [
+        "6.1 Similarity of Geometric Figures and Necessary Conditions for Similarity of Polygons",
+        "6.2 Basic Proportionality Theorem (Thales Theorem) with Complete Geometric Proof",
+        "6.3 Converse of Basic Proportionality Theorem and Applications",
+        "6.4 Criteria for Similarity of Triangles: AAA (Angle-Angle-Angle) and AA Similarity Criterion",
+        "6.5 Criteria for Similarity of Triangles: SSS (Side-Side-Side) Similarity Criterion",
+        "6.6 Criteria for Similarity of Triangles: SAS (Side-Angle-Side) Similarity Criterion and Multi-Step Proofs"
+      ],
+      "Chapter 7: Coordinate Geometry": [
+        "7.1 Cartesian Plane Review and Distance Formula: d = sqrt[(x2 - x1)^2 + (y2 - y1)^2]",
+        "7.2 Distance of a Point from the Origin: d = sqrt[x^2 + y^2] and Collinearity of Three Points",
+        "7.3 Testing Geometric Shapes (Isosceles, Equilateral, Right Triangle, Square, Rhombus, Parallelogram)",
+        "7.4 Section Formula for Internal Division: P(x, y) = [(m1*x2 + m2*x1)/(m1+m2), (m1*y2 + m2*y1)/(m1+m2)]",
+        "7.5 Mid-Point Formula: M(x, y) = [(x1 + x2)/2, (y1 + y2)/2] and Points of Trisection of a Line Segment"
+      ],
+      "Chapter 8: Introduction to Trigonometry": [
+        "8.1 Trigonometric Ratios of an Acute Angle in a Right-Angled Triangle (sin, cos, tan, cot, sec, cosec)",
+        "8.2 Reciprocal Relations and Quotient Relations (tan theta = sin/cos, cot theta = cos/sin)",
+        "8.3 Trigonometric Ratios of Specific Angles: 0°, 30°, 45°, 60° and 90° Values Table",
+        "8.4 Evaluation of Algebraic Expressions Involving Specific Trigonometric Angles",
+        "8.5 Fundamental Trigonometric Identities: sin^2 theta + cos^2 theta = 1, 1 + tan^2 theta = sec^2 theta, 1 + cot^2 theta = cosec^2 theta",
+        "8.6 Proving Simple Trigonometric Identities using sin^2 A + cos^2 A = 1 and the Related Identities"
+      ],
+      "Chapter 9: Some Applications of Trigonometry": [
+        "9.1 Line of Sight, Horizontal Level, Angle of Elevation and Angle of Depression",
+        "9.2 Single Right-Triangle Height and Distance Problems (Towers, Trees, Poles, Kites)",
+        "9.3 Two Right-Triangles Height and Distance Problems (Observation from Building, Ships in Sea, Flying Birds)",
+        "9.4 Applications Involving Angles of Elevation and Depression Combined in Single Word Problems"
+      ],
+      "Chapter 10: Circles": [
+        "10.1 Secant, Tangent to a Circle and Point of Contact",
+        "10.2 Theorem 10.1: Tangent at Any Point of a Circle is Perpendicular to the Radius through the Point of Contact",
+        "10.3 Number of Tangents from a Point to a Circle (Inside, On the Circle, Outside the Circle)",
+        "10.4 Theorem 10.2: Lengths of Tangents Drawn from an External Point to a Circle are Equal",
+        "10.5 Geometric Proofs: Circumscribed Quadrilaterals, Concentric Circles and Tangent Properties"
+      ],
+      "Chapter 11: Areas Related to Circles": [
+        "11.1 Perimeter (Circumference = 2*pi*r) and Area of a Circle (A = pi*r^2) Review",
+        "11.2 Sector of a Circle and Formula for Length of an Arc of a Sector: l = (theta/360) * 2*pi*r",
+        "11.3 Area of Minor Sector and Major Sector of a Circle: A = (theta/360) * pi*r^2",
+        "11.4 Segment of a Circle (Minor and Major Segments) and Calculation: Area of Sector - Area of Triangle",
+        "11.5 Combination of Plane Figures (Circles with Squares, Triangles, Rectangles and Shaded Regions)"
+      ],
+      "Chapter 12: Surface Areas and Volumes": [
+        "12.1 Surface Area of a Combination of Solids (Cubes, Cuboids, Spheres, Hemispheres, Right Circular Cylinders, Cones)",
+        "12.2 Total Surface Area of Composite Toys, Tents, Storage Silos and Capsules",
+        "12.3 Volume of a Combination of Solids: Solid Placed inside Cylinder, Gulab Jamuns, Ice Cream Cones, Decorative Pen Stands"
+      ],
+      "Chapter 13: Statistics": [
+        "13.1 Grouped Data Frequency Distributions and Class Marks",
+        "13.2 Mean of Grouped Data by Direct Method: bar_x = sum(f_i * x_i) / sum(f_i)",
+        "13.3 Mean of Grouped Data by Assumed Mean and Step-Deviation Methods",
         "13.4 Mode of Grouped Data: Mode = l + [(f1 - f0)/(2f1 - f0 - f2)] * h",
         "13.5 Median of Grouped Data: Median = l + [((n/2) - cf)/f] * h",
         "13.6 Empirical Relationship Between the Three Measures of Central Tendency: 3 * Median = Mode + 2 * Mean",
