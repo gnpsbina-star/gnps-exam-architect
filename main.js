@@ -1,5 +1,5 @@
 import { cbseData } from './data.js?v=50';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper, accountancyChoiceText } from './sqp_blueprints.js?v=19';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper, accountancyChoiceText } from './sqp_blueprints.js?v=20';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -4198,7 +4198,12 @@ function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = fa
   // generic commerce quota would have it inventing supply-demand graphs.
   const isAccountancy = subLower.includes('accountancy') || subLower.includes('055');
 
-  if (isAccountancy || (!isScience && !isMath && !isSst && !isCommerce && !isCS && !isEnglish)) {
+  // A Class 11 / 12 subject set on its sample paper draws its own figures only
+  // (Physical Education: fixtures and asanas, though no keyword flag matches).
+  const seniorSpec = getSeniorPaper(className, subjectName);
+  const seniorFigures = !!(seniorSpec && seniorSpec.diagramRules);
+
+  if (isAccountancy || (!isScience && !isMath && !isSst && !isCommerce && !isCS && !isEnglish && !seniorFigures)) {
     return "";
   }
 
@@ -4261,9 +4266,10 @@ function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = fa
     *   **Flowcharts:** Start/Stop ovals, decision diamonds, process rectangles, input/output parallelograms with labeled branching arrows.`;
   }
 
-  // A Class 11 / 12 subject set on its sample paper draws its own figures only.
-  const seniorSpec = getSeniorPaper(className, subjectName);
-  if (seniorSpec && seniorSpec.diagramRules) subjectSpecificRules = seniorSpec.diagramRules;
+  if (seniorFigures) {
+    subjectSpecificRules = seniorSpec.diagramRules;
+    if (!quotaText) quotaText = quotaOverride || `Use **1 to 2** figures or tables, only where a question needs them.`;
+  }
 
   return `\n\n**MANDATORY CBSE DIAGRAM & VISUAL PROTOCOL (INLINE VECTOR SVG):**
 *   **STRICT ZERO-PLACEHOLDER MANDATE:** Under NO circumstances should you output lazy text placeholders such as "[Insert diagram here]", "[Diagram of circuit]", "[Figure of flower]", or skip visual components. CBSE board examinations require real visual stimuli.
@@ -4322,9 +4328,11 @@ function buildUnitWeightageText(spec, selectedChaptersData, totalMarks) {
     byUnit.get(unit).push(ch);
   });
 
-  // Map work (History) keeps its own marks; the units share the rest.
+  // Map work (History) keeps its own marks; the units share the rest. Where
+  // the paper prints more marks than are attempted (Physical Education: 80
+  // printed, 70 attempted), the units share the printed marks.
   const mapMarks = spec.mapMarks || 0;
-  const unitMarks = totalMarks - mapMarks;
+  const unitMarks = (spec.printedMarks || totalMarks) - mapMarks;
   const units = [...byUnit.keys()];
   const cbseSum = units.reduce((a, u) => a + u.marks, 0) || 1;
   const exact = units.map(u => u.marks * unitMarks / cbseSum);
@@ -4336,8 +4344,8 @@ function buildUnitWeightageText(spec, selectedChaptersData, totalMarks) {
   let text = `**Syllabus & CBSE 2026-27 Unit Weightage (100% OF TOTAL MARKS):**\n` +
     `The examination syllabus consists EXCLUSIVELY of the following ${selectedChaptersData.length} selected topic(s):\n` +
     selectedChaptersData.map(c => `- ${c.name}`).join('\n') + `\n\n` +
-    `*UNIT-WISE MARKS (from the CBSE 2026-27 course structure${units.length < spec.units.length ? `, shared in proportion among the units selected` : ``}):*\n` +
-    units.map((u, i) => `- **${u.name}** — ${alloc[i]} marks (CBSE full-paper weightage ${u.marks}/${spec.fullMarks || 80}): ${byUnit.get(u).join('; ')}`).join('\n') + `\n` +
+    `*UNIT-WISE MARKS (from the CBSE 2026-27 course structure${units.length < spec.units.length ? `, shared in proportion among the units selected` : ``}${spec.printedMarks ? `; counting every printed question, ${spec.printedMarks} printed marks of which the student attempts ${totalMarks}` : ``}):*\n` +
+    units.map((u, i) => `- **${u.name}** — ${alloc[i]} marks (CBSE full-paper weightage ${u.marks}/${spec.unitMarksTotal || spec.fullMarks || 80}): ${byUnit.get(u).join('; ')}`).join('\n') + `\n` +
     (mapMarks ? `- **Map work** — ${mapMarks} marks: places from the selected ${units.length === 1 ? 'unit' : 'units'} only\n` : ``);
   if (unmatched.length > 0) {
     text += `- Also selected (share the marks with the unit they belong to): ${unmatched.join('; ')}\n`;

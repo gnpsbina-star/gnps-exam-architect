@@ -2057,6 +2057,91 @@ const geoDiagramRules = (worldNote) => `
     *   **Maps:** where the paper has a map question, print the outline map it uses at the end of the paper, headed with the question's number ("Map for Q. 29" / "Map for Q. 30" in the full paper). ${worldNote}
     *   **Maps, graphs and pictures in other questions:** draw a simple map, bar or line graph, or describe a picture in a caption inside a bordered box, with its source; add a words-only alternative for visually impaired candidates.`;
 
+// Class 11 and 12 Physical Education (048), from the CBSE 2026-27 curriculum
+// document (PhysicalEducation_SecP2_2026-27) and the Class XII 2026-27 sample
+// paper (design unchanged). The theory paper is 70 marks (practical 30): 37
+// questions in Sections A-E - 18 MCQs, 6 questions of 2 marks (attempt any
+// 5), 6 of 3 marks (attempt any 5), 3 case studies of 4 marks and 4 of 5
+// marks (attempt any 3). The paper prints 80 marks; CBSE's Class XII unit
+// weightages add up to those 80 (`printedMarks`), counting the "b*"
+// concept-based marks (tactile diagrams, data interpretation, case studies
+// for visually impaired candidates). CBSE gives no competency split.
+const peQuestions = [
+  { section: "Section A", q: "Q1-Q18", type: "Multiple choice questions", count: 18, each: 1, marks: 18, detail: "direct, fill in the blank, match the following, Assertion-Reason (2 in the sample paper) and picture-based (identify the asana, with a words-only alternative for visually impaired candidates); all compulsory" },
+  { section: "Section B", q: "Q19-Q24", type: "Very short answer (60-90 words)", count: 6, each: 2, marks: 10, attempt: 5, of: 6, detail: "define and explain, or state two points (marked 2 or 1+1)" },
+  { section: "Section C", q: "Q25-Q30", type: "Short answer (100-150 words)", count: 6, each: 3, marks: 15, attempt: 5, of: 6, detail: "define and explain, list three points, or discuss with an example (marked 1+2, 2+1 or 1+1+1)" },
+  { section: "Section D", q: "Q31-Q33", type: "Case studies", count: 3, each: 4, marks: 12, detail: "each a fixture, picture, table or short passage with four 1-mark parts (MCQs or one-line answers), with an internal choice (OR) in one part; a separate case in words only for visually impaired candidates in lieu of any case that uses a picture or fixture" },
+  { section: "Section E", q: "Q34-Q37", type: "Long answer (200-300 words)", count: 4, each: 5, marks: 15, attempt: 3, of: 4, detail: "explain with sub-parts (marked 2+1+2, 1+4, 2+3), including drawing a stick diagram of an asana or a labelled diagram, or describing the procedure of a test" }
+];
+
+const peGeneralInstructions = [
+  "The question paper consists of 5 sections and 37 Questions.",
+  "Section A consists of question 1-18 carrying 1 mark each and is multiple choice questions. All questions are compulsory.",
+  "Section B consists of questions 19-24 carrying 2 marks each and are very short answer types and should not exceed 60-90 words. Attempt any 5.",
+  "Section C consists of Question 25-30 carrying 3 marks each and are short answer types and should not exceed 100-150 words. Attempt any 5.",
+  "Section D consists of Question 31-33 carrying 4 marks each and are case studies. There is an internal choice available.",
+  "Section E consists of Question 34-37 carrying 5 marks each and are long answer types and should not exceed 200-300 words. Attempt any 3."
+];
+
+// Short tests keep the paper's 1 / 2 / 3 / 4 / 5 mark types.
+const peShortTests = {
+  unit: [
+    { name: "Section A", type: "Multiple choice questions (including match the following and Assertion-Reason)", count: 4, unitMark: 1, marksPerQ: "1 Mark", total: 4, choice: "Compulsory" },
+    { name: "Section B", type: "Very short answer (60-90 words)", count: 2, unitMark: 2, marksPerQ: "2 Marks", total: 4, choice: "Internal choice in 1 Q" },
+    { name: "Section C", type: "Short answer (100-150 words)", count: 1, unitMark: 3, marksPerQ: "3 Marks", total: 3, choice: "Internal choice" },
+    { name: "Section D", type: "Case study", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "Internal choice in one part" },
+    { name: "Section E", type: "Long answer (200-300 words)", count: 1, unitMark: 5, marksPerQ: "5 Marks", total: 5, choice: "Internal choice" }
+  ],
+  periodic: [
+    { name: "Section A", type: "Multiple choice questions (including match the following and Assertion-Reason)", count: 7, unitMark: 1, marksPerQ: "1 Mark", total: 7, choice: "Compulsory" },
+    { name: "Section B", type: "Very short answer (60-90 words)", count: 3, unitMark: 2, marksPerQ: "2 Marks", total: 6, choice: "Internal choice in 1 Q" },
+    { name: "Section C", type: "Short answer (100-150 words)", count: 3, unitMark: 3, marksPerQ: "3 Marks", total: 9, choice: "Internal choice in 1 Q" },
+    { name: "Section D", type: "Case studies", count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "Internal choice in one part of each" },
+    { name: "Section E", type: "Long answer (200-300 words)", count: 2, unitMark: 5, marksPerQ: "5 Marks", total: 10, choice: "Internal choice in 1 Q" }
+  ]
+};
+
+const peFormats = {
+  fullMarks: 70,
+  printedMarks: 80,
+  markLadder: [1, 2, 3, 4, 5],
+  letteredSections: true,
+  shortTests: peShortTests,
+  shortCaseDetail: "a fixture, picture, table or short passage with four 1-mark parts, with an internal choice (OR) in one part; a words-only version for visually impaired candidates if it uses a picture or fixture",
+  design: null,
+  designText: "CBSE gives no competency split for Physical Education. Follow the sample paper: 18 MCQs of recall and understanding; short answers that define, explain and apply; case studies that ask the student to read a fixture, picture, table or passage; and long answers that explain, draw a stick diagram or describe a test procedure. Set about half the marks on applying and interpreting (situations, fixtures, data, pictures).",
+  questions: peQuestions,
+  generalInstructions: peGeneralInstructions,
+  arOptions: ["(a) Both (A) and (R) are true and (R) is the correct explanation of (A).", "(b) Both (A) and (R) are true, but (R) is not the correct explanation of (A).", "(c) (A) is true, but (R) is false.", "(d) (A) is false, but (R) is true."],
+  arPlacement: "under each Assertion-Reason question, after \"In context of the above two statements, which one of the following is correct?\"",
+  arAnswered: "answered from the four options printed below it",
+  foundational: "terms, definitions, test items, asanas, formulas, nutrients and the people and bodies associated with sport",
+  constructed: [
+    "Very Short Answer (2 Marks, 60-90 words): define and explain, or give two points.",
+    "Short Answer (3 Marks, 100-150 words): define and explain, list three points, or discuss with an example.",
+    "Long Answer (5 Marks, 200-300 words): explain with sub-parts, draw a stick diagram of an asana, or describe a test procedure."
+  ],
+  sourcing: "Source questions from CBSE's Physical Education curriculum and its sample and practice papers, past board papers and the CBSE-recommended textbooks.",
+  typology: {
+    vsa: "Answer in **60-90 words**: define and explain (\"What is PRICE?\"), or give two points (\"Suggest any two isometric exercises for the shoulder region\"); marked 2 or 1+1. Print 6 and let the student attempt any 5 (\"Attempt any 5\").",
+    sa: "Answer in **100-150 words**: define and explain (\"What is Scoliosis? What are the causes of Scoliosis?\"), list three points, or discuss with an example; marked 1+2, 2+1 or 1+1+1. Print 6; the student attempts any 5.",
+    laHeading: "4-Mark Case Studies and 5-Mark Long Answer Questions",
+    la: [
+      "Case studies (4 marks): a knockout or league fixture, a picture, a table or a short passage, followed by four 1-mark parts (MCQs or one-line answers, such as the number of byes or matches), with an internal choice (OR) in one part. Where the case uses a picture or fixture, print a separate case in words \"(For Visually Impaired Candidates Only)\".",
+      "Long answers (5 marks, 200-300 words): explain with sub-parts (\"What is Diabetes and its types. Draw stick diagram of Gomukhasana and mention its benefits\", 2+1+2), describe the procedure of a test item, or explain a concept with its types (1+4, 2+3). Print 4; the student attempts any 3."
+    ]
+  },
+  rigor: "Formulate questions whose answers are distinct value points: accurate terms, test items and procedures, formulas (number of matches and byes), asanas with their benefits and contraindications, and one point per mark.",
+  instructionsNote: "",
+  mandatesTitle: null,
+  mandates: [],
+  numberingNote: "Number the questions Q1 to Q37 continuously across Sections A to E, in the order of the rows above (a row \"Q1-Q18\" is eighteen separate questions). Case-study parts are numbered (i) to (iv) or (a) to (d). Print \"Attempt any 5\" under the Section B and C headings and \"Attempt any 3\" under Section E.",
+  figureQuota: "Set **1 knockout or league fixture** (a case study), **1 or 2 pictures** (an asana to identify in Section A, a picture-based case study), each with a words-only alternative for visually impaired candidates",
+  diagramRules: `
+    *   **Fixtures:** draw knockout fixtures as a clean bracket (teams numbered, byes shown) and league fixtures as a table or cyclic arrangement.
+    *   **Asanas and pictures:** describe the asana or picture in a caption inside a bordered box, or draw a simple stick figure; never print the stick diagram a question asks the student to draw.`
+};
+
 export const seniorPapers = {
   "Class 12 || Physics": {
     code: "042",
@@ -2672,6 +2757,62 @@ export const seniorPapers = {
       { name: "India - Physical Environment: Unit II Physiography (Chapters 2-3)", marks: 13, chapters: ["Structure and Physiography", "Drainage System"] },
       { name: "India - Physical Environment: Unit III Climate and Vegetation (Chapters 4-5)", marks: 12, chapters: ["Climate", "Natural Vegetation"] }
     ]
+  },
+  "Class 12 || Physical Education": {
+    code: "048",
+    paperLabel: "Physical Education (048)",
+    ...peFormats,
+    unitMarksTotal: 80,
+    misconceptions: "knockout vs league fixtures and their formulas (N-1 matches, N(N-1)/2 matches, byes and their placement), kyphosis vs lordosis vs scoliosis, knock knees vs bow legs, sprain vs strain vs contusion, macro vs micro nutrients, water vs fat-soluble vitamins, isometric vs isotonic vs isokinetic exercises, introvert vs extrovert, intrinsic vs extrinsic motivation, the training cycles (micro, meso, macro)",
+    scope: [
+      "Class XII Physical Education theory (70 marks) is CBSE's ten units: Management of Sporting Events (5+4b), Children and Women in Sports (7), Yoga as Preventive Measure for Lifestyle Disease (6+1b), Physical Education and Sports for CWSN (4+4b), Sports and Nutrition (7), Test and Measurement in Sports (8), Physiology and Injuries in Sports (4+4b), Biomechanics and Sports (10), Psychology and Sports (7), Training in Sports (9). \"b\" marks are concept-based questions (tactile diagram, data interpretation, case study) for visually impaired candidates. The practical is examined separately.",
+      "Content outside CBSE's 2026-27 unit-wise course content is not assessed."
+    ],
+    requirements: [
+      "**Unit spread:** the unit marks in the syllabus section count every printed question, including those the student may leave out (80 printed marks, 70 attempted); keep each unit within ±2 marks of its figure.",
+      "**Attempt any:** Section B prints 6 questions (attempt any 5), Section C 6 (any 5) and Section E 4 (any 3); Section D's three case studies each have an internal choice in one part; Section A is compulsory.",
+      "**Visually impaired candidates:** print a words-only alternative, marked \"(For Visually Impaired Candidates Only)\" or \"(Question for candidates with visual impairment)\", for every question with a picture or fixture."
+    ],
+    units: [
+      { name: "Unit 1: Management of Sporting Events", marks: 9, chapters: ["Unit 1:"] },
+      { name: "Unit 2: Children and Women in Sports", marks: 7, chapters: ["Unit 2:"] },
+      { name: "Unit 3: Yoga as Preventive Measure for Lifestyle Disease", marks: 7, chapters: ["Unit 3:"] },
+      { name: "Unit 4: Physical Education and Sports for CWSN", marks: 8, chapters: ["Unit 4:"] },
+      { name: "Unit 5: Sports and Nutrition", marks: 7, chapters: ["Unit 5:"] },
+      { name: "Unit 6: Test and Measurement in Sports", marks: 8, chapters: ["Unit 6:"] },
+      { name: "Unit 7: Physiology and Injuries in Sports", marks: 8, chapters: ["Unit 7:"] },
+      { name: "Unit 8: Biomechanics and Sports", marks: 10, chapters: ["Unit 8:"] },
+      { name: "Unit 9: Psychology and Sports", marks: 7, chapters: ["Unit 9:"] },
+      { name: "Unit 10: Training in Sports", marks: 9, chapters: ["Unit 10:"] }
+    ]
+  },
+  "Class 11 || Physical Education": {
+    code: "048",
+    paperLabel: "Physical Education (048), Class XI",
+    ...peFormats,
+    unitMarksTotal: 70,
+    misconceptions: "the aims vs objectives of physical education, the ancient vs modern Olympics, the Olympic symbols and values, asana vs pranayama, health-related vs skill-related fitness, test vs measurement vs evaluation, BMI vs body fat percentage, the types of muscle and joint, the planes and axes of movement, doping methods vs prohibited substances",
+    scope: [
+      "Class XI Physical Education theory (70 marks) is CBSE's ten units: Changing Trends and Career in Physical Education (4+4b), Olympic Value Education (5), Yoga (6+1b), Physical Education and Sports for CWSN (4+3b), Physical Fitness, Wellness (5), Test, Measurement and Evaluation (8), Fundamentals of Anatomy and Physiology in Sports (8), Fundamentals of Kinesiology and Biomechanics in Sports (4+4b), Psychology and Sports (7), Training and Doping in Sports (7), on the Class XII sample paper's layout. \"b\" marks are concept-based questions for visually impaired candidates. The practical is examined separately.",
+      "Content outside CBSE's 2026-27 unit-wise course content is not assessed."
+    ],
+    requirements: [
+      "**Unit spread:** the paper prints 80 marks, of which the student attempts 70; share the printed marks among the units in proportion to the weightages in the syllabus section, within ±2 marks.",
+      "**Attempt any:** Section B prints 6 questions (attempt any 5), Section C 6 (any 5) and Section E 4 (any 3); Section D's three case studies each have an internal choice in one part; Section A is compulsory.",
+      "**Visually impaired candidates:** print a words-only alternative for every question with a picture or diagram."
+    ],
+    units: [
+      { name: "Unit 1: Changing Trends and Career in Physical Education", marks: 8, chapters: ["Unit 1:"] },
+      { name: "Unit 2: Olympic Value Education", marks: 5, chapters: ["Unit 2:"] },
+      { name: "Unit 3: Yoga", marks: 7, chapters: ["Unit 3:"] },
+      { name: "Unit 4: Physical Education and Sports for CWSN", marks: 7, chapters: ["Unit 4:"] },
+      { name: "Unit 5: Physical Fitness, Wellness", marks: 5, chapters: ["Unit 5:"] },
+      { name: "Unit 6: Test, Measurement and Evaluation", marks: 8, chapters: ["Unit 6:"] },
+      { name: "Unit 7: Fundamentals of Anatomy and Physiology in Sports", marks: 8, chapters: ["Unit 7:"] },
+      { name: "Unit 8: Fundamentals of Kinesiology and Biomechanics in Sports", marks: 8, chapters: ["Unit 8:"] },
+      { name: "Unit 9: Psychology and Sports", marks: 7, chapters: ["Unit 9:"] },
+      { name: "Unit 10: Training and Doping in Sports", marks: 7, chapters: ["Unit 10:"] }
+    ]
   }
 };
 
@@ -3005,6 +3146,29 @@ on the Class XII sample paper's layout: 17 MCQs (1 mark), 2 source-based questio
 (3 marks, 80-100 words), 5 long answers (5 marks, 120-150 words) and 2 map questions (5 marks: the world and
 India), in Sections A to E. Fundamentals of Physical Geography and India - Physical Environment carry 30 marks
 each plus a 5-mark map question each.`
+  },
+
+  "Class 12 || Physical Education": {
+    year: "2026-27",
+    fullMarks: 70,
+    text: `PHYSICAL EDUCATION (048), Class XII, Theory: Maximum Marks 70, Time 3 hours (practical 30 marks, examined separately).
+37 questions in five sections:
+  Section A: Q1-Q18, MCQs of 1 mark (18), all compulsory.
+  Section B: Q19-Q24, very short answers of 2 marks in 60-90 words - attempt any 5 (10).
+  Section C: Q25-Q30, short answers of 3 marks in 100-150 words - attempt any 5 (15).
+  Section D: Q31-Q33, case studies of 4 marks with an internal choice (12).
+  Section E: Q34-Q37, long answers of 5 marks in 200-300 words - attempt any 3 (15).
+Separate questions for visually impaired candidates in lieu of those with pictures or fixtures.
+CBSE states there is no change in the Question Paper Design for 2026-27.`
+  },
+
+  "Class 11 || Physical Education": {
+    year: "2026-27",
+    fullMarks: 70,
+    text: `PHYSICAL EDUCATION (048), Class XI, Theory: Maximum Marks 70, Time 3 hours (practical 30 marks, examined separately),
+on the Class XII sample paper's layout: 18 MCQs (1 mark), 6 very short answers of 2 marks (attempt any 5), 6 short
+answers of 3 marks (attempt any 5), 3 case studies of 4 marks and 4 long answers of 5 marks (attempt any 3),
+in Sections A to E.`
   },
 
   "Class 12 || Accountancy": {
