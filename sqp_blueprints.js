@@ -745,6 +745,128 @@ are set on the Class 10 Course B pattern (school policy). The paper has 15 quest
           Q13 अनौपचारिक पत्र, about 100 words, with choice (5).   Q14 संवाद, about 80 words, with choice (5).
           Q15 चित्र पर आधारित लेखन, about 80 words, with no choice (5).`;
 
+// Class 9 and 10 skill subjects, from the CBSE 2026-27 skill curricula
+// (405-FMM, 413-HEALTHCARE, 417-AI, 418-PHYSICAL_ACTIVITY_TRAINER, IX and X).
+// Each is 100 marks: a 50-mark theory paper (Part A Employability Skills 10,
+// Part B Subject Specific Skills 40, with the unit marks below) and 50 marks
+// of practical work, project and viva that are not part of the written paper.
+//
+// The theory paper layout is CBSE's skill question paper design for Classes
+// IX and X, as its skill sample papers set it. CBSE publishes those papers on
+// cbseskilleducation.nic.in, which this environment cannot reach, so the
+// layout has not been re-read from the 2026-27 papers; the curricula confirm
+// the 10 + 40 split it rests on.
+export const skillPaperQuestions = [
+  { section: "Section A", heading: "Objective Type Questions", q: "Q1", type: "Employability Skills - objective questions", marks: 4, each: 1, attempt: 4, of: 6, part: "A",
+    detail: "MCQs, fill in the blanks and one-word answers on Part A" },
+  { section: "Section A", heading: "Objective Type Questions", q: "Q2", type: "Subject Specific Skills - objective questions", marks: 5, each: 1, attempt: 5, of: 6, part: "B",
+    detail: "MCQs, fill in the blanks, true or false and match the following on Part B" },
+  { section: "Section A", heading: "Objective Type Questions", q: "Q3", type: "Subject Specific Skills - objective questions", marks: 5, each: 1, attempt: 5, of: 6, part: "B",
+    detail: "MCQs, fill in the blanks, true or false and match the following on Part B" },
+  { section: "Section A", heading: "Objective Type Questions", q: "Q4", type: "Subject Specific Skills - objective questions", marks: 5, each: 1, attempt: 5, of: 6, part: "B",
+    detail: "MCQs, fill in the blanks, true or false and match the following on Part B, including a short case or situation" },
+  { section: "Section A", heading: "Objective Type Questions", q: "Q5", type: "Subject Specific Skills - objective questions", marks: 5, each: 1, attempt: 5, of: 6, part: "B",
+    detail: "MCQs, fill in the blanks, true or false and match the following on Part B, including a short case or situation" },
+  { section: "Section B", heading: "Subjective Type Questions", q: "Q6-Q10", count: 5, type: "Employability Skills - short answers (20-30 words)", marks: 6, each: 2, attempt: 3, of: 5, part: "A",
+    detail: "2 marks each, on Part A" },
+  { section: "Section B", heading: "Subjective Type Questions", q: "Q11-Q16", count: 6, type: "Subject Specific Skills - short answers (20-30 words)", marks: 8, each: 2, attempt: 4, of: 6, part: "B",
+    detail: "2 marks each, on Part B" },
+  { section: "Section B", heading: "Subjective Type Questions", q: "Q17-Q21", count: 5, type: "Subject Specific Skills - long answers (50-80 words)", marks: 12, each: 4, attempt: 3, of: 5, part: "B",
+    detail: "4 marks each, on Part B, including application, case and situation based questions" }
+];
+
+const skillPaperPattern = `The question paper is divided into two sections, A and B. Section A has objective type questions and
+Section B has subjective type questions. Out of the given (5 + 16 =) 21 questions, a candidate has to answer
+(5 + 10 =) 15 questions in the allotted (maximum) time of 2 hours. All questions of a section must be attempted
+in the correct order.
+  SECTION A - OBJECTIVE TYPE QUESTIONS (24 marks): 5 questions, each with sub-parts; there is no negative marking.
+    Q1. Employability Skills: answer any 4 of the given 6 questions (1 x 4 = 4).
+    Q2 to Q5. Subject Specific Skills: in each, answer any 5 of the given 6 questions (1 x 5 = 5 each, 20 marks).
+  SECTION B - SUBJECTIVE TYPE QUESTIONS (26 marks): 16 questions, of which 10 are to be answered.
+    Q6 to Q10. Employability Skills: answer any 3 of the 5 questions, in 20-30 words each (2 x 3 = 6).
+    Q11 to Q16. Subject Specific Skills: answer any 4 of the 6 questions, in 20-30 words each (2 x 4 = 8).
+    Q17 to Q21. Subject Specific Skills: answer any 3 of the 5 questions, in 50-80 words each (4 x 3 = 12).
+Marks: Part A Employability Skills 10 (4 + 6), Part B Subject Specific Skills 40 (20 + 8 + 12). Theory 50 marks;
+the other 50 marks are practical work, project and viva, assessed separately.`;
+
+const employabilityUnits = [
+  { match: "Communication Skills", marks: 2 }, { match: "Self-Management Skills", marks: 2 },
+  { match: "Information and Communication Technology Skills", marks: 2 },
+  { match: "Entrepreneurial Skills", marks: 2 }, { match: "Green Skills", marks: 2 }
+];
+
+// A row with `count` stands for that many separately numbered questions (the
+// Section B groups); the others are one question each, with sub-parts.
+// `units` are the Part B units with their theory marks; `match` is matched
+// against the unit titles in data.js. `practicalOnly` units carry no theory marks.
+export const secondarySkill = {
+  "Introduction to Financial Markets (405)": {
+    code: "405", label: "Introduction to Financial Markets (405)",
+    book: "Introduction to Financial Markets (CBSE and NSE Academy) - job role: Business Correspondent",
+    "Class 9": [
+      { match: "Money - What it is", marks: 4 }, { match: "Money Exchange Systems", marks: 3 },
+      { match: "Key Characteristics of Money", marks: 2 }, { match: "What is Financial Planning", marks: 6 },
+      { match: "What is Income", marks: 2 }, { match: "What are Expenses", marks: 2 },
+      { match: "What is a Bank", marks: 6 }, { match: "Why Save", marks: 3 },
+      { match: "Setting Goals", marks: 3 }, { match: "Systematic Saving and Investments", marks: 5 },
+      { match: "Making a Budget", marks: 4 }],
+    "Class 10": [
+      { match: "Investment Basics", marks: 2 }, { match: "Securities", marks: 2 },
+      { match: "Primary Market", marks: 7 }, { match: "Secondary Market", marks: 7 },
+      { match: "Derivatives", marks: 2 }, { match: "Depository", marks: 2 },
+      { match: "Mutual Funds", marks: 4 }, { match: "Miscellaneous", marks: 6 },
+      { match: "Concepts and Modes of Analysis", marks: 6 }, { match: "Ratio Analysis", marks: 2 }],
+    notes: ["Numerical questions (interest, Rule of 72, budgets, brokerage, NAV, dividend yield, ratios) use simple Indian-rupee figures that can be worked by hand."]
+  },
+  "Health Care (413)": {
+    code: "413", label: "Health Care (413)",
+    book: "Health Care (CBSE skill curriculum) - job role: General Duty Assistant",
+    "Class 9": [
+      { match: "Health Care Delivery Systems", marks: 10 }, { match: "Role of Patient Care Assistant", marks: 10 },
+      { match: "Personal Hygiene and Hygiene Standards", marks: 10 },
+      { match: "Primary Healthcare and Emergency Medical Response", marks: 5 }, { match: "Immunization", marks: 5 }],
+    "Class 10": [
+      { match: "Hospital Structure and Functions", marks: 10 }, { match: "Care Plan and Care of Patients", marks: 5 },
+      { match: "Sterilization and Disinfection", marks: 5 }, { match: "Basic First Aid", marks: 10 },
+      { match: "Structure, Functions and Nutrition", marks: 5 }, { match: "Public Relations in Hospital", marks: 5 }],
+    notes: ["Frame situations in a hospital, clinic or community health setting; procedures (hand washing, bed making, vital signs, first aid, biomedical waste colour codes) are asked as correct steps."]
+  },
+  "Artificial Intelligence (417)": {
+    code: "417", label: "Artificial Intelligence (417)",
+    book: "Artificial Intelligence (CBSE curriculum, code 417)",
+    "Class 9": [
+      { match: "AI Reflection, Project Cycle and Ethics", marks: 10 }, { match: "Data Literacy", marks: 10 },
+      { match: "Math for AI", marks: 7 }, { match: "Introduction to Generative AI", marks: 5 },
+      { match: "Introduction to Python", marks: 8 }],
+    "Class 10": [
+      { match: "Revisiting AI Project Cycle", marks: 7 }, { match: "Advanced Concepts of Modelling", marks: 11 },
+      { match: "Evaluating Models", marks: 10 }, { match: "Statistical Data", marks: 0, practicalOnly: true },
+      { match: "Computer Vision", marks: 4 }, { match: "Natural Language Processing", marks: 8 },
+      { match: "Advance Python", marks: 0, practicalOnly: true }],
+    notes: ["Python questions (Class 9) ask the student to predict output, find the error or write a few lines of code; evaluation questions (Class 10) give a confusion matrix to calculate accuracy, precision, recall or F1 score."]
+  },
+  "Physical Activity Trainer (418)": {
+    code: "418", label: "Physical Activity Trainer (418)",
+    book: "Physical Activity Trainer (CBSE skill curriculum, code 418)",
+    "Class 9": [
+      { match: "Role of Physical Education in Child Development", marks: 10 },
+      { match: "Planning Age Appropriate Physical Activity", marks: 10 },
+      { match: "Organising Age Appropriate Physical Activities", marks: 12 },
+      { match: "Children Health and Safety", marks: 8 }],
+    "Class 10": [
+      { match: "Physical Activity Facilitator", marks: 10 }, { match: "Assessment and Evaluation of Students", marks: 10 },
+      { match: "Free-play", marks: 10 }, { match: "Monitoring and Inventory Management", marks: 10 }],
+    notes: ["Frame situations of a school physical activity facilitator working with young children: planning sessions, organising events, safety and first aid, assessment and equipment."]
+  }
+};
+
+export function getSecondarySkill(className, subjectName) {
+  if (className !== "Class 9" && className !== "Class 10") return null;
+  const subject = secondarySkill[subjectName];
+  if (!subject) return null;
+  return { ...subject, units: subject[className], employabilityUnits, questions: skillPaperQuestions, pattern: skillPaperPattern };
+}
+
 const acc = accountancyPaper;
 const accIC = acc.internalChoice;
 const accLadder = acc.markLadder.join(', ').replace(/, (\d+)$/, ' and $1');
@@ -867,6 +989,11 @@ export function getSqpBlueprint(className, subjectName) {
   const wanted = `${className} || ${subjectName}`.toLowerCase().replace(/\s+/g, ' ').trim();
   for (const [key, value] of Object.entries(sqpBlueprints)) {
     if (key.toLowerCase().replace(/\s+/g, ' ').trim() === wanted) return value;
+  }
+  // The four Class 9 / 10 skill subjects share CBSE's skill paper layout.
+  const skill = getSecondarySkill(className, subjectName);
+  if (skill) {
+    return { year: "2026-27", text: `${skill.label.toUpperCase()}, ${className === "Class 9" ? "Class IX" : "Class X"}, Maximum Marks 50 (theory), Time Allowed 2 hours.\n${skill.pattern}` };
   }
   return null;
 }

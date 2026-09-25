@@ -1996,7 +1996,183 @@ export const cbseData = {
       "Cyber-safety",
       "Office Tools (Word Processing & Presentation)",
       "Spreadsheets (Lab Activities & Formatting)"
-    ]
+    ],
+    "Introduction to Financial Markets (405)": {
+      "Part A: Employability Skills": [
+        "Unit 1: Communication Skills-I",
+        "Unit 2: Self-Management Skills-I",
+        "Unit 3: Information and Communication Technology Skills-I",
+        "Unit 4: Entrepreneurial Skills-I",
+        "Unit 5: Green Skills-I"
+      ],
+      "Part B: Subject Specific Skills": {
+        "Unit 1: Money - What it is": [
+          "1.1 History of Money: Brief History and Requirement of Money",
+          "1.2 Evolution of Money: Money as a Medium of Exchange, Barter System and its Limitations",
+          "1.3 Currencies: Tangible and Intangible Sources of Money, Symbols of Money, Minting of Money"
+        ],
+        "Unit 2: Money Exchange Systems": [
+          "2.1 Bartering and Commodity Money: Specialisation and Trade, the Wheels of Economic Progress",
+          "2.2 Division of Labour: Early History and Today's Division of Labour leading to Specialisation",
+          "2.3 Modern Currency: Traditional vs Modern Currency"
+        ],
+        "Unit 3: Key Characteristics of Money": [
+          "3.1 Medium of Exchange: Functions of Money, Goods and Services",
+          "3.2 Standard of Value or Unit of Account",
+          "3.3 Store of Value and Key Roles of Money"
+        ],
+        "Unit 4: What is Financial Planning": [
+          "4.1 Goal Setting: Short-term and Long-term Goals",
+          "4.2 Meaning of Financial Planning and Steps to Achieve Financial Goals",
+          "4.3 Creating a Plan: Needs vs Wants, Values, Time Line to Achieve Goals"
+        ],
+        "Unit 5: What is Income": [
+          "5.1 Income: Definition and Sources of Income",
+          "5.2 Measurement of Income: Gross vs Net Income, Taxes and Deductions"
+        ],
+        "Unit 6: What are Expenses": [
+          "6.1 Fixed Expenses: Definition and Examples",
+          "6.2 Variable Expenses and Cash Management",
+          "6.3 Building your own Budget and Pay Yourself First (PYF)"
+        ],
+        "Unit 7: What is a Bank": [
+          "7.1 Banking: Origin, Opening a Bank Account, Deposits and Withdrawals, Pass Book, ATM Card, Cheque Book",
+          "7.2 Types of Accounts and Services: Savings, Current, Fixed and Recurring Deposits, Electronic Banking, MICR and IFSC"
+        ],
+        "Unit 8: Why Save": [
+          "8.1 Income vs Saving: Meaning of Saving, Income and Disposable Income",
+          "8.2 Interest: Simple Interest, Compound Interest and the Rule of 72"
+        ],
+        "Unit 9: Setting Goals": [
+          "9.1 Meaning and Importance of Goal Setting, SMART Goals",
+          "9.2 Types of Goals, Goal Statement and Achieving Goals"
+        ],
+        "Unit 10: Systematic Saving and Investments": [
+          "10.1 Savings vs Investment and Interest Coverage Ratio",
+          "10.2 Speculation and its Risk, Time Value of Money, Methods to Calculate Interest, SIP and its Features"
+        ],
+        "Unit 11: Making a Budget": [
+          "11.1 Meaning and Importance of Budgeting, Preparing a Household Budget",
+          "11.2 Analysis of Budget: Discretionary and Non-Discretionary Expenses"
+        ]
+      }
+    },
+    "Health Care (413)": {
+      "Part A: Employability Skills": [
+        "Unit 1: Communication Skills-I",
+        "Unit 2: Self-Management Skills-I",
+        "Unit 3: Information and Communication Technology Skills-I",
+        "Unit 4: Entrepreneurial Skills-I",
+        "Unit 5: Green Skills-I"
+      ],
+      "Part B: Subject Specific Skills": {
+        "Unit 1: Health Care Delivery Systems": [
+          "1.1 Healthcare Delivery Systems and the Voluntary Health Sector in India",
+          "1.2 Components and Activities of a Hospital",
+          "1.3 Roles and Functions of a Clinic and Preventive Care",
+          "1.4 Rehabilitation Care Facilities",
+          "1.5 Long Term Care Facilities",
+          "1.6 Hospice Care"
+        ],
+        "Unit 2: Role of Patient Care Assistant": [
+          "2.1 Duties and Responsibilities of a Patient Care Assistant",
+          "2.2 Patient's Daily Care: Bathing, Feeding, Excreta Disposal, Transfer, Medication",
+          "2.3 Basic Requirements for Patient Comfort",
+          "2.4 Patient's Safety and the Patient's Environment",
+          "2.5 Qualities of a Good Patient Care Assistant, Do's and Don'ts, Medical Ethics",
+          "2.6 Biomedical Waste and its Management (Colour Codes for Disposal)"
+        ],
+        "Unit 3: Personal Hygiene and Hygiene Standards": [
+          "3.1 Good Hygiene Practice and Grooming Routines",
+          "3.2 Factors Affecting Good Health, Exercise and Health Parameters",
+          "3.3 Hand Washing Methods and Hand Hygiene",
+          "3.4 Personal Grooming at the Workplace"
+        ],
+        "Unit 4: Primary Healthcare and Emergency Medical Response": [
+          "4.1 Essential Components of Primary Healthcare and Emergency Medical Response",
+          "4.2 The Chain of Survival"
+        ],
+        "Unit 5: Immunization": [
+          "5.1 Types of Immunity",
+          "5.2 The Immunization Schedule",
+          "5.3 Key Components of the Universal Immunization Programme",
+          "5.4 The Pulse Polio Immunization Programme"
+        ]
+      }
+    },
+    "Artificial Intelligence (417)": {
+      "Part A: Employability Skills": [
+        "Unit 1: Communication Skills-I",
+        "Unit 2: Self-Management Skills-I",
+        "Unit 3: Information and Communication Technology Skills-I",
+        "Unit 4: Entrepreneurial Skills-I",
+        "Unit 5: Green Skills-I"
+      ],
+      "Part B: Subject Specific Skills": {
+        "Unit 1: AI Reflection, Project Cycle and Ethics": [
+          "1.1 AI Reflection: AI in Daily Life and the Three Domains (Data, Computer Vision, NLP)",
+          "1.2 AI Project Cycle: Problem Scoping (4Ws Problem Canvas), Data Acquisition, Data Exploration, Modelling, Evaluation, Deployment",
+          "1.3 Data Features, System Maps and Data Visualisation",
+          "1.4 Modelling (Rule-based and Learning-based) and Evaluation (True/False Positive and Negative)",
+          "1.5 AI Ethics, AI Bias and AI Access; Advantages and Disadvantages of AI"
+        ],
+        "Unit 2: Data Literacy": [
+          "2.1 Basics of Data Literacy: Impact, the Data Literacy Process, Data Privacy vs Security, Cyber Security Practices",
+          "2.2 Acquiring, Processing and Interpreting Data: Types of Data, Best Practices, Data Preprocessing, Types and Importance of Data Interpretation",
+          "2.3 Data Visualisation and an Interactive Data Dashboard (Tableau / Datawrapper)"
+        ],
+        "Unit 3: Math for AI (Statistics and Probability)": [
+          "3.1 Importance of Math for AI: Patterns in Numbers and Images; Statistics, Linear Algebra, Probability, Calculus",
+          "3.2 Statistics: Definition, Data Collection and Tabulation",
+          "3.3 Probability: Calculating the Probability of an Event, Types of Events",
+          "3.4 Applications of Probability: Sports, Weather Forecast, Traffic Estimation"
+        ],
+        "Unit 4: Introduction to Generative AI": [
+          "4.1 Introduction to Generative AI and Generative vs Conventional AI",
+          "4.2 Types and Examples of Generative AI",
+          "4.3 Benefits, Limitations and Tools of Generative AI",
+          "4.4 Ethical Considerations of Using Generative AI"
+        ],
+        "Unit 5: Introduction to Python": [
+          "5.1 Introduction to Python and its Applications",
+          "5.2 Input and Output, Variables, Arithmetic Operators, Expressions and Data Types",
+          "5.3 Flow of Control and Conditions (if, loops)",
+          "5.4 Lists"
+        ]
+      }
+    },
+    "Physical Activity Trainer (418)": {
+      "Part A: Employability Skills": [
+        "Unit 1: Communication Skills-I",
+        "Unit 2: Self-Management Skills-I",
+        "Unit 3: Information and Communication Technology Skills-I",
+        "Unit 4: Entrepreneurial Skills-I",
+        "Unit 5: Green Skills-I"
+      ],
+      "Part B: Subject Specific Skills": {
+        "Unit 1: Role of Physical Education in Child Development": [
+          "1.1 Domains of Early Childhood Development: Physical, Emotional, Social, Communicative, Adaptive",
+          "1.2 Fundamental Motor Skills (Gross and Fine), Cognitive Development, Psychosocial Wellbeing, School Readiness",
+          "1.3 Factors Influencing Physical Activity: Demographic, Biological, Psychological, Behavioural, Socio-cultural, Environmental",
+          "1.4 Planning Physical Activity Sessions: Macro, Meso and Micro Planning, Weekly Planning, Lesson Plan",
+          "1.5 Conducting Physical Activities: Play Spaces, Props and Equipment"
+        ],
+        "Unit 2: Planning Age Appropriate Physical Activity": [
+          "2.1 Activities for Physical Strength and Coordination: Everyday, Recreational and Sport Activities",
+          "2.2 Activities for Cognitive Skills (Reading, Writing, Numeracy) through Games, Singing and Dancing",
+          "2.3 Managing the Class: Designing a Time Table and Duration of Activities"
+        ],
+        "Unit 3: Organising Age Appropriate Physical Activities": [
+          "3.1 Games for School: Fitness Activities, Sports Training, Sports Periods",
+          "3.2 Organising Sports Days, Summer and Winter Camps, Tournaments, Mass Drills and Displays, Programmes for Parents and Staff"
+        ],
+        "Unit 4: Children Health and Safety": [
+          "4.1 Child Health, Factors Influencing Child Health and Hygiene, General Nutrition",
+          "4.2 Safety Management: Equipment Storage, Safety in the Playground, Safe Use of Equipment",
+          "4.3 Basic First Aid, Emergency Response (PRICE-R) and Exit Protocol"
+        ]
+      }
+    }
   },
   "Class 10": {
     "Science": {
@@ -2824,7 +3000,190 @@ export const cbseData = {
       "HTML & CSS",
       "Cyberethics",
       "Scratch / Python Programming (Practical)"
-    ]
+    ],
+    "Introduction to Financial Markets (405)": {
+      "Part A: Employability Skills": [
+        "Unit 1: Communication Skills-II",
+        "Unit 2: Self-Management Skills-II",
+        "Unit 3: Information and Communication Technology Skills-II",
+        "Unit 4: Entrepreneurial Skills-II",
+        "Unit 5: Green Skills-II"
+      ],
+      "Part B: Subject Specific Skills": {
+        "Unit 1: Investment Basics": [
+          "1.1 Saving vs Investment: Meaning, Terms and Options of Investment",
+          "1.2 Stock Exchange: Equity, Debt Instrument, Derivative, Index",
+          "1.3 Mutual Funds, Depository and Dematerialisation"
+        ],
+        "Unit 2: Securities": [
+          "2.1 Securities Market: Meaning, Functions and Examples of Securities",
+          "2.2 Regulators: Market Regulators and the Role of SEBI",
+          "2.3 Market Participants and the Role of Intermediaries"
+        ],
+        "Unit 3: Primary Market": [
+          "3.1 New Issue Market: Role of Primary Market, Face Value, Debenture, Premium and Discount",
+          "3.2 Issue of Shares: Need, Kinds of Issue, Public vs Private Placement, IPO, Book Building, Cut-off Price, Price Band",
+          "3.3 Role of Registrar, Facilities provided by NSE, Foreign Capital Issuance (ADR, GDR)"
+        ],
+        "Unit 4: Secondary Market": [
+          "4.1 Primary vs Secondary Market and Products in the Secondary Market",
+          "4.2 Stock Exchange: Demutualised Stock Exchanges of India, Screen Based Trading System (SBTS)",
+          "4.3 Trading: Equity and Debt Investment, Brokerage Calculation, Credit Rating Agencies"
+        ],
+        "Unit 5: Derivatives": [
+          "5.1 Futures and Options: Meaning and Types of Derivatives, Futures vs Options",
+          "5.2 Commodity Derivatives vs Financial Derivatives"
+        ],
+        "Unit 6: Depository": [
+          "6.1 Holding of Securities: Bank vs Depository, Role of Depository",
+          "6.2 Ownership: Benefits of Participation, DP, ISIN and Custodian",
+          "6.3 Dematerialisation: Converting Physical Shares to Electronic Form, Demat Benefits, DRF"
+        ],
+        "Unit 7: Mutual Funds": [
+          "7.1 Basics of Mutual Funds: Definition, Benefits, NAV Calculation, NFO Procedure",
+          "7.2 Active and Passive Funds"
+        ],
+        "Unit 8: Miscellaneous": [
+          "8.1 Corporate Actions: Types and Dividend Yield",
+          "8.2 Stock Split, Buyback of Shares and Index (Nifty 50)",
+          "8.3 Clearing and Settlement and Investor Redressal (NSCCL)",
+          "8.4 Post-Market Terms: Ex-Dividend, No Delivery Period, Book Closure, Record Date, Ex-Date, Investor Grievance Cell"
+        ],
+        "Unit 9: Concepts and Modes of Analysis": [
+          "9.1 Time Value of Money: Simple Interest, Compound Interest, Effective Annual Return",
+          "9.2 Annual Report: Income Statement, Position Statement, Fund Sources",
+          "9.3 Accounting Terms: Secured and Unsecured Loans, Net and Gross Block, P/L Statement, Fund Applications"
+        ],
+        "Unit 10: Ratio Analysis": [
+          "10.1 Liquidity Ratios: Current Ratio, Acid Test Ratio, Turnover Ratio, Average Collection Period",
+          "10.2 Leverage / Capital Structure Ratios: Debt-Equity, Debt-Total Assets, Interest Coverage",
+          "10.3 Profitability Ratios: Gross Profit, Net Profit, Return on Total Assets, Return on Capital Employed, Return on Shareholders' Equity"
+        ]
+      }
+    },
+    "Health Care (413)": {
+      "Part A: Employability Skills": [
+        "Unit 1: Communication Skills-II",
+        "Unit 2: Self-Management Skills-II",
+        "Unit 3: Information and Communication Technology Skills-II",
+        "Unit 4: Entrepreneurial Skills-II",
+        "Unit 5: Green Skills-II"
+      ],
+      "Part B: Subject Specific Skills": {
+        "Unit 1: Hospital Structure and Functions": [
+          "1.1 Roles and Functions of Hospitals and their Departments",
+          "1.2 Role of Supporting Departments and the Chain of Command",
+          "1.3 Classification of Hospitals and Levels of Medical Care",
+          "1.4 Roles and Functions of a General Duty Assistant / Patient Care Assistant",
+          "1.5 Qualities of a Good General Duty Assistant"
+        ],
+        "Unit 2: Introduction to Care Plan and Care of Patients": [
+          "2.1 Role of the General Duty Assistant in the Care Plan",
+          "2.2 Feeding a Patient and Types of Diets Served in Hospital",
+          "2.3 Vital Signs: Temperature, Pulse, Blood Pressure, Respiratory Rate, BMI",
+          "2.4 Bed Making: Types of Hospital Beds and Steps of Bed Making",
+          "2.5 Patient Positioning: Therapeutic Positions and Fowler's Position"
+        ],
+        "Unit 3: Sterilization and Disinfection": [
+          "3.1 Disease-Causing Microorganisms, Infection and the Epidemiological Triangle (including COVID-19)",
+          "3.2 Causal Agents of Common Human Diseases",
+          "3.3 Prevention and Control of Hospital Acquired Infections (HAI)",
+          "3.4 Antiseptics, Sterilization and Disinfection: Physical and Chemical Agents, Disinfecting Wards and Equipment"
+        ],
+        "Unit 4: Basic First Aid and Emergency Medical Relief": [
+          "4.1 Principles and Rules of First Aid",
+          "4.2 Facilities, Equipment and Materials for First Aid; the First Aid Box and Early Transfer to Hospital",
+          "4.3 First Aid for Fever, Heat Stroke, Back Pain, Asthma and Food-borne Illness",
+          "4.4 First Aid in Common Emergencies and Taking Body Temperature"
+        ],
+        "Unit 5: Structure, Functions and Nutrition": [
+          "5.1 Parts and Systems of the Human Body",
+          "5.2 Role of Nutrition in Growth and Development"
+        ],
+        "Unit 6: Public Relations in Hospital": [
+          "6.1 Role and Functions of a Receptionist",
+          "6.2 Responding to Emergency Calls",
+          "6.3 Using Computers in Maintaining Public Relations",
+          "6.4 Dealing with Patients' Attendants"
+        ]
+      }
+    },
+    "Artificial Intelligence (417)": {
+      "Part A: Employability Skills": [
+        "Unit 1: Communication Skills-II",
+        "Unit 2: Self-Management Skills-II",
+        "Unit 3: Information and Communication Technology Skills-II",
+        "Unit 4: Entrepreneurial Skills-II",
+        "Unit 5: Green Skills-II"
+      ],
+      "Part B: Subject Specific Skills": {
+        "Unit 1: Revisiting AI Project Cycle and Ethical Frameworks for AI": [
+          "1.1 Revisiting the AI Project Cycle",
+          "1.2 AI Domains and their Applications",
+          "1.3 Ethical Frameworks for AI: Need, Types of Ethical Frameworks, Bioethics and a Case Study"
+        ],
+        "Unit 2: Advanced Concepts of Modelling in AI": [
+          "2.1 AI, ML and DL; Common Terminologies used with Data",
+          "2.2 Rule-based and Learning-based Models; Supervised, Unsupervised and Reinforcement Learning",
+          "2.3 Classification and Regression; Clustering and Association",
+          "2.4 Deep Learning: Artificial Neural Networks and Convolutional Neural Networks; How AI Makes a Decision"
+        ],
+        "Unit 3: Evaluating Models": [
+          "3.1 Importance and Need of Model Evaluation",
+          "3.2 Train-Test Split",
+          "3.3 Accuracy and Error",
+          "3.4 Classification Metrics: Confusion Matrix, Accuracy, Precision, Recall, F1 Score",
+          "3.5 Ethical Concerns around Model Evaluation: Bias, Transparency, Accuracy"
+        ],
+        "Unit 4: Statistical Data (Practical only - not in the theory paper)": [
+          "4.1 Data Science and No-Code / Low-Code AI Tools (Orange Data Mining)"
+        ],
+        "Unit 5: Computer Vision": [
+          "5.1 Introduction to Computer Vision and its Applications",
+          "5.2 Computer Vision Tasks; Images: Pixel, Resolution, Pixel Value, Grayscale and RGB",
+          "5.3 Image Features and the Convolution Operator",
+          "5.4 Convolutional Neural Networks: Kernel and Layers of a CNN"
+        ],
+        "Unit 6: Natural Language Processing": [
+          "6.1 Features of Natural Languages and Applications of NLP",
+          "6.2 Stages of NLP; Chatbots: Script Bot vs Smart Bot",
+          "6.3 Text Processing: Text Normalisation, Bag of Words, TF-IDF",
+          "6.4 Code and No-Code NLP Tools; Sentiment Analysis"
+        ],
+        "Unit 7: Advance Python (Practical only - not in the theory paper)": [
+          "7.1 Jupyter Notebook, NumPy, Line Charts, Reading CSV Files and Images"
+        ]
+      }
+    },
+    "Physical Activity Trainer (418)": {
+      "Part A: Employability Skills": [
+        "Unit 1: Communication Skills-II",
+        "Unit 2: Self-Management Skills-II",
+        "Unit 3: Information and Communication Technology Skills-II",
+        "Unit 4: Entrepreneurial Skills-II",
+        "Unit 5: Green Skills-II"
+      ],
+      "Part B: Subject Specific Skills": {
+        "Unit 1: Roles and Responsibilities of an Early Years Physical Activity Facilitator": [
+          "1.1 Job Description of an Early Years Physical Activity Facilitator and Qualities of a Good Teacher",
+          "1.2 Activities of the Facilitator: Skill Sessions (Basketball, Volleyball), Adapting Programmes, Facilities and Risk Checks",
+          "1.3 Rules, Etiquette, Administrative Paperwork, Conflict Resolution and Emergencies (First Aid, CPR)"
+        ],
+        "Unit 2: Assessment and Evaluation of Students": [
+          "2.1 Meaning of Assessment and Evaluation; Diagnostic and Skill Assessment; Assessment Tools and Processes",
+          "2.2 Preparing an Assessment Report and Providing Feedback"
+        ],
+        "Unit 3: Free-play": [
+          "3.1 Free Play: Components and Importance; Factors Influencing Recreational Activities",
+          "3.2 Organising Free-play Activities: Objectives, Selection, Grouping, Area and Equipment",
+          "3.3 Free Play in Rehabilitation, Session Timing and Recording Data"
+        ],
+        "Unit 4: Monitoring and Inventory Management": [
+          "4.1 Inventory Management: Periodic Inventory Checks and Maintaining Inventory",
+          "4.2 Managing Props and Equipment: Equipment Reports, Fund Estimates for New and Repaired Equipment, Monetary Reports"
+        ]
+      }
+    }
   },
   "Class 11": {
     "Physics": {
