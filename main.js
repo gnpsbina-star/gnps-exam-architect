@@ -1,5 +1,5 @@
 import { cbseData } from './data.js?v=47';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper, accountancyChoiceText } from './sqp_blueprints.js?v=15';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper, accountancyChoiceText } from './sqp_blueprints.js?v=16';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -742,6 +742,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   let competencyRatio = "50%";
 
   const isAccountancy = (className === "Class 11" || className === "Class 12") && subLower.includes("account");
+  const ladderSpec = (() => { const spec = getSeniorPaper(className, subjectName); return spec && spec.shortTests ? spec : null; })();
 
   // 0. Accountancy short tests. Part A / Part B is a division of the syllabus
   // for the full paper, so it does not apply here - a unit test is often drawn
@@ -764,6 +765,11 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
       { name: "Short Answer - numerical", type: "Numerical problem", count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "Internal choice in 1 Q" },
       { name: "Long Answer", type: "Full numerical problem", count: 2, unitMark: 6, marksPerQ: "6 Marks", total: 12, choice: "Internal choice in 1 Q" }
     ];
+  }
+  // 0b. Business Studies and Economics short tests keep the 1 / 3 / 4 / 6 mark
+  // ladder of their board papers (sqp_blueprints.js), like Accountancy above.
+  else if (ladderSpec && marks > 0 && marks < ladderSpec.fullMarks) {
+    sections = (marks <= 25 ? ladderSpec.shortTests.unit : ladderSpec.shortTests.periodic).map(row => ({ ...row }));
   }
   // 1. Unit Test (20 Marks / 45 Min) or GK/Robo 10M / 20M
   else if (marks <= 20 || (examName && examName.includes("Unit Test") && marks <= 20)) {
@@ -1968,6 +1974,11 @@ function getSubjectMarkProfile(className, subjectName) {
   const sub = (subjectName || '').toLowerCase();
   if ((className === 'Class 11' || className === 'Class 12') && sub.includes('account')) {
     return { marks: accountancyPaper.markLadder, caseBased: false, letteredSections: false };
+  }
+  // Business Studies and Economics run on the same ladder (sqp_blueprints.js).
+  const spec = getSeniorPaper(className, subjectName);
+  if (spec && spec.markLadder) {
+    return { marks: spec.markLadder, caseBased: false, letteredSections: spec.letteredSections };
   }
   return null;
 }
@@ -4237,7 +4248,7 @@ function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = fa
     *   **Case-Based Factual Passage Visual:** In ${passageRef}, generate an authentic inline vector SVG statistical infographic (bar graph, horizontal comparative chart, or pie chart with percentages and categories) illustrating the passage data. Include 2 to 3 questions in the passage that require students to read, extract, and interpret this visual chart.`;
   } else if (isCommerce) {
     let count = marks >= 70 ? "3 to 5" : "1 to 2";
-    quotaText = `Mandate **${count} curve / flowchart / schedule diagrams**.`;
+    quotaText = quotaOverride || `Mandate **${count} curve / flowchart / schedule diagrams**.`;
     subjectSpecificRules = `
     *   **Economics:** Supply and demand curves (equilibrium point, shifts vs movements along curves), Production Possibility Frontiers (PPF), circular flow of income diagram, or AD-AS equilibrium.
     *   **Business Studies:** Functional and divisional organizational hierarchy charts.`;
@@ -4284,7 +4295,9 @@ ${subjectSpecificRules}
 // exactly the paper's total). With the whole syllabus selected this reproduces
 // CBSE's own figures.
 function buildUnitWeightageText(spec, selectedChaptersData, totalMarks) {
-  const chapterOf = item => String(item.name).split('->')[0].trim();
+  // The chapter is the part before "->", except where the syllabus lists
+  // chapters one level up (Economics: "Part A: ... -> Chapter 1: ..."); then
+  // the item itself names the chapter.
   const unitOf = chapter => {
     let best = null, bestLen = 0;
     spec.units.forEach(u => u.chapters.forEach(key => {
@@ -4295,6 +4308,10 @@ function buildUnitWeightageText(spec, selectedChaptersData, totalMarks) {
     return best;
   };
 
+  const chapterOf = item => {
+    const parts = String(item.name).split('->').map(x => x.trim());
+    return (unitOf(parts[0]) || parts.length < 2) ? parts[0] : parts[1];
+  };
   const byUnit = new Map();
   const unmatched = [];
   [...new Set(selectedChaptersData.map(chapterOf))].forEach(ch => {
@@ -4428,8 +4445,8 @@ export async function buildPromptString(activeBtn) {
   const secSkill = getSecondarySkill(className, subjectName);
   const skillFullPaper = !!secSkill && isFullLengthPaper && (parseInt(marks, 10) || 0) === 50;
   // Class 11 and 12 subjects checked against the CBSE 2026-27 sample paper
-  // (Physics, Chemistry, Biology, Mathematics, Applied Mathematics and Accountancy
-  // so far;
+  // (Physics, Chemistry, Biology, Mathematics, Applied Mathematics, Accountancy,
+  // Business Studies and Economics so far;
   // see seniorPapers in sqp_blueprints.js). Their question formats and scope limits apply to every
   // paper; the sample-paper layout, question design and unit weightage govern
   // the full-length paper only (Mid Term, Final, Pre Board).

@@ -1605,6 +1605,163 @@ const class11AccountancyScope = [
   "Financial statements of a sole proprietorship with the prescribed adjustments."
 ];
 
+// Class 11 and 12 Business Studies (054) and Economics (030), from the CBSE
+// 2026-27 curriculum documents and the Class XII 2026-27 sample papers (both
+// unchanged in design). Both papers are 34 questions on the same 1 / 3 / 4 / 6
+// mark ladder as Accountancy - 20 MCQs, 4 of 3 marks, 6 of 4 and 4 of 6 - with
+// six internal choices (two each of 3, 4 and 6 marks) and CBSE's 32 / 24 / 24
+// typology split. Business Studies has no sections; Economics has Section A
+// (Macroeconomics, or Statistics in Class 11) and Section B (Indian Economic
+// Development, or Microeconomics in Class 11), 40 marks each. Short tests use
+// the same ladder, never a 2- or 5-mark question (`shortTests`).
+const commerceLadderDesign = { understanding: 32, applying: 24, analysing: 24, percent: [40, 30, 30], labels: physicsDesign.labels };
+
+const commerceShortTests = (kinds) => ({
+  unit: [
+    { name: "Objective", type: kinds[1], count: 4, unitMark: 1, marksPerQ: "1 Mark", total: 4, choice: "Compulsory" },
+    { name: "Short Answer", type: kinds[3], count: 2, unitMark: 3, marksPerQ: "3 Marks", total: 6, choice: "Internal choice in 1 Q" },
+    { name: "Short Answer", type: kinds[4], count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "Internal choice" },
+    { name: "Long Answer", type: kinds[6], count: 1, unitMark: 6, marksPerQ: "6 Marks", total: 6, choice: "Internal choice" }
+  ],
+  periodic: [
+    { name: "Objective", type: kinds[1], count: 8, unitMark: 1, marksPerQ: "1 Mark", total: 8, choice: "Compulsory" },
+    { name: "Short Answer", type: kinds[3], count: 4, unitMark: 3, marksPerQ: "3 Marks", total: 12, choice: "Internal choice in 1 Q" },
+    { name: "Short Answer", type: kinds[4], count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "Internal choice in 1 Q" },
+    { name: "Long Answer", type: kinds[6], count: 2, unitMark: 6, marksPerQ: "6 Marks", total: 12, choice: "Internal choice in 1 Q" }
+  ]
+});
+
+const commerceArOptions = ["(A) Both A and R are true and R is the correct explanation of A.", "(B) Both A and R are true but R is not the correct explanation of A.", "(C) A is true but R is false.", "(D) A is false but R is true."];
+
+const bstQuestions = [
+  { section: "1-Mark Questions", q: "Q1-Q20", type: "Multiple choice questions", count: 20, each: 1, marks: 20, detail: "Mostly set in a business situation; include Assertion-Reason, statement-based and match-the-column forms; no internal choice" },
+  { section: "3-Mark Questions", q: "Q21-Q24", type: "Short answer (50-75 words)", count: 4, each: 3, marks: 12, detail: "Internal choice in Q21 and Q23" },
+  { section: "4-Mark Questions", q: "Q25-Q30", type: "Short answer (about 150 words)", count: 6, each: 4, marks: 24, detail: "Internal choice in Q25 and Q28; several are case-based (identify and explain the concept in the case)" },
+  { section: "6-Mark Questions", q: "Q31-Q34", type: "Long answer (about 200 words)", count: 4, each: 6, marks: 24, detail: "Internal choice in Q31 and Q34; case-based or 'explain any ...' questions" }
+];
+
+const bstGeneralInstructions = [
+  "This question paper contains 34 questions.",
+  "Marks are indicated against each question.",
+  "Answers should be brief and to the point.",
+  "Answers to the questions carrying 3 marks may be from 50 to 75 words.",
+  "Answers to the questions carrying 4 marks may be about 150 words.",
+  "Answers to the questions carrying 6 marks may be about 200 words.",
+  "Attempt all parts of the questions together."
+];
+
+const bstFormats = {
+  markLadder: [1, 3, 4, 6],
+  letteredSections: false,
+  fullMarks: 80,
+  design: commerceLadderDesign,
+  questions: bstQuestions,
+  generalInstructions: bstGeneralInstructions,
+  arOptions: commerceArOptions,
+  shortTests: commerceShortTests({ 1: "MCQs (situation-based, Assertion-Reason, statement-based)", 3: "Short answer (50-75 words)", 4: "Short answer or case (about 150 words)", 6: "Long answer or case (about 200 words)" }),
+  foundational: "business terms, concepts, principles and the provisions of the Acts in the syllabus",
+  misconceptions: "effectiveness vs efficiency, Fayol's principles vs Taylor's techniques, functional vs divisional structure, delegation vs decentralisation, capital budgeting vs working capital decisions, money market vs capital market, product vs production concept",
+  constructed: [
+    "Short Answer (3 Marks, 50-75 words): state, explain or distinguish, worth 3 value points.",
+    "Short Answer (4 Marks, about 150 words): identify the concept in a business case and explain it, or explain any points asked, worth 4 value points.",
+    "Long Answer (6 Marks, about 200 words): explain six points, or a case with several parts, with internal choice (A) OR (B)."
+  ],
+  designNote: "most 3-, 4- and 6-mark questions put the concept in a business situation to identify, explain or apply, not only to recall.",
+  sourcing: "Source questions from the NCERT Business Studies textbooks, CBSE's sample and practice papers and past board papers; cases name realistic Indian firms and people.",
+  arPlacement: "under each Assertion-Reason question, after the line \"Choose the correct options:\"",
+  arAnswered: "answered from the four options printed below it",
+  typology: {
+    sa: "State, explain or distinguish in **50-75 words**, worth **3 value points**; may name a concept from a short situation.",
+    laHeading: "4-Mark and 6-Mark Questions",
+    la: [
+      "4 marks (about 150 words) and 6 marks (about 200 words): many are case-based - a short business situation in which the student identifies the principle, function, step or concept and explains it; others ask to explain a stated number of points. Each case quotes the relevant line so the answer can be identified from it.",
+      "Internal choice only where the blueprint rows say (two 3-mark, two 4-mark and two 6-mark questions); no MCQ carries a choice."
+    ]
+  },
+  rigor: "Formulate questions whose answers are marked point by point: the concept named correctly, each point with a heading and a line of explanation, and in case-based questions the line of the case quoted to support the answer.",
+  instructionsNote: "",
+  mandatesTitle: null,
+  mandates: [],
+  numberingNote: "Number the questions Q1 to Q34 continuously, in the order of the rows above (a row \"Q1-Q20\" is twenty separate questions). The paper has no lettered sections: print the marks against each question. An internal choice sits under one question number as (A) OR (B).",
+  requirements: [
+    "**Word limits:** print CBSE's general instructions, which give the word limits (3 marks: 50-75 words, 4 marks: about 150 words, 6 marks: about 200 words).",
+    "**Internal choice:** exactly 6 questions, as the sample paper places them - Q21 and Q23 (3 marks), Q25 and Q28 (4 marks), Q31 and Q34 (6 marks) - each printed as (A) OR (B).",
+    "**Business situations:** most MCQs and most 4- and 6-mark questions are built on a short, realistic Indian business situation (a named firm, manager or entrepreneur)."
+  ],
+  figureQuota: "Business Studies papers carry no figures: set none unless a question needs a small table",
+  diagramRules: `
+    *   **Business Studies:** the sample paper has no figures. Use a small HTML table only where a question needs one (for example a match-the-column MCQ).`
+};
+
+const bstScope12 = [
+  "Principles of management: Fayol's principles and Taylor's scientific management (principles and techniques).",
+  "Directing: motivation includes Maslow's hierarchy of needs; leadership styles based on the use of authority; communication barriers.",
+  "Financial Markets: money market, capital market, stock exchange and SEBI (objectives and functions).",
+  "Consumer Protection: the Consumer Protection Act, 2019 - rights, responsibilities, redressal machinery.",
+  "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
+];
+
+const bstScope11 = [
+  "Business Services and Emerging Modes of Business as in the NCERT textbook; GST as a concept.",
+  "Social Responsibility of Business: the case for and against social responsibility, and business ethics.",
+  "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
+];
+
+const ecoQuestions = (secA, secB) => [
+  { section: `Section A: ${secA}`, q: "Q1-Q10", type: "Multiple choice questions", count: 10, each: 1, marks: 10, detail: "Varied forms: choose the correct option, statement-based, Assertion-Reason, match or arrange in order, short numerical MCQs; no internal choice" },
+  { section: `Section A: ${secA}`, q: "Q11-Q12", type: "Short answer (60-80 words)", count: 2, each: 3, marks: 6, detail: "Internal choice in Q11; one may be built on a cartoon, image or graph, with an alternative for visually impaired candidates" },
+  { section: `Section A: ${secA}`, q: "Q13-Q15", type: "Short answer (80-100 words)", count: 3, each: 4, marks: 12, detail: "Internal choice in Q13; numericals, diagrams or explanations" },
+  { section: `Section A: ${secA}`, q: "Q16-Q17", type: "Long answer (100-150 words)", count: 2, each: 6, marks: 12, detail: "Internal choice in Q17; one may be based on a given text; numericals with working or diagrams" },
+  { section: `Section B: ${secB}`, q: "Q18-Q27", type: "Multiple choice questions", count: 10, each: 1, marks: 10, detail: "Varied forms as in Section A; picture or image based ones with an alternative for visually impaired candidates; no internal choice" },
+  { section: `Section B: ${secB}`, q: "Q28-Q29", type: "Short answer (60-80 words)", count: 2, each: 3, marks: 6, detail: "Internal choice in Q29" },
+  { section: `Section B: ${secB}`, q: "Q30-Q32", type: "Short answer (80-100 words)", count: 3, each: 4, marks: 12, detail: "Internal choice in Q32" },
+  { section: `Section B: ${secB}`, q: "Q33-Q34", type: "Long answer (100-150 words)", count: 2, each: 6, marks: 12, detail: "Internal choice in Q33; Q34 based on a given text" }
+];
+
+const ecoGeneralInstructions = (secA, secB) => [
+  `This question paper contains two sections: Section A – ${secA}; Section B – ${secB}.`,
+  "This paper contains 20 Multiple Choice Type Questions of 1 mark each.",
+  "This paper contains 4 Short Answer Type Questions of 3 marks each to be answered in 60 to 80 words.",
+  "This paper contains 6 Short Answer Type Questions of 4 marks each to be answered in 80 to 100 words.",
+  "This paper contains 4 Long Answer Type Questions of 6 marks each to be answered in 100 to 150 words."
+];
+
+const ecoFormats = {
+  markLadder: [1, 3, 4, 6],
+  letteredSections: true,
+  fullMarks: 80,
+  design: commerceLadderDesign,
+  arOptions: ["(A) Both Assertion (A) and Reason (R) are true and Reason (R) is the correct explanation of Assertion (A).", "(B) Both Assertion (A) and Reason (R) are true, but Reason (R) is not the correct explanation of Assertion (A).", "(C) Assertion (A) is true, but Reason (R) is false.", "(D) Assertion (A) is false, but Reason (R) is true."],
+  shortTests: commerceShortTests({ 1: "MCQs (statement-based, Assertion-Reason, numerical)", 3: "Short answer (60-80 words)", 4: "Short answer or numerical (80-100 words)", 6: "Long answer, numerical or text-based (100-150 words)" }),
+  foundational: "economic terms, definitions, formulae and the facts of India's economic history in the syllabus",
+  constructed: [
+    "Short Answer (3 Marks, 60-80 words): explain, distinguish or work a short numerical, worth 3 value points.",
+    "Short Answer (4 Marks, 80-100 words): a numerical with working, a diagram with explanation, or an explanation of 4 points.",
+    "Long Answer (6 Marks, 100-150 words): a numerical, diagram-based or text-based question in parts, with internal choice (A) OR (B)."
+  ],
+  designNote: "most 3-, 4- and 6-mark questions ask the student to explain with a diagram, work a numerical, interpret data or a text, or evaluate a policy.",
+  arPlacement: "under each Assertion-Reason question, after the line \"Options:\"",
+  arAnswered: "answered from the four options printed below it",
+  typology: {
+    sa: "Explain, distinguish or work a short numerical in **60-80 words**, worth **3 value points**; one may be built on a cartoon, image or graph.",
+    laHeading: "4-Mark and 6-Mark Questions",
+    la: [
+      "4 marks (80-100 words) and 6 marks (100-150 words): numericals with the formula and every step, diagrams with labelled axes and curves, and explanations; a 6-mark question may be split into parts (for example 3 + 3) or be based on a given text (\"Refer to the following text\").",
+      "Internal choice only where the blueprint rows say (two 3-mark, two 4-mark and two 6-mark questions, as the sample paper places them)."
+    ]
+  },
+  rigor: "Formulate questions whose answers are marked on the formula, the working and the final answer with its unit (₹ crore, %), correctly labelled diagrams (axes, curves, equilibrium point), and explanations that use the economic terms of the NCERT text.",
+  instructionsNote: "",
+  mandatesTitle: null,
+  mandates: [],
+  numberingNote: "Number the questions Q1 to Q34 continuously across Section A and Section B, in the order of the rows above (a row \"Q1-Q10\" is ten separate questions). An internal choice sits under one question number as A OR B, for example 11 A OR 11 B, exactly as the sample paper prints it.",
+  figureQuota: "Set **2 to 4 visual inputs** (a cartoon, image, graph or data table), each figure-based one with an alternative for visually impaired candidates",
+  diagramRules: `
+    *   **Economics Figures:** MUST generate clean inline vector SVG or HTML tables for:
+        - Graphs with labelled axes and curves: consumption and saving functions, aggregate demand and supply, PPF, demand and supply with equilibrium, cost and revenue curves, price ceiling and floor.
+        - Simple cartoons or images described in a caption, and data tables (national income data, sector shares, indicators of India, China and Pakistan) as HTML tables.`
+};
+
 export const seniorPapers = {
   "Class 12 || Physics": {
     code: "042",
@@ -1934,6 +2091,90 @@ export const seniorPapers = {
       { name: "Accounting Process (Part A)", marks: 44, chapters: ["Recording of Transactions", "Bank Reconciliation", "Trial Balance", "Depreciation"] },
       { name: "Financial Statements of Sole Proprietorship (Part B)", marks: 24, chapters: ["Financial Statements of Sole"] }
     ]
+  },
+  "Class 12 || Business Studies": {
+    code: "054",
+    paperLabel: "Business Studies (054)",
+    ...bstFormats,
+    scope: bstScope12,
+    units: [
+      { name: "Nature and Significance, Principles of Management, Business Environment", marks: 16, chapters: ["Nature and Significance of Management", "Principles of Management", "Business Environment"] },
+      { name: "Planning and Organising", marks: 14, chapters: ["Planning", "Organising"] },
+      { name: "Staffing, Directing and Controlling", marks: 20, chapters: ["Staffing", "Directing", "Controlling"] },
+      { name: "Financial Management and Financial Markets", marks: 15, chapters: ["Financial Management", "Financial Markets"] },
+      { name: "Marketing Management and Consumer Protection", marks: 15, chapters: ["Marketing Management", "Consumer Protection"] }
+    ]
+  },
+  "Class 11 || Business Studies": {
+    code: "054",
+    paperLabel: "Business Studies (054), Class XI",
+    ...bstFormats,
+    scope: bstScope11,
+    units: [
+      { name: "Nature and Purpose of Business, Forms of Business Organisations", marks: 16, chapters: ["Business, Trade and Commerce", "Forms of Business"] },
+      { name: "Public, Private and Global Enterprises, Business Services", marks: 14, chapters: ["Private, Public and Global", "Business Services"] },
+      { name: "Emerging Modes of Business, Social Responsibility and Business Ethics", marks: 10, chapters: ["Emerging Modes", "Social Responsibilit"] },
+      { name: "Sources of Business Finance, Small Business", marks: 20, chapters: ["Sources of Business Finance", "Small Business"] },
+      { name: "Internal Trade, International Business", marks: 20, chapters: ["Internal Trade", "International Business"] }
+    ]
+  },
+  "Class 12 || Economics": {
+    code: "030",
+    paperLabel: "Economics (030)",
+    ...ecoFormats,
+    questions: ecoQuestions("Macroeconomics", "Indian Economic Development"),
+    generalInstructions: ecoGeneralInstructions("Macroeconomics", "Indian Economic Development"),
+    misconceptions: "GDP vs GNP and market price vs factor cost, stock vs flow, APC vs MPC, revenue vs capital receipts, fiscal vs primary deficit, current vs capital account, the goals of planning, the features of the LPG reforms",
+    sourcing: "Source questions from the NCERT Introductory Macroeconomics and Indian Economic Development textbooks, CBSE's sample and practice papers and past board papers; use current Indian data and schemes where they fit (budgets, RBI rates, UPI, Bharatmala).",
+    scope: [
+      "Macroeconomics: circular flow (two-sector model), national income by the three methods, money creation, the RBI's credit control tools, AD and multiplier, excess and deficient demand, the government budget and deficits, balance of payments and exchange rate systems.",
+      "Indian Economic Development: development experience 1947-90 and reforms since 1991 (LPG, with the concepts of demonetisation and GST); human capital formation; rural development (credit, marketing, cooperatives, diversification, organic farming); employment; sustainable development; India compared with Pakistan and China. No poverty or infrastructure questions.",
+      "Content marked excluded for 2026-27 in the NCERT textbooks is not assessed."
+    ],
+    requirements: [
+      "**Two sections:** Section A - Macroeconomics (Q1-Q17, 40 marks) and Section B - Indian Economic Development (Q18-Q34, 40 marks), each with its heading.",
+      "**Word limits:** printed in the general instructions (3 marks: 60-80 words, 4 marks: 80-100 words, 6 marks: 100-150 words).",
+      "**Internal choice:** exactly 6 questions, as the sample paper places them - Q11 and Q29 (3 marks), Q13 and Q32 (4 marks), Q17 and Q33 (6 marks) - each printed as A OR B under one number.",
+      "**Visual inputs:** cartoons, images, graphs and data tables as the sample paper uses them; directly below every question with a visual input, add \"Note: The following question is for the Visually Impaired Candidates only, in lieu of Q. __\" and a words-only question with the same marks."
+    ],
+    units: [
+      { name: "National Income and Related Aggregates", marks: 10, chapters: ["Introduction to Macroeconomics", "National Income"] },
+      { name: "Money and Banking", marks: 6, chapters: ["Money and Banking"] },
+      { name: "Determination of Income and Employment", marks: 12, chapters: ["Determination of Income", "Excess Demand"] },
+      { name: "Government Budget and the Economy", marks: 6, chapters: ["Government Budget"] },
+      { name: "Balance of Payments", marks: 6, chapters: ["Balance of Payments"] },
+      { name: "Development Experience (1947-90) and Economic Reforms since 1991", marks: 12, chapters: ["Eve of Independence", "1950-1990", "Economic Reforms"] },
+      { name: "Current Challenges facing the Indian Economy", marks: 20, chapters: ["Human Capital", "Rural Development", "Employment:", "Sustainable"] },
+      { name: "Development Experience of India: a Comparison with Neighbours", marks: 8, chapters: ["Neighbours"] }
+    ]
+  },
+  "Class 11 || Economics": {
+    code: "030",
+    paperLabel: "Economics (030), Class XI",
+    ...ecoFormats,
+    questions: ecoQuestions("Statistics for Economics", "Introductory Microeconomics"),
+    generalInstructions: ecoGeneralInstructions("Statistics for Economics", "Introductory Microeconomics"),
+    misconceptions: "primary vs secondary data, exclusive vs inclusive class intervals, mean vs median for skewed data, positive vs negative correlation, movement along vs shift of a curve, returns to a factor vs returns to scale, average vs marginal cost",
+    sourcing: "Source questions from the NCERT Statistics for Economics and Introductory Microeconomics textbooks, CBSE's practice papers and past papers, set on the Class XII sample paper layout; statistics questions use small, realistic Indian data sets.",
+    scope: [
+      "Statistics: collection, organisation and presentation of data (bar and pie diagrams, histogram, polygon, ogive, time-series graph); mean, median and mode; correlation by Karl Pearson's method (two variables, ungrouped) and Spearman's rank method (non-repeated and repeated ranks); index numbers (WPI, CPI, IIP, simple aggregative method). No measures of dispersion.",
+      "Microeconomics: consumer's equilibrium by utility and indifference-curve analysis, demand and its elasticity (percentage and total expenditure methods), production, costs, revenue, producer's equilibrium, supply and its elasticity, perfect competition in the short run only, price ceiling and price floor.",
+      "Statistical numericals give the student the data and ask for the interpretation of the result as well as the working."
+    ],
+    requirements: [
+      "**Two sections:** Section A - Statistics for Economics (Q1-Q17, 40 marks) and Section B - Introductory Microeconomics (Q18-Q34, 40 marks), each with its heading.",
+      "**Word limits:** printed in the general instructions (3 marks: 60-80 words, 4 marks: 80-100 words, 6 marks: 100-150 words).",
+      "**Internal choice:** exactly 6 questions - Q11 and Q29 (3 marks), Q13 and Q32 (4 marks), Q17 and Q33 (6 marks) - each printed as A OR B under one number.",
+      "**Visual inputs:** graphs, diagrams and data tables; directly below every question with a picture or graph input, add a words-only alternative for visually impaired candidates with the same marks."
+    ],
+    units: [
+      { name: "Introduction; Collection, Organisation and Presentation of Data", marks: 15, chapters: ["Introduction to Statistics", "Collection of Data", "Organisation of Data", "Presentation of Data"] },
+      { name: "Statistical Tools and Interpretation", marks: 25, chapters: ["Central Tendency", "Correlation", "Index Numbers"] },
+      { name: "Introduction to Microeconomics", marks: 4, chapters: ["Introduction to Microeconomics"] },
+      { name: "Consumer's Equilibrium and Demand", marks: 14, chapters: ["Consumer's Equilibrium", "Theory of Demand"] },
+      { name: "Producer Behaviour and Supply", marks: 14, chapters: ["Production Function", "Cost and Revenue", "Producer's Equilibrium", "Theory of Supply"] },
+      { name: "Perfect Competition: Price Determination and Simple Applications", marks: 8, chapters: ["Forms of Market"] }
+    ]
   }
 };
 
@@ -2146,6 +2387,52 @@ It contains three sections: Section A: Reading Skills (22), Section B: Creative 
   Q10 Hornbill short answers, any 5 of 6 (5 x 2); Q11 Snapshots short answers, any 2 of 3 (2 x 2), 40-50 words each.
   Q12 Hornbill long answer (5) and Q13 Snapshots long answer (5), 120-150 words, any one of two.
 Every writing and extract question offers a choice of (A) or (B).`
+  },
+
+  "Class 12 || Business Studies": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `BUSINESS STUDIES (054), Class XII, Maximum Marks 80, Time Allowed 3 hours.
+This question paper contains 34 questions, numbered continuously with no sections:
+  Questions 1 to 20 are MCQs of 1 mark each (20).
+  Questions 21 to 24 carry 3 marks each, answered in 50 to 75 words (12).
+  Questions 25 to 30 carry 4 marks each, answered in about 150 words (24).
+  Questions 31 to 34 carry 6 marks each, answered in about 200 words (24).
+Internal choice in 6 questions: Q21 and Q23 (3 marks), Q25 and Q28 (4 marks), Q31 and Q34 (6 marks).
+Answers should be brief and to the point. Attempt all parts of the questions together.
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 11 || Business Studies": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `Class 11 is a school examination, so CBSE publishes no sample paper for it. This paper is set on the
+Class XII Business Studies 2026-27 sample paper layout, against the Class XI curriculum and its unit weightage.
+This question paper contains 34 questions: Q1-Q20 MCQs (1 mark), Q21-Q24 (3 marks, 50-75 words),
+Q25-Q30 (4 marks, about 150 words), Q31-Q34 (6 marks, about 200 words).
+Internal choice in Q21, Q23, Q25, Q28, Q31 and Q34.`
+  },
+
+  "Class 12 || Economics": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `ECONOMICS (030), Class XII, Maximum Marks 80, Time Allowed 3 hours.
+Two sections: Section A - Macroeconomics (Q1-Q17, 40 marks); Section B - Indian Economic Development (Q18-Q34, 40 marks).
+Each section: 10 MCQs of 1 mark, 2 questions of 3 marks (60-80 words), 3 of 4 marks (80-100 words) and
+2 of 6 marks (100-150 words). In all: 20 MCQs, 4 of 3 marks, 6 of 4 marks and 4 of 6 marks.
+Internal choice in 6 questions: Q11 and Q29 (3 marks), Q13 and Q32 (4 marks), Q17 and Q33 (6 marks).
+Questions with a visual input carry an alternative for visually impaired candidates.
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 11 || Economics": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `Class 11 is a school examination, so CBSE publishes no sample paper for it. This paper is set on the
+Class XII Economics 2026-27 sample paper layout, against the Class XI curriculum and its unit weightage.
+Two sections: Section A - Statistics for Economics (Q1-Q17, 40 marks); Section B - Introductory Microeconomics
+(Q18-Q34, 40 marks). Each section: 10 MCQs of 1 mark, 2 of 3 marks (60-80 words), 3 of 4 marks (80-100 words)
+and 2 of 6 marks (100-150 words). Internal choice in Q11, Q13, Q17, Q29, Q32 and Q33.`
   },
 
   "Class 12 || Accountancy": {
