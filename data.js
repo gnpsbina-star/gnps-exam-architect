@@ -161,68 +161,31 @@ export const cbseData = {
           "Dialogue Completion (Everyday situations)"
         ],
         "Long Writing (80-100 words)": [
+          "Story Writing (From given outline / verbal cues with moral)",
+          "Paragraph Writing (Person, place, or event)",
           "Formal Letter Writing (Application to Principal for leave / permission)",
           "Informal Letter Writing (To family, relatives, and friends)",
-          "Paragraph / Descriptive Writing (Person, place, or event)",
-          "Story Writing (From given outline / verbal cues with moral)"
+          "Diary Entry (Personal experience or a special day)"
         ]
       },
-      "Section B: Applied Grammar": {
-        "Nouns & Noun Types": [
-          "Common & Proper Nouns",
-          "Collective & Material Nouns",
-          "Abstract Nouns (Formation from adjectives & verbs)",
-          "Countable vs. Uncountable Nouns",
-          "Singular & Plural Rules (Regular & irregular plurals)",
-          "Noun Gender (Masculine, Feminine, Common, Neuter)"
-        ],
-        "Pronouns": [
-          "Personal Pronouns (Subject & Object forms: I/me, he/him, they/them)",
-          "Possessive Pronouns vs Possessive Adjectives (mine vs my, yours vs your)",
-          "Demonstrative Pronouns (this, that, these, those)",
-          "Reflexive & Emphatic Pronouns (myself, himself, yourself, ourselves)",
-          "Interrogative Pronouns (who, what, which, whose)"
-        ],
-        "Verbs & Tenses": [
-          "Action Verbs vs Helping/Auxiliary Verbs (is, are, was, were, has, have)",
-          "Transitive vs Intransitive Verbs",
-          "Regular & Irregular Verb Conjugation (V1, V2, V3 forms)",
-          "Simple Present Tense (Habits, facts & third-person -s/-es)",
-          "Simple Past Tense (Completed past actions with past time markers)",
-          "Simple Future Tense (will/shall + verb & 'going to')",
-          "Present Continuous Tense (is/am/are + verb-ing)",
-          "Past Continuous Tense (was/were + verb-ing)"
-        ],
-        "Subject-Verb Agreement (Basics)": [
-          "Singular/Plural Concord (The boy plays vs The boys play)",
-          "Agreement with 'there is / there are'",
-          "Compound Subjects joined by 'and'"
-        ],
-        "Adjectives & Adverbs": [
-          "Adjectives of Quality, Quantity & Number",
-          "Degrees of Comparison: Positive, Comparative (-er/more) & Superlative (-est/most)",
-          "Irregular Degrees (good/better/best, bad/worse/worst)",
-          "Adverbs of Manner (how), Time (when), Place (where) & Frequency (always/never)"
-        ],
-        "Prepositions & Conjunctions": [
-          "Prepositions of Place & Position (in, on, at, under, between, among, behind)",
-          "Prepositions of Time (at, on, in, for, since) & Movement (into, through)",
-          "Coordinating Conjunctions (and, but, or, so)",
-          "Subordinating Conjunctions of Cause & Time (because, since, when, before)"
-        ],
-        "Articles & Sentence Structure": [
-          "Indefinite Articles (a / an based on phonetic vowel sound)",
-          "Definite Article (the) & Omission of Articles (Zero Article)",
-          "Subject and Predicate identification",
-          "4 Sentence Types: Declarative, Interrogative, Imperative, Exclamatory"
-        ],
-        "Integrated Functional Tasks": [
-          "Gap Filling (Cloze test with tenses, articles, prepositions)",
-          "Sentence Reordering (Jumbled words into meaningful sentences)",
-          "Editing / Error Correction (Proofreading lines for 1 grammatical mistake)",
-          "Punctuation & Capitalization"
-        ]
-      },
+      "Section B: Applied Grammar": [
+        "1. Nouns",
+        "2. Nouns: Number",
+        "3. Nouns: Gender",
+        "4. Articles",
+        "5. Determiners",
+        "6. Pronouns",
+        "7. Verbs",
+        "8. Direct and Indirect Objects",
+        "9. Subject–Verb Agreement",
+        "10. Adjectives",
+        "11. Comparison of Adjectives",
+        "12. Prepositions",
+        "13. Adverbs",
+        "14. The Sentence",
+        "15. Active and Passive Voice",
+        "16. Direct and Indirect Speech"
+      ],
       "Section C: Literature - Poorvi (Unit 1: Fables and Folk Tales)": [
         "Chapter 1: A Bottle of Dew",
         "Chapter 2: The Raven and the Fox (Poem)",
@@ -602,77 +565,35 @@ export const cbseData = {
           "Dialogue Completion (Conversational exchanges)"
         ],
         "Long Writing (80-100 words)": [
+          "Story Writing (From verbal outline/prompts with title & moral)",
+          "Paragraph Writing (Event, personality, or place)",
           "Formal Letter Writing (Application to Principal / Librarian)",
           "Informal Letter Writing (Sharing experiences, invitations)",
-          "Story Writing (From verbal outline/prompts with title & moral)",
-          "Descriptive Paragraph Writing (Event, personality, or place)",
           "Diary Entry (Personal reflections on memorable events)"
         ]
       },
-      "Section B: Applied Grammar": {
-        "The Sentence & Clause Structure": [
-          "Subject, Predicate, Direct & Indirect Objects, Subject Complement",
-          "Phrases vs Clauses (Noun phrase, Adjective phrase, Adverb phrase)",
-          "Main (Independent) vs Subordinate (Dependent) Clauses",
-          "Simple, Compound, and Complex Sentences"
-        ],
-        "Pronouns & Advanced Usages": [
-          "Possessive Nouns & Apostrophe Rules (children's, teachers')",
-          "Relative Pronouns (who, whom, whose, which, that) & Relative Clauses",
-          "Indefinite Pronouns (everyone, nobody, somebody, anything)",
-          "Distributive Pronouns (each, either, neither)"
-        ],
-        "Tenses & Aspects": [
-          "Simple, Continuous, Perfect & Perfect Continuous review",
-          "Present Perfect Tense (has/have + V3 with already, yet, just)",
-          "Present Perfect Continuous Tense (has/have been + V-ing with for/since)",
-          "Past Perfect Tense (had + V3 for earlier completed past action)",
-          "Future Continuous & Future Perfect Tenses",
-          "Tense Contrast: Past Continuous vs Simple Past (While I was reading...)",
-          "Tense Contrast: Present Perfect vs Simple Past"
-        ],
-        "Subject-Verb Concord (Intermediate)": [
-          "Agreement with Collective Nouns (singular vs plural sense)",
-          "Agreement with 'either...or' and 'neither...nor' (nearer subject rule)",
-          "Phrases like 'each of, neither of, one of the' + plural noun (takes singular verb)",
-          "Plural-form singular nouns (Mathematics, The news, Fifty miles)"
-        ],
-        "Modal Auxiliaries": [
-          "Modals of Ability: can, could, be able to",
-          "Modals of Permission & Politeness: may, can, could, would",
-          "Modals of Obligation & Advice: must, have to, ought to, should, need not",
-          "Modals of Possibility & Probability: may, might, could"
-        ],
-        "Active and Passive Voice": [
-          "Subject-Object inversion & use of 'by + agent'",
-          "Passive Voice: Simple Present, Simple Past & Simple Future",
-          "Passive Voice: Present & Past Continuous (is/are being + V3)",
-          "Passive Voice: Imperative Sentences (Let it be done)"
-        ],
-        "Reported Speech (Narration)": [
-          "Reporting Statements (Tense shifting, pronoun conversion, time/place words)",
-          "Reporting Wh- Questions (Where do you live? -> He asked where I lived)",
-          "Reporting Yes/No Questions using 'if / whether'",
-          "Reporting Verbs: said, told, asked, enquired"
-        ],
-        "Non-Finite Verbs": [
-          "The Infinitive (to + verb, Bare infinitive after modals)",
-          "The Gerund (verb + -ing functioning as subject/object noun)",
-          "Participles (Present participle -ing vs Past participle -ed/-en)"
-        ],
-        "Prepositions, Phrasals & Determiners": [
-          "Complex Prepositions (in front of, in spite of, according to, on behalf of)",
-          "Everyday Phrasal Verbs (look after, give up, put off, call off, turn down)",
-          "Determiners & Quantifiers: few/a few, little/a little, much/many, each/every",
-          "Question Tags (positive & negative tags: isn't it?, didn't he?)"
-        ],
-        "Integrated Functional Tasks": [
-          "Sentence Transformation (Assertive to Interrogative/Exclamatory, Active to Passive)",
-          "Editing / Error Correction (Incorrect & Correct columns)",
-          "Omission (Word before, missing word, word after)",
-          "Sentence Reordering & Dialogue Completion"
-        ]
-      },
+      "Section B: Applied Grammar": [
+        "1. Cases: Nominative, Accusative, Dative, Possessive",
+        "2. The Past",
+        "3. The Present",
+        "4. The Future",
+        "5. Finite and Non-finite Verbs",
+        "6. Complements",
+        "7. Noun Phrase",
+        "8. Verb Phrase",
+        "9. Adjective and Adverb Phrases",
+        "10. Prepositional Phrase",
+        "11. Conjunction: Coordinating, Correlative, Subordinating",
+        "12. Noun Clause",
+        "13. Adjective Clause",
+        "14. Adverb Clause",
+        "15. Relative Clauses",
+        "16. Interjections",
+        "17. Kinds of Sentences",
+        "18. Active and Passive Voice",
+        "19. Direct and Indirect Speech",
+        "20. Punctuation"
+      ],
       "Section C: Literature - Poorvi (Unit 1: Learning Together)": [
         "Chapter 1: The Day the River Spoke",
         "Chapter 2: Try Again (Poem)",
@@ -1076,76 +997,39 @@ export const cbseData = {
       "Section B: Writing Skills": {
         "Short Writing (Up to 50 words)": [
           "Notice Writing (School events, competitions, appeals, lost & found)",
-          "Message Writing (Telephonic message relay & informational memo)",
-          "Email Writing (Informal to friend / Semi-formal to teacher)"
+          "Diary Entry (Personal emotional reflection on challenging situations)"
         ],
         "Long Writing (100-120 words)": [
           "Formal Letter Writing: Letter to Principal (Leave, absence, facilities)",
           "Formal Letter Writing: Letter to Editor & Authorities (Civic issues, complaints)",
           "Informal Letter Writing (Invitations, advice, sharing experiences)",
           "Story Writing (From given outline / verbal cues or opening line)",
-          "Descriptive / Analytical Paragraph (Person, place, or visual chart data)",
-          "Diary Entry (Personal emotional reflection on challenging situations)",
           "Article Writing (Social, environmental, and educational themes)",
-          "Speech Writing (Morning assembly addresses & awareness speeches)"
+          "Analytical Paragraph (Chart, graph, or table data)"
         ]
       },
-      "Section B: Applied Grammar": {
-        "Tenses Mastery & Conditionals": [
-          "Comprehensive review of all 12 Tense Forms in context",
-          "Zero Conditional: Universal & scientific truths (If water reaches 100°C...)",
-          "First Conditional: Probable future (If it rains, we will cancel...)",
-          "Second Conditional: Hypothetical/Unreal present (If I won a lottery...)",
-          "Third Conditional: Past impossible condition (If they had trained harder...)"
-        ],
-        "Reported Speech (Advanced Narration)": [
-          "Reporting Statements with varied verbs (explained, admitted, claimed, warned)",
-          "Reporting Interrogative Sentences (Wh- and Yes/No with inverted word order)",
-          "Reporting Imperatives: Orders, Requests, Warnings & Advice (urged to, commanded to)",
-          "Reporting Exclamatory Sentences & Wishes (exclaimed with joy/sorrow, prayed)",
-          "Multi-turn Dialogue Reporting in Paragraph Format (CBSE Board format)"
-        ],
-        "Active and Passive Voice (Advanced)": [
-          "Passive Voice across all tenses including Perfect forms (has been + V3)",
-          "Passive Voice with Modal Auxiliaries (modal + be + V3, modal + have been + V3)",
-          "Passivisation of Sentences with Two Objects (Direct vs Indirect object)",
-          "Prepositional Passive Verbs (The matter was looked into by the committee)",
-          "Passive Voice of Imperatives & Agent Omission (when agent is obvious/unknown)"
-        ],
-        "Subject-Verb Concord (Advanced)": [
-          "Subjects connected by 'as well as, along with, together with, in addition to'",
-          "Indefinite Pronouns Concord (each, everyone, nobody, neither take singular)",
-          "Concord in Inverted Sentences (Here come the winners)",
-          "Collective quantities & Book/Film Titles (Fifty thousand rupees is...)"
-        ],
-        "Modal Auxiliaries & Semi-Modals": [
-          "Nuance of 'must' vs 'have to' (internal desire vs external obligation)",
-          "Semi-Modals: 'used to' (discontinued habit), 'need to / need not', 'dare'",
-          "Past Modal Deductions/Regrets (should have / could have / must have + V3)"
-        ],
-        "Non-Finite Verbs & Participle Clauses": [
-          "Bare Infinitives (after make, let, bid, watch) & Infinitives of Purpose",
-          "Gerund vs Present Participle functional distinction in syntax",
-          "Combining sentences using Participle Clauses (Having finished his work...)"
-        ],
-        "Clauses & Sentence Synthesis": [
-          "Noun Clauses (acting as subject, object, or complement)",
-          "Adjective (Relative) Clauses: Defining vs Non-defining relative clauses",
-          "Adverb Clauses: Condition, Contrast (although, though), Cause, and Purpose",
-          "Combining pairs of sentences into Simple, Compound, and Complex sentences"
-        ],
-        "Determiners, Prepositions & Collocations": [
-          "Exact distinctions: few/a few/the few, little/a little/the little, less vs fewer",
-          "Prepositional Collocations (prone to, capable of, abstain from, accustomed to)",
-          "High-frequency Phrasal Verbs (carry out, bring about, run out of, break down)"
-        ],
-        "Integrated Grammar (CBSE Pattern)": [
-          "Editing: Finding grammatical errors per line with Incorrect & Correct words",
-          "Omission: Supplying missing words with Word Before, Missing Word, Word After",
-          "Cloze Gap-Filling testing integrated tenses, prepositions, and determiners",
-          "Sentence Reordering into Coherent Paragraphs"
-        ]
-      },
+      "Section B: Applied Grammar": [
+        "1. Word Formation",
+        "2. Infinitives",
+        "3. Infinitives with ‘Too’ and ‘Enough’",
+        "4. Gerunds",
+        "5. Participles",
+        "6. Causative Verbs: Have, Get, Make and Let",
+        "7. Phrasal Verbs",
+        "8. Mood",
+        "9. Intensifiers and Mitigators",
+        "10. Modals 1",
+        "11. Modals 2",
+        "12. Quantifiers",
+        "13. Question Tags",
+        "14. Parallel Structures",
+        "15. Conditionals",
+        "16. Transformation of Sentences 1",
+        "17. Transformation of Sentences 2",
+        "18. Active and Passive Voice",
+        "19. Direct and Indirect Speech",
+        "20. Punctuation"
+      ],
       "Section C: Literature - Poorvi (Unit 1: Wit and Wisdom)": [
         "Chapter 1: The Wit that Won Hearts",
         "Chapter 2: A Concrete Example",
