@@ -3739,8 +3739,8 @@ export const cbseData = {
     },
     "English Core": {
       "Reading Skills": [
-        "Unseen Passage (Factual / Descriptive / Literary, approx. 500-600 words)",
-        "Case-based Unseen Passage (with visual/statistical input, approx. 300-350 words)"
+        "Unseen Passage (Factual / Descriptive / Literary, approx. 350-400 words)",
+        "Case-based Unseen Passage (with visual/statistical input, approx. 250-300 words)"
       ],
       "Applied Grammar": [
         "Gap Filling (Tenses & Clauses)",
@@ -3748,7 +3748,6 @@ export const cbseData = {
       ],
       "Creative Writing Skills": {
         "Short Writing Tasks (Up to 50 words)": [
-          "Notice Writing (School events, competitions, lost & found, exhibitions)",
           "Classified Advertisements (Situation Vacant/Wanted, To-Let, For Sale)",
           "Poster Designing (Social awareness campaigns, cultural & educational events)"
         ],
@@ -4682,8 +4681,8 @@ export const cbseData = {
     },
     "English Core": {
       "Reading Skills": [
-        "Unseen Passage (Factual / Descriptive / Literary, approx. 600-700 words)",
-        "Case-based Unseen Passage (with visual/statistical input, approx. 350-400 words)"
+        "Unseen Passage (Factual / Descriptive / Literary, approx. 400-420 words)",
+        "Case-based Unseen Passage (with visual/statistical input, approx. 300-330 words)"
       ],
       "Creative Writing Skills": {
         "Short Writing Tasks (Up to 50 words)": [

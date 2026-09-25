@@ -537,9 +537,135 @@ export const secondaryEnglish = {
 };
 
 // Class 9 and 10 "English (R1)" only; other English courses keep their layout.
+// Class 11 and 12 English Core (301), from the CBSE 2026-27 curriculum
+// document (English_core_SecP2_2026-27) and the Class XII 2026-27 sample
+// paper, which says the design is unchanged: 13 questions, Reading 22,
+// Creative Writing 18 and Literature 40, with a choice in every question.
+// Class 11 is set on the same Class 12 layout (school policy), with the
+// Class XI texts (Hornbill, Snapshots) and the Class XI writing tasks
+// (classified advertisement, poster, speech, debate) in the four writing
+// slots. CBSE's own Class XI paper also tests grammar and note-making; the
+// school's Class 11 paper does not, so those stay with unit tests.
+//
+// The fields after `questions` override the Class 9 / 10 wording in the
+// prompt builder, which was written for those papers' marks and word limits.
+const seniorEnglishLiterature = (poetryBook, proseBook, suppBook) => [
+  { section: "Section C", heading: "Literature", q: "Q7", type: `Poetry extract, ${poetryBook}`, marks: 6, attempt: 1, of: 2, book: poetryBook,
+    detail: `extracts A and B from two ${poetryBook} poems, the poem's title in brackets: 6 sub-questions of 1 mark (complete from the options in brackets, complete the sentence, MCQs, one-line answers on imagery, metaphor or contrast)` },
+  { section: "Section C", heading: "Literature", q: "Q8", type: `Prose / drama extract, ${suppBook}`, marks: 4, attempt: 1, of: 2, book: suppBook,
+    detail: `extracts A and B from two ${suppBook} chapters: 4 sub-questions of 1 mark (MCQs and one-line inferences about character, tone or meaning)` },
+  { section: "Section C", heading: "Literature", q: "Q9", type: `Prose extract, ${proseBook}`, marks: 6, attempt: 1, of: 2, book: proseBook,
+    detail: `extracts A and B from two ${proseBook} prose chapters: 6 sub-questions of 1 mark (MCQs, complete the sentence, identify the statement that does NOT fit the extract, irony or tone)` },
+  { section: "Section C", heading: "Literature", q: "Q10", type: `Short answers, ${proseBook} (40-50 words)`, marks: 10, each: 2, attempt: 5, of: 6, book: proseBook,
+    detail: "2 marks each, from prose and poetry, the text's title in brackets; inferential answers through critical thinking" },
+  { section: "Section C", heading: "Literature", q: "Q11", type: `Short answers, ${suppBook} (40-50 words)`, marks: 4, each: 2, attempt: 2, of: 3, book: suppBook,
+    detail: "2 marks each, the chapter's title in brackets; interpretation, analysis and inference" },
+  { section: "Section C", heading: "Literature", q: "Q12", type: `Long answer, ${proseBook} (120-150 words)`, marks: 5, attempt: 1, of: 2, book: proseBook,
+    detail: "on an incident, theme, passage, extract or event as reference points; may link two texts, as the sample paper links Keeping Quiet with Going Places" },
+  { section: "Section C", heading: "Literature", q: "Q13", type: `Long answer, ${suppBook} (120-150 words)`, marks: 5, attempt: 1, of: 2, book: suppBook,
+    detail: "global comprehension and extrapolation beyond the text: theme, plot, character or a turning point" }
+];
+
+const seniorEnglishReading = (words1, words2) => [
+  { section: "Section A", heading: "Reading Skills", q: "Q1", type: `Unseen passage (${words1} words): factual, descriptive or literary`, marks: 12,
+    detail: "10 sub-questions: 8 objective items of 1 mark (MCQs, complete the sentence with a reason, fill in from options, the writer's tone, the main idea) and 2 short answers of 2 marks in about 40 words; paragraphs numbered and referred to" },
+  { section: "Section A", heading: "Reading Skills", q: "Q2", type: `Case-based factual passage (${words2} words) with charts or statistical data`, marks: 10,
+    detail: "8 sub-questions: 6 objective items of 1 mark and 2 short answers of 2 marks in about 40 words, some reading the charts; a source line under the passage" }
+];
+
+const seniorEnglishShared = {
+  shortMarks: 2, longMarks: 5, longWords: "120-150", readingShortWords: "about 40 words",
+  extractNote: "print the title of the text in brackets after each extract. EVERY sub-question carries 1 mark: MCQs, complete the sentence (from options in brackets or in the student's words), fill in the blank, and one-line answers on meaning, imagery, tone or irony. No 2-mark item inside an extract.",
+  extractItems: "1-mark MCQs, complete-the-sentence and fill-in items and one-line answers",
+  readingNote: "Follow the sample paper: 1-mark objective items (MCQs, complete the sentence, fill in from options, tone, main idea) and 2-mark answers in about 40 words; no Assertion-Reason in the passages."
+};
+
+Object.assign(secondaryEnglish, {
+  "Class 12": {
+    code: "301",
+    paperLabel: "English Core (301)",
+    books: { prose: "Flamingo", poetry: "Flamingo", supplementary: "Vistas" },
+    bookGroups: { "Flamingo (Prose)": "Flamingo", "Flamingo (Poetry)": "Flamingo", "Vistas": "Vistas" },
+    competencies: [
+      "Reading Skills (22 marks): conceptual understanding, decoding, analysing, inferring, interpreting, appreciating literary conventions and vocabulary.",
+      "Creative Writing Skills (18 marks): conceptual understanding, application of rules, analysis, reasoning, appropriate style and tone, appropriate format and fluency, inference, evaluation and creativity.",
+      "Literature Textbook and Supplementary Reading Text (40 marks): recalling, reasoning, critical thinking, appreciating literary conventions, inference and analysis, creativity with fluency."
+    ],
+    grammar: null,
+    readingLimits: ["Passage 1 (factual, descriptive or literary, about 400-420 words)", "Passage 2 (case-based factual, with statistical data or charts, about 300-330 words); both passages together 700-750 words"],
+    scope: [
+      "Class XII has no grammar section: writing is ONLY a notice (Q3), a formal or informal invitation or reply (Q4), a letter to the editor or a job application with bio-data (Q5), and an article or report (Q6).",
+      "Literature comes ONLY from Flamingo (prose and poetry) and Vistas, from the selected chapters and poems. Memories of Childhood has two parts: The Cutting of My Long Hair and We Too are Human Beings.",
+      "State that all names and addresses in the writing questions are fictitious, as the sample paper does."
+    ],
+    questions: [
+      ...seniorEnglishReading("about 400-420", "about 300-330"),
+      { section: "Section B", heading: "Creative Writing Skills", q: "Q3", type: "Notice (about 50 words, in a box)", marks: 4, attempt: 1, of: 2,
+        detail: "Format 1, Content 2, Accuracy of spelling and grammar 1; the student is named and the notice is put in a box" },
+      { section: "Section B", heading: "Creative Writing Skills", q: "Q4", type: "Formal or informal invitation, or reply (about 50 words)", marks: 4, attempt: 1, of: 2,
+        detail: "for example a formal invitation to a guest speaker, or a formal reply accepting an invitation; Format 1, Content 2, Accuracy 1" },
+      { section: "Section B", heading: "Creative Writing Skills", q: "Q5", type: "Letter (120-150 words)", marks: 5, attempt: 1, of: 2,
+        detail: "a letter to the editor with verbal cues, or a job application with a detailed bio-data based on an advertisement; Format 1, Organisation 1, Content 2, Accuracy 1" },
+      { section: "Section B", heading: "Creative Writing Skills", q: "Q6", type: "Article or report (120-150 words)", marks: 5, attempt: 1, of: 2,
+        detail: "an article for a school magazine or a report on an event, with cue points; Format 1, Organisation 1, Content 2, Accuracy 1" },
+      ...seniorEnglishLiterature("Flamingo", "Flamingo", "Vistas")
+    ],
+    ...seniorEnglishShared,
+    generalInstructions: [
+      "This question paper has 13 questions. All questions are compulsory.",
+      "This question paper contains three sections: Section A: Reading Skills; Section B: Creative Writing Skills; Section C: Literature.",
+      "Attempt all questions based on specific instructions for each part. Write the correct question number and part thereof in your answer sheet.",
+      "Separate instructions are given with each question/part, wherever necessary.",
+      "Adhere to the prescribed word limit while answering the questions."
+    ],
+    writingFormats: "notice (about 50 words, in a box: issuing body, NOTICE, date, heading, body with the necessary details and registration process, name and designation); formal or informal invitation or reply (about 50 words, in the third person for a formal invitation, with the occasion, date, time, venue and RSVP); letter to the editor or job application (120-150 words: sender's address, date, receiver's address, subject, salutation, body, complimentary close, name; a job application encloses a detailed bio-data); article (title and byline) or report (heading, byline with place and date) of 120-150 words"
+  },
+  "Class 11": {
+    code: "301",
+    paperLabel: "English Core (301), Class XI",
+    books: { prose: "Hornbill", poetry: "Hornbill", supplementary: "Snapshots" },
+    bookGroups: { "Hornbill (Prose)": "Hornbill", "Hornbill (Poetry)": "Hornbill", "Snapshots": "Snapshots" },
+    competencies: [
+      "Reading Skills (22 marks): conceptual understanding, decoding, analysing, inferring, interpreting, appreciating literary conventions and vocabulary.",
+      "Creative Writing Skills (18 marks): appropriate format, style and tone, reasoning, fluency and creativity in the Class XI writing tasks.",
+      "Literature Textbook and Supplementary Reading Text (40 marks): recalling, reasoning, critical thinking, appreciating literary conventions, inference and analysis, creativity with fluency."
+    ],
+    grammar: "gap filling (tenses, clauses) and re-ordering or transformation of sentences",
+    readingLimits: ["Passage 1 (factual, descriptive or literary, about 350-400 words)", "Passage 2 (case-based factual, with statistical data or charts, about 250-300 words); both passages together 600-700 words"],
+    scope: [
+      "Class 11 is a school examination set on the Class XII 2026-27 layout (school policy), with the Class XI texts and writing tasks. Grammar and note-making are NOT examined in this paper.",
+      "Writing is ONLY the Class XI tasks: a classified advertisement (Q3), a poster (Q4), a speech (Q5) and a debate (Q6). Do NOT set a notice, invitation, letter, article or report.",
+      "Literature comes ONLY from Hornbill (prose and poetry) and Snapshots, from the selected chapters and poems.",
+      "State that all names and addresses in the writing questions are fictitious."
+    ],
+    questions: [
+      ...seniorEnglishReading("about 350-400", "about 250-300"),
+      { section: "Section B", heading: "Creative Writing Skills", q: "Q3", type: "Classified advertisement (up to 50 words, in a box)", marks: 4, attempt: 1, of: 2,
+        detail: "situation vacant or wanted, to-let, for sale, or lost and found; Format 1, Content 2, Expression 1" },
+      { section: "Section B", heading: "Creative Writing Skills", q: "Q4", type: "Poster (up to 50 words)", marks: 4, attempt: 1, of: 2,
+        detail: "a social-awareness campaign or a school, cultural or educational event, with a slogan; Format 1, Content 2, Expression 1" },
+      { section: "Section B", heading: "Creative Writing Skills", q: "Q5", type: "Speech (120-150 words)", marks: 5, attempt: 1, of: 2,
+        detail: "on verbal or visual cues about a contemporary, age-appropriate topic; Format 1, Content 2, Expression 2" },
+      { section: "Section B", heading: "Creative Writing Skills", q: "Q6", type: "Debate (120-150 words)", marks: 5, attempt: 1, of: 2,
+        detail: "for or against a motion on a contemporary, topical issue, on verbal or visual inputs; Format 1, Content 2, Expression 2" },
+      ...seniorEnglishLiterature("Hornbill", "Hornbill", "Snapshots")
+    ],
+    ...seniorEnglishShared,
+    generalInstructions: [
+      "This question paper has 13 questions. All questions are compulsory.",
+      "This question paper contains three sections: Section A: Reading Skills; Section B: Creative Writing Skills; Section C: Literature.",
+      "Attempt all questions based on specific instructions for each part. Write the correct question number and part thereof in your answer sheet.",
+      "Separate instructions are given with each question/part, wherever necessary.",
+      "Adhere to the prescribed word limit while answering the questions."
+    ],
+    writingFormats: "classified advertisement (up to 50 words, in a box, in telegraphic style with the category heading and contact details); poster (up to 50 words, in a box: title or slogan, organiser, event or cause details, date, time, venue); speech (120-150 words: address the audience, introduce the topic, develop points, conclude and thank); debate (120-150 words: address the chair and audience, state the motion and your stand for or against, argue with reasons and examples, conclude)"
+  }
+});
+
 export function getSecondaryEnglish(className, subjectName) {
-  if (subjectName !== "English (R1)") return null;
-  return secondaryEnglish[className] || null;
+  if (subjectName === "English (R1)" && (className === "Class 9" || className === "Class 10")) return secondaryEnglish[className];
+  if (subjectName === "English Core" && (className === "Class 11" || className === "Class 12")) return secondaryEnglish[className];
+  return null;
 }
 
 const class10EnglishPattern = `ENGLISH LANGUAGE AND LITERATURE - CODE NO. 184, Class X, Maximum Marks 80, Time Allowed 3 hours.
@@ -1844,6 +1970,36 @@ This paper is set on the Class XII Applied Mathematics 2026-27 sample paper layo
 Class XI curriculum and its unit weightage, so students meet the board format a year early.
 SUBJECT: APPLIED MATHEMATICS (241), Class XI, Maximum Marks 80, Time Allowed 3 hours.
 ${seniorMathsPattern(2)}`
+  },
+
+  "Class 12 || English Core": {
+    year: "2026-27",
+    text: `ENGLISH CORE - Code No. 301, Class XII, Maximum Marks 80, Time Allowed 3 hours.
+This question paper has 13 questions. All questions are compulsory.
+It contains three sections: Section A: Reading Skills (22), Section B: Creative Writing Skills (18), Section C: Literature (40).
+  Q1 unseen passage (12) and Q2 case-based factual passage with charts (10), together 700-750 words.
+  Q3 notice (4) and Q4 invitation or reply (4), about 50 words; Q5 letter (5) and Q6 article or report (5), 120-150 words.
+  Q7 Flamingo poetry extract (6), Q8 Vistas extract (4), Q9 Flamingo prose extract (6).
+  Q10 Flamingo short answers, any 5 of 6 (5 x 2); Q11 Vistas short answers, any 2 of 3 (2 x 2), 40-50 words each.
+  Q12 Flamingo long answer (5) and Q13 Vistas long answer (5), 120-150 words, any one of two.
+Every writing and extract question offers a choice of (A) or (B). Attempt all questions based on the specific
+instructions for each part. Adhere to the prescribed word limit while answering the questions.
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 11 || English Core": {
+    year: "2026-27",
+    text: `Class 11 is a school examination, so CBSE publishes no sample paper for it. This paper is set on the
+Class XII English Core 2026-27 sample paper layout (school policy) with the Class XI texts and writing tasks.
+ENGLISH CORE - Code No. 301, Class XI, Maximum Marks 80, Time Allowed 3 hours.
+This question paper has 13 questions. All questions are compulsory.
+It contains three sections: Section A: Reading Skills (22), Section B: Creative Writing Skills (18), Section C: Literature (40).
+  Q1 unseen passage (12) and Q2 case-based factual passage with charts (10).
+  Q3 classified advertisement (4) and Q4 poster (4), up to 50 words; Q5 speech (5) and Q6 debate (5), 120-150 words.
+  Q7 Hornbill poetry extract (6), Q8 Snapshots extract (4), Q9 Hornbill prose extract (6).
+  Q10 Hornbill short answers, any 5 of 6 (5 x 2); Q11 Snapshots short answers, any 2 of 3 (2 x 2), 40-50 words each.
+  Q12 Hornbill long answer (5) and Q13 Snapshots long answer (5), 120-150 words, any one of two.
+Every writing and extract question offers a choice of (A) or (B).`
   },
 
   "Class 12 || Accountancy": {

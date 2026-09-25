@@ -1,5 +1,5 @@
-import { cbseData } from './data.js?v=45';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=13';
+import { cbseData } from './data.js?v=46';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=14';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -273,7 +273,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_27_senior_maths_v27';
+      const CURRENT_SYLLABUS_VER = '2026_27_senior_english_v28';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -1014,7 +1014,8 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
     const engSpec = getSecondaryEnglish(className, subjectName);
 
     if (engSpec) {
-      // Class 9 / 10 English (R1) on the CBSE 2026-27 design.
+      // Class 9 / 10 English (R1) and Class 11 / 12 English Core on the CBSE
+      // 2026-27 design, question by question.
       sections = buildQuestionRows(engSpec);
     } else if (className === "Class 11" || className === "Class 12") {
       // Class 11 follows the Class 12 board exam structure exactly (same
@@ -4410,7 +4411,14 @@ export async function buildPromptString(activeBtn) {
   // competencies and scope govern full-length papers.
   const secEnglish = getSecondaryEnglish(className, subjectName);
   const engFullPaper = !!secEnglish && isFullLengthPaper;
-  const engLongWords = className === 'Class 9' ? '120-150' : '100-120';
+  // Class 9 / 10 wording by default; Class 11 / 12 English Core carries its own
+  // marks and word limits in its spec (sqp_blueprints.js).
+  const engLongWords = secEnglish && secEnglish.longWords ? secEnglish.longWords : className === 'Class 9' ? '120-150' : '100-120';
+  const engShortMarks = secEnglish && secEnglish.shortMarks ? secEnglish.shortMarks : className === 'Class 9' ? 2 : 3;
+  const engLongMarks = secEnglish && secEnglish.longMarks ? secEnglish.longMarks : className === 'Class 9' ? 5 : 6;
+  const engReadingWords = secEnglish && secEnglish.readingShortWords ? secEnglish.readingShortWords : '30-40 words';
+  // Class XII English Core has no grammar question; Class XI's is left to unit tests.
+  const engPaperHasGrammar = !engFullPaper || secEnglish.questions.some(q => /grammar/i.test(q.type));
   // Class 9 and 10 Hindi (R2 - Ganga), on the same terms as English.
   const secHindi = getSecondaryHindi(className, subjectName);
   const hinFullPaper = !!secHindi && isFullLengthPaper;
@@ -4435,9 +4443,9 @@ export async function buildPromptString(activeBtn) {
     `         - Textbook short answers (2 Marks, 25-30 words)${className === 'Class 10' ? ` and संचयन answers (3 Marks, 50-60 words)` : ` and longer answers (4 Marks, 60-80 words)`}: content, understanding, expression and appreciation.`,
     `         - Writing tasks in the prescribed format and word limit, with internal choice.`
   ].join('\n') : secEnglish ? [
-    `         - Reading short answers (2 Marks, 30-40 words): inference, interpretation and evaluation of the passage.`,
-    `         - Literature short answers (${className === 'Class 9' ? '2' : '3'} Marks, 40-50 words): interpretation, analysis, inference and evaluation of a text.`,
-    `         - Literature long answers (${className === 'Class 9' ? '5' : '6'} Marks, ${engLongWords} words) and writing tasks: extrapolation beyond and across texts, theme, plot or character; writing in the prescribed format and word limit, with internal choice.`
+    `         - Reading short answers (2 Marks, ${engReadingWords}): inference, interpretation and evaluation of the passage.`,
+    `         - Literature short answers (${engShortMarks} Marks, 40-50 words): interpretation, analysis, inference and evaluation of a text.`,
+    `         - Literature long answers (${engLongMarks} Marks, ${engLongWords} words) and writing tasks: extrapolation beyond and across texts, theme, plot or character; writing in the prescribed format and word limit, with internal choice.`
   ].join('\n') : secSocial ? [
     `         - Very Short Answer (VSA - 2 Marks, answer in not more than 40 words, exactly 2 marking-scheme value points).`,
     `         - Short Answer (SA - 3 Marks, answer in not more than 60 words, exactly 3 value points).`,
@@ -4738,7 +4746,9 @@ ${secEnglish.competencies.map((line, i) => `      ${i + 1}. ${line}`).join('\n')
 
   // Class 9/10 English question types, in place of the generic typology rules
   // (VSA / SA / LA / case studies, SI units), which do not fit a language paper.
-  const englishWritingFormats = className === 'Class 9'
+  const englishWritingFormats = secEnglish && secEnglish.writingFormats
+    ? secEnglish.writingFormats
+    : className === 'Class 9'
     ? `notice (up to 50 words, in a box, with the issuing body, title, date and signature) or informal invitation (up to 50 words); letter to the editor (sender's address, date, receiver's address, subject, salutation, body, complimentary close, name) or formal e-mail (to, subject, salutation, body, sign-off), 120-150 words; factual description or magazine article (title and byline for an article), 120-150 words; descriptive or narrative essay with a title, 200-250 words`
     : `formal letter (sender's address, date, receiver's address, subject, salutation, body, complimentary close, name and designation), 100-120 words; analytical paragraph (introduction, analysis citing the figures or points given, and a conclusion), 100-120 words. Notices and messages are for school tests only`;
   const hindiWritingFormats = className === 'Class 9'
@@ -4759,13 +4769,13 @@ ${secEnglish.competencies.map((line, i) => `      ${i + 1}. ${line}`).join('\n')
     *   **रचनात्मक लेखन:** ${hindiWritingFormats}. Give internal choice exactly as the blueprint rows say.
     *   **Marking-scheme value points:** frame every constructed response so it can be marked on content (विषयवस्तु), organisation and language, and print the word limit in the question.` : '';
   const englishTypology = secEnglish ? `    *   **1-Mark Objective Questions (reading, grammar and literature extracts):**
-        - MCQs with four options, and the objective items CBSE English papers use: complete the sentence (from two given options, or from the text), true or false, analogy, fact or opinion, match or classify, identify the word or phrase from a named paragraph, and Assertion-Reason with its four options printed.
+        - MCQs with four options, and the objective items CBSE English papers use: complete the sentence (from two given options, or from the text), true or false, analogy, fact or opinion, match or classify, identify the word or phrase from a named paragraph${secEnglish && secEnglish.readingNote ? '' : ', and Assertion-Reason with its four options printed'}.
         - **Diagnostic options:** distractors are plausible — true of the passage but not the answer, near-synonyms, or the opposite of the writer's view.
-    *   **Reading short answers (2 Marks, 30-40 words):** ask for inference, the writer's purpose or tone, a comparison, or an evaluation, answerable from the passage but not by copying one line. Name the paragraph where it helps.
-    *   **Grammar:** set every item in a short real-life text (formal e-mail, notice, report, blog, conversation) and test ONLY the grammar prescribed for ${className}: ${secEnglish.grammar}. Editing items print Error and Correction columns for the answer.
-    *   **Writing:** ${englishWritingFormats}. Every writing question offers an internal choice, A OR B. State that all details in the writing questions are imaginary.
-    *   **Literature extracts:** print the title of the text in brackets after each extract. Sub-questions are MCQs, complete-the-sentence, fill-in (one word, or from two options) and a 2-mark short answer on the writer's technique or meaning.
-    *   **Literature short answers (${className === 'Class 9' ? '2' : '3'} Marks, 40-50 words) and long answers (${className === 'Class 9' ? '5' : '6'} Marks, ${engLongWords} words):** print the title of the text in brackets after each question. Short answers test interpretation, analysis, inference and evaluation; long answers test extrapolation beyond and across texts, theme, plot or character. A long answer is one question; sub-parts are not needed.
+    *   **Reading short answers (2 Marks, ${engReadingWords}):** ask for inference, the writer's purpose or tone, a comparison, or an evaluation, answerable from the passage but not by copying one line. Name the paragraph where it helps.
+${secEnglish && secEnglish.grammar && engPaperHasGrammar ? `    *   **Grammar:** set every item in a short real-life text (formal e-mail, notice, report, blog, conversation) and test ONLY the grammar prescribed for ${className}: ${secEnglish.grammar}. Editing items print Error and Correction columns for the answer.
+` : ''}    *   **Writing:** ${englishWritingFormats}. Every writing question offers an internal choice, A OR B. State that all details in the writing questions are imaginary.
+    *   **Literature extracts:** ${secEnglish && secEnglish.extractNote ? secEnglish.extractNote : `print the title of the text in brackets after each extract. Sub-questions are MCQs, complete-the-sentence, fill-in (one word, or from two options) and a 2-mark short answer on the writer's technique or meaning.`}
+    *   **Literature short answers (${engShortMarks} Marks, 40-50 words) and long answers (${engLongMarks} Marks, ${engLongWords} words):** print the title of the text in brackets after each question. Short answers test interpretation, analysis, inference and evaluation; long answers test extrapolation beyond and across texts, theme, plot or character. A long answer is one question; sub-parts are not needed.
     *   **Marking-scheme value points:** frame every constructed response so it can be marked on content, organisation and accuracy of language, and print the word limit in the question.` : '';
 
   // Social Science's competency split carries the map marks separately, so it
@@ -4920,7 +4930,7 @@ ${secMaths.scope.map(line => `        - ${line}`).join('\n')}
         TIME ALLOWED: ${duration}                             MAXIMUM MARKS: ${marks}
         ------------------------------------------------------------------------
         GENERAL INSTRUCTIONS:
-${srFullPaper ? secSenior.generalInstructions.map((line, i) => `        ${i + 1}. ${line}`).join('\n') : `        1. All questions are compulsory. However, internal choices are provided.
+${srFullPaper ? secSenior.generalInstructions.map((line, i) => `        ${i + 1}. ${line}`).join('\n') : engFullPaper && secEnglish.generalInstructions ? secEnglish.generalInstructions.map((line, i) => `        ${i + 1}. ${line}`).join('\n') : `        1. All questions are compulsory. However, internal choices are provided.
 ${secMaths ? `        2. ... (the section-by-section instructions for this paper, as in the CBSE 2026-27 Mathematics sample paper) ...
         3. Draw neat and clean figures wherever required. Take π = 22/7 wherever required, if not stated.
         4. Use of calculators is not allowed.` : `        2. ... (Specific CBSE instructions for this subject) ...`}`}
@@ -4947,9 +4957,10 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
       "Class 8": ["Passage 1 (Discursive, approx. 200 words)", "Passage 2 (Case-based factual, approx. 100 words)"],
       "Class 9": ["Passage 1 (Discursive, approx. 300 words)", "Passage 2 (Case-based factual, approx. 150 words)"],
       "Class 10": ["Passage 1 (Discursive, approx. 400 words)", "Passage 2 (Case-based factual, approx. 200 words)"],
-      // Class 9 / 10 English (R1) take CBSE's 2026-27 lengths from sqp_blueprints.js below.
-      "Class 11": ["Passage 1 (Discursive, approx. 500 words)", "Passage 2 (Case-based factual, approx. 300 words)"],
-      "Class 12": ["Passage 1 (Discursive, approx. 600 words)", "Passage 2 (Case-based factual, approx. 400 words)"]
+      // Class 9 / 10 English (R1) and Class 11 / 12 English Core take CBSE's
+      // 2026-27 lengths from sqp_blueprints.js below; these rows are fallbacks.
+      "Class 11": ["Passage 1 (Discursive, approx. 350-400 words)", "Passage 2 (Case-based factual, approx. 250-300 words)"],
+      "Class 12": ["Passage 1 (Discursive, approx. 400-420 words)", "Passage 2 (Case-based factual, approx. 300-330 words)"]
     };
     if (secEnglish) limits[className] = secEnglish.readingLimits;
     const englishLimits = quoteLimitsFor(limits);
@@ -4965,7 +4976,11 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
       .map(c => c.name)
       .filter(n => groupIndex ? inGroup(n, 'grammar') : n.includes(":") && (n.toLowerCase().includes("grammar") || n.includes("Tenses") || n.includes("Pronouns") || n.includes("Voice") || n.includes("Speech") || n.includes("Concord") || n.includes("Modals") || n.includes("Clauses") || n.includes("Verbs") || n.includes("Adjectives") || n.includes("Prepositions") || n.includes("Sentence")));
       
-    if (selectedGrammarTopics.length > 0) {
+    if (selectedGrammarTopics.length > 0 && !engPaperHasGrammar) {
+      // Class 11 English Core: grammar is taught and unit-tested, but the
+      // full paper (on the Class 12 layout) has no grammar question.
+      promptText += `\n\n**GRAMMAR IS NOT EXAMINED IN THIS PAPER:** The selected grammar items (${selectedGrammarTopics.join('; ')}) are assessed in unit tests. Set NO grammar question; use them only as correct usage in the passages and questions.`;
+    } else if (selectedGrammarTopics.length > 0) {
       promptText += `\n\n**CRITICAL MANDATORY GRAMMAR CONFINEMENT RULE (ZERO TOLERANCE):**\n` +
         `The teacher has selected SPECIFIC grammar subtopics for this examination:\n` +
         selectedGrammarTopics.map(t => `* ${t}`).join('\n') + `\n` +
@@ -5063,11 +5078,11 @@ Anchor the passages in timeless human values:
 
   if (isLanguageSubject) {
     const readingBullet = unseenPassageCount > 0
-      ? `\n    *   **In Reading Section (Unseen Passages):** ${marks >= 75 ? "Embed 1–2 Statement-Evaluation / Assertion-Reasoning questions (testing author's intent, cause-and-effect, and inference)." : marks >= 40 ? "Embed 1 Statement-Evaluation / Cause-and-Effect question in the reading comprehension passage." : "Keep questions direct and focused on core comprehension within the 45-minute limit."}`
+      ? `\n    *   **In Reading Section (Unseen Passages):** ${engFullPaper && secEnglish.readingNote ? secEnglish.readingNote : marks >= 75 ? "Embed 1–2 Statement-Evaluation / Assertion-Reasoning questions (testing author's intent, cause-and-effect, and inference)." : marks >= 40 ? "Embed 1 Statement-Evaluation / Cause-and-Effect question in the reading comprehension passage." : "Keep questions direct and focused on core comprehension within the 45-minute limit."}`
       : ``;
     promptText += `\n12. **Assertion-Reasoning & Statement Evaluation in Language Papers:**${readingBullet}
-    *   **In Literature Section (RTC Extracts):** ${hinFullPaper ? "Follow the sample paper: each पठित काव्यांश / गद्यांश carries 5 MCQs; no Statement 1 / Statement 2 item is needed in them." : engFullPaper ? "Follow the sample paper: MCQs, complete-the-sentence and fill-in items and one 2-mark short answer; no Assertion-Reason in the literature extracts." : marks >= 75 ? "Include 1 Statement 1 vs Statement 2 relationship analysis question in the prose/drama extract." : "Ensure RTC questions test contextual literary analysis."}
-    *   **In Grammar Section:** Strictly follow official CBSE MCQ / gap-filling / transformation formats (do NOT force artificial A-R templates into grammar).`;
+    *   **In Literature Section (RTC Extracts):** ${hinFullPaper ? "Follow the sample paper: each पठित काव्यांश / गद्यांश carries 5 MCQs; no Statement 1 / Statement 2 item is needed in them." : engFullPaper ? `Follow the sample paper: ${secEnglish.extractItems || 'MCQs, complete-the-sentence and fill-in items and one 2-mark short answer'}; no Assertion-Reason in the literature extracts.` : marks >= 75 ? "Include 1 Statement 1 vs Statement 2 relationship analysis question in the prose/drama extract." : "Ensure RTC questions test contextual literary analysis."}${engPaperHasGrammar ? `
+    *   **In Grammar Section:** Strictly follow official CBSE MCQ / gap-filling / transformation formats (do NOT force artificial A-R templates into grammar).` : ``}`;
   } else {
     promptText += secSenior ? `\n12. **Assertion-Reasoning Guidelines:**
     *   **Section A Mandate:** Each Assertion-Reason question prints 'Assertion (A):' and then 'Reason (R):', ${secSenior.arAnswered}, exactly as the CBSE 2026-27 ${secSenior.paperLabel} sample paper words them: ${secSenior.arOptions.join(' ')}` : `\n12. **Assertion-Reasoning Guidelines for Academic Subjects (Science/Math/SST/Physics/Chemistry/Commerce):**
@@ -5206,8 +5221,8 @@ ${secSenior.requirements.map(line => `*   ${line}`).join('\n')}`;
     promptText += `\n\n**CBSE 2026-27 ENGLISH REQUIREMENTS:**
 *   **Question by question:** set exactly the ${secEnglish.questions.length} questions of the blueprint, in its order and with its marks, choices and word limits. Print "Attempt any N" instructions and the OR between choices exactly as the blueprint rows give them.
 *   **Reading passages are unseen:** original, age-appropriate texts marked "Created for academic usage", with numbered paragraphs so questions can refer to them. Passage 2 carries statistical data (figures in the text, or a table or chart) and several questions read that data.
-*   **Grammar in context:** every grammar item is a sentence from a realistic text (formal e-mail, notice, report, blog, safety policy, conversation), never an isolated textbook sentence.
-*   **Literature:** only from the selected chapters and poems of ${[...new Set(Object.values(secEnglish.books))].join(' and ')}. Name the text in brackets after every extract and question, and spread the questions across different chapters and poems.`;
+${engPaperHasGrammar ? `*   **Grammar in context:** every grammar item is a sentence from a realistic text (formal e-mail, notice, report, blog, safety policy, conversation), never an isolated textbook sentence.
+` : ``}*   **Literature:** only from the selected chapters and poems of ${[...new Set(Object.values(secEnglish.books))].join(' and ')}. Name the text in brackets after every extract and question, and spread the questions across different chapters and poems.`;
   }
 
   if (sstFullPaper) {
