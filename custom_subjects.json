@@ -3597,10 +3597,7 @@
         "6.5 Anatomy of Dorsiventral (Dicot) and Isobilateral (Monocot) Leaf (Mesophyll: Palisade vs Spongy Parenchyma, Bulliform Cells)"
       ],
       "Chapter 7: Structural Organisation in Animals": [
-        "7.1 Animal Tissues: Epithelial Tissue (Simple: Squamous, Cuboidal, Columnar, Ciliated; Compound Epithelium) and Cell Junctions (Tight, Adhering, Gap Junctions)",
-        "7.2 Connective Tissue: Loose (Areolar, Adipose), Dense (Regular: Tendons, Ligaments; Irregular) and Specialized Connective Tissues (Cartilage, Bone, Blood)",
-        "7.3 Muscle Tissue (Skeletal, Smooth, Cardiac) and Neural Tissue (Neurons and Neuroglial Cells)",
-        "7.4 Morphology and Anatomy of Frog (Rana tigrina): External Features, Digestive System, Respiratory System, Circulatory System, Excretory System, Nervous System and Reproductive System"
+        "7.1 Morphology and Anatomy of Frog (Rana tigrina): External Features, Digestive System, Respiratory System, Circulatory System, Excretory System, Nervous System and Reproductive System"
       ],
       "Chapter 8: Cell: The Unit of Life": [
         "8.1 What is a Cell? Cell Theory (Schleiden, Schwann, Rudolf Virchow: Omnis cellula-e cellula) and An Overview of Cell",
@@ -4208,16 +4205,15 @@
         "6.2 Magnetic Flux (Phi_B = B . A) and Faraday's Law of Induction (e = -d Phi_B / dt)",
         "6.3 Lenz's Law and Conservation of Energy with Direction Rules",
         "6.4 Motional Electromotive Force (e = B l v) and Power Dissipation in Moving Rods",
-        "6.5 Eddy Currents: Production, Undesirable Effects and Practical Applications (Induction Furnace, Magnetic Brakes)",
-        "6.6 Inductance: Self-Inductance (L = Phi / I, e = -L dI/dt) and Self-Inductance of a Long Solenoid",
-        "6.7 Mutual Inductance (M = Phi2 / I1, e2 = -M dI1/dt) and Coefficient of Coupling",
-        "6.8 AC Generator / Alternator: Principle, Construction, Working and Mathematical Derivation of Induced EMF (e = e_0 sin omega t)"
+        "6.5 Inductance: Self-Inductance (L = Phi / I, e = -L dI/dt) and Self-Inductance of a Long Solenoid",
+        "6.6 Mutual Inductance (M = Phi2 / I1, e2 = -M dI1/dt) and Coefficient of Coupling",
+        "6.7 AC Generator / Alternator: Principle, Construction, Working and Mathematical Derivation of Induced EMF (e = e_0 sin omega t)"
       ],
       "Chapter 7: Alternating Current": [
         "7.1 Alternating Current and Voltage: Peak Value, Mean / Average Value over Half Cycle and RMS Value (I_rms = I_0 / sqrt[2])",
         "7.2 AC Voltage Applied to a Pure Resistor, Pure Inductor (Inductive Reactance X_L = omega L) and Pure Capacitor (Capacitive Reactance X_C = 1 / omega C)",
         "7.3 AC Voltage Applied to a Series LCR Circuit: Phasor Diagram, Impedance (Z = sqrt[R^2 + (X_L - X_C)^2]) and Phase Angle (tan phi)",
-        "7.4 Resonance in Series LCR Circuit: Resonant Frequency (omega_0 = 1 / sqrt[LC]), Sharpness of Resonance and Quality Factor (Q)",
+        "7.4 Resonance in Series LCR Circuit: Resonant Frequency (omega_0 = 1 / sqrt[LC])",
         "7.5 Power in AC Circuits: Real Power, Apparent Power, Power Factor (cos phi = R/Z) and Wattless Current",
         "7.6 Transformers: Principle, Construction, Working, Step-Up and Step-Down, Transformation Ratio and Energy Losses"
       ],

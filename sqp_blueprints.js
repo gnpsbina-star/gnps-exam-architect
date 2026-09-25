@@ -1085,8 +1085,9 @@ const class12PhysicsScope = [
   "Energy stored in a capacitor: formulae only, NO derivation.",
   "Straight solenoid: qualitative treatment only. Ampere's circuital law is applied to an infinitely long straight wire; no proof of the law.",
   "Bar magnet as an equivalent solenoid, the field of a bar magnet along and perpendicular to its axis, and the torque on a bar magnet in a uniform field: qualitative treatment only. No time period of a magnet oscillating in a field.",
-  "Moving coil galvanometer: current sensitivity and conversion to ammeter and voltmeter.",
-  "Alternating current: LCR series circuit with phasors only; resonance, power, power factor and wattless current. No LC oscillations.",
+  "Moving coil galvanometer: current sensitivity, voltage sensitivity and conversion to ammeter and voltmeter.",
+  "Alternating current: LCR series circuit with phasors only; resonance, power, power factor and wattless current. No LC oscillations, and no sharpness of resonance or Q-factor (deleted).",
+  "Electromagnetic induction: eddy currents are deleted; set NO question on them.",
   "Electromagnetic waves: displacement current as a basic idea; transverse nature is qualitative; the spectrum with elementary facts about uses.",
   "Young's double slit experiment: use the fringe width expression, do NOT ask for its derivation. Single-slit diffraction: width of the central maximum is qualitative only. No polarisation.",
   "Atoms: Bohr model with the expressions for the radius, velocity and energy of the nth orbit; hydrogen line spectra qualitative only (no Rydberg-formula numericals on spectral series).",
@@ -1098,7 +1099,8 @@ const class12PhysicsScope = [
 
 const class11PhysicsScope = [
   "Units and Measurements: units, systems of units, SI units, significant figures, uncertainty in a result, dimensions and dimensional analysis.",
-  "Kinematics: frame of reference, position-time and velocity-time graphs, equations of uniformly accelerated motion (graphical and calculus treatment); vectors, projectile motion and uniform circular motion.",
+  "Kinematics: frame of reference, position-time and velocity-time graphs, equations of uniformly accelerated motion (graphical and calculus treatment); vectors, projectile motion and uniform circular motion. Relative velocity in one dimension is deleted: set NO question on it.",
+  "Gravitation: orbital velocity and the energy of an orbiting satellite are in the syllabus; geostationary and polar satellites are deleted: set NO question on them.",
   "Work, Energy and Power includes motion in a vertical circle and elastic and inelastic collisions in one and two dimensions.",
   "Rotational motion: centre of mass of a two-particle system and of a uniform rod; moments of inertia of simple objects are used, NOT derived.",
   "Mechanical Properties of Solids: shear modulus and applications of elastic behaviour are qualitative only.",
@@ -1347,6 +1349,7 @@ const class11BiologyScope = [
   "Biomolecules: the nature of the bond linking monomers in a polymer, the dynamic state of body constituents, the concept of metabolism, the metabolic basis of living and the living state are excluded.",
   "Photosynthetic pigments and the mechanism of hormone action are elementary ideas only; respiratory organs in animals are recall only.",
   "Animal Kingdom: non-chordates up to phylum level and chordates up to class level, with salient features and a few examples.",
+  "Structural Organisation in Animals: ONLY the morphology and anatomy of the frog (digestive, circulatory, respiratory, nervous and reproductive systems); animal tissues are deleted: set NO question on them.",
   "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
 ];
 
