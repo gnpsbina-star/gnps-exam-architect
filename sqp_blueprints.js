@@ -20,11 +20,21 @@
 // numbers, so a correction lands everywhere at once. Getting this wrong in one
 // copy and not the other is exactly how the prompt came to claim both 7 and 12
 // internal choices.
+// "2 of 3 marks, 2 of 4 marks and 2 of 6 marks" - written from the numbers so
+// the pattern text and the prompt never disagree about where the choices are.
+export function accountancyChoiceText() {
+  const parts = Object.entries(accountancyPaper.internalChoice.byMark)
+    .filter(([, n]) => n > 0)
+    .map(([mark, n]) => `${n} of ${mark} marks`);
+  return parts.length > 1 ? `${parts.slice(0, -1).join(', ')} and ${parts[parts.length - 1]}` : parts.join('');
+}
+
 export const accountancyPaper = {
   totalQuestions: 34,
   markLadder: [1, 3, 4, 6],
   excludedMarks: [2, 5],
-  internalChoice: { total: 12, byMark: { 1: 7, 3: 2, 4: 1, 6: 2 } },
+  // 2026-27 sample paper: Q17 and Q31 (3 marks), Q22 and Q33 (4), Q25 and Q26 (6).
+  internalChoice: { total: 6, byMark: { 3: 2, 4: 2, 6: 2 } },
   parts: {
     "Class 12": {
       a: { name: "Accounting for Partnership Firms and Companies", marks: 60 },
@@ -1525,6 +1535,76 @@ const class11AppliedScope = [
   "Where a numerical needs a logarithm, print the value in the question, as CBSE's Applied Mathematics papers do."
 ];
 
+// Class 11 and 12 Accountancy (055), from the CBSE 2026-27 curriculum
+// document (Accountancy_SecP2_2026-27) and the Class XII 2026-27 sample paper,
+// which says the design is unchanged. The paper runs on the 1 / 3 / 4 / 6 mark
+// ladder in accountancyPaper (top of this file) and is split into Part A and
+// Part B by syllabus, not into lettered sections; main.js adds its own
+// Accountancy block (numerical weightage, formats, which chapter sits in
+// which part) on top of what this entry gives. Class 11 mirrors the Class 12
+// layout against its own syllabus (school policy).
+const accPartA12 = "Part A: Accounting for Partnership Firms & Companies";
+const accPartB12 = "Part B: Analysis of Financial Statements (OR Computerised Accounting)";
+const accPartA11 = "Part A: Financial Accounting - I";
+const accPartB11 = "Part B: Financial Accounting - II";
+
+const accountancyGeneralInstructions = [
+  "This question paper contains 34 questions. All questions are compulsory.",
+  "This question paper is divided into two parts, Part A and B.",
+  "Part - A is compulsory for all candidates.",
+  "Part - B has two options i.e. (i) Analysis of Financial Statements and (ii) Computerised Accounting. Students must attempt only one of the given options.",
+  "Questions 1 to 16 and 27 to 30 carry 1 mark each.",
+  "Questions 17 to 20, 31 and 32 carry 3 marks each.",
+  "Questions 21, 22 and 33 carry 4 marks each.",
+  "Questions 23 to 26 and 34 carry 6 marks each.",
+  "There is no overall choice. However, an internal choice has been provided in 2 questions of three marks, 2 questions of four marks and 2 questions of six marks."
+];
+
+const accountancyFormats = {
+  misconceptions: "gaining vs sacrificing ratio, premium for goodwill shared in the sacrificing ratio, interest on partner's loan as a charge vs an appropriation, securities premium not received on forfeiture, current vs quick ratio, operating vs investing vs financing activities",
+  foundational: "accounting terms, concepts, formats and the provisions of the Partnership Act and Schedule III",
+  constructed: [
+    "Short Answer (3 Marks): journal entries, a short ledger or appropriation working, or a short computation (goodwill, ratios, share of profit), worth 3 value points. No word limit on numericals.",
+    "Numerical (4 Marks): a complete short numerical problem with working, not case-based sub-parts.",
+    "Long numerical (6 Marks): a full problem - accounts, statements or entries - built on complete, consistent data."
+  ],
+  designNote: "most 3-, 4- and 6-mark questions are numericals that apply the rules to new data, not theory.",
+  sourcing: "Source questions from the NCERT Accountancy textbooks, CBSE's sample and practice papers and past board papers; figures in ₹ with realistic Indian firm and company names.",
+  arPlacement: "under each Assertion-Reason question, lettered exactly like this (C and D in this order, as the sample paper prints them)",
+  arAnswered: "answered from the four options printed below it",
+  typology: {
+    sa: "Journal entries, a short account or appropriation working, or a short computation (goodwill, sacrificing or gaining ratio, a ratio, a share of profit), worth **3 value points**. Numerical answers carry no word limit; show the working.",
+    laHeading: "4-Mark and 6-Mark Numerical Questions",
+    la: [
+      "Every 4-mark and 6-mark question is a numerical problem with complete, internally consistent data, answered in the proper ruled format (journal with narration, ledger / capital / revaluation / realisation accounts, balance sheet extract, statement or cash flow statement).",
+      "Internal choice sits ONLY where the blueprint rows say: two 3-mark, two 4-mark and two 6-mark questions carry (A) OR (B). No 1-mark question has a choice."
+    ]
+  },
+  rigor: "Formulate questions whose answers are marked on correct entries and narrations, correct account formats and totals that agree, working notes for every computation, and amounts in ₹ with Indian digit grouping (₹ 1,50,000).",
+  instructionsNote: "",
+  mandatesTitle: null,
+  mandates: [],
+  numberingNote: "Number the questions Q1 to Q34 continuously across Part A and Part B, in the order of the rows above (a row \"Q1-Q16\" is sixteen separate questions); do NOT restart the numbering in Part B. An internal choice sits under one question number as (A) OR (B), for example 17 A OR 17 B, exactly as the sample paper prints it.",
+  design: { understanding: 32, applying: 24, analysing: 24, percent: [40, 30, 30], labels: physicsDesign.labels }
+};
+
+const class12AccountancyScope = [
+  "Partnership: interest on a partner's loan is a charge against profits; goodwill is valued by average profit, super profit and capitalisation only; past adjustments and guarantee of profits are included.",
+  "Dissolution: realisation account, capital accounts and cash / bank account ONLY - no piecemeal distribution, sale to a company or insolvency of a partner. A tangible asset with no realised value given is realised at book value; an intangible asset with none given realises nil.",
+  "Share capital: calls in arrears and in advance WITHOUT interest; issue for consideration other than cash; forfeiture and reissue; private placement, ESOP and sweat equity as concepts only.",
+  "Debentures: issue at par, premium and discount, for consideration other than cash, with terms of redemption, and as collateral security; interest on debentures without TDS; discount or loss on issue written off in the year of allotment, first from Securities Premium then from the Statement of Profit and Loss. No redemption of debentures.",
+  "Financial statements of a company follow Schedule III; exceptional items, extraordinary items and discontinued operations are excluded. Net profit ratio is worked on profit before and after tax.",
+  "Cash Flow Statement (AS-3, indirect method): adjustments for depreciation and amortisation, profit or loss on sale of assets including investments, dividend (final and interim) and tax; bank overdraft and cash credit are short-term borrowings; the previous year's proposed dividend is given effect as per AS-4.",
+  "Part B is either Analysis of Financial Statements or Computerised Accounting; the school sets Analysis of Financial Statements unless told otherwise."
+];
+
+const class11AccountancyScope = [
+  "Depreciation by the straight line and written down value methods only, with no change of method.",
+  "GST: characteristics and advantages, and simple GST calculation in journal and subsidiary-book entries (including trade discount, freight and cartage).",
+  "Rectification of errors includes errors that do and do not affect the trial balance, and the suspense account.",
+  "Financial statements of a sole proprietorship with the prescribed adjustments."
+];
+
 export const seniorPapers = {
   "Class 12 || Physics": {
     code: "042",
@@ -1788,6 +1868,72 @@ export const seniorPapers = {
       { name: "Basics of Financial Mathematics (Unit VI)", marks: 15, chapters: ["Unit 6:"] },
       { name: "Coordinate Geometry (Unit VII)", marks: 5, chapters: ["Unit 7:"] }
     ]
+  },
+  "Class 12 || Accountancy": {
+    code: "055",
+    paperLabel: "Accountancy (055)",
+    fullMarks: 80,
+    questions: [
+      { section: accPartA12, q: "Q1-Q16", type: "Objective (MCQ / Assertion-Reason / fill in the blank)", count: 16, each: 1, marks: 16, detail: "On partnership and company accounts; no internal choice" },
+      { section: accPartA12, q: "Q17-Q20", type: "Short answer - practical working", count: 4, each: 3, marks: 12, detail: "Journal entries, appropriation or short computation; internal choice in Q17" },
+      { section: accPartA12, q: "Q21-Q22", type: "Numerical", count: 2, each: 4, marks: 8, detail: "Short numerical problems; internal choice in Q22" },
+      { section: accPartA12, q: "Q23-Q26", type: "Long numerical", count: 4, each: 6, marks: 24, detail: "Admission, retirement or death, dissolution, shares and debentures; internal choice in Q25 and Q26" },
+      { section: accPartB12, q: "Q27-Q30", type: "Objective (MCQ / Assertion-Reason)", count: 4, each: 1, marks: 4, detail: "On financial statements, ratios and cash flow; no internal choice" },
+      { section: accPartB12, q: "Q31-Q32", type: "Short answer - practical working", count: 2, each: 3, marks: 6, detail: "Classification under Schedule III, a ratio, or comparative / common-size working; internal choice in Q31" },
+      { section: accPartB12, q: "Q33", type: "Numerical", count: 1, each: 4, marks: 4, detail: "Ratios, or a comparative / common-size statement; internal choice" },
+      { section: accPartB12, q: "Q34", type: "Long numerical", count: 1, each: 6, marks: 6, detail: "Cash Flow Statement by the indirect method (AS-3); no internal choice" }
+    ],
+    generalInstructions: accountancyGeneralInstructions,
+    arOptions: ["(A) Both (A) and (R) are true and (R) is correct explanation to (A).", "(B) Both (A) and (R) are true but (R) is not correct explanation of (A).", "(C) (A) is false but (R) is correct.", "(D) (A) is correct but (R) is false."],
+    scope: class12AccountancyScope,
+    ...accountancyFormats,
+    requirements: [
+      "**Two parts:** Part A (Accounting for Partnership Firms and Companies, 60 marks) and Part B (Analysis of Financial Statements, 20 marks); print under the Part B heading that candidates attempt EITHER Analysis of Financial Statements OR Computerised Accounting.",
+      "**Internal choice:** exactly 6 questions, as the sample paper places them - Q17 and Q31 (3 marks), Q22 and Q33 (4 marks), Q25 and Q26 (6 marks) - each printed as A OR B under one number."
+    ],
+    units: [
+      { name: "Accounting for Partnership Firms (Part A)", marks: 36, chapters: ["Partnership - Basic", "Reconstitution", "Admission", "Retirement", "Dissolution"] },
+      { name: "Accounting for Companies (Part A)", marks: 24, chapters: ["Share Capital", "Debentures"] },
+      { name: "Analysis of Financial Statements (Part B)", marks: 12, chapters: ["Financial Statements of a Company", "Financial Statement Analysis", "Accounting Ratios"] },
+      { name: "Cash Flow Statement (Part B)", marks: 8, chapters: ["Cash Flow"] }
+    ]
+  },
+  "Class 11 || Accountancy": {
+    code: "055",
+    paperLabel: "Accountancy (055), Class XI",
+    fullMarks: 80,
+    questions: [
+      { section: accPartA11, q: "Q1-Q16", type: "Objective (MCQ / Assertion-Reason / fill in the blank)", count: 16, each: 1, marks: 16, detail: "Theoretical framework and accounting process; no internal choice" },
+      { section: accPartA11, q: "Q17-Q20", type: "Short answer - practical working", count: 4, each: 3, marks: 12, detail: "Journal entries, ledger or short working; internal choice in Q17" },
+      { section: accPartA11, q: "Q21", type: "Numerical", count: 1, each: 4, marks: 4, detail: "Short numerical problem; internal choice" },
+      { section: accPartA11, q: "Q22-Q25", type: "Long numerical", count: 4, each: 6, marks: 24, detail: "Bank reconciliation, depreciation, subsidiary books, trial balance and rectification; internal choice in Q24 and Q25" },
+      { section: accPartB11, q: "Q26-Q29", type: "Objective (MCQ / Assertion-Reason)", count: 4, each: 1, marks: 4, detail: "Financial statements of a sole proprietorship; no internal choice" },
+      { section: accPartB11, q: "Q30-Q31", type: "Short answer - practical working", count: 2, each: 3, marks: 6, detail: "Capital vs revenue items, adjustments; internal choice in Q30" },
+      { section: accPartB11, q: "Q32-Q33", type: "Numerical", count: 2, each: 4, marks: 8, detail: "Trading or profit and loss working; internal choice in Q32" },
+      { section: accPartB11, q: "Q34", type: "Long numerical", count: 1, each: 6, marks: 6, detail: "Financial statements of a sole proprietorship with adjustments; no internal choice" }
+    ],
+    generalInstructions: [
+      "This question paper contains 34 questions. All questions are compulsory.",
+      "This question paper is divided into two parts, Part A (Financial Accounting - I, 56 marks) and Part B (Financial Accounting - II, 24 marks).",
+      "Questions 1 to 16 and 26 to 29 carry 1 mark each.",
+      "Questions 17 to 20, 30 and 31 carry 3 marks each.",
+      "Questions 21, 32 and 33 carry 4 marks each.",
+      "Questions 22 to 25 and 34 carry 6 marks each.",
+      "There is no overall choice. However, an internal choice has been provided in 2 questions of three marks, 2 questions of four marks and 2 questions of six marks."
+    ],
+    arOptions: ["(A) Both (A) and (R) are true and (R) is correct explanation to (A).", "(B) Both (A) and (R) are true but (R) is not correct explanation of (A).", "(C) (A) is false but (R) is correct.", "(D) (A) is correct but (R) is false."],
+    scope: class11AccountancyScope,
+    ...accountancyFormats,
+    numberingNote: "Number the questions Q1 to Q34 continuously across Part A and Part B, in the order of the rows above; do NOT restart the numbering in Part B. An internal choice sits under one question number as (A) OR (B).",
+    requirements: [
+      "**Two parts:** Part A (Financial Accounting - I, 56 marks) and Part B (Financial Accounting - II, 24 marks).",
+      "**Internal choice:** exactly 6 questions - Q17 and Q30 (3 marks), Q21 and Q32 (4 marks), Q24 and Q25 (6 marks) - each printed as A OR B under one number."
+    ],
+    units: [
+      { name: "Theoretical Framework (Part A)", marks: 12, chapters: ["Introduction to Accounting", "Theory Base"] },
+      { name: "Accounting Process (Part A)", marks: 44, chapters: ["Recording of Transactions", "Bank Reconciliation", "Trial Balance", "Depreciation"] },
+      { name: "Financial Statements of Sole Proprietorship (Part B)", marks: 24, chapters: ["Financial Statements of Sole"] }
+    ]
   }
 };
 
@@ -2003,7 +2149,8 @@ Every writing and extract question offers a choice of (A) or (B).`
   },
 
   "Class 12 || Accountancy": {
-    year: "2025-26",
+    year: "2026-27",
+    fullMarks: 80,
     text: `The question paper contains ${acc.totalQuestions} questions. All questions are compulsory.
 The paper is divided into two parts, Part A and Part B.
   Part A - ${acc.parts["Class 12"].a.name} (${acc.parts["Class 12"].a.marks} Marks), compulsory for all candidates.
@@ -2013,13 +2160,15 @@ Mark distribution, numbered continuously across both parts:
   Questions 17 to 20, 31 and 32 carry 3 marks each.
   Questions 21, 22 and 33 carry 4 marks each.
   Questions 23 to 26 and 34 carry 6 marks each.
-There is no overall choice. Internal choice is provided in ${accIC.total} questions:
-${accIC.byMark[1]} questions of 1 mark, ${accIC.byMark[3]} of 3 marks, ${accIC.byMark[4]} of 4 marks and ${accIC.byMark[6]} of 6 marks.
-Accountancy never uses ${accExcluded} questions.`
+There is no overall choice. Internal choice is provided in ${accIC.total} questions: ${accountancyChoiceText()}
+(Q17, Q22, Q25, Q26, Q31 and Q33 in the sample paper). The 1-mark questions carry no choice.
+Accountancy never uses ${accExcluded} questions.
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
   },
 
   "Class 11 || Accountancy": {
-    year: "2025-26",
+    year: "2026-27",
+    fullMarks: 80,
     text: `Class 11 is a school examination, so CBSE publishes no sample paper for it.
 This pattern mirrors the Class 12 Accountancy design against the Class 11 syllabus
 weighting, so students meet the board format from the first year.
@@ -2028,7 +2177,7 @@ The paper contains ${acc.totalQuestions} questions, divided into two parts:
   Part B - ${acc.parts["Class 11"].b.name} (${acc.parts["Class 11"].b.marks} Marks): Financial Statements of Sole Proprietorship.
 Questions run on the same ${acc.markLadder.join(' / ')} mark ladder used at Class 12, numbered
 continuously across both parts, and internal choice follows the Class 12 paper:
-${accIC.total} questions in all - ${accIC.byMark[1]} of 1 mark, ${accIC.byMark[3]} of 3 marks, ${accIC.byMark[4]} of 4 marks and ${accIC.byMark[6]} of 6 marks.
+${accIC.total} questions in all - ${accountancyChoiceText()}; the 1-mark questions carry no choice.
 Accountancy never uses ${accExcluded} questions.`
   }
 };

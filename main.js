@@ -1,5 +1,5 @@
 import { cbseData } from './data.js?v=46';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=14';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper, accountancyChoiceText } from './sqp_blueprints.js?v=15';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -4428,7 +4428,8 @@ export async function buildPromptString(activeBtn) {
   const secSkill = getSecondarySkill(className, subjectName);
   const skillFullPaper = !!secSkill && isFullLengthPaper && (parseInt(marks, 10) || 0) === 50;
   // Class 11 and 12 subjects checked against the CBSE 2026-27 sample paper
-  // (Physics, Chemistry, Biology, Mathematics and Applied Mathematics so far;
+  // (Physics, Chemistry, Biology, Mathematics, Applied Mathematics and Accountancy
+  // so far;
   // see seniorPapers in sqp_blueprints.js). Their question formats and scope limits apply to every
   // paper; the sample-paper layout, question design and unit weightage govern
   // the full-length paper only (Mid Term, Final, Pre Board).
@@ -4710,6 +4711,8 @@ ${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structure
           }
         });
       }
+    } else if (srFullPaper && secSenior.numberingNote) {
+      blueprintPromptText += `\n**CRITICAL — QUESTION NUMBERING:** ${secSenior.numberingNote}\n`;
     } else if (srFullPaper) {
       blueprintPromptText += `\n**CRITICAL — QUESTION NUMBERING:** Number the questions Q1 to Q${activeBlueprint.totalQuestions} continuously across Sections A to E, in the order of the rows above (a row "Q1-Q12" is twelve separate questions). An internal choice sits under one question number as (A) OR (B), for example 20(A) OR 20(B), exactly as the sample paper prints it.\n`;
     } else if (isCombinedScience && subjectName.toLowerCase().includes('legacy')) {
@@ -4874,15 +4877,15 @@ ${secSenior.arOptions.map(o => `          *${o}*`).join('\n')}
     *   **5-Mark Long Answer (LA) Questions:**
         - Answer in not more than **120 words**. A single analytical question (explain, evaluate, analyse, compare) is normal in CBSE Social Science papers; a split such as (1 + 2 + 2) is also used, for example on a data table. Show the split in the marks column when there is one.
         - **Internal choice:** ${sstFullPaper ? `EVERY long answer has an internal choice (A) OR (B), from the same chapter and at the same level, as in the CBSE 2026-27 sample paper.` : `provide an internal choice (A) OR (B) where the blueprint above says so.`}
-` : ''}${secSenior ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
+` : ''}${secSenior && secSenior.typology.vsa ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
         - ${secSenior.typology.vsa}
-    *   **3-Mark Short Answer (SA) Questions:**
+` : ''}${secSenior && secSenior.typology.sa ? `    *   **3-Mark Short Answer (SA) Questions:**
         - ${secSenior.typology.sa}
 ` : ''}${!secMaths && !secSocial && !secSenior && usesMark(2) ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
         - Word limit: 30–50 words. Formulate questions so students provide **exactly 2 distinct marking points** (1M each or 0.5M × 4), matching official CBSE Marking Scheme value points.
 ` : ''}${!secMaths && !secSocial && !secSenior && usesMark(3) ? `    *   **3-Mark Short Answer (SA) Questions:**
         - Word limit: 50–80 words. Formulate questions so answers require **3 distinct step-wise value points** (or a structured 2M + 1M split).
-` : ''}${secSenior && secSenior.typology.la ? `    *   **5-Mark Long Answer (LA) Questions:**
+` : ''}${secSenior && secSenior.typology.la ? `    *   **${secSenior.typology.laHeading || '5-Mark Long Answer (LA) Questions'}:**
 ${secSenior.typology.la.map(line => `        - ${line}`).join('\n')}
 ` : ''}${!secMaths && !secSocial && !(secSenior && secSenior.typology.la) && usesMark(5) ? `    *   **5-Mark Long Answer (LA) Questions:**
         - **CBSE Board Rule:** Never frame an unstructured single 5-mark essay. All 5-mark questions MUST be sub-divided into structured sub-parts (e.g., '(a) [2 Marks] + (b) [2 Marks] + (c) [1 Mark]' or '(a) [3 Marks] + (b) [2 Marks]'), exactly as official CBSE Board SQPs do.
@@ -4890,7 +4893,7 @@ ${secSenior.typology.la.map(line => `        - ${line}`).join('\n')}
 ` : ''}${sstFullPaper ? `    *   **4-Mark Case-Based Questions (CBQs):**
         - A source passage of about 120-180 words adapted from the NCERT textbook, with a heading and a source line (for example "Source: Contemporary India-II, NCERT, Chapter 2"), followed by **three sub-questions of 1, 1 and 2 marks** (in any order), numbered like 8.1, 8.2, 8.3. Answers in not more than 100 words in all.
         - No internal choice inside a case-based question, as in the CBSE 2026-27 sample paper.
-` : ''}${secSenior ? `    *   **4-Mark ${secSenior.typology.cbqHeading}:**
+` : ''}${secSenior && secSenior.typology.cbq ? `    *   **4-Mark ${secSenior.typology.cbqHeading}:**
 ${secSenior.typology.cbq.map(line => `        - ${line}`).join('\n')}
 ` : ''}${usesCaseBased && !sstFullPaper && !secSenior ? `    *   **4-Mark Case-Based Questions (CBQs):**
         - Authentic real-world case/scenario, diagram, or data table from NCERT or CBSE Question Bank followed by:
@@ -5126,7 +5129,7 @@ Anchor the passages in timeless human values:
     const accExcludedText = accountancyPaper.excludedMarks.map(m => `a ${m}-mark`).join(' or ');
     const accIC = accountancyPaper.internalChoice;
     const sixMarkTopics = className === "Class 12"
-      ? "Admission / Retirement / Death of a partner, Dissolution of a firm, Issue & Forfeiture of Shares, Issue and Redemption of Debentures, Cash Flow Statement"
+      ? "Admission / Retirement / Death of a partner, Dissolution of a firm, Issue, Forfeiture and Reissue of Shares, Issue of Debentures (including terms of redemption and collateral security), Cash Flow Statement"
       : "Bank Reconciliation Statement, Depreciation (Straight Line & Written Down Value), Trial Balance & Rectification of Errors, Financial Statements of a Sole Proprietorship with adjustments";
 
     // The chapter checkboxes carry only "Chapter -> subtopic", so the Part a
@@ -5149,7 +5152,7 @@ ${isFullPaper
   ? `*   **Two Parts, not lettered sections:** The paper is divided into ${partALabel} and ${partBLabel}. Number the questions continuously from Q1 to Q${accountancyPaper.totalQuestions} across both parts — do NOT restart numbering in Part B and do NOT label the parts as "Section A/B/C/D/E".`
   : `*   **No Part A / Part B here:** that split belongs to the full ${className === "Class 12" ? "80-mark board-pattern" : "80-mark"} paper. This is a short internal test drawn from the selected chapters only, which may all sit within one part. Print it as ONE continuous run of questions numbered from Q1, with no Part or lettered Section headings.`}
 *   **Mark ladder:** Accountancy uses ONLY ${accLadderText} mark questions. **NEVER set ${accExcludedText} question in this subject.**
-*   **Internal choice:** ${isFullPaper ? `Provide internal choice in ${accIC.total} questions, exactly as CBSE does: ${accIC.byMark[1]} of the 1-mark questions, ${accIC.byMark[3]} of the 3-mark, ${accIC.byMark[4]} of the 4-mark and ${accIC.byMark[6]} of the 6-mark.` : "Provide internal choice in the 6-mark numerical, and in one 3-mark or 4-mark question."}
+*   **Internal choice:** ${isFullPaper ? `Provide internal choice in ${accIC.total} questions, exactly as CBSE's 2026-27 sample paper does: ${accountancyChoiceText()}. No 1-mark question carries a choice.` : "Provide internal choice in the 6-mark numerical, and in one 3-mark or 4-mark question."}
 *   **4-mark questions are numericals**, not case-based questions with (i)/(ii)/(iii) sub-parts.
 
 **NUMERICAL / PRACTICAL WEIGHTAGE (THE MOST COMMON FAILURE — READ CAREFULLY):**
@@ -5163,8 +5166,10 @@ ${isFullPaper
   }
 
   const isScienceBranch = subLower.includes("physics") || subLower.includes("chemistry") || subLower.includes("biology");
-  if (secSenior) {
+  if (secSenior && secSenior.mandates.length) {
     promptText += `\n\n**${secSenior.mandatesTitle}:**\n${secSenior.mandates.map(line => `*   ${line}`).join('\n')}`;
+  } else if (secSenior) {
+    // A senior paper with no mandates of its own (Accountancy has its own block).
   } else if (isScienceBranch) {
     if (subLower.includes("physics")) {
       promptText += `\n\n**CBSE SCIENCE (PHYSICS) BRANCH MANDATES & PEDAGOGICAL RIGOR:**
