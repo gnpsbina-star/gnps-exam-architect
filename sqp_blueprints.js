@@ -751,11 +751,15 @@ are set on the Class 10 Course B pattern (school policy). The paper has 15 quest
 // Part B Subject Specific Skills 40, with the unit marks below) and 50 marks
 // of practical work, project and viva that are not part of the written paper.
 //
-// The theory paper layout is CBSE's skill question paper design for Classes
-// IX and X, as its skill sample papers set it. CBSE publishes those papers on
-// cbseskilleducation.nic.in, which this environment cannot reach, so the
-// layout has not been re-read from the 2026-27 papers; the curricula confirm
-// the 10 + 40 split it rests on.
+// The theory paper layout is read from CBSE's skill sample papers
+// (cbseacademic.nic.in/skill-education-sqp.html). The newest are for 2025-26;
+// CBSE has not published 2026-27 skill papers, and the 2026-27 units carry the
+// same marks. All five papers CBSE serves (Class X 405, 413, 417, 418 and
+// Class IX 413) use this same layout, word for word in their instructions.
+// CBSE's links for the Class IX 405, 417 and 418 papers are broken (404).
+//
+// `sqp` on a unit is the number of questions the sample paper's blueprint
+// prints from it: [1-mark, 2-mark, 4-mark] (Part A: [1-mark, 2-mark]).
 export const skillPaperQuestions = [
   { section: "Section A", heading: "Objective Type Questions", q: "Q1", type: "Employability Skills - objective questions", marks: 4, each: 1, attempt: 4, of: 6, part: "A",
     detail: "MCQs, fill in the blanks and one-word answers on Part A" },
@@ -790,9 +794,9 @@ Marks: Part A Employability Skills 10 (4 + 6), Part B Subject Specific Skills 40
 the other 50 marks are practical work, project and viva, assessed separately.`;
 
 const employabilityUnits = [
-  { match: "Communication Skills", marks: 2 }, { match: "Self-Management Skills", marks: 2 },
-  { match: "Information and Communication Technology Skills", marks: 2 },
-  { match: "Entrepreneurial Skills", marks: 2 }, { match: "Green Skills", marks: 2 }
+  { match: "Communication Skills", marks: 2, sqp: [1, 1] }, { match: "Self-Management Skills", marks: 2, sqp: [2, 1] },
+  { match: "Information and Communication Technology Skills", marks: 2, sqp: [1, 1] },
+  { match: "Entrepreneurial Skills", marks: 2, sqp: [1, 1] }, { match: "Green Skills", marks: 2, sqp: [1, 1] }
 ];
 
 // A row with `count` stands for that many separately numbered questions (the
@@ -811,24 +815,24 @@ export const secondarySkill = {
       { match: "Setting Goals", marks: 3 }, { match: "Systematic Saving and Investments", marks: 5 },
       { match: "Making a Budget", marks: 4 }],
     "Class 10": [
-      { match: "Investment Basics", marks: 2 }, { match: "Securities", marks: 2 },
-      { match: "Primary Market", marks: 7 }, { match: "Secondary Market", marks: 7 },
-      { match: "Derivatives", marks: 2 }, { match: "Depository", marks: 2 },
-      { match: "Mutual Funds", marks: 4 }, { match: "Miscellaneous", marks: 6 },
-      { match: "Concepts and Modes of Analysis", marks: 6 }, { match: "Ratio Analysis", marks: 2 }],
+      { match: "Investment Basics", marks: 2, sqp: [4, 0, 0] }, { match: "Securities", marks: 2, sqp: [2, 0, 0] },
+      { match: "Primary Market", marks: 7, sqp: [4, 1, 1] }, { match: "Secondary Market", marks: 7, sqp: [4, 1, 1] },
+      { match: "Derivatives", marks: 2, sqp: [2, 0, 0] }, { match: "Depository", marks: 2, sqp: [2, 1, 0] },
+      { match: "Mutual Funds", marks: 4, sqp: [1, 0, 1] }, { match: "Miscellaneous", marks: 6, sqp: [2, 1, 1] },
+      { match: "Concepts and Modes of Analysis", marks: 6, sqp: [2, 1, 1] }, { match: "Ratio Analysis", marks: 2, sqp: [1, 1, 0] }],
     notes: ["Numerical questions (interest, Rule of 72, budgets, brokerage, NAV, dividend yield, ratios) use simple Indian-rupee figures that can be worked by hand."]
   },
   "Health Care (413)": {
     code: "413", label: "Health Care (413)",
     book: "Health Care (CBSE skill curriculum) - job role: General Duty Assistant",
     "Class 9": [
-      { match: "Health Care Delivery Systems", marks: 10 }, { match: "Role of Patient Care Assistant", marks: 10 },
-      { match: "Personal Hygiene and Hygiene Standards", marks: 10 },
-      { match: "Primary Healthcare and Emergency Medical Response", marks: 5 }, { match: "Immunization", marks: 5 }],
+      { match: "Health Care Delivery Systems", marks: 10, sqp: [5, 1, 1] }, { match: "Role of Patient Care Assistant", marks: 10, sqp: [5, 1, 1] },
+      { match: "Personal Hygiene and Hygiene Standards", marks: 10, sqp: [5, 1, 1] },
+      { match: "Primary Healthcare and Emergency Medical Response", marks: 5, sqp: [5, 1, 1] }, { match: "Immunization", marks: 5, sqp: [4, 2, 1] }],
     "Class 10": [
-      { match: "Hospital Structure and Functions", marks: 10 }, { match: "Care Plan and Care of Patients", marks: 5 },
-      { match: "Sterilization and Disinfection", marks: 5 }, { match: "Basic First Aid", marks: 10 },
-      { match: "Structure, Functions and Nutrition", marks: 5 }, { match: "Public Relations in Hospital", marks: 5 }],
+      { match: "Hospital Structure and Functions", marks: 10, sqp: [4, 1, 1] }, { match: "Care Plan and Care of Patients", marks: 5, sqp: [4, 1, 1] },
+      { match: "Sterilization and Disinfection", marks: 5, sqp: [4, 1, 1] }, { match: "Basic First Aid", marks: 10, sqp: [4, 1, 1] },
+      { match: "Structure, Functions and Nutrition", marks: 5, sqp: [4, 1, 1] }, { match: "Public Relations in Hospital", marks: 5, sqp: [4, 1, 0] }],
     notes: ["Frame situations in a hospital, clinic or community health setting; procedures (hand washing, bed making, vital signs, first aid, biomedical waste colour codes) are asked as correct steps."]
   },
   "Artificial Intelligence (417)": {
@@ -839,9 +843,9 @@ export const secondarySkill = {
       { match: "Math for AI", marks: 7 }, { match: "Introduction to Generative AI", marks: 5 },
       { match: "Introduction to Python", marks: 8 }],
     "Class 10": [
-      { match: "Revisiting AI Project Cycle", marks: 7 }, { match: "Advanced Concepts of Modelling", marks: 11 },
-      { match: "Evaluating Models", marks: 10 }, { match: "Statistical Data", marks: 0, practicalOnly: true },
-      { match: "Computer Vision", marks: 4 }, { match: "Natural Language Processing", marks: 8 },
+      { match: "Revisiting AI Project Cycle", marks: 7, sqp: [5, 1, 1] }, { match: "Advanced Concepts of Modelling", marks: 11, sqp: [4, 2, 2] },
+      { match: "Evaluating Models", marks: 10, sqp: [6, 1, 1] }, { match: "Statistical Data", marks: 0, practicalOnly: true },
+      { match: "Computer Vision", marks: 4, sqp: [4, 1, 0] }, { match: "Natural Language Processing", marks: 8, sqp: [5, 1, 1] },
       { match: "Advance Python", marks: 0, practicalOnly: true }],
     notes: ["Python questions (Class 9) ask the student to predict output, find the error or write a few lines of code; evaluation questions (Class 10) give a confusion matrix to calculate accuracy, precision, recall or F1 score."]
   },
@@ -854,8 +858,8 @@ export const secondarySkill = {
       { match: "Organising Age Appropriate Physical Activities", marks: 12 },
       { match: "Children Health and Safety", marks: 8 }],
     "Class 10": [
-      { match: "Physical Activity Facilitator", marks: 10 }, { match: "Assessment and Evaluation of Students", marks: 10 },
-      { match: "Free-play", marks: 10 }, { match: "Monitoring and Inventory Management", marks: 10 }],
+      { match: "Physical Activity Facilitator", marks: 10, sqp: [6, 1, 1] }, { match: "Assessment and Evaluation of Students", marks: 10, sqp: [6, 2, 2] },
+      { match: "Free-play", marks: 10, sqp: [6, 1, 1] }, { match: "Monitoring and Inventory Management", marks: 10, sqp: [6, 2, 1] }],
     notes: ["Frame situations of a school physical activity facilitator working with young children: planning sessions, organising events, safety and first aid, assessment and equipment."]
   }
 };

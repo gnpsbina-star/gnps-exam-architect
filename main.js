@@ -1,5 +1,5 @@
 import { cbseData } from './data.js?v=42';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=8';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=9';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -597,7 +597,9 @@ function buildQuestionRows(spec) {
 // Class 9 / 10 skill subjects: which Part A and Part B units the ticked items
 // fall in, and each unit's share of the theory marks. CBSE's unit marks are
 // used as they are when every unit is ticked, and shared in proportion over
-// the ticked units otherwise (Part A 10 marks, Part B 40).
+// the ticked units otherwise (Part A 10 marks, Part B 40). When every unit is
+// ticked and CBSE's sample paper blueprint is known, the prompt also gives the
+// number of 1-, 2- and 4-mark questions that blueprint prints from each unit.
 function buildSkillUnitText(spec, selectedNames) {
   const titleOf = n => String(n).split('->')[0].trim().toLowerCase();
   const pick = (units, total) => {
@@ -605,12 +607,21 @@ function buildSkillUnitText(spec, selectedNames) {
     const base = ticked.reduce((a, u) => a + u.marks, 0);
     if (!base) return { ticked, lines: [] };
     const shares = shareSectionMarks(ticked.map(u => u.marks), total);
-    return { ticked, lines: ticked.map((u, i) => `    - ${u.match}: ${shares[i]} marks${ticked.length < units.filter(x => !x.practicalOnly).length ? ` (CBSE unit weight ${u.marks})` : ``}`) };
+    const whole = ticked.length === units.filter(x => !x.practicalOnly).length;
+    const printed = u => {
+      if (!whole || !u.sqp) return '';
+      const kinds = [[u.sqp[0], '1-mark'], [u.sqp[1], '2-mark'], [u.sqp[2], '4-mark']].filter(([n]) => n);
+      return ` — print ${kinds.map(([n, k]) => `${n} × ${k}`).join(', ')}`;
+    };
+    return { ticked, lines: ticked.map((u, i) => `    - ${u.match}: ${shares[i]} marks${whole ? printed(u) : ` (CBSE unit weight ${u.marks})`}`) };
   };
   const a = pick(spec.employabilityUnits, 10);
   const b = pick(spec.units, 40);
   const practical = spec.units.filter(u => u.practicalOnly && selectedNames.some(n => titleOf(n).includes(u.match.toLowerCase())));
   let text = `**CBSE 2026-27 UNIT WEIGHTAGE — ${spec.label} THEORY PAPER (50 marks):**\n`;
+  if (a.lines.concat(b.lines).some(line => line.includes(' — print '))) {
+    text += `*   Where a unit shows "print ...", that is the number of questions CBSE's skill sample paper blueprint prints from it (Part A: 6 one-mark in Q1 and 5 two-mark in Q6-Q10; Part B: 24 one-mark in Q2-Q5, 6 two-mark in Q11-Q16 and 5 four-mark in Q17-Q21). Follow those counts.\n`;
+  }
   text += a.lines.length
     ? `*   **Part A — Employability Skills (10 marks):**\n${a.lines.join('\n')}\n`
     : `*   **Part A — Employability Skills (10 marks):** no Employability Skills unit is ticked, but CBSE's paper always has Part A: set Q1 and Q6-Q10 across all five units (Communication, Self-Management, ICT, Entrepreneurial and Green Skills), 2 marks each.\n`;
@@ -4672,7 +4683,7 @@ ${secEnglish.competencies.map((line, i) => `      ${i + 1}. ${line}`).join('\n')
     : `अनुच्छेद (about 120 words, on the 3 संकेत-बिंदु given); औपचारिक पत्र (about 100 words: प्रेषक का पता, दिनांक, सेवा में/प्राप्तकर्ता, विषय, संबोधन, body, भवदीय/भवदीया, name); सूचना (about 60 words, in a box: issuing body, सूचना, date, title, body, name and designation); विज्ञापन (about 40 words, with a slogan; a box or picture is optional); ई-मेल (about 80 words: To, विषय, संबोधन, body, sign-off) OR लघुकथा (about 100 words, with a title)`;
   const skillTypology = secSkill ? `    *   **1-Mark Objective Questions (Section A):** MCQs with four options, fill in the blanks, true or false, one-word answers, match the following, and short situation-based MCQs, as CBSE skill papers use. Distractors are plausible workplace alternatives.
     *   **2-Mark Short Answers (20-30 words):** define, list, state a difference or give a reason — exactly 2 value points.
-    *   **4-Mark Long Answers (50-80 words):** explain a process or procedure, apply a concept to a workplace situation or case, or work a short calculation — 4 value points (or 2 + 2).
+    *   **4-Mark Long Answers (50-80 words):** explain a process or procedure, apply a concept to a workplace situation or case, or work a short calculation — 4 value points. As in CBSE's skill sample papers, a 4-mark question may be split into parts (a) and (b), or (a), (b) and (c), or be built on a short case study ("Read the case study below and answer the following questions").
     *   **Part A (Employability Skills):** set from the ${className === 'Class 9' ? 'Class IX' : 'Class X'} Employability Skills units (Communication, Self-Management, ICT, Entrepreneurial and Green Skills${className === 'Class 9' ? ' - I' : ' - II'}), with everyday school and workplace situations.
     *   **Part B (Subject Specific Skills):** ${secSkill.notes.join(' ')}
     *   **Marking-scheme value points:** every constructed response can be marked point by point; print the word limit in the question. No SI-unit, chemical-equation or derivation rules apply to this subject.` : '';
