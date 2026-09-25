@@ -3415,8 +3415,7 @@ export const cbseData = {
         "1.3 Subsets, Proper Subsets, Subsets of Real Numbers, Intervals as Subsets of R (Open, Closed, Semi-Open)",
         "1.4 Power Set (Number of Elements 2^n) and Universal Set",
         "1.5 Venn Diagrams and Operations on Sets: Union of Sets, Intersection of Sets and Disjoint Sets",
-        "1.6 Difference of Sets and Complement of a Set with De Morgan's Laws",
-        "1.7 Practical Problems on Union and Intersection of Two Sets: n(A U B) = n(A) + n(B) - n(A cap B)"
+        "1.6 Difference of Sets and Complement of a Set with De Morgan's Laws"
       ],
       "Chapter 2: Relations and Functions": [
         "2.1 Cartesian Product of Sets (A x B), Number of Elements and Graphical Representation",
@@ -3436,13 +3435,10 @@ export const cbseData = {
         "4.1 Need for Complex Numbers, Definition z = a + ib, Imaginary Unit i (Powers of i)",
         "4.2 Algebra of Complex Numbers: Addition, Subtraction, Multiplication, Division and Properties",
         "4.3 Modulus (|z| = sqrt[a^2 + b^2]) and Conjugate (bar_z = a - ib) of a Complex Number and Identities",
-        "4.4 Argand Plane and Polar Representation of Complex Numbers: z = r(cos theta + i sin theta)",
-        "4.5 Solution of Quadratic Equations with Complex Roots (Discriminant D < 0)"
+        "4.4 Argand Plane"
       ],
       "Chapter 5: Linear Inequalities": [
-        "5.1 Inequalities: Definition, Algebraic Solutions of Linear Inequalities in One Variable and Number Line Representation",
-        "5.2 Graphical Solution of Linear Inequalities in Two Variables (Half-Planes, Closed and Open)",
-        "5.3 Solution of System of Linear Inequalities in Two Variables Graphically (Feasible Common Region)"
+        "5.1 Inequalities: Definition, Algebraic Solutions of Linear Inequalities in One Variable and Number Line Representation"
       ],
       "Chapter 6: Permutations and Combinations": [
         "6.1 Fundamental Principle of Counting (Multiplication Principle and Addition Principle)",
@@ -3453,10 +3449,8 @@ export const cbseData = {
         "6.6 Practical Word Problems Involving Selection, Arrangements, Restricted Permutations and Combinations"
       ],
       "Chapter 7: Binomial Theorem": [
-        "7.1 Binomial Theorem for Positive Integral Indices: Statement and Proof using Principle of Mathematical Induction",
-        "7.2 Pascal's Triangle and General Expansion Formula: (a + b)^n = sum nCr a^(n-r) b^r",
-        "7.3 General Term in Binomial Expansion: T_(r+1) = nCr a^(n-r) b^r",
-        "7.4 Middle Term(s) in Binomial Expansion (n is Even vs n is Odd) and Applications"
+        "7.1 Binomial Theorem for Positive Integral Indices: Historical Perspective, Statement and Proof",
+        "7.2 Pascal's Triangle, General Expansion (a + b)^n = sum nCr a^(n-r) b^r and Simple Applications"
       ],
       "Chapter 8: Sequences and Series": [
         "8.1 Sequences, Series and Progression Concepts",
@@ -3469,8 +3463,7 @@ export const cbseData = {
         "9.1 Slope of a Line: m = tan theta = (y2 - y1)/(x2 - x1), Angle Between Two Lines (tan theta = |(m2-m1)/(1+m1m2)|)",
         "9.2 Conditions for Parallelism (m1 = m2) and Perpendicularity (m1 * m2 = -1) of Lines",
         "9.3 Various Forms of Equations of a Line: Point-Slope Form, Two-Point Form, Slope-Intercept Form (y = mx + c), Intercept Form (x/a + y/b = 1)",
-        "9.4 General Equation of a Line Ax + By + C = 0 and Reduction to Standard Forms",
-        "9.5 Distance of a Point from a Line: d = |Ax1 + By1 + C| / sqrt[A^2 + B^2] and Distance Between Two Parallel Lines"
+        "9.4 Distance of a Point from a Line: d = |Ax1 + By1 + C| / sqrt[A^2 + B^2] and Distance Between Two Parallel Lines"
       ],
       "Chapter 10: Conic Sections": [
         "10.1 Sections of a Cone (Circle, Ellipse, Parabola, Hyperbola) and Degenerate Conics",
@@ -3482,8 +3475,7 @@ export const cbseData = {
       "Chapter 11: Introduction to Three Dimensional Geometry": [
         "11.1 Coordinate Axes and Coordinate Planes in Three Dimensional Space (Eight Octants)",
         "11.2 Coordinates of a Point in 3D Space and Signs of Coordinates in Various Octants",
-        "11.3 Distance Formula Between Two Points in Space: d = sqrt[(x2-x1)^2 + (y2-y1)^2 + (z2-z1)^2]",
-        "11.4 Section Formula for Internal and External Division in 3D Space and Mid-Point / Centroid Formulae"
+        "11.3 Distance Formula Between Two Points in Space: d = sqrt[(x2-x1)^2 + (y2-y1)^2 + (z2-z1)^2]"
       ],
       "Chapter 12: Limits and Derivatives": [
         "12.1 Intuitive Idea of Limits, Left-Hand Limit, Right-Hand Limit and Existence of Limit",
@@ -3498,28 +3490,64 @@ export const cbseData = {
         "13.1 Measures of Dispersion: Need for Dispersion and Range",
         "13.2 Mean Deviation about Mean for Ungrouped and Grouped (Discrete and Continuous) Data",
         "13.3 Mean Deviation about Median for Grouped Data",
-        "13.4 Variance (sigma^2) and Standard Deviation (sigma) for Ungrouped and Grouped Frequency Distributions (Shortcut and Step-Deviation Methods)",
-        "13.5 Analysis of Frequency Distributions with Equal Means but Different Variances"
+        "13.4 Variance (sigma^2) and Standard Deviation (sigma) for Ungrouped and Grouped Frequency Distributions (Shortcut and Step-Deviation Methods)"
       ],
       "Chapter 14: Probability": [
-        "14.1 Random Experiments, Sample Space (S) and Outcomes",
-        "14.2 Events: Occurrence of an Event, Types of Events (Impossible, Sure, Simple, Compound Events)",
-        "14.3 Algebra of Events: Complementary Event ('not A'), Union ('A or B'), Intersection ('A and B'), Difference ('A but not B')",
-        "14.4 Mutually Exclusive Events (A cap B = phi) and Exhaustive Events (A U B = S)",
-        "14.5 Axiomatic Approach to Probability: Axioms of Probability, Probability of an Event P(E)",
-        "14.6 Addition Rule of Probability: P(A U B) = P(A) + P(B) - P(A cap B) and P(not A) = 1 - P(A)"
+        "14.1 Events: Occurrence of an Event, Types of Events (Impossible, Sure, Simple, Compound Events)",
+        "14.2 Algebra of Events: Complementary Event ('not A'), Union ('A or B'), Intersection ('A and B'), Difference ('A but not B')",
+        "14.3 Mutually Exclusive Events (A cap B = phi) and Exhaustive Events (A U B = S)",
+        "14.4 Axiomatic Approach to Probability: Axioms of Probability, Probability of an Event P(E)",
+        "14.5 Addition Rule of Probability: P(A U B) = P(A) + P(B) - P(A cap B) and P(not A) = 1 - P(A)"
       ]
     },
-    "Applied Mathematics": [
-      "Unit 1: Numbers, Quantification and Numerical Applications",
-      "Unit 2: Algebra (Sets, Relations, Sequences, Permutations)",
-      "Unit 3: Mathematical Reasoning",
-      "Unit 4: Calculus (Functions, Limits, Continuity, Differentiation)",
-      "Unit 5: Probability (Conditional Probability, Total Probability)",
-      "Unit 6: Descriptive Statistics (Measures of Central Tendency & Dispersion)",
-      "Unit 7: Financial Mathematics (Interest, Annuity, Taxation)",
-      "Unit 8: Coordinate Geometry (Straight Lines, Circles, Parabola)"
-    ],
+    "Applied Mathematics": {
+      "Unit 1: Numbers, Quantification and Numerical Applications": [
+        "1.1 Binary Numbers: Conversion between Decimal and Binary and its Applications",
+        "1.2 Indices, Logarithm and Antilogarithm",
+        "1.3 Introduction to the Bhartiya System of Numeration",
+        "1.4 Clocks: Angular Value of a Minute and the Angle between the Hands",
+        "1.5 Calendar: Odd Days in a Month, Year and Century and the Day for a Given Date",
+        "1.6 Time and Work",
+        "1.7 Speed, Distance and Time",
+        "1.8 Seating Arrangement (Linear and Circular)"
+      ],
+      "Unit 2: Algebra": [
+        "2.1 Sets and their Representations (Roster and Set-builder Forms), Types of Sets",
+        "2.2 Subsets, Power Set, Universal Set and Intervals as Subsets of Real Numbers",
+        "2.3 Venn Diagrams and Operations on Sets",
+        "2.4 Ordered Pairs and Cartesian Product of Two Sets",
+        "2.5 Relations: Relation as a Subset of a Cartesian Product, Domain and Range",
+        "2.6 Mathematical Logic: Odd Man Out, Syllogism, Blood Relations and Coding-Decoding",
+        "2.7 Sequence and Series",
+        "2.8 Arithmetic Progression and Arithmetic Mean",
+        "2.9 Geometric Progression, Sum of an Infinite GP, Geometric Mean and the AM-GM Relation"
+      ],
+      "Unit 3: Calculus": [
+        "3.1 Functions and their Graphs",
+        "3.2 Limits and Continuity of Functions",
+        "3.3 Differentiation: Instantaneous Rate of Change and the Derivative",
+        "3.4 Algebra of Derivatives"
+      ],
+      "Unit 4: Combinatorics and Probability": [
+        "4.1 Combinatorics: Factorial, Fundamental Principle of Counting, Permutations and Combinations",
+        "4.2 Probability: Random Experiments, Sample Space, Events and Conditional Probability"
+      ],
+      "Unit 5: Descriptive Statistics": [
+        "5.1 Measures of Dispersion: Range, Mean Deviation, Variance and Standard Deviation",
+        "5.2 Percentiles and Percentile Rank (Ungrouped Data)",
+        "5.3 Correlation: Karl Pearson's and Spearman's Rank Correlation Coefficients (Ungrouped Data)",
+        "5.4 Regression: Regression Analysis, Dependent and Independent Variables"
+      ],
+      "Unit 6: Basics of Financial Mathematics": [
+        "6.1 Interest and Interest Rates: Nominal, Effective and Real Rates; Simple and Compound Interest",
+        "6.2 Annuities: Immediate, Due and Deferred; Present and Future Value (up to 3 periods)",
+        "6.3 Taxes and Utility Bills: Income Tax, GST, Electricity, Water and PNG Bills"
+      ],
+      "Unit 7: Coordinate Geometry": [
+        "7.1 Straight Lines: Slope and Various Forms of the Equation of a Line",
+        "7.2 Circles and Parabola as Loci, Equations of a Circle and Applications"
+      ]
+    },
     "Biology": {
       "Chapter 1: The Living World": [
         "1.1 What is 'Living'? Characteristics of Life (Growth, Reproduction, Metabolism, Cellular Organisation, Consciousness)",
@@ -4357,8 +4385,7 @@ export const cbseData = {
       "Chapter 1: Relations and Functions": [
         "1.1 Types of Relations: Empty Relation, Universal Relation, Reflexive, Symmetric, Transitive and Equivalence Relations",
         "1.2 Equivalence Classes and Partition of a Set",
-        "1.3 Types of Functions: One-One (Injective), Onto (Surjective) and Bijective Functions with Algebraic Proofs",
-        "1.4 Composition of Functions and Invertible Functions (Elementary Properties)"
+        "1.3 Types of Functions: One-One (Injective), Onto (Surjective) and Bijective Functions with Algebraic Proofs"
       ],
       "Chapter 2: Inverse Trigonometric Functions": [
         "2.1 Basic Concepts: Restriction of Domain and Range of Trigonometric Functions to Ensure Invertibility",
@@ -4451,20 +4478,74 @@ export const cbseData = {
         "13.2 Multiplication Rule of Probability: P(A cap B) = P(A) * P(B|A) = P(B) * P(A|B)",
         "13.3 Independent Events: Definition (P(A cap B) = P(A) * P(B)), Difference Between Mutually Exclusive and Independent Events",
         "13.4 Theorem of Total Probability: P(A) = sum P(E_i) * P(A|E_i)",
-        "13.5 Bayes' Theorem: Statement, Mathematical Formulation and Practical Applications (Medical Diagnostics, Defective Production)",
-        "13.6 Random Variables and their Probability Distributions: Discrete Random Variable, Probability Mass Function and Mean of a Random Variable"
+        "13.5 Bayes' Theorem: Statement, Mathematical Formulation and Practical Applications (Medical Diagnostics, Defective Production)"
       ]
     },
-    "Applied Mathematics": [
-      "Unit 1: Numbers, Quantification and Numerical Applications (Modulo Arithmetic, Congruence, Numerical Problems)",
-      "Unit 2: Algebra (Matrices, Determinants and Applications)",
-      "Unit 3: Calculus (Higher Order Derivatives, Marginal Cost/Revenue, Indefinite/Definite Integrals)",
-      "Unit 4: Probability Distributions (Random Variables, Binomial Distribution, Normal Distribution)",
-      "Unit 5: Inferential Statistics (Sampling, Hypothesis Testing, t-Test)",
-      "Unit 6: Index Numbers and Time-based Data",
-      "Unit 7: Financial Mathematics (Perpetuity, Sinking Funds, EMI, Rate of Return, Depreciation)",
-      "Unit 8: Linear Programming (Formulation & Graphical Method)"
-    ],
+    "Applied Mathematics": {
+      "Unit 1: Numbers, Quantification and Numerical Applications": [
+        "1.1 Modulo Arithmetic",
+        "1.2 Congruence Modulo and Equivalence Classes",
+        "1.3 Alligation and Mixture",
+        "1.4 Numerical Problems: Boats and Streams, Pipes and Cisterns, Races and Games",
+        "1.5 Numerical Inequalities"
+      ],
+      "Unit 2: Algebra": [
+        "2.1 Matrices and Types of Matrices",
+        "2.2 Equality of Matrices, Transpose, Symmetric and Skew-symmetric Matrices",
+        "2.3 Algebra of Matrices",
+        "2.4 Determinants",
+        "2.5 Inverse of a Matrix",
+        "2.6 Solving Simultaneous Equations by the Matrix Method and Cramer's Rule"
+      ],
+      "Unit 3: Calculus": [
+        "3.1 Derivatives up to Second Order",
+        "3.2 Application of Derivatives: Rate of Change",
+        "3.3 Marginal Cost and Marginal Revenue using Derivatives",
+        "3.4 Increasing and Decreasing Functions",
+        "3.5 Maxima and Minima",
+        "3.6 Integration as Anti-derivative",
+        "3.7 Indefinite Integrals as a Family of Curves",
+        "3.8 Definite Integrals as Area under the Curve",
+        "3.9 Application of Integration: Consumer and Producer Surplus, Total Cost and Revenue from Marginal Functions",
+        "3.10 Differential Equations: Order and Degree",
+        "3.11 Formulating and Solving Differential Equations (Variables Separable, Direct Integration)"
+      ],
+      "Unit 4: Probability Distributions": [
+        "4.1 Probability Distribution of a Random Variable",
+        "4.2 Mathematical Expectation",
+        "4.3 Variance and Standard Deviation of a Random Variable",
+        "4.4 Binomial Distribution",
+        "4.5 Poisson Distribution",
+        "4.6 Normal Distribution"
+      ],
+      "Unit 5: Inferential Statistics": [
+        "5.1 Population and Sample",
+        "5.2 Parameter, Statistic and Statistical Inference",
+        "5.3 t-Test (One-sample t-test for a Small Sample)"
+      ],
+      "Unit 6: Time-based Data": [
+        "6.1 Time Series as Chronological Data",
+        "6.2 Components of Time Series",
+        "6.3 Time Series Analysis for Univariate Data",
+        "6.4 Secular Trend",
+        "6.5 Methods of Measuring Trend"
+      ],
+      "Unit 7: Financial Mathematics": [
+        "7.1 Perpetuity and Sinking Funds",
+        "7.2 Valuation of Bonds",
+        "7.3 Calculation of EMI",
+        "7.4 Compound Annual Growth Rate (CAGR)",
+        "7.5 Linear Method of Depreciation"
+      ],
+      "Unit 8: Linear Programming": [
+        "8.1 Introduction and Related Terminology",
+        "8.2 Mathematical Formulation of a Linear Programming Problem",
+        "8.3 Types of Linear Programming Problems (Manufacturing, Diet and Others)",
+        "8.4 Graphical Method of Solution for Problems in Two Variables",
+        "8.5 Feasible and Infeasible Regions (Bounded and Unbounded)",
+        "8.6 Feasible and Infeasible Solutions and the Optimal Feasible Solution"
+      ]
+    },
     "Biology": {
       "Chapter 1: Sexual Reproduction in Flowering Plants": [
         "1.1 Flower Structure: A Fascinating Organ of Angiosperms and Pre-Fertilisation Structures and Events",

@@ -1262,6 +1262,143 @@ const biologyMandates = (roman, focus) => ({
   ]
 });
 
+// Class 11 and 12 Mathematics (041) and Applied Mathematics (241), from the
+// CBSE 2026-27 curriculum documents (Maths_SecP2, Applied_Mathematics_SecP2)
+// and the Class XII 2026-27 sample papers, which both say the design is
+// unchanged. Both papers use the same 80-mark, 38-question layout; they differ
+// in Section C (Mathematics gives a choice in three questions, Applied
+// Mathematics in two), in figures (only the Mathematics paper carries
+// figure-based questions with alternatives for visually impaired candidates)
+// and in content. CBSE publishes a typology split for Mathematics (44 / 20 /
+// 16) but none for Applied Mathematics.
+const seniorMathsQuestions = sectionCChoices => [
+  { section: "Section A", q: "Q1-Q18", type: "Multiple Choice Questions", count: 18, each: 1, marks: 18,
+    detail: "Four options (A)-(D)" },
+  { section: "Section A", q: "Q19-Q20", type: "Assertion-Reason", count: 2, each: 1, marks: 2,
+    detail: "The Directions line and the four options printed once above Q19" },
+  { section: "Section B", q: "Q21-Q25", type: "Very Short Answer", count: 5, each: 2, marks: 10,
+    detail: "Internal choice in 2 questions" },
+  { section: "Section C", q: "Q26-Q31", type: "Short Answer", count: 6, each: 3, marks: 18,
+    detail: `Internal choice in ${sectionCChoices} questions` },
+  { section: "Section D", q: "Q32-Q35", type: "Long Answer", count: 4, each: 5, marks: 20,
+    detail: "Internal choice in 2 questions; one complete multi-step problem each" },
+  { section: "Section E", q: "Q36-Q38", type: "Case study based", count: 3, each: 4, marks: 12,
+    detail: "Q36 and Q37: sub-parts (i) 1, (ii) 1 and (iii) 2 marks, with (iii) (a) OR (b); Q38: two sub-parts of 2 marks each, no choice" }
+];
+
+const seniorMathsInstructions = sectionCChoices => [
+  "This question paper contains 38 questions. All questions are compulsory.",
+  "This question paper is divided into five Sections - A, B, C, D and E.",
+  "In Section A, Question no. 1 to 18 are multiple choice questions (MCQs) and Questions no. 19 and 20 are Assertion-Reason based questions of 1 mark each.",
+  "In Section B, Question no. 21 to 25 are Very Short Answer (VSA)-type questions, carrying 2 marks each.",
+  "In Section C, Question no. 26 to 31 are Short Answer (SA)-type questions, carrying 3 marks each.",
+  "In Section D, Question no. 32 to 35 are Long Answer (LA)-type questions, carrying 5 marks each.",
+  "In Section E, Question no. 36 to 38 are case study-based questions carrying 4 marks each.",
+  `There is no overall choice. However, an internal choice has been provided in 2 questions in Section B, ${sectionCChoices} questions in Section C, 2 questions in Section D and one sub-part each in 2 questions of Section E.`,
+  "Draw neat and clean figures wherever required. Take π = 22/7 wherever required, if not stated.",
+  "Use of calculators is not allowed."
+];
+
+const seniorMathsPattern = sectionCChoices => `This question paper contains 38 questions. All questions are compulsory.
+The paper is divided into five Sections - A, B, C, D and E.
+  Section A: Questions 1 to 18 are MCQs and Questions 19 and 20 are Assertion-Reason based, 1 mark each (20 x 1 = 20).
+  Section B: Questions 21 to 25 are Very Short Answer (VSA) questions of 2 marks each (5 x 2 = 10).
+  Section C: Questions 26 to 31 are Short Answer (SA) questions of 3 marks each (6 x 3 = 18).
+  Section D: Questions 32 to 35 are Long Answer (LA) questions of 5 marks each (4 x 5 = 20).
+  Section E: Questions 36 to 38 are case study based questions of 4 marks each (3 x 4 = 12). The first two have
+             sub-parts (i), (ii), (iii) of 1, 1 and 2 marks; the third has two sub-parts of 2 marks each.
+There is no overall choice. Internal choice is provided in 2 questions of Section B, ${sectionCChoices} of Section C,
+2 of Section D and one sub-part each in 2 questions of Section E.
+Draw neat and clean figures wherever required. Take pi = 22/7 wherever required, if not stated.
+Use of calculators is not allowed.`;
+
+const seniorMathsArOptions = [
+  "(A) Both Assertion (A) and Reason (R) are true and Reason (R) is the correct explanation of Assertion (A).",
+  "(B) Both Assertion (A) and Reason (R) are true but Reason (R) is not the correct explanation of Assertion (A).",
+  "(C) Assertion (A) is true but Reason (R) is false.",
+  "(D) Assertion (A) is false but Reason (R) is true."
+];
+
+// CBSE 2026-27 question paper design for Mathematics (041), Class XI and XII.
+const seniorMathsDesign = {
+  understanding: 44, applying: 20, analysing: 16, percent: [55, 25, 20],
+  labels: physicsDesign.labels
+};
+
+const seniorMathsFormats = {
+  shortCaseDetail: "A real-life context with sub-parts (i) 1 mark, (ii) 1 mark and (iii) 2 marks, where (iii) has an internal choice (a) OR (b)",
+  foundational: "formulae, standard results and mathematical terms",
+  constructed: [
+    "Very Short Answer (VSA - 2 Marks): short working or reasoning worth exactly 2 marking-scheme value points. No word limit.",
+    "Short Answer (SA - 3 Marks): step-wise working worth 3 value points. No word limit.",
+    "Long Answer (LA - 5 Marks): one complete multi-step problem; sub-parts are optional."
+  ],
+  designNote: "the paper needs genuine problem solving beyond direct textbook recall.",
+  arPlacement: `once above Q19, after the Directions line "Question numbers 19 and 20 are Assertion and Reason based questions carrying 1 mark each. Two statements are given, one labelled Assertion (A) and the other labelled Reason (R). Select the correct answer from the options (A), (B), (C) and (D) as given below:"`,
+  arAnswered: "answered from the four options printed once above them",
+  typology: {
+    vsa: "Short working, a short proof or a reasoning step earning **exactly 2 marking-scheme value points**. Mathematics answers have NO word limit.",
+    sa: "Step-wise working or a short proof worth **3 value points**. No word limit.",
+    la: [
+      "One complete multi-step problem (sub-parts are allowed but NOT required; CBSE's own papers mostly set single 5-mark problems), worth 5 step-marked value points.",
+      "**Internal choice:** exactly 2 of the 4 Long Answer questions have an internal choice (A) OR (B), from the same chapter and at the same level."
+    ],
+    cbqHeading: "Case Study Based Questions",
+    cbq: [
+      "A real-life context of about 80-150 words (the sample papers use laser security beams as lines in space, a river-restoration budget modelled by a quadratic, fruit baskets priced by a system of equations, and water tanks filled by pipes), followed by the sub-parts the blueprint gives.",
+      "Q36 and Q37: **(i) 1 mark, (ii) 1 mark and (iii) 2 marks, where (iii) has an internal choice (a) OR (b)**. Q38: **two sub-parts of 2 marks each, with no choice**. Print \"Based on the given information, answer the following questions:\" before the sub-parts."
+    ]
+  },
+  instructionsNote: "",
+  figureQuota: null,
+  diagramRules: null
+};
+
+const seniorMathsMandates = (roman, subject, extra) => ({
+  mandatesTitle: `CBSE ${subject.toUpperCase()} (${roman}) MANDATES & PEDAGOGICAL RIGOR`,
+  mandates: [
+    "**No calculators:** choose numbers that can be worked by hand; take π = 22/7 unless the question says otherwise.",
+    "**Step marking:** every constructed answer is marked on the method (the formula or result used), the working and the final answer, so frame questions whose solution has clear steps.",
+    extra,
+    "**Section headings:** under each Section heading print CBSE's line, for example \"This section comprises of 18 multiple choice questions and two assertion and reason type questions of 1 mark each.\""
+  ]
+});
+
+const class12MathsScope = [
+  "Relations and Functions: types of relations (reflexive, symmetric, transitive, equivalence) and one-one and onto functions ONLY. No composition of functions, invertible functions or binary operations.",
+  "Matrices and Determinants: determinants up to 3 x 3; non-commutativity and zero products shown with square matrices of order 2; systems of linear equations with a unique solution, solved using the inverse of a matrix.",
+  "Applications of Derivatives: rate of change, increasing and decreasing functions, maxima and minima (first and second derivative tests). No tangents and normals, no approximations, no Rolle's or mean value theorem.",
+  "Integrals: substitution, partial fractions, by parts and the standard forms in the curriculum; the Fundamental Theorem of Calculus is used without proof.",
+  "Applications of Integrals: area under simple curves - lines, circles, parabolas and ellipses in standard form only. No area between two curves.",
+  "Differential Equations: variables separable, homogeneous of first order and first degree, and linear dy/dx + Py = Q or dx/dy + Px = Q. No formation of differential equations.",
+  "Three-dimensional Geometry: direction cosines and ratios, equations of a line (vector and Cartesian), angle between two lines, skew lines and shortest distance. No planes.",
+  "Linear Programming: graphical method in two variables with up to three non-trivial constraints.",
+  "Probability: conditional probability, multiplication theorem, independent events, total probability and Bayes' theorem. No random variables, probability distributions or binomial distribution.",
+  "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
+];
+
+const class11MathsScope = [
+  "Topics CBSE assesses only formatively in 2026-27 carry NO question in this paper: practical problems on union and intersection of two sets, composition of functions, general solutions of trigonometric equations, mathematical induction, polar representation of complex numbers and solving quadratic equations in the complex number system, graphical solution of linear inequalities in two variables, general and middle terms of a binomial expansion, the sums of k, k² and k³, the normal form and general equation of a line, the section formula in three dimensions, the chain rule, and random experiments, outcomes and sample spaces.",
+  "Limits and Derivatives: derivatives of polynomial and trigonometric functions (sum, difference, product and quotient).",
+  "Statistics: measures of dispersion (range, mean deviation, variance and standard deviation) only.",
+  "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
+];
+
+const class12AppliedScope = [
+  "Calculus: differential equations are solved by direct integration or variables separable only; applications of integration are consumer and producer surplus, and total cost or revenue from marginal cost or revenue.",
+  "Probability Distributions include the binomial, Poisson and normal distributions; Inferential Statistics is limited to population and sample, parameter and statistic, and the one-sample t-test for a small sample.",
+  "Time-based Data: time series, its components, secular trend and methods of measuring trend. No index numbers.",
+  "Financial Mathematics: perpetuity, sinking funds, valuation of bonds, EMI, CAGR and the linear method of depreciation.",
+  "Where a numerical needs a logarithm or a table value (for example t-values or normal-curve areas), print the value in the question, as the sample paper does (\"Use log(1.331) = 0.124\")."
+];
+
+const class11AppliedScope = [
+  "Class XI Applied Mathematics has seven units: Numbers, Quantification and Numerical Applications; Algebra (sets, relations, mathematical logic, sequences and series); Calculus; Combinatorics and Probability; Descriptive Statistics; Basics of Financial Mathematics; Coordinate Geometry. There is no Mathematical Reasoning unit.",
+  "Descriptive Statistics: measures of dispersion, percentiles (ungrouped data), Karl Pearson's and Spearman's rank correlation (ungrouped data) and regression.",
+  "Basics of Financial Mathematics: interest rates, annuities (up to 3 periods), income tax, GST and utility bills.",
+  "Where a numerical needs a logarithm, print the value in the question, as CBSE's Applied Mathematics papers do."
+];
+
 export const seniorPapers = {
   "Class 12 || Physics": {
     code: "042",
@@ -1383,6 +1520,147 @@ export const seniorPapers = {
       { name: "Cell: Structure and Function (Unit III)", marks: 15, chapters: ["Cell: The Unit of Life", "Biomolecules", "Cell Cycle"] },
       { name: "Plant Physiology (Unit IV)", marks: 12, chapters: ["Photosynthesis", "Respiration in Plants", "Plant Growth"] },
       { name: "Human Physiology (Unit V)", marks: 18, chapters: ["Breathing", "Body Fluids", "Excretory Products", "Locomotion", "Neural Control", "Chemical Coordination"] }
+    ]
+  },
+  "Class 12 || Mathematics": {
+    code: "041",
+    paperLabel: "Mathematics (041)",
+    fullMarks: 80,
+    design: seniorMathsDesign,
+    questions: seniorMathsQuestions(3).map(q => q.q === "Q1-Q18" ? { ...q, detail: "Four options (A)-(D); one or two built on a graph or figure, each with an alternative \"For Visually Impaired\" in words only" } : q),
+    generalInstructions: seniorMathsInstructions(3),
+    arOptions: seniorMathsArOptions,
+    scope: class12MathsScope,
+    ...seniorMathsFormats,
+    misconceptions: "principal value branches of inverse trigonometric functions, domain and range, sign errors in derivatives, forgetting the constant or the limits in integrals, confusing independent and mutually exclusive events, direction ratios vs direction cosines",
+    sourcing: "Source questions from the NCERT textbook and NCERT Exemplar, CBSE competency-based question banks and past board papers, as the sample paper does; case studies may use real settings such as security beams, budgets, prices or tanks.",
+    rigor: "Formulate questions requiring the formula or result to be stated, complete step-wise working, correct notation (vectors, intervals, limits of integration, the constant of integration) and a fully simplified final answer with units where there are any. Numbers must work out cleanly by hand, because calculators are not allowed.",
+    requirements: [
+      "**Figures, as in the sample paper:** a few questions give a graph or figure (for example the graph of an inverse trigonometric function in an MCQ, or a region whose area is found). Directly below each, add an alternative headed \"For Visually Impaired:\" that tests the same concept in words only, with the same marks. LPP and area questions may ask the student to draw the graph: never print the answer figure.",
+      "**Internal choice:** 2 questions in Section B, 3 in Section C, 2 in Section D, and part (iii) of Q36 and Q37, printed as (A) OR (B) or (a) OR (b).",
+      "**Assertion-Reason:** print the Directions line and the four options once, above Q19, exactly as given in the typology rules above (rule 8).",
+      "**Case studies (Section E):** Q36 and Q37 are (i) 1 + (ii) 1 + (iii) 2 with a choice in (iii); Q38 is two parts of 2 marks each with no choice."
+    ],
+    figureQuota: "Set **3 to 5 figure-based questions** (graphs of functions, regions for area, feasible regions, 3D line sketches), each with a words-only alternative for visually impaired candidates",
+    diagramRules: `
+    *   **Mathematics Figures:** MUST generate clean inline vector SVG for:
+        - Graphs of functions (inverse trigonometric functions, curves and lines) on labelled axes with scales, and shaded regions whose area is found.
+        - Feasible regions of linear programming problems with the boundary lines labelled and the corner points marked.
+        - Sketches of lines in space or triangles for vector questions, with labelled points; data as HTML tables.`,
+    ...seniorMathsMandates("XII", "Mathematics", "**Proofs and reasoning:** include \"show that\" and \"prove\" items the curriculum keeps (for example one-one and onto, equivalence relations, continuity and differentiability at a point), and a case study that models a real situation."),
+    units: [
+      { name: "Relations and Functions (Unit I)", marks: 8, chapters: ["Relations and Functions", "Inverse Trigonometric"] },
+      { name: "Algebra (Unit II)", marks: 10, chapters: ["Matrices", "Determinants"] },
+      { name: "Calculus (Unit III)", marks: 35, chapters: ["Continuity", "Applications of Derivatives", "Integrals", "Differential Equations"] },
+      { name: "Vectors and Three-Dimensional Geometry (Unit IV)", marks: 14, chapters: ["Vector Algebra", "Three Dimensional Geometry"] },
+      { name: "Linear Programming (Unit V)", marks: 5, chapters: ["Linear Programming"] },
+      { name: "Probability (Unit VI)", marks: 8, chapters: ["Probability"] }
+    ]
+  },
+  "Class 11 || Mathematics": {
+    code: "041",
+    paperLabel: "Mathematics (041), Class XI",
+    fullMarks: 80,
+    design: seniorMathsDesign,
+    questions: seniorMathsQuestions(3).map(q => q.q === "Q1-Q18" ? { ...q, detail: "Four options (A)-(D); one or two built on a graph or figure, each with an alternative \"For Visually Impaired\" in words only" } : q),
+    generalInstructions: seniorMathsInstructions(3),
+    arOptions: seniorMathsArOptions,
+    scope: class11MathsScope,
+    ...seniorMathsFormats,
+    misconceptions: "radian and degree conversion, signs of trigonometric functions in each quadrant, permutation vs combination, the common ratio in a GP, slope of perpendicular lines, mutually exclusive vs exhaustive events",
+    sourcing: "Source questions from the NCERT textbook and NCERT Exemplar, CBSE competency-based question banks and past papers, set on the Class XII sample paper layout; case studies may use real settings such as seating, budgets, surveys or games.",
+    rigor: "Formulate questions requiring the formula or result to be stated, complete step-wise working, correct notation (set-builder form, intervals, nPr and nCr, limits) and a fully simplified final answer. Numbers must work out cleanly by hand, because calculators are not allowed.",
+    requirements: [
+      "**Figures:** a few questions give a graph or figure (for example a Venn diagram, the graph of a function, a line or a conic). Directly below each, add an alternative headed \"For Visually Impaired:\" that tests the same concept in words only, with the same marks.",
+      "**Internal choice:** 2 questions in Section B, 3 in Section C, 2 in Section D, and part (iii) of Q36 and Q37, printed as (A) OR (B) or (a) OR (b).",
+      "**Assertion-Reason:** print the Directions line and the four options once, above Q19, exactly as given in the typology rules above (rule 8).",
+      "**Case studies (Section E):** Q36 and Q37 are (i) 1 + (ii) 1 + (iii) 2 with a choice in (iii); Q38 is two parts of 2 marks each with no choice."
+    ],
+    figureQuota: "Set **3 to 5 figure-based questions** (Venn diagrams, graphs of functions, lines and conics on axes), each with a words-only alternative for visually impaired candidates",
+    diagramRules: `
+    *   **Mathematics Figures:** MUST generate clean inline vector SVG for:
+        - Venn diagrams with labelled sets and regions; graphs of real functions (modulus, signum, greatest integer, trigonometric) on labelled axes.
+        - Lines, circles, parabolas, ellipses and hyperbolas on coordinate axes with labelled points; data as HTML tables.`,
+    ...seniorMathsMandates("XI", "Mathematics", "**Proofs and reasoning:** include \"show that\" and \"prove\" items the curriculum keeps (for example trigonometric identities, the binomial theorem, the relation between AM and GM), and a case study that models a real situation."),
+    units: [
+      { name: "Sets and Functions (Unit I)", marks: 23, chapters: ["Sets", "Relations and Functions", "Trigonometric Functions"] },
+      { name: "Algebra (Unit II)", marks: 25, chapters: ["Complex Numbers", "Linear Inequalities", "Permutations", "Binomial", "Sequences"] },
+      { name: "Coordinate Geometry (Unit III)", marks: 12, chapters: ["Straight Lines", "Conic Sections", "Three Dimensional"] },
+      { name: "Calculus (Unit IV)", marks: 8, chapters: ["Limits and Derivatives"] },
+      { name: "Statistics and Probability (Unit V)", marks: 12, chapters: ["Statistics", "Probability"] }
+    ]
+  },
+  "Class 12 || Applied Mathematics": {
+    code: "241",
+    paperLabel: "Applied Mathematics (241)",
+    fullMarks: 80,
+    design: null,
+    designText: "CBSE publishes no typology split for Applied Mathematics. Follow the sample paper's balance: most questions apply mathematics to a business, finance, economics or everyday situation, with MCQs on concepts and direct computations and longer questions that formulate and solve a real problem.",
+    questions: seniorMathsQuestions(2),
+    generalInstructions: seniorMathsInstructions(2),
+    arOptions: seniorMathsArOptions,
+    scope: class12AppliedScope,
+    ...seniorMathsFormats,
+    misconceptions: "modular arithmetic remainders, alligation ratios, marginal cost vs total cost, parameter vs statistic, one-tailed vs two-tailed tests, perpetuity vs annuity, feasible vs optimal solutions",
+    sourcing: "Source questions from the NCERT Applied Mathematics textbook, CBSE's Applied Mathematics sample and practice papers and past board papers; set them in business, finance, economics and everyday contexts (pipes and cisterns, races, EMIs, bonds, sales trends, production planning).",
+    rigor: "Formulate questions requiring the formula or method to be stated, complete step-wise working, correct units (₹, %, hours, km) and a clearly stated conclusion (for example \"reject the null hypothesis\", \"the EMI is ₹ ...\"). Numbers must work out by hand, because calculators are not allowed; print any logarithm or table value needed.",
+    requirements: [
+      "**Internal choice:** 2 questions in Section B, 2 in Section C, 2 in Section D, and part (iii) of Q36 and Q37, printed as (A) OR (B) or (a) OR (b).",
+      "**Assertion-Reason:** print the Directions line and the four options once, above Q19, exactly as given in the typology rules above (rule 8).",
+      "**Case studies (Section E):** Q36 and Q37 are (i) 1 + (ii) 1 + (iii) 2 with a choice in (iii); Q38 is two parts of 2 marks each with no choice.",
+      "**Values for hand working:** print any logarithm, t-table or normal-table value a question needs, in square brackets after the question, as the sample paper does."
+    ],
+    figureQuota: "Use **1 to 3 figures or tables** where a question needs them (a feasible region, a time-series graph, a data table)",
+    diagramRules: `
+    *   **Applied Mathematics Figures:** MUST generate clean inline vector SVG or HTML tables for:
+        - Feasible regions of linear programming problems, demand and supply or cost curves, consumer and producer surplus regions, time-series plots with a trend line.
+        - Data tables (sales over years, samples for a t-test, probability distributions) as HTML tables.`,
+    ...seniorMathsMandates("XII", "Applied Mathematics", "**Applied contexts:** most questions are set in a business, finance, economics or everyday situation and ask the student to formulate the mathematics as well as solve it."),
+    units: [
+      { name: "Numbers, Quantification and Numerical Applications (Unit I)", marks: 11, chapters: ["Unit 1:"] },
+      { name: "Algebra (Unit II)", marks: 10, chapters: ["Unit 2:"] },
+      { name: "Calculus (Unit III)", marks: 15, chapters: ["Unit 3:"] },
+      { name: "Probability Distributions (Unit IV)", marks: 10, chapters: ["Unit 4:"] },
+      { name: "Inferential Statistics (Unit V)", marks: 5, chapters: ["Unit 5:"] },
+      { name: "Time-based Data (Unit VI)", marks: 6, chapters: ["Unit 6:"] },
+      { name: "Financial Mathematics (Unit VII)", marks: 15, chapters: ["Unit 7:"] },
+      { name: "Linear Programming (Unit VIII)", marks: 8, chapters: ["Unit 8:"] }
+    ]
+  },
+  "Class 11 || Applied Mathematics": {
+    code: "241",
+    paperLabel: "Applied Mathematics (241), Class XI",
+    fullMarks: 80,
+    design: null,
+    designText: "CBSE publishes no typology split for Applied Mathematics. Follow the Class XII sample paper's balance: most questions apply mathematics to a business, finance or everyday situation, with MCQs on concepts and direct computations and longer questions that formulate and solve a real problem.",
+    questions: seniorMathsQuestions(2),
+    generalInstructions: seniorMathsInstructions(2),
+    arOptions: seniorMathsArOptions,
+    scope: class11AppliedScope,
+    ...seniorMathsFormats,
+    misconceptions: "binary conversion, laws of logarithms, the angle between clock hands, odd days, permutation vs combination, mean deviation vs standard deviation, nominal vs effective rate of interest",
+    sourcing: "Source questions from the NCERT Applied Mathematics textbook, CBSE's Applied Mathematics sample and practice papers and past papers; set them in business, finance and everyday contexts (clocks and calendars, work and time, seating plans, interest, taxes and utility bills).",
+    rigor: "Formulate questions requiring the formula or method to be stated, complete step-wise working, correct units (₹, %, hours, km) and a clearly stated conclusion. Numbers must work out by hand, because calculators are not allowed; print any logarithm value needed.",
+    requirements: [
+      "**Internal choice:** 2 questions in Section B, 2 in Section C, 2 in Section D, and part (iii) of Q36 and Q37, printed as (A) OR (B) or (a) OR (b).",
+      "**Assertion-Reason:** print the Directions line and the four options once, above Q19, exactly as given in the typology rules above (rule 8).",
+      "**Case studies (Section E):** Q36 and Q37 are (i) 1 + (ii) 1 + (iii) 2 with a choice in (iii); Q38 is two parts of 2 marks each with no choice.",
+      "**Values for hand working:** print any logarithm value a question needs, in square brackets after the question."
+    ],
+    figureQuota: "Use **1 to 3 figures or tables** where a question needs them (a Venn diagram, a line or circle on axes, a data table)",
+    diagramRules: `
+    *   **Applied Mathematics Figures:** MUST generate clean inline vector SVG or HTML tables for:
+        - Venn diagrams, clock faces, seating plans (linear or circular), lines, circles and parabolas on coordinate axes.
+        - Data tables (scores for percentiles, paired data for correlation, bills and tax slabs) as HTML tables.`,
+    ...seniorMathsMandates("XI", "Applied Mathematics", "**Applied contexts:** most questions are set in a business, finance or everyday situation and ask the student to formulate the mathematics as well as solve it."),
+    units: [
+      { name: "Numbers, Quantification and Numerical Applications (Unit I)", marks: 10, chapters: ["Unit 1:"] },
+      { name: "Algebra (Unit II)", marks: 18, chapters: ["Unit 2:"] },
+      { name: "Calculus (Unit III)", marks: 12, chapters: ["Unit 3:"] },
+      { name: "Combinatorics and Probability (Unit IV)", marks: 10, chapters: ["Unit 4:"] },
+      { name: "Descriptive Statistics (Unit V)", marks: 10, chapters: ["Unit 5:"] },
+      { name: "Basics of Financial Mathematics (Unit VI)", marks: 15, chapters: ["Unit 6:"] },
+      { name: "Coordinate Geometry (Unit VII)", marks: 5, chapters: ["Unit 7:"] }
     ]
   }
 };
@@ -1530,6 +1808,42 @@ This paper is set on the Class XII Biology 2026-27 sample paper layout, against 
 curriculum and its unit weightage, so students meet the board format a year early.
 BIOLOGY - CODE NO. 044, Class XI, Maximum Marks 70, Time Allowed 3 hours.
 ${biologyPaperPattern}`
+  },
+
+  "Class 12 || Mathematics": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `SUBJECT: MATHEMATICS (041), Class XII, Maximum Marks 80, Time Allowed 3 hours.
+${seniorMathsPattern(3)}
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 11 || Mathematics": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `Class 11 is a school examination, so CBSE publishes no sample paper for it.
+This paper is set on the Class XII Mathematics 2026-27 sample paper layout, against the Class XI
+curriculum and its unit weightage, so students meet the board format a year early.
+SUBJECT: MATHEMATICS (041), Class XI, Maximum Marks 80, Time Allowed 3 hours.
+${seniorMathsPattern(3)}`
+  },
+
+  "Class 12 || Applied Mathematics": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `SUBJECT: APPLIED MATHEMATICS (241), Class XII, Maximum Marks 80, Time Allowed 3 hours.
+${seniorMathsPattern(2)}
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 11 || Applied Mathematics": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `Class 11 is a school examination, so CBSE publishes no sample paper for it.
+This paper is set on the Class XII Applied Mathematics 2026-27 sample paper layout, against the
+Class XI curriculum and its unit weightage, so students meet the board format a year early.
+SUBJECT: APPLIED MATHEMATICS (241), Class XI, Maximum Marks 80, Time Allowed 3 hours.
+${seniorMathsPattern(2)}`
   },
 
   "Class 12 || Accountancy": {

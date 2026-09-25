@@ -1,5 +1,5 @@
-import { cbseData } from './data.js?v=44';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=12';
+import { cbseData } from './data.js?v=45';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=13';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -273,7 +273,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_27_senior_biology_v26';
+      const CURRENT_SYLLABUS_VER = '2026_27_senior_maths_v27';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -1187,7 +1187,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   if (seniorSpec && marks !== seniorSpec.fullMarks) {
     const caseRow = seniorSpec.questions.find(q => /case/i.test(q.type));
     sections.forEach(s => {
-      if (caseRow && /case/i.test(s.type) && s.unitMark === caseRow.each) s.choice = caseRow.detail;
+      if (caseRow && /case/i.test(s.type) && s.unitMark === caseRow.each) s.choice = seniorSpec.shortCaseDetail || caseRow.detail;
     });
   }
 
@@ -4207,13 +4207,10 @@ function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = fa
     *   **Biology Diagrams:** MUST generate clean inline vector SVG for:
         - Schematic anatomical & biological structures (e.g., leaf cross-section with stomata, human heart flow schematic, nephron, reflex arc, flower longitudinal section, binary fission in Amoeba / budding in Hydra).
         - **Question Pointer Callouts:** Use clear pointer lines leading to lettered callout labels [A], [B], [C], [D] for student identification and functional explanation questions.`;
-    // A Class 11 / 12 subject set on its sample paper draws its own figures only.
-    const seniorSpec = getSeniorPaper(className, subjectName);
-    if (seniorSpec && seniorSpec.diagramRules) subjectSpecificRules = seniorSpec.diagramRules;
   } else if (isMath) {
     let count = marks >= 70 ? "6 to 9" : marks >= 35 ? "3 to 5" : "1 to 2";
     if (isWorksheet) count = "at least 4 to 7";
-    quotaText = `Mandate **${count} figure-based / geometric questions** distributed across the sections.`;
+    quotaText = quotaOverride || `Mandate **${count} figure-based / geometric questions** distributed across the sections.`;
     subjectSpecificRules = `
     *   **Geometry Figures:** Circles with tangents from an external point, intersecting chords, triangles with angle arcs, cyclic quadrilaterals, parallel lines with transversals.
     *   **Trigonometry (Heights & Distances):** Right-angled triangles showing tower/pole, ground distance, line of sight, and angle of elevation/depression arcs (30°, 45°, 60°).
@@ -4250,6 +4247,10 @@ function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = fa
     *   **Network Topologies:** Star, Bus, Ring, and Mesh arrangement diagrams.
     *   **Flowcharts:** Start/Stop ovals, decision diamonds, process rectangles, input/output parallelograms with labeled branching arrows.`;
   }
+
+  // A Class 11 / 12 subject set on its sample paper draws its own figures only.
+  const seniorSpec = getSeniorPaper(className, subjectName);
+  if (seniorSpec && seniorSpec.diagramRules) subjectSpecificRules = seniorSpec.diagramRules;
 
   return `\n\n**MANDATORY CBSE DIAGRAM & VISUAL PROTOCOL (INLINE VECTOR SVG):**
 *   **STRICT ZERO-PLACEHOLDER MANDATE:** Under NO circumstances should you output lazy text placeholders such as "[Insert diagram here]", "[Diagram of circuit]", "[Figure of flower]", or skip visual components. CBSE board examinations require real visual stimuli.
@@ -4419,7 +4420,8 @@ export async function buildPromptString(activeBtn) {
   const secSkill = getSecondarySkill(className, subjectName);
   const skillFullPaper = !!secSkill && isFullLengthPaper && (parseInt(marks, 10) || 0) === 50;
   // Class 11 and 12 subjects checked against the CBSE 2026-27 sample paper
-  // (Physics, Chemistry and Biology so far; see seniorPapers in sqp_blueprints.js). Their question formats and scope limits apply to every
+  // (Physics, Chemistry, Biology, Mathematics and Applied Mathematics so far;
+  // see seniorPapers in sqp_blueprints.js). Their question formats and scope limits apply to every
   // paper; the sample-paper layout, question design and unit weightage govern
   // the full-length paper only (Mid Term, Final, Pre Board).
   const secSenior = getSeniorPaper(className, subjectName);
@@ -4486,6 +4488,11 @@ export async function buildPromptString(activeBtn) {
     - Every section mixes these levels; the split above applies to the paper as a whole.
     - **Paper character:** ${secMaths.style}${difficulty === "Advanced" ? `
     - **Advanced difficulty:** Keep the CBSE marks split above unchanged. Within each level, choose the more demanding NCERT Exemplar and past board-paper style problems.` : ``}`;
+  } else if (srFullPaper && !secSenior.design) {
+    difficultyDistribution = `\n*   **CBSE 2026-27 Question Paper Design — ${secSenior.paperLabel} (MANDATORY):**
+    - ${secSenior.designText}
+    - ${secSenior.sourcing}${difficulty === "Advanced" ? `
+    - **Advanced difficulty:** Keep the structure unchanged. Choose longer, less familiar applied situations and closer MCQ options.` : ``}`;
   } else if (srFullPaper) {
     const totalMarks = parseInt(marks, 10) || secSenior.fullMarks;
     const d = secSenior.design;
@@ -4508,7 +4515,7 @@ export async function buildPromptString(activeBtn) {
 ${usesCaseBased ? `         - Real-world Case-Based Questions (CBQs) / Source-Based Integrated Studies${usesLetteredSections ? ` (Section E/D)` : ``}.\n` : ``}         - High-quality conceptual Multiple Choice Questions (MCQs) with diagnostic distractors testing common student misconceptions.
          - Standard CBSE Assertion-Reasoning (A-R) questions with official 4-option rubric.
       2. **Select Response / Foundational Objective Questions (20% Weightage):**
-         - Direct NCERT conceptual recall, standard definitions, ${secSkill ? `workplace terms, tools, procedures and job-role responsibilities of the subject` : secHindi ? `शब्द भंडार and the facts, characters and events of the prescribed lessons` : secEnglish ? `vocabulary in context, and the facts, characters and events of the prescribed texts` : secSocial ? `dates, events, places, terms and constitutional provisions` : secMaths ? `formulae, standard values and mathematical terms` : `scientific laws, SI units, and chemical/mathematical nomenclature`}.
+         - Direct NCERT conceptual recall, standard definitions, ${secSkill ? `workplace terms, tools, procedures and job-role responsibilities of the subject` : secHindi ? `शब्द भंडार and the facts, characters and events of the prescribed lessons` : secEnglish ? `vocabulary in context, and the facts, characters and events of the prescribed texts` : secSocial ? `dates, events, places, terms and constitutional provisions` : secMaths ? `formulae, standard values and mathematical terms` : secSenior && secSenior.foundational ? secSenior.foundational : `scientific laws, SI units, and chemical/mathematical nomenclature`}.
       3. **Constructed Response & Step-Marking Questions (30% Weightage):**
 ${constructedResponseLines}
     - **Official CBSE Sourcing Matrix (To guarantee 100% board score preparation):**
@@ -4621,6 +4628,8 @@ ${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structure
       ? `*   **Question Design:** Follow the CBSE 2026-27 competency split given above (Remembering & Understanding / Applying / Analysing, Evaluating & Creating / Map Skill)\n`
       : (engFullPaper || hinFullPaper || skillFullPaper)
       ? `*   **Question Design:** Follow the CBSE 2026-27 section design given above, question by question\n`
+      : (srFullPaper && !secSenior.design)
+      ? `*   **Question Design:** Follow the CBSE 2026-27 sample paper design given above\n`
       : (mathsFullPaper || srFullPaper)
       ? `*   **Question Design:** Follow the CBSE 2026-27 typology split given above (Remembering & Understanding / Applying / Analysing, Evaluating & Creating)\n`
       : `*   **Competency-focused Questions:** Minimum 50% of total marks\n`;
@@ -4863,7 +4872,9 @@ ${secSenior.arOptions.map(o => `          *${o}*`).join('\n')}
         - Word limit: 30–50 words. Formulate questions so students provide **exactly 2 distinct marking points** (1M each or 0.5M × 4), matching official CBSE Marking Scheme value points.
 ` : ''}${!secMaths && !secSocial && !secSenior && usesMark(3) ? `    *   **3-Mark Short Answer (SA) Questions:**
         - Word limit: 50–80 words. Formulate questions so answers require **3 distinct step-wise value points** (or a structured 2M + 1M split).
-` : ''}${!secMaths && !secSocial && usesMark(5) ? `    *   **5-Mark Long Answer (LA) Questions:**
+` : ''}${secSenior && secSenior.typology.la ? `    *   **5-Mark Long Answer (LA) Questions:**
+${secSenior.typology.la.map(line => `        - ${line}`).join('\n')}
+` : ''}${!secMaths && !secSocial && !(secSenior && secSenior.typology.la) && usesMark(5) ? `    *   **5-Mark Long Answer (LA) Questions:**
         - **CBSE Board Rule:** Never frame an unstructured single 5-mark essay. All 5-mark questions MUST be sub-divided into structured sub-parts (e.g., '(a) [2 Marks] + (b) [2 Marks] + (c) [1 Mark]' or '(a) [3 Marks] + (b) [2 Marks]'), exactly as official CBSE Board SQPs do.
         - **100% Internal Choice:** Provide mandatory internal choice between two questions testing the same chapter and skill level.
 ` : ''}${sstFullPaper ? `    *   **4-Mark Case-Based Questions (CBQs):**
@@ -5137,10 +5148,10 @@ ${isFullPaper
   }
 
   const isScienceBranch = subLower.includes("physics") || subLower.includes("chemistry") || subLower.includes("biology");
-  if (isScienceBranch) {
-    if (secSenior) {
-      promptText += `\n\n**${secSenior.mandatesTitle}:**\n${secSenior.mandates.map(line => `*   ${line}`).join('\n')}`;
-    } else if (subLower.includes("physics")) {
+  if (secSenior) {
+    promptText += `\n\n**${secSenior.mandatesTitle}:**\n${secSenior.mandates.map(line => `*   ${line}`).join('\n')}`;
+  } else if (isScienceBranch) {
+    if (subLower.includes("physics")) {
       promptText += `\n\n**CBSE SCIENCE (PHYSICS) BRANCH MANDATES & PEDAGOGICAL RIGOR:**
 *   **Ray & Circuit Diagrams:** Ray optics questions must demand clean, sharp ray diagrams with arrowheads denoting ray direction; electricity problems must require standard schematic circuit symbols (resistor, cell/battery polarity, ammeter in series, voltmeter in parallel).
 *   **Numerical Working & Step Marking:** Provide complete step calculations with explicit formula statements (e.g. 1/f = 1/v - 1/u, V = IR, H = I²Rt), correct Cartesian sign conventions (+/-), and explicit SI units (m, cm, Ω, A, V, W, J) in final answers.
