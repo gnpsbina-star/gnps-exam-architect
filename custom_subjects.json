@@ -1831,15 +1831,18 @@
       ],
       "Section B: Writing Skills": {
         "Short Writing (Up to 50 words)": [
-          "Notice Writing in Box Format (School competitions, excursions, lost & found, meetings)",
-          "Telephonic Message Relay & Short Functional Notes"
+          "Notice Writing in Box Format (issuing body, title, date, signature)",
+          "Informal Invitation (school events, celebrations at home)"
         ],
-        "Long Writing (100-120 words)": [
-          "Descriptive Paragraph Writing (Person, place, event, or situation from cues)",
-          "Story Writing (From given outline, title, or opening line with moral/climax)",
-          "Diary Entry (First-person emotional reflection & memorable experiences)",
-          "Formal Letter Writing (Letter to Principal / Letter to Editor / Complaint & Inquiry)",
-          "Informal Letter Writing (Letters to friends & relatives, advice & invitations)"
+        "Long Writing (120-150 words)": [
+          "Letter to the Editor (presenting views and suggestions on a given issue)",
+          "Formal E-mail (presenting views and suggestions on a given issue)",
+          "Factual Description (of a place, process, event or object)",
+          "Magazine Article (with title and byline)"
+        ],
+        "Essay Writing (200-250 words)": [
+          "Descriptive Essay",
+          "Narrative Essay"
         ]
       },
       "Section B: Grammar": {
@@ -1851,9 +1854,8 @@
         ],
         "Modals": [
           "Modals of Ability, Possibility & Probability (can, could, may, might)",
-          "Modals of Obligation, Duty & Necessity (must, should, ought to, have to)",
-          "Modals of Permission, Requests & Offers (may, can, could, would, shall)",
-          "Semi-Modals & Absence of Obligation (need not, used to, dare, dare not)"
+          "Modals of Obligation & Advice (must, have to, should, ought to)",
+          "Modals of Permission, Requests & Offers (may, can, could, would, shall)"
         ],
         "Subject-Verb Concord": [
           "Compound Subjects & Correlative Conjunctions (either...or, neither...nor, not only...but also)",
@@ -1865,8 +1867,10 @@
           "Reporting Statements & Declaratives (Tense backshift, pronoun changes & time/place adverb shifts)",
           "Reporting Interrogatives: Wh- Questions & Yes/No Questions (if / whether)",
           "Reporting Imperatives: Commands, Requests, Warnings & Advice (ordered to, requested to, advised to)",
-          "Reporting Exclamations & Wishes (exclaimed with joy/sorrow, prayed, wished)",
-          "Multi-turn Dialogue Reporting in Paragraph Format (CBSE Board format)"
+          "Reported Speech in Extended Texts: Multi-turn Dialogue Reported in a Paragraph"
+        ],
+        "Conditional Clauses": [
+          "Conditional Clause Type 1 (if + simple present, will + base verb) for real and possible situations"
         ],
         "Determiners": [
           "Articles: Definite (the), Indefinite (a, an) & Zero Article rules",
@@ -1874,17 +1878,15 @@
           "Quantifiers & Numerals (much, many, few/a few/the few, little/a little/the little, several, all)",
           "Distributives (each, every, either, neither)"
         ],
-        "Clauses & Sentence Synthesis": [
+        "Clauses (Noun and Relative)": [
           "Noun Clauses (acting as subject, object of transitive verb, or complement)",
-          "Adjective (Relative) Clauses: Defining vs Non-defining relative clauses",
-          "Adverb Clauses: Time, Condition (if/unless), Reason (because/as), Contrast (although/though) & Purpose",
-          "Sentence Synthesis: Combining pairs of sentences into Simple, Compound & Complex"
+          "Relative Clauses: Defining vs Non-defining",
+          "Combining Sentences with Noun and Relative Clauses"
         ],
-        "Integrated Grammar (CBSE Pattern)": [
-          "Editing: Identifying and correcting 1 grammatical error per line (Incorrect vs Correct columns)",
-          "Omission: Supplying missing grammatical words (Word Before, Missing Word, Word After)",
-          "Cloze Gap-Filling testing prepositions, conjunctions, determiners & verb forms",
-          "Sentence Reordering: Arranging jumbled words/phrases into meaningful sentences"
+        "Integrated Grammar (CBSE 2026-27 Pattern)": [
+          "Editing / Omission (as Multiple Choice Questions)",
+          "Sentence Rearrangement (jumbled words and phrases)",
+          "Sentence Transformation (as directed)"
         ]
       },
       "Section C: Literature - Kaveri (Prose)": [

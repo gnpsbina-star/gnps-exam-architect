@@ -1,5 +1,5 @@
-import { cbseData } from './data.js?v=39';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=5';
+import { cbseData } from './data.js?v=40';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=6';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -262,7 +262,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_27_social_science_curriculum_v21';
+      const CURRENT_SYLLABUS_VER = '2026_27_english_curriculum_v22';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -565,6 +565,43 @@ function buildSocialScienceSections(spec, sel, totalMarks) {
   });
 }
 
+// Class 9/10 English (R1): one blueprint row per numbered question of the CBSE
+// 2026-27 design in sqp_blueprints.js, so the paper keeps CBSE's numbering and
+// choices ("attempt any 4 of 5") question by question.
+function buildEnglishSections(spec) {
+  return spec.questions.map(q => ({
+    name: q.section,
+    type: `${q.q}. ${q.type}`,
+    count: 1,
+    unitMark: q.marks,
+    marksPerQ: q.each ? `${q.attempt} × ${q.each} Marks` : `${q.marks} Marks`,
+    total: q.marks,
+    choice: q.of ? `Attempt any ${q.attempt} of ${q.of}; ${q.detail}` : q.detail
+  }));
+}
+
+// The syllabus group each checkbox of a subject sits in ("Section B : Writing
+// Skills", "Section C : First Flight (Poetry)" ...), keyed by the checkbox value
+// ("item", or "subgroup -> item" inside a nested group). Lets the prompt tell
+// writing, grammar and literature items apart by where they sit, not by words
+// in their titles - "A Letter to God" is a story, not a letter to write.
+function getSyllabusGroupIndex(className, subjectName) {
+  const index = new Map();
+  const syllabus = (cbseData[className] || {})[subjectName];
+  if (!syllabus || typeof syllabus !== 'object' || Array.isArray(syllabus)) return index;
+  Object.entries(syllabus).forEach(([group, items]) => {
+    if (Array.isArray(items)) {
+      items.forEach(item => index.set(String(item).trim(), group));
+    } else if (items && typeof items === 'object') {
+      Object.entries(items).forEach(([sub, subItems]) => {
+        index.set(String(sub).trim(), group);
+        (Array.isArray(subItems) ? subItems : []).forEach(item => index.set(`${sub} -> ${item}`.trim(), group));
+      });
+    }
+  });
+  return index;
+}
+
 // Class 9/10 Science and Social Science are split into discipline sections.
 // This is the spec for that split, or null for every other subject.
 function getDisciplineSpec(className, subjectName) {
@@ -682,7 +719,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
         // Class 9 (NCERT Kaveri)
         sections = [
           { name: "Section A", type: "Applied Grammar (Gap Filling, Editing, Reported Speech)", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "Answer 5 out of 6 Qs" },
-          { name: "Section B", type: "Creative Writing (Descriptive Paragraph / Diary Entry / Story)", count: 1, unitMark: 5, marksPerQ: "5 Marks", total: 5, choice: "100% Internal Choice (Paragraph OR Diary/Story)" },
+          { name: "Section B", type: "Writing (Letter to the Editor / Formal E-mail, or Factual Description / Magazine Article, 120-150 words)", count: 1, unitMark: 5, marksPerQ: "5 Marks", total: 5, choice: "100% Internal Choice (A OR B)" },
           { name: "Section C", type: litSecType, count: 4, unitMark: 2.5, marksPerQ: "2-3 Marks", total: 10, choice: "1 RTC (3M) + 2 SA (4M) + 1 LA (3M)" }
         ];
       } else {
@@ -824,7 +861,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
         // Class 9 (NCERT Kaveri)
         sections = [
           { name: "Section A", type: "Reading Skills (1 Unseen Discursive/Case Passage)", count: 1, unitMark: 10, marksPerQ: "10 Marks", total: 10, choice: "10 Objective & Inference Qs" },
-          { name: "Section B", type: "Writing Skills & Grammar (Grammar 5M + Descriptive Para/Diary/Story 5M)", count: 2, unitMark: 5, marksPerQ: "5 Marks", total: 10, choice: "Grammar MCQs + Descriptive Para OR Diary/Story" },
+          { name: "Section B", type: "Writing Skills & Grammar (Grammar 5M + Letter / E-mail / Factual Description / Article 5M)", count: 2, unitMark: 5, marksPerQ: "5 Marks", total: 10, choice: "Grammar (editing MCQs, rearrangement, transformation) + Writing A OR B (120-150 words)" },
           { name: "Section C", type: litSecType, count: 5, unitMark: 4, marksPerQ: "3-6 Marks", total: 20, choice: "1 RTC (5M) + 3 SA (9M) + 1 LA (6M)" }
         ];
       } else {
@@ -901,8 +938,12 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   else if (subLower.includes("english") && marks >= 75) {
     const litBook = getCleanLiteratureBookName(className, subjectName);
     const litSecType = litBook ? `Language Through Literature (${litBook})` : "Language Through Literature";
+    const engSpec = getSecondaryEnglish(className, subjectName);
 
-    if (className === "Class 11" || className === "Class 12") {
+    if (engSpec) {
+      // Class 9 / 10 English (R1) on the CBSE 2026-27 design.
+      sections = buildEnglishSections(engSpec);
+    } else if (className === "Class 11" || className === "Class 12") {
       // Class 11 follows the Class 12 board exam structure exactly (same
       // section layout, mark/question distribution) per school policy -
       // only the actual prescribed literature book differs, which
@@ -4231,16 +4272,7 @@ export async function buildPromptString(activeBtn) {
   try {
     const repoSqp = getSqpBlueprint(className, subjectName);
     if (repoSqp && repoSqp.text) {
-      let cleanInstructions = repoSqp.text;
-      if (className === "Class 9" && subjectName.toLowerCase().includes("english")) {
-        cleanInstructions = cleanInstructions
-          .replace(/First Flight\s*(?:&|and)\s*Footprints(?:\s*Without\s*Feet)?/gi, 'Kaveri')
-          .replace(/First Flight/gi, 'Kaveri (Prose & Poetry)')
-          .replace(/Footprints(?:\s*Without\s*Feet)?/gi, 'Kaveri')
-          .replace(/Beehive\s*(?:&|and)\s*Moments/gi, 'Kaveri')
-          .replace(/Analytical\s*Paragraph/gi, 'Descriptive Paragraph / Diary Entry / Story Writing');
-      }
-      sqpData = { year: repoSqp.year || '2026-27', text: cleanInstructions };
+      sqpData = { year: repoSqp.year || '2026-27', text: repoSqp.text };
     }
   } finally {
     generateBtn.disabled = false;
@@ -4270,8 +4302,18 @@ export async function buildPromptString(activeBtn) {
   // scope limits, map list and case-study format govern full-length papers.
   const secSocial = getSecondarySocialScience(className, subjectName);
   const sstFullPaper = !!secSocial && isFullLengthPaper;
+  // Class 9 and 10 English (R1): CBSE's English question types and word limits
+  // apply to every paper; the 2026-27 question-by-question design, section
+  // competencies and scope govern full-length papers.
+  const secEnglish = getSecondaryEnglish(className, subjectName);
+  const engFullPaper = !!secEnglish && isFullLengthPaper;
+  const engLongWords = className === 'Class 9' ? '120-150' : '100-120';
 
-  const constructedResponseLines = secSocial ? [
+  const constructedResponseLines = secEnglish ? [
+    `         - Reading short answers (2 Marks, 30-40 words): inference, interpretation and evaluation of the passage.`,
+    `         - Literature short answers (${className === 'Class 9' ? '2' : '3'} Marks, 40-50 words): interpretation, analysis, inference and evaluation of a text.`,
+    `         - Literature long answers (${className === 'Class 9' ? '5' : '6'} Marks, ${engLongWords} words) and writing tasks: extrapolation beyond and across texts, theme, plot or character; writing in the prescribed format and word limit, with internal choice.`
+  ].join('\n') : secSocial ? [
     `         - Very Short Answer (VSA - 2 Marks, answer in not more than 40 words, exactly 2 marking-scheme value points).`,
     `         - Short Answer (SA - 3 Marks, answer in not more than 60 words, exactly 3 value points).`,
     `         - Long Answer (LA - 5 Marks, answer in not more than 120 words, 5 value points; one question or a split such as 1 + 2 + 2, with internal choice).`
@@ -4328,7 +4370,7 @@ export async function buildPromptString(activeBtn) {
 ${usesCaseBased ? `         - Real-world Case-Based Questions (CBQs) / Source-Based Integrated Studies${usesLetteredSections ? ` (Section E/D)` : ``}.\n` : ``}         - High-quality conceptual Multiple Choice Questions (MCQs) with diagnostic distractors testing common student misconceptions.
          - Standard CBSE Assertion-Reasoning (A-R) questions with official 4-option rubric.
       2. **Select Response / Foundational Objective Questions (20% Weightage):**
-         - Direct NCERT conceptual recall, standard definitions, ${secSocial ? `dates, events, places, terms and constitutional provisions` : secMaths ? `formulae, standard values and mathematical terms` : `scientific laws, SI units, and chemical/mathematical nomenclature`}.
+         - Direct NCERT conceptual recall, standard definitions, ${secEnglish ? `vocabulary in context, and the facts, characters and events of the prescribed texts` : secSocial ? `dates, events, places, terms and constitutional provisions` : secMaths ? `formulae, standard values and mathematical terms` : `scientific laws, SI units, and chemical/mathematical nomenclature`}.
       3. **Constructed Response & Step-Marking Questions (30% Weightage):**
 ${constructedResponseLines}
     - **Official CBSE Sourcing Matrix (To guarantee 100% board score preparation):**
@@ -4432,6 +4474,8 @@ ${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structure
       ? `*   **Question Design:** Follow the CBSE 2026-27 competency split given above (Knowledge & Understanding / Application / Formulate, Analyse, Evaluate & Create)\n`
       : sstFullPaper
       ? `*   **Question Design:** Follow the CBSE 2026-27 competency split given above (Remembering & Understanding / Applying / Analysing, Evaluating & Creating / Map Skill)\n`
+      : engFullPaper
+      ? `*   **Question Design:** Follow the CBSE 2026-27 section design given above, question by question\n`
       : mathsFullPaper
       ? `*   **Question Design:** Follow the CBSE 2026-27 typology split given above (Remembering & Understanding / Applying / Analysing, Evaluating & Creating)\n`
       : `*   **Competency-focused Questions:** Minimum 50% of total marks\n`;
@@ -4462,10 +4506,53 @@ ${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structure
           blueprintPromptText += `*   **No map question in ${sec.name} (${spec.label}):** none of its map chapters (${spec.map.chapters.join(', ')}) is selected, so its ${spec.map.marks} map marks are set as one more ${spec.map.marks}-mark written question.\n`;
         }
       });
+    } else if (engFullPaper) {
+      blueprintPromptText += `\n**CRITICAL — QUESTION NUMBERING FOR ENGLISH:** Each row above is ONE numbered question of the CBSE 2026-27 design (Q1 to Q${secEnglish.questions.length}), inside the section named on its row. Keep that numbering and the choice written on each row ("Attempt any 4 of 5" means print 5 and the student answers 4; "any 1 of 2" means print A OR B). Sub-questions are numbered I, II, III ... under their question. Put the marks against every sub-question.\n`;
+      // A question set from a book with nothing selected moves to the other book.
+      const groupIndex = getSyllabusGroupIndex(className, subjectName);
+      const booksTicked = new Set();
+      selectedChaptersData.forEach(c => {
+        const group = groupIndex.get(c.name) || '';
+        Object.entries(secEnglish.bookGroups).forEach(([key, book]) => { if (group.includes(key)) booksTicked.add(book + (key.includes('Poetry') ? ' poetry' : '')); });
+      });
+      const hasPoetry = [...booksTicked].some(b => b.endsWith(' poetry'));
+      const litBooks = new Set([...booksTicked].map(b => b.replace(/ poetry$/, '')));
+      const notes = [];
+      if (litBooks.size === 1 && secEnglish.books.supplementary) {
+        const only = [...litBooks][0];
+        notes.push(`Only ${only} chapters are selected, so every literature question (including those the design sets from ${only === secEnglish.books.supplementary ? secEnglish.books.prose : secEnglish.books.supplementary}) is set from the selected ${only} chapters; keep each question's marks, choice and word limit.`);
+      }
+      if (booksTicked.size > 0 && !hasPoetry) {
+        notes.push(`No poem is selected, so the poetry extract question is set as a second prose / drama extract with the same marks and sub-questions.`);
+      }
+      notes.forEach(n => { blueprintPromptText += `*   **Partial syllabus:** ${n}\n`; });
     } else if (isCombinedScience && subjectName.toLowerCase().includes('legacy')) {
       blueprintPromptText += `\n**CRITICAL — SECTION MEANING FOR SCIENCE:** Unlike most other subjects, Section A / B / C above are NOT question-type groupings. They are SUBJECT groupings: Section A = Biology questions only, Section B = Chemistry questions only, Section C = Physics questions only. Each section must internally contain its own full mix of MCQs, Assertion-Reasoning, VSA, SA, LA, and Case-Based questions in the exact counts given for that section — do NOT group all MCQs together across subjects, and do NOT create separate Section D/E for question types. This matches the real official CBSE Class 9/10 Science board exam structure.\n`;
     }
   }
+
+  if (engFullPaper) {
+    difficultyDistribution = `\n*   **Official CBSE 2026-27 Question Paper Design — ${secEnglish.paperLabel}, ${className} (MANDATORY):**
+    - Keep CBSE's section marks and the competencies each section assesses:
+${secEnglish.competencies.map((line, i) => `      ${i + 1}. ${line}`).join('\n')}
+    - Mix selected responses (MCQs and objective items) with constructed responses (short and long answers) as the blueprint below lays out, question by question. Most short and long answers ask the student to infer, interpret, analyse or evaluate, not only to recall.${difficulty === "Advanced" ? `
+    - **Advanced difficulty:** Keep the structure unchanged. Choose denser passages, subtler distractors and more analytical literature questions.` : ``}`;
+  }
+
+  // Class 9/10 English question types, in place of the generic typology rules
+  // (VSA / SA / LA / case studies, SI units), which do not fit a language paper.
+  const englishWritingFormats = className === 'Class 9'
+    ? `notice (up to 50 words, in a box, with the issuing body, title, date and signature) or informal invitation (up to 50 words); letter to the editor (sender's address, date, receiver's address, subject, salutation, body, complimentary close, name) or formal e-mail (to, subject, salutation, body, sign-off), 120-150 words; factual description or magazine article (title and byline for an article), 120-150 words; descriptive or narrative essay with a title, 200-250 words`
+    : `formal letter (sender's address, date, receiver's address, subject, salutation, body, complimentary close, name and designation), 100-120 words; analytical paragraph (introduction, analysis citing the figures or points given, and a conclusion), 100-120 words. Notices and messages are for school tests only`;
+  const englishTypology = secEnglish ? `    *   **1-Mark Objective Questions (reading, grammar and literature extracts):**
+        - MCQs with four options, and the objective items CBSE English papers use: complete the sentence (from two given options, or from the text), true or false, analogy, fact or opinion, match or classify, identify the word or phrase from a named paragraph, and Assertion-Reason with its four options printed.
+        - **Diagnostic options:** distractors are plausible — true of the passage but not the answer, near-synonyms, or the opposite of the writer's view.
+    *   **Reading short answers (2 Marks, 30-40 words):** ask for inference, the writer's purpose or tone, a comparison, or an evaluation, answerable from the passage but not by copying one line. Name the paragraph where it helps.
+    *   **Grammar:** set every item in a short real-life text (formal e-mail, notice, report, blog, conversation) and test ONLY the grammar prescribed for ${className}: ${secEnglish.grammar}. Editing items print Error and Correction columns for the answer.
+    *   **Writing:** ${englishWritingFormats}. Every writing question offers an internal choice, A OR B. State that all details in the writing questions are imaginary.
+    *   **Literature extracts:** print the title of the text in brackets after each extract. Sub-questions are MCQs, complete-the-sentence, fill-in (one word, or from two options) and a 2-mark short answer on the writer's technique or meaning.
+    *   **Literature short answers (${className === 'Class 9' ? '2' : '3'} Marks, 40-50 words) and long answers (${className === 'Class 9' ? '5' : '6'} Marks, ${engLongWords} words):** print the title of the text in brackets after each question. Short answers test interpretation, analysis, inference and evaluation; long answers test extrapolation beyond and across texts, theme, plot or character. A long answer is one question; sub-parts are not needed.
+    *   **Marking-scheme value points:** frame every constructed response so it can be marked on content, organisation and accuracy of language, and print the word limit in the question.` : '';
 
   // Social Science's competency split carries the map marks separately, so it
   // is worked out once the blueprint says how many map marks the paper has.
@@ -4540,7 +4627,7 @@ ${blueprintPromptText}
 8.  **Official CBSE Board Typology Framing & 100% Score Exam Guidelines (NEP 2020 & Latest Board SQP Pattern):**
 ${usesLetteredSections ? `    *(Note: these typology rules apply to every question of the stated mark value, regardless of which lettered Section it physically appears in - some subjects group questions by type (Section A = all 1-mark, etc.), while Class 9/10 Science groups them by subject area instead (Section A = Biology, B = Chemistry, C = Physics), with every question type appearing inside each of those sections. Follow the "Section-wise Question Breakdown" blueprint above for the actual physical layout.)*
 ` : `    *(Note: these typology rules apply to every question of the stated mark value, wherever it sits in the paper. Follow the "Section-wise Question Breakdown" blueprint above for the actual physical layout.)*
-`}    *   **1-Mark Objective & Assertion-Reasoning Questions:**
+`}${secEnglish ? englishTypology : `    *   **1-Mark Objective & Assertion-Reasoning Questions:**
         - **Diagnostic MCQs:** Options (a), (b), (c), (d) must feature plausible distractors targeting common student misconceptions documented in CBSE Board Evaluation Reports (e.g., ${secSocial ? `wrong chronology of events, mixing up the Non-Cooperation and Civil Disobedience movements, confusing potential and reserve resources, GDP versus per capita income, horizontal versus vertical power sharing` : secMaths ? `sign errors in coordinates, confusing sector with segment area, wrong discriminant condition, radius/diameter mix-ups` : `reciprocal lens formula errors, Cartesian sign mistakes in mirror/coordinate geometry, incomplete definitions`}).
         - **Assertion-Reasoning:** Must strictly follow the official CBSE 4-option rubric:
           *(a) Both Assertion (A) and Reason (R) are true and Reason (R) is the correct explanation of Assertion (A).*
@@ -4581,10 +4668,12 @@ ${secMaths ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
         - For a 40-Mark Periodic Assessment (90 Min): 10 Objective Questions (8 MCQs + 2 A/R) [10M], 3 VSA [6M], 3 SA [9M], 1 LA [5M], 2 Case Studies [10M] = 40 Marks.
         - Every examination, regardless of duration, builds authentic board exam presentation habits and time-management skills from Day 1.
 ` : ''}    *   **100% Score Presentation Rigor (Marking Scheme Value Points):**
-        - ${secSocial ? `Frame questions whose answers are distinct value points: accurate dates, names, places and terms; examples from the NCERT text; the keyword the marking scheme looks for (for example "prudential reason", "holding together federation", "disguised unemployment"); and, in map questions, the correct symbol and the name written beside it.` : secMaths ? `Formulate questions requiring the formula to be stated, complete step-wise working, correct units in the final answer (cm, m², cm³, ₹, degrees), fully simplified answers, and neat labelled figures. Numbers must work out cleanly by hand, because calculators are not allowed.` : `Formulate questions requiring explicit formula statements, correct Cartesian sign conventions (+/-), final numerical answers with mandatory SI units (m, s, N, J, W, Pa, Ω, A, V, etc.), 100% balanced chemical equations with state symbols (s, l, g, aq), labeled biological diagrams with pointer lines, and clean schematic circuit symbols.`} Strict penalty cues train students for zero mark-deduction in board examinations.
+        - ${secSocial ? `Frame questions whose answers are distinct value points: accurate dates, names, places and terms; examples from the NCERT text; the keyword the marking scheme looks for (for example "prudential reason", "holding together federation", "disguised unemployment"); and, in map questions, the correct symbol and the name written beside it.` : secMaths ? `Formulate questions requiring the formula to be stated, complete step-wise working, correct units in the final answer (cm, m², cm³, ₹, degrees), fully simplified answers, and neat labelled figures. Numbers must work out cleanly by hand, because calculators are not allowed.` : `Formulate questions requiring explicit formula statements, correct Cartesian sign conventions (+/-), final numerical answers with mandatory SI units (m, s, N, J, W, Pa, Ω, A, V, etc.), 100% balanced chemical equations with state symbols (s, l, g, aq), labeled biological diagrams with pointer lines, and clean schematic circuit symbols.`} Strict penalty cues train students for zero mark-deduction in board examinations.`}
 9.  **Strict Rationalization & Strict Syllabus Confinement:**
     *   Strictly **EXCLUDE** all deleted topics/chapters rationalized by CBSE/NCERT for ${fullSubjectDisplay} in ${className}.
-${sstFullPaper ? `    *   **CBSE 2026-27 scope limits for ${className} Social Science (apply to every selected chapter):**
+${engFullPaper ? `    *   **CBSE 2026-27 scope for ${className} English:**
+${secEnglish.scope.map(line => `        - ${line}`).join('\n')}
+` : ''}${sstFullPaper ? `    *   **CBSE 2026-27 scope limits for ${className} Social Science (apply to every selected chapter):**
 ${secSocial.scope.map(line => `        - ${line}`).join('\n')}
 ` : ''}${secScience ? `    *   **CBSE 2026-27 scope limits for ${className} Science (apply to every selected chapter):**
 ${secScience.scope.map(line => `        - ${line}`).join('\n')}
@@ -4627,17 +4716,23 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
       "Class 8": ["Passage 1 (Discursive, approx. 200 words)", "Passage 2 (Case-based factual, approx. 100 words)"],
       "Class 9": ["Passage 1 (Discursive, approx. 300 words)", "Passage 2 (Case-based factual, approx. 150 words)"],
       "Class 10": ["Passage 1 (Discursive, approx. 400 words)", "Passage 2 (Case-based factual, approx. 200 words)"],
+      // Class 9 / 10 English (R1) take CBSE's 2026-27 lengths from sqp_blueprints.js below.
       "Class 11": ["Passage 1 (Discursive, approx. 500 words)", "Passage 2 (Case-based factual, approx. 300 words)"],
       "Class 12": ["Passage 1 (Discursive, approx. 600 words)", "Passage 2 (Case-based factual, approx. 400 words)"]
     };
+    if (secEnglish) limits[className] = secEnglish.readingLimits;
     const englishLimits = quoteLimitsFor(limits);
     if (englishLimits) {
       promptText += `\n11. **English Reading Section Word Limits:** Ensure the unseen passages adhere to these limits: ${englishLimits}. These are approximate limits; you may increase the word limit by up to 10% if required to maintain passage quality.`;
     }
 
+    // Class 9/10 English (R1) sorts the ticked items by the syllabus group they
+    // sit in; other classes keep matching on words in the item names.
+    const groupIndex = secEnglish ? getSyllabusGroupIndex(className, subjectName) : null;
+    const inGroup = (n, word) => groupIndex && (groupIndex.get(n) || '').toLowerCase().includes(word);
     const selectedGrammarTopics = selectedChaptersData
       .map(c => c.name)
-      .filter(n => n.includes(":") && (n.toLowerCase().includes("grammar") || n.includes("Tenses") || n.includes("Pronouns") || n.includes("Voice") || n.includes("Speech") || n.includes("Concord") || n.includes("Modals") || n.includes("Clauses") || n.includes("Verbs") || n.includes("Adjectives") || n.includes("Prepositions") || n.includes("Sentence")));
+      .filter(n => groupIndex ? inGroup(n, 'grammar') : n.includes(":") && (n.toLowerCase().includes("grammar") || n.includes("Tenses") || n.includes("Pronouns") || n.includes("Voice") || n.includes("Speech") || n.includes("Concord") || n.includes("Modals") || n.includes("Clauses") || n.includes("Verbs") || n.includes("Adjectives") || n.includes("Prepositions") || n.includes("Sentence")));
       
     if (selectedGrammarTopics.length > 0) {
       promptText += `\n\n**CRITICAL MANDATORY GRAMMAR CONFINEMENT RULE (ZERO TOLERANCE):**\n` +
@@ -4649,6 +4744,7 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
     const selectedWritingTopics = selectedChaptersData
       .map(c => c.name)
       .filter(n => {
+        if (groupIndex) return inGroup(n, 'writing');
         const lower = n.toLowerCase();
         return lower.includes("writing") || lower.includes("notice") || lower.includes("letter") || lower.includes("diary") ||
                lower.includes("story") || lower.includes("paragraph") || lower.includes("article") || lower.includes("speech") ||
@@ -4661,13 +4757,14 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
       promptText += `\n\n**CRITICAL MANDATORY WRITING SKILLS CONFINEMENT RULE:**\n` +
         `The teacher has selected SPECIFIC writing skills topics for this examination:\n` +
         selectedWritingTopics.map(t => `* ${t}`).join('\n') + `\n` +
+        (engFullPaper ? `*Within the CBSE 2026-27 writing questions of the blueprint (each keeps its own task type), take the situations and formats from the topics above where they fit.* ` : ``) +
         `*MANDATORY RESTRICTION:* In Section B (Writing Skills), formulate the writing prompts EXCLUSIVELY from the selected topics above. Adhere strictly to the latest NCERT/CBSE word limits and formatting conventions (box format for Notice/Message, proper sender/receiver addresses & formal salutation for Letters, Day/Date/Time for Diary Entry, outline cues for Story, and Title & Byline for Paragraph/Article). Include internal choices between prompts where prescribed.`;
     }
 
     if (className === "Class 9") {
       promptText += `\n\n**CRITICAL MANDATORY TEXTBOOK & WRITING OVERRIDE FOR CLASS 9 ENGLISH:**\n` +
         `1. **PRESCRIBED LITERATURE TEXTBOOK: "KAVERI" (NCERT):** The ONLY official literature textbook for Class 9 English is **"Kaveri"**. Strictly DO NOT use or mention Class 10 books ("First Flight", "Footprints Without Feet") or legacy books ("Beehive", "Moments"). All literature extracts, reference-to-context questions, short-answer questions, and long-answer questions in Section C MUST be framed strictly from the selected units/poems of **Kaveri**.\n` +
-        `2. **CLASS 9 WRITING SKILLS FORMATS:** For Section B (Writing Skills), strictly formulate prompts for **Descriptive Paragraph (Person/Event/Situation)**, **Diary Entry**, and **Story Writing** (DO NOT frame questions on Analytical Paragraphs which are strictly exclusive to Class 10).`;
+        `2. **CLASS 9 WRITING SKILLS FORMATS (CBSE 2026-27):** For Section B (Writing Skills), set ONLY the Class IX 2026-27 tasks: **Notice / Informal Invitation** (up to 50 words), **Letter to the Editor / Formal E-mail** on a given issue (120-150 words), **Factual Description / Magazine Article** (120-150 words) and **Descriptive / Narrative Essay** (200-250 words). Do NOT set a diary entry, story, descriptive paragraph, informal letter or analytical paragraph.`;
     }
   }
 
@@ -4737,7 +4834,7 @@ Anchor the passages in timeless human values:
       ? `\n    *   **In Reading Section (Unseen Passages):** ${marks >= 75 ? "Embed 1–2 Statement-Evaluation / Assertion-Reasoning questions (testing author's intent, cause-and-effect, and inference)." : marks >= 40 ? "Embed 1 Statement-Evaluation / Cause-and-Effect question in the reading comprehension passage." : "Keep questions direct and focused on core comprehension within the 45-minute limit."}`
       : ``;
     promptText += `\n12. **Assertion-Reasoning & Statement Evaluation in Language Papers:**${readingBullet}
-    *   **In Literature Section (RTC Extracts):** ${marks >= 75 ? "Include 1 Statement 1 vs Statement 2 relationship analysis question in the prose/drama extract." : "Ensure RTC questions test contextual literary analysis."}
+    *   **In Literature Section (RTC Extracts):** ${engFullPaper ? "Follow the sample paper: MCQs, complete-the-sentence and fill-in items and one 2-mark short answer; no Assertion-Reason in the literature extracts." : marks >= 75 ? "Include 1 Statement 1 vs Statement 2 relationship analysis question in the prose/drama extract." : "Ensure RTC questions test contextual literary analysis."}
     *   **In Grammar Section:** Strictly follow official CBSE MCQ / gap-filling / transformation formats (do NOT force artificial A-R templates into grammar).`;
   } else {
     promptText += `\n12. **Assertion-Reasoning Guidelines for Academic Subjects (Science/Math/SST/Physics/Chemistry/Commerce):**
@@ -4846,6 +4943,14 @@ ${isFullPaper
 *   **Case-based questions:** a real-life or experimental context with sub-parts A (1 mark), B (1 mark) and C OR D (2 marks).
 *   **Long answers:** split into sub-parts (I and II, or I to IV) with an internal choice of the whole question (option A OR option B).
 *   **Assertion-Reason:** print the four options (A)–(D) once, above the Assertion-Reason questions of each section.`;
+  }
+
+  if (engFullPaper) {
+    promptText += `\n\n**CBSE 2026-27 ENGLISH REQUIREMENTS:**
+*   **Question by question:** set exactly the ${secEnglish.questions.length} questions of the blueprint, in its order and with its marks, choices and word limits. Print "Attempt any N" instructions and the OR between choices exactly as the blueprint rows give them.
+*   **Reading passages are unseen:** original, age-appropriate texts marked "Created for academic usage", with numbered paragraphs so questions can refer to them. Passage 2 carries statistical data (figures in the text, or a table or chart) and several questions read that data.
+*   **Grammar in context:** every grammar item is a sentence from a realistic text (formal e-mail, notice, report, blog, safety policy, conversation), never an isolated textbook sentence.
+*   **Literature:** only from the selected chapters and poems of ${[...new Set(Object.values(secEnglish.books))].join(' and ')}. Name the text in brackets after every extract and question, and spread the questions across different chapters and poems.`;
   }
 
   if (sstFullPaper) {

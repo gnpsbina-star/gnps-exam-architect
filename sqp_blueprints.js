@@ -428,12 +428,181 @@ Everything else follows the Class 10 paper: 38 questions, all compulsory; word l
 question and one item of the Geography map question; a separate question for visually impaired
 candidates in lieu of every question with a visual input.`;
 
+// Class 9 and 10 English, from the CBSE 2026-27 curriculum documents
+// (English_LL_SecP1_2026-27 for Class X Language and Literature, code 184;
+// English_LL_SecP1IX_2026-27 for Class IX) and the Class X 2026-27 sample
+// paper. The school's "English (R1)" is Language and Literature at Class 10.
+// Unlike Science and Social Science, CBSE publishes a full question paper
+// design for Class 9 English this year, built on the new NCERT textbook
+// Kaveri, and it differs from Class 10: 14 questions in 20 / 30 / 30 marks,
+// against Class 10's 11 questions in 20 / 20 / 40.
+//
+// `questions` lists the paper question by question, grouped by section, and
+// becomes the blueprint rows. `attempt` / `of` give "answer any N of M".
+// `book` names the literature book a question is set from, so the prompt can
+// move a question to the other book when only one book is selected.
+export const secondaryEnglish = {
+  "Class 10": {
+    code: "184",
+    paperLabel: "English Language and Literature (184)",
+    books: { prose: "First Flight", poetry: "First Flight", supplementary: "Footprints Without Feet" },
+    // Which syllabus group in data.js holds which book (matched on the group name).
+    bookGroups: { "First Flight (Prose)": "First Flight", "First Flight (Poetry)": "First Flight", "Footprints Without Feet": "Footprints Without Feet" },
+    competencies: [
+      "Reading Comprehension (20 marks): conceptual understanding, decoding, analysing, inferring, interpreting and vocabulary.",
+      "Writing Skills and Grammar (20 marks): creative expression of an opinion, reasoning, justifying, illustrating, appropriate style and tone, appropriate format and fluency; applying conventions and using integrated structures with accuracy and fluency.",
+      "Language through Literature (40 marks): recalling, reasoning, appreciating, applying literary conventions, illustrating and justifying; extracting relevant information, identifying the central theme and sub-themes, understanding the writer's message and writing fluently."
+    ],
+    grammar: "determiners, tenses, modals, subject-verb concord, and reported speech (commands and requests, statements, questions)",
+    readingLimits: ["Passage 1 (Discursive, 400-450 words)", "Passage 2 (Case-based factual, with visual input such as statistical data or a chart, 200-250 words)"],
+    scope: [
+      "Grammar is set ONLY on the five CBSE 2026-27 items: determiners, tenses, modals, subject-verb concord, and reported speech (commands and requests, statements, questions).",
+      "Writing in this paper is ONLY a formal letter (Q4) and an analytical paragraph (Q5). Notices and messages in the syllabus list are for school tests: do not set them here.",
+      "Literature comes ONLY from First Flight and Footprints Without Feet, from the selected chapters and poems. Words and Expressions (the workbook) is not examined in this paper."
+    ],
+    questions: [
+      { section: "Section A", heading: "Reading Skills", q: "Q1", type: "Discursive passage (400-450 words), unseen", marks: 10,
+        detail: "8 to 9 sub-questions: MCQs and objective items (complete the sentence, true or false, analogy, fact or opinion, meaning of a phrase) of 1 mark, and two short answers of 2 marks in 30-40 words" },
+      { section: "Section A", heading: "Reading Skills", q: "Q2", type: "Case-based factual passage (200-250 words) with statistical data", marks: 10,
+        detail: "9 sub-questions: 1-mark objective items including one Assertion-Reason, and one short answer of 2 marks in 30-40 words, several of them reading the figures" },
+      { section: "Section B", heading: "Grammar and Writing Skills", q: "Q3", type: "Grammar", marks: 10, attempt: 10, of: 12,
+        detail: "12 items of 1 mark: gap filling, editing (identify the error and write the correction) and transformation (report a statement, question or command), each set in a real-life text such as a formal email, notice, report or blog" },
+      { section: "Section B", heading: "Grammar and Writing Skills", q: "Q4", type: "Formal letter (100-120 words)", marks: 5, attempt: 1, of: 2,
+        detail: "for example a letter to the editor, or a letter of complaint, enquiry or request to an official" },
+      { section: "Section B", heading: "Grammar and Writing Skills", q: "Q5", type: "Analytical paragraph (100-120 words)", marks: 5, attempt: 1, of: 2,
+        detail: "on a chart, graph, table, map, product details or SWOT notes, to be analysed and evaluated" },
+      { section: "Section C", heading: "Language through Literature", q: "Q6", type: "Prose / drama extract", marks: 5, attempt: 1, of: 2, book: "either",
+        detail: "extracts A and B, one from First Flight and one from Footprints Without Feet: 4 sub-questions of 1, 1, 1 and 2 marks" },
+      { section: "Section C", heading: "Language through Literature", q: "Q7", type: "Poetry extract", marks: 5, attempt: 1, of: 2, book: "First Flight",
+        detail: "extracts A and B from two First Flight poems: 4 sub-questions of 1, 1, 1 and 2 marks" },
+      { section: "Section C", heading: "Language through Literature", q: "Q8", type: "Short answers, First Flight (40-50 words)", marks: 12, each: 3, attempt: 4, of: 5, book: "First Flight",
+        detail: "3 marks each, from prose and poetry, assessing interpretation, analysis, inference and evaluation" },
+      { section: "Section C", heading: "Language through Literature", q: "Q9", type: "Short answers, Footprints Without Feet (40-50 words)", marks: 6, each: 3, attempt: 2, of: 3, book: "Footprints Without Feet",
+        detail: "3 marks each, assessing interpretation, analysis, inference and evaluation" },
+      { section: "Section C", heading: "Language through Literature", q: "Q10", type: "Long answer, First Flight (100-120 words)", marks: 6, attempt: 1, of: 2, book: "First Flight",
+        detail: "assessing creativity, imagination and extrapolation beyond and across texts (for example comparing two texts); may be passage-based on a situation from the text" },
+      { section: "Section C", heading: "Language through Literature", q: "Q11", type: "Long answer, Footprints Without Feet (100-120 words)", marks: 6, attempt: 1, of: 2, book: "Footprints Without Feet",
+        detail: "on theme or plot, interpretation, extrapolation beyond the text, inference or character sketch" }
+    ]
+  },
+  "Class 9": {
+    code: "184",
+    paperLabel: "English (R1), Kaveri",
+    books: { prose: "Kaveri", poetry: "Kaveri" },
+    bookGroups: { "Kaveri (Prose)": "Kaveri", "Kaveri (Poetry)": "Kaveri" },
+    competencies: [
+      "Reading Skills (20 marks): comprehension, interpretation, analysis, inference, evaluation and vocabulary through selected and constructed responses.",
+      "Writing Skills and Grammar (30 marks): accurate grammar in context, and writing for real-life purposes in different styles (narrative, descriptive, expository, persuasive) with clear organisation.",
+      "Language through Literature (30 marks): close reading of prose and poetry, literary devices, character, theme and plot, and extrapolation beyond and across texts."
+    ],
+    grammar: "sequence of tenses, modal auxiliaries (ability, obligation, permission, possibility, advice), reported speech in extended texts (statements, questions, commands and requests), conditional clauses (Type 1), subject-verb concord, determiners, and noun and relative clauses",
+    readingLimits: ["Passage 1 (Descriptive / Discursive, 400-450 words)", "Passage 2 (Case-based, with verbal or visual input such as statistical data or a chart, 200-250 words)"],
+    scope: [
+      "Class 9 English follows the CBSE 2026-27 design for the NEW NCERT textbook Kaveri: 14 questions, Reading 20, Writing and Grammar 30, Literature 30 marks.",
+      "Grammar is set ONLY on the CBSE 2026-27 Class IX items: sequence of tenses, modal auxiliaries, reported speech (statements, questions, commands and requests), conditional clauses (Type 1), subject-verb concord, determiners, and noun and relative clauses.",
+      "Writing is ONLY the four CBSE 2026-27 Class IX tasks: notice or informal invitation; letter to the editor or formal e-mail; factual description or magazine article; descriptive or narrative essay. Do NOT set a diary entry, story, descriptive paragraph, informal letter, message or analytical paragraph.",
+      "Literature comes ONLY from Kaveri (never Beehive, Moments, First Flight or Footprints Without Feet), from the selected chapters and poems."
+    ],
+    questions: [
+      { section: "Section A", heading: "Reading Skills", q: "Q1", type: "Descriptive / discursive passage (400-450 words), unseen", marks: 10,
+        detail: "MCQs, objective items, very short and short answers (selected and constructed responses)" },
+      { section: "Section A", heading: "Reading Skills", q: "Q2", type: "Case-based passage (200-250 words) with verbal or visual input", marks: 10,
+        detail: "a passage with statistical data or a chart; MCQs, objective items, very short and short answers, several of them reading the data" },
+      { section: "Section B", heading: "Grammar and Writing Skills", q: "Q3", type: "Grammar: editing / omission (MCQs)", marks: 4,
+        detail: "4 items of 1 mark, as multiple choice: spot the error or the omitted word in a short text and choose the correction" },
+      { section: "Section B", heading: "Grammar and Writing Skills", q: "Q4", type: "Grammar: sentence rearrangement", marks: 3,
+        detail: "3 items of 1 mark: rearrange jumbled words or phrases into a meaningful sentence" },
+      { section: "Section B", heading: "Grammar and Writing Skills", q: "Q5", type: "Grammar: sentence transformation", marks: 3,
+        detail: "3 items of 1 mark: transform sentences as directed (for example reported speech, conditional, combining with a relative or noun clause)" },
+      { section: "Section B", heading: "Grammar and Writing Skills", q: "Q6", type: "Notice / informal invitation (up to 50 words)", marks: 3, attempt: 1, of: 2,
+        detail: "for example a school event or a celebration at home" },
+      { section: "Section B", heading: "Grammar and Writing Skills", q: "Q7", type: "Letter to the editor / formal e-mail (120-150 words)", marks: 5, attempt: 1, of: 2,
+        detail: "on a given issue, presenting views and suggestions" },
+      { section: "Section B", heading: "Grammar and Writing Skills", q: "Q8", type: "Factual description / magazine article (120-150 words)", marks: 5, attempt: 1, of: 2,
+        detail: "of a place, process, event or object, or an article for the school magazine" },
+      { section: "Section B", heading: "Grammar and Writing Skills", q: "Q9", type: "Descriptive / narrative essay (200-250 words)", marks: 7, attempt: 1, of: 2,
+        detail: "with a clear beginning, middle and end; the two choices may be on the same or different topics" },
+      { section: "Section C", heading: "Language through Literature", q: "Q10", type: "Prose / drama extract", marks: 5, attempt: 1, of: 2, book: "Kaveri",
+        detail: "extracts A and B: MCQs, objective items and very short answers" },
+      { section: "Section C", heading: "Language through Literature", q: "Q11", type: "Poetry extract", marks: 5, attempt: 1, of: 2, book: "Kaveri",
+        detail: "extracts A and B: MCQs, objective items and very short answers" },
+      { section: "Section C", heading: "Language through Literature", q: "Q12", type: "Short answers (40-50 words)", marks: 10, each: 2, attempt: 5, of: 6, book: "Kaveri",
+        detail: "2 marks each, from prose and poetry" },
+      { section: "Section C", heading: "Language through Literature", q: "Q13", type: "Long answer (120-150 words)", marks: 5, attempt: 1, of: 2, book: "Kaveri",
+        detail: "assessing extrapolation beyond the text and across texts" },
+      { section: "Section C", heading: "Language through Literature", q: "Q14", type: "Long answer (120-150 words)", marks: 5, attempt: 1, of: 2, book: "Kaveri",
+        detail: "assessing theme, plot or character" }
+    ]
+  }
+};
+
+// Class 9 and 10 "English (R1)" only; other English courses keep their layout.
+export function getSecondaryEnglish(className, subjectName) {
+  if (subjectName !== "English (R1)") return null;
+  return secondaryEnglish[className] || null;
+}
+
+const class10EnglishPattern = `ENGLISH LANGUAGE AND LITERATURE - CODE NO. 184, Class X, Maximum Marks 80, Time Allowed 3 hours.
+This question paper comprises 11 questions. All questions are compulsory.
+The question paper contains THREE sections:
+  Section A - Reading Skills (20 marks):
+    Q1. A discursive passage of 400-450 words (10 marks).
+    Q2. A case-based factual passage of 200-250 words with visual input or statistical data (10 marks).
+    Multiple choice / objective type questions and short answer questions (30-40 words).
+  Section B - Grammar and Creative Writing Skills (20 marks):
+    Q3. Grammar: 12 items, attempt any 10 (10 marks) - gap filling, editing and transformation.
+    Q4. Formal letter in 100-120 words, one of two (5 marks).
+    Q5. Analytical paragraph in 100-120 words on a given map / chart / graph / cue, one of two (5 marks).
+  Section C - Literature Textbook (40 marks):
+    Q6. One of two extracts from drama / prose (5 marks).
+    Q7. One of two extracts from poetry (5 marks).
+    Q8. Four of five short answers in 40-50 words, FIRST FLIGHT (4 x 3 = 12 marks).
+    Q9. Two of three short answers in 40-50 words, FOOTPRINTS WITHOUT FEET (2 x 3 = 6 marks).
+    Q10. One of two long answers in 100-120 words, FIRST FLIGHT (6 marks).
+    Q11. One of two long answers in 100-120 words, FOOTPRINTS WITHOUT FEET (6 marks).
+Attempt questions based on the specific instructions for each part.
+All details presented in the questions of the writing section are imaginary and created for assessment purposes.`;
+
+const class9EnglishPattern = `ENGLISH (R1), Class IX, Maximum Marks 80, Time Allowed 3 hours - CBSE 2026-27 question paper design
+for the NCERT textbook Kaveri. Class 9 is a school examination, so CBSE publishes no sample paper for it;
+this is the design printed in CBSE's Class IX 2026-27 curriculum. The paper has 14 questions in three sections:
+  Section A - Reading Skills (20 marks):
+    Q1. A descriptive / discursive passage of 400-450 words (10 marks).
+    Q2. A case-based passage of 200-250 words with verbal / visual input - statistical data, chart etc. (10 marks).
+    Selected and constructed responses: MCQs, objective type, very short and short answers.
+  Section B - Writing Skills and Grammar (30 marks):
+    Q3. Editing / omitting, as MCQs (4 marks).
+    Q4. Sentence rearrangement (3 marks).
+    Q5. Sentence transformation (3 marks).
+    Q6. Notice / informal invitation, up to 50 words (3 marks).
+    Q7. Letter to the editor / formal e-mail on a given issue, presenting views and suggestions, 120-150 words (5 marks).
+    Q8. Factual description / magazine article, 120-150 words (5 marks).
+    Q9. Descriptive / narrative essay, 200-250 words (7 marks).
+    For questions 6 to 9, attempt any one as per the internal choice provided; the choice may be on the same or different topics.
+  Section C - Language through Literature (30 marks):
+    Q10. One of two extracts from drama / prose (5 marks).
+    Q11. One of two extracts from poetry (5 marks).
+    Q12. Five of six questions in 40-50 words (5 x 2 = 10 marks).
+    Q13. One of two questions assessing extrapolation beyond and across the texts, about 120-150 words (5 marks).
+    Q14. One of two questions assessing theme / plot / character, about 120-150 words (5 marks).`;
+
 const acc = accountancyPaper;
 const accIC = acc.internalChoice;
 const accLadder = acc.markLadder.join(', ').replace(/, (\d+)$/, ' and $1');
 const accExcluded = acc.excludedMarks.map(m => `${m}-mark`).join(' or ');
 
 export const sqpBlueprints = {
+  "Class 10 || English (R1)": {
+    year: "2026-27",
+    text: `${class10EnglishPattern}
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 9 || English (R1)": {
+    year: "2026-27",
+    text: class9EnglishPattern
+  },
+
   "Class 10 || Social Science": {
     year: "2026-27",
     text: `SOCIAL SCIENCE - CODE NO. 087, Class X, Maximum Marks 80, Time Allowed 3 hours.
