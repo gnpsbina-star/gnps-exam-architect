@@ -3592,9 +3592,8 @@ export const cbseData = {
         "9.4 Proteins: Amino Acids as Substituted Methanes, Zwitterionic Form, Peptide Bonds, Primary, Secondary, Tertiary and Quaternary Structures",
         "9.5 Polysaccharides: Homopolysaccharides (Starch, Cellulose, Glycogen) vs Heteropolysaccharides, Reducing vs Non-Reducing Ends",
         "9.6 Nucleic Acids: Nucleosides, Nucleotides, Phosphodiester Bonds, Nitrogenous Bases, Structure of DNA",
-        "9.7 Dynamic State of Body Constituents: Concept of Metabolism, Metabolic Basis for Living and The Living State as a Non-Equilibrium Steady State",
-        "9.8 Enzymes: Chemical Nature, Activation Energy Concept, Factors Affecting Enzyme Activity (Temperature, pH, Substrate Concentration, Michaelis-Menten Constant Km)",
-        "9.9 Classification and Nomenclature of Enzymes (Oxidoreductases, Transferases, Hydrolases, Lyases, Isomerases, Ligases), Enzyme Inhibition (Competitive vs Non-Competitive) and Co-factors (Prosthetic Groups, Co-enzymes, Metal Ions)"
+        "9.7 Enzymes: Chemical Nature, Activation Energy Concept, Factors Affecting Enzyme Activity (Temperature, pH, Substrate Concentration, Michaelis-Menten Constant Km)",
+        "9.8 Classification and Nomenclature of Enzymes (Oxidoreductases, Transferases, Hydrolases, Lyases, Isomerases, Ligases), Enzyme Inhibition (Competitive vs Non-Competitive) and Co-factors (Prosthetic Groups, Co-enzymes, Metal Ions)"
       ],
       "Chapter 10: Cell Cycle and Cell Division": [
         "10.1 Cell Cycle Definition and Phases of Cell Cycle: Interphase (G1 Phase, S Phase - DNA Replication and Centriole Duplication, G2 Phase, Quiescent Stage G0)",
@@ -4575,15 +4574,13 @@ export const cbseData = {
         "10.8 Ethical Issues: GEAC (Genetic Engineering Appraisal Committee), Biopiracy (Basmati Rice Patent Issue) and Exploitation of Bioresources"
       ],
       "Chapter 11: Organisms and Populations": [
-        "11.1 Organism and its Environment: Major Abiotic Factors (Temperature, Water, Light, Soil) and Responses to Abiotic Factors (Regulate, Conform, Migrate, Suspend / Hibernation, Aestivation, Diapause)",
-        "11.2 Adaptations: Morphological, Physiological and Behavioral Adaptations (Kangaroo Rat, Desert Plants / CAM Pathway, Allen's Rule, Altitude Sickness Adaptation)",
-        "11.3 Populations: Population Attributes (Birth Rates, Death Rates, Sex Ratio, Age Pyramids: Expanding, Stable, Declining)",
-        "11.4 Population Growth: Factors Affecting Population Density (Natality, Mortality, Immigration, Emigration)",
-        "11.5 Growth Models: Exponential Growth (J-shaped Curve, dN/dt = rN) and Logistic Growth (S-shaped / Sigmoid Curve, Verhulst-Pearl Logistic Growth dN/dt = rN[(K-N)/K])",
-        "11.6 Life History Variation and Population Interactions",
-        "11.7 Interspecific Interactions: Predation (Ecological Roles), Competition (Gause's Competitive Exclusion Principle, Resource Partitioning - MacArthur's Warblers)",
-        "11.8 Parasitism: Ectoparasites, Endoparasites, Brood Parasitism (Cuckoo and Crow)",
-        "11.9 Commensalism (Orchid on Mango, Barnacles on Whale, Cattle Egret) and Mutualism (Lichens, Mycorrhizae, Fig and Fig Wasp, Pseudocopulation in Ophrys Orchid)"
+        "11.1 Populations: Population Attributes (Birth Rates, Death Rates, Sex Ratio, Age Pyramids: Expanding, Stable, Declining)",
+        "11.2 Population Growth: Factors Affecting Population Density (Natality, Mortality, Immigration, Emigration)",
+        "11.3 Growth Models: Exponential Growth (J-shaped Curve, dN/dt = rN) and Logistic Growth (S-shaped / Sigmoid Curve, Verhulst-Pearl Logistic Growth dN/dt = rN[(K-N)/K])",
+        "11.4 Life History Variation and Population Interactions",
+        "11.5 Interspecific Interactions: Predation (Ecological Roles), Competition (Gause's Competitive Exclusion Principle, Resource Partitioning - MacArthur's Warblers)",
+        "11.6 Parasitism: Ectoparasites, Endoparasites, Brood Parasitism (Cuckoo and Crow)",
+        "11.7 Commensalism (Orchid on Mango, Barnacles on Whale, Cattle Egret) and Mutualism (Lichens, Mycorrhizae, Fig and Fig Wasp, Pseudocopulation in Ophrys Orchid)"
       ],
       "Chapter 12: Ecosystem": [
         "12.1 Ecosystem Structure and Function: Stratification, Productivity (Gross Primary Productivity - GPP, Net Primary Productivity - NPP, Secondary Productivity)",

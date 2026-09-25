@@ -1,5 +1,5 @@
-import { cbseData } from './data.js?v=43';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=11';
+import { cbseData } from './data.js?v=44';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=12';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -273,7 +273,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_27_senior_physics_v25';
+      const CURRENT_SYLLABUS_VER = '2026_27_senior_biology_v26';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -4419,7 +4419,7 @@ export async function buildPromptString(activeBtn) {
   const secSkill = getSecondarySkill(className, subjectName);
   const skillFullPaper = !!secSkill && isFullLengthPaper && (parseInt(marks, 10) || 0) === 50;
   // Class 11 and 12 subjects checked against the CBSE 2026-27 sample paper
-  // (Physics and Chemistry so far; see seniorPapers in sqp_blueprints.js). Their question formats and scope limits apply to every
+  // (Physics, Chemistry and Biology so far; see seniorPapers in sqp_blueprints.js). Their question formats and scope limits apply to every
   // paper; the sample-paper layout, question design and unit weightage govern
   // the full-length paper only (Mid Term, Final, Pre Board).
   const secSenior = getSeniorPaper(className, subjectName);

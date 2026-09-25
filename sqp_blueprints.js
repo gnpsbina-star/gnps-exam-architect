@@ -1144,6 +1144,124 @@ const chemistryMandates = (roman, nameReactions) => ({
   ]
 });
 
+// Class 11 and 12 Biology (044), from the CBSE 2026-27 curriculum document
+// (Biology_SecP2_2026-27) and the Class XII 2026-27 sample paper, which says
+// the design is unchanged. Same 33-question, 70-mark layout as Physics and
+// Chemistry, with Biology's own choices: three Section B questions, none in
+// Section C, and a choice between the last two 1-mark parts (C or D) of each
+// case-based question. Several questions give a small hypothetical data table.
+const biologyPaperQuestions = [
+  { section: "Section A", q: "Q1-Q12", type: "Multiple Choice Questions", count: 12, each: 1, marks: 12,
+    detail: "Four options (A)-(D), most set in a real-life or experimental situation; figure-based ones (labelled diagram, pedigree chart, experiment illustration) with a words-only alternative for visually impaired students" },
+  { section: "Section A", q: "Q13-Q16", type: "Assertion-Reason", count: 4, each: 1, marks: 4,
+    detail: "The four options printed once above Q13" },
+  { section: "Section B", q: "Q17-Q21", type: "Very Short Answer", count: 5, each: 2, marks: 10,
+    detail: "Internal choice in 3 questions (Q17, Q20 and Q21 in the sample paper); 2 or 3 built on a small hypothetical data table" },
+  { section: "Section C", q: "Q22-Q28", type: "Short Answer", count: 7, each: 3, marks: 21,
+    detail: "No internal choice; clinical, genetic-cross and research situations, often in parts A, B, C of 1 mark each" },
+  { section: "Section D", q: "Q29-Q30", type: "Case-based", count: 2, each: 4, marks: 8,
+    detail: "A real-life case followed by A (1 mark), B (2 marks) and C OR D (1 mark); choice only between C and D" },
+  { section: "Section E", q: "Q31-Q33", type: "Long Answer", count: 3, each: 5, marks: 15,
+    detail: "Internal choice in all 3 ('Attempt either option A or B'); situation-based, split such as 4 + 1, 2 + 2 + 1 or I to IV" }
+];
+
+const biologyPaperPattern = `All questions are compulsory. The question paper has five sections and 33 questions.
+Section A has 16 questions of 1 mark each (Q1-Q12 MCQ, Q13-Q16 Assertion-Reason); Section B has 5 questions of
+2 marks each (Q17-Q21); Section C has 7 questions of 3 marks each (Q22-Q28); Section D has 2 case-based
+questions of 4 marks each (Q29-Q30), with parts A (1), B (2) and C OR D (1); and Section E has 3 questions of
+5 marks each (Q31-Q33).
+There is no overall choice. Internal choice is provided in three questions of Section B, in the last part of
+each case-based question, and in all three questions of Section E; Section C has none.
+Wherever necessary, neat and properly labelled diagrams should be drawn.
+A figure-based question carries a words-only alternative "For Visually impaired students".`;
+
+const biologyGeneralInstructions = [
+  "All questions are compulsory.",
+  "The question paper has five sections and 33 questions.",
+  "Section–A has 16 questions of 1 mark each; Section–B has 5 questions of 2 marks each; Section–C has 7 questions of 3 marks each; Section–D has 2 case-based questions of 4 marks each; and Section–E has 3 questions of 5 marks each.",
+  "There is no overall choice. Answer all 33 questions. However, internal choices have been provided in some questions. A student has to attempt only one of the alternatives in such questions.",
+  "Wherever necessary, neat and properly labeled diagrams should be drawn."
+];
+
+// CBSE 2026-27 question paper design for Biology: 50 / 30 / 20 per cent.
+const biologyDesign = {
+  understanding: 35, applying: 21, analysing: 14, percent: [50, 30, 20],
+  labels: ["Demonstrate Knowledge and Understanding (state, name, list, identify, define, suggest, describe, outline, summarise)",
+           "Application of Knowledge / Concepts (calculate, illustrate, show, adapt, explain, distinguish)",
+           "Analyse, Evaluate and Create (interpret, analyse, compare, contrast, examine, evaluate, discuss, construct)"]
+};
+
+const biologyArOptions = [
+  "A. Both A and R are true and R is the correct explanation of A.",
+  "B. Both A and R are true but R is not the correct explanation of A.",
+  "C. A is true but R is false.",
+  "D. A is False but R is true."
+];
+
+const class12BiologyScope = [
+  "Environmental Issues (air and water pollution, solid wastes, agro-chemicals, radioactive wastes, greenhouse effect and global warming, ozone depletion, deforestation) is assessed only formatively in 2026-27: set NO question from it.",
+  "Organisms and Populations: population interactions (mutualism, competition, predation, parasitism) and population attributes (growth, birth rate, death rate, age distribution) only; no questions on the organism and its environment or on adaptations.",
+  "Pregnancy, placenta formation, parturition and lactation are elementary ideas only; IVF, ZIFT and GIFT are for general awareness.",
+  "Ecosystem: patterns, components, productivity, decomposition, energy flow and ecological pyramids; no ecological succession or nutrient cycling.",
+  "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
+];
+
+const class11BiologyScope = [
+  "Digestion and Absorption is assessed only formatively in 2026-27: set NO question from it.",
+  "Biomolecules: the nature of the bond linking monomers in a polymer, the dynamic state of body constituents, the concept of metabolism, the metabolic basis of living and the living state are excluded.",
+  "Photosynthetic pigments and the mechanism of hormone action are elementary ideas only; respiratory organs in animals are recall only.",
+  "Animal Kingdom: non-chordates up to phylum level and chordates up to class level, with salient features and a few examples.",
+  "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
+];
+
+const biologyFormats = {
+  subject: "Biology",
+  misconceptions: "autogamy vs geitonogamy, the timelines of spermatogenesis and oogenesis, dominant, recessive and sex-linked inheritance in pedigrees, transcription vs translation, the types of natural selection, what a high BOD means",
+  constructed: [
+    "Very Short Answer (VSA - 2 Marks): a reason, a comparison, a short explanation or reading a small hypothetical data table, worth exactly 2 marking-scheme value points.",
+    "Short Answer (SA - 3 Marks): a clinical, genetic or research situation to analyse, a genetic cross with a Punnett square, or an explanation in parts A, B, C, worth 3 value points.",
+    "Long Answer (LA - 5 Marks): situation-based, with sub-parts such as 4 + 1, 2 + 2 + 1 or I to IV, and internal choice (A) OR (B)."
+  ],
+  designNote: "about half the 2-, 3- and 5-mark questions ask the student to explain, interpret data, analyse a situation or evaluate a claim; the rest test knowledge and understanding, often set in a real-life situation.",
+  sourcing: "Source questions from the NCERT textbook and NCERT Exemplar, CBSE competency-based question banks and past board papers, as the sample paper does; cases may use a patient's history, a couple at a clinic, a farmer's field, a laboratory experiment or a hypothetical data table.",
+  arPlacement: `once above Q13, after the line "Question No. 13 to 16 consist of two statements – Assertion (A) and Reason (R). Answer these questions selecting the appropriate option given below:"`,
+  arAnswered: "answered from the four options printed once above them",
+  typology: {
+    vsa: "A reason, a comparison, a short explanation (\"Comment\", \"Suggest one strategy and justify\"), or reading a small hypothetical data table (\"Interpret the relationship\", \"Calculate the NPP\"). Exactly **2 marking-scheme value points**.",
+    sa: "A clinical, genetic or research situation to analyse (for example a couple at a fertility clinic, a dihybrid cross with a Punnett square and ratios, a host-parasite interaction), often in parts A, B, C of 1 mark each. **3 value points**.",
+    cbqHeading: "Case-Based Questions",
+    cbq: [
+      "A real-life case of about 100-150 words (the sample paper uses a girl's irregular menstrual cycles explained by the hypothalamic-pituitary-ovarian axis, and a farmer controlling cabbage loopers with Nucleopolyhedrovirus), followed by **A (1 mark), B (2 marks) and then C OR D (1 mark)**, with the marks shown against each part.",
+      "The only internal choice is between C and D, printed as \"Attempt either subpart C or D.\""
+    ]
+  },
+  rigor: "Formulate questions whose answers are distinct value points: correct biological terms spelt as in NCERT, labelled diagrams with pointer lines, genetic crosses showing parental genotypes, gametes, the Punnett square and the phenotypic and genotypic ratios, and processes written as steps in the right order.",
+  instructionsNote: "",
+  requirements: [
+    `**Section instructions, as in the sample paper:** print "Q. Nos. 1 to 12 are multiple choice questions. Only one of the choices is correct. Select and write the correct choice as well as the answer to these questions." under the Section A heading, and the Assertion-Reason line with its four options once above Q13.`,
+    `**Figures, as in the sample paper:** about 4 to 6 questions give the student a figure (a labelled diagram such as an embryo sac or a transcription unit, a pedigree chart, an illustration of a classic experiment). Directly below each, after a dashed line, add a words-only alternative headed "For Visually impaired students" on the same concept with the same marks.`,
+    `**Hypothetical data:** 2 to 3 questions, mostly in Section B, give a small data table to interpret, calculate from or evaluate, introduced with a line such as "The following is a hypothetical dataset".`,
+    `**Internal choice:** "Attempt either option A or B." in three Section B questions and all three long answers; "Attempt either subpart C or D." in each case-based question; NO choice in Section C.`,
+    "**Student drawing:** at least one question asks the student to draw (a Punnett square, a labelled diagram or a tRNA adaptor molecule). Never print the answer figure."
+  ],
+  figureQuota: "Set **4 to 6 figure-based questions** (labelled diagrams, pedigree charts, experiment illustrations) and **2 to 3 small hypothetical data tables**, each figure with a words-only alternative for visually impaired students",
+  diagramRules: `
+    *   **Biology Diagrams:** MUST generate clean inline vector SVG for:
+        - Labelled schematic diagrams with pointer lines and letter callouts [A], [B], [C], [D] for identification (for example an embryo sac after fertilisation, a transcription unit, a flower in section, reproductive organs, a nephron, a neuron).
+        - Pedigree charts with standard symbols (squares, circles, shaded affected, half-shaded carriers), population growth curves and hormone-level graphs with labelled axes.
+        - Illustrations of classic experiments in steps (Griffith, Avery-MacLeod-McCarty, Meselson-Stahl, Hershey-Chase); data tables as HTML tables.`
+};
+
+const biologyMandates = (roman, focus) => ({
+  mandatesTitle: `CBSE BIOLOGY (${roman}) MANDATES & PEDAGOGICAL RIGOR`,
+  mandates: [
+    "**Situation-based framing:** most questions put the concept in a real situation (a patient, a couple at a fertility clinic, a farmer, a researcher's experiment), as the sample paper does; named people are fine.",
+    "**Genetics and data:** crosses give the parental genotypes, gametes, a Punnett square and the ratios; pedigrees use standard symbols; hypothetical data tables have units and are small enough to read at a glance.",
+    focus,
+    "**Diagrams:** where the student draws, ask for a neat, properly labelled diagram and credit the labels, as CBSE's general instructions say."
+  ]
+});
+
 export const seniorPapers = {
   "Class 12 || Physics": {
     code: "042",
@@ -1227,6 +1345,44 @@ export const seniorPapers = {
       { name: "Redox Reactions", marks: 4, chapters: ["Redox"] },
       { name: "Organic Chemistry: Some Basic Principles and Techniques", marks: 11, chapters: ["Organic Chemistry"] },
       { name: "Hydrocarbons", marks: 10, chapters: ["Hydrocarbons"] }
+    ]
+  },
+  "Class 12 || Biology": {
+    code: "044",
+    paperLabel: "Biology (044)",
+    fullMarks: 70,
+    design: biologyDesign,
+    questions: biologyPaperQuestions,
+    generalInstructions: biologyGeneralInstructions,
+    arOptions: biologyArOptions,
+    scope: class12BiologyScope,
+    ...biologyFormats,
+    ...biologyMandates("XII", "**Molecular biology and biotechnology:** name the enzyme, vector or technique the answer needs (restriction enzymes, Ti plasmid, retroviruses, gel electrophoresis, DNA probes, PCR), and test the sequence of a process (replication, transcription, translation, rDNA steps)."),
+    units: [
+      { name: "Reproduction (Unit VI)", marks: 16, chapters: ["Sexual Reproduction in Flowering Plants", "Human Reproduction", "Reproductive Health"] },
+      { name: "Genetics and Evolution (Unit VII)", marks: 20, chapters: ["Principles of Inheritance", "Molecular Basis of Inheritance", "Evolution"] },
+      { name: "Biology and Human Welfare (Unit VIII)", marks: 12, chapters: ["Human Health", "Microbes in Human Welfare"] },
+      { name: "Biotechnology and its Applications (Unit IX)", marks: 12, chapters: ["Biotechnology"] },
+      { name: "Ecology and Environment (Unit X)", marks: 10, chapters: ["Organisms and Populations", "Ecosystem", "Biodiversity"] }
+    ]
+  },
+  "Class 11 || Biology": {
+    code: "044",
+    paperLabel: "Biology (044), Class XI",
+    fullMarks: 70,
+    design: biologyDesign,
+    questions: biologyPaperQuestions,
+    generalInstructions: biologyGeneralInstructions,
+    arOptions: biologyArOptions,
+    scope: class11BiologyScope,
+    ...biologyFormats,
+    ...biologyMandates("XI", "**Physiology and classification:** ask for mechanisms and their regulation (hormones, pressure gradients, partial pressures, the cardiac cycle, nerve impulse conduction), and for distinguishing features with examples in classification, not bare lists."),
+    units: [
+      { name: "Diversity of Living Organisms (Unit I)", marks: 15, chapters: ["The Living World", "Biological Classification", "Plant Kingdom", "Animal Kingdom"] },
+      { name: "Structural Organisation in Plants and Animals (Unit II)", marks: 10, chapters: ["Morphology of Flowering Plants", "Anatomy of Flowering Plants", "Structural Organisation in Animals"] },
+      { name: "Cell: Structure and Function (Unit III)", marks: 15, chapters: ["Cell: The Unit of Life", "Biomolecules", "Cell Cycle"] },
+      { name: "Plant Physiology (Unit IV)", marks: 12, chapters: ["Photosynthesis", "Respiration in Plants", "Plant Growth"] },
+      { name: "Human Physiology (Unit V)", marks: 18, chapters: ["Breathing", "Body Fluids", "Excretory Products", "Locomotion", "Neural Control", "Chemical Coordination"] }
     ]
   }
 };
@@ -1356,6 +1512,24 @@ This paper is set on the Class XII Chemistry 2026-27 sample paper layout, agains
 curriculum and its unit weightage, so students meet the board format a year early.
 CHEMISTRY (CODE - 043), Class XI, Maximum Marks 70, Time Allowed 3 hours.
 ${chemistryPaperPattern}`
+  },
+
+  "Class 12 || Biology": {
+    year: "2026-27",
+    fullMarks: 70,
+    text: `BIOLOGY - CODE NO. 044, Class XII, Maximum Marks 70, Time Allowed 3 hours.
+${biologyPaperPattern}
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 11 || Biology": {
+    year: "2026-27",
+    fullMarks: 70,
+    text: `Class 11 is a school examination, so CBSE publishes no sample paper for it.
+This paper is set on the Class XII Biology 2026-27 sample paper layout, against the Class XI
+curriculum and its unit weightage, so students meet the board format a year early.
+BIOLOGY - CODE NO. 044, Class XI, Maximum Marks 70, Time Allowed 3 hours.
+${biologyPaperPattern}`
   },
 
   "Class 12 || Accountancy": {
