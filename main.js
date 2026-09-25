@@ -1,5 +1,5 @@
-import { cbseData } from './data.js?v=40';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=6';
+import { cbseData } from './data.js?v=41';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=7';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -262,7 +262,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_27_english_curriculum_v22';
+      const CURRENT_SYLLABUS_VER = '2026_27_hindi_curriculum_v23';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -565,16 +565,17 @@ function buildSocialScienceSections(spec, sel, totalMarks) {
   });
 }
 
-// Class 9/10 English (R1): one blueprint row per numbered question of the CBSE
-// 2026-27 design in sqp_blueprints.js, so the paper keeps CBSE's numbering and
-// choices ("attempt any 4 of 5") question by question.
-function buildEnglishSections(spec) {
+// Class 9/10 English (R1) and Hindi (R2 - Ganga): one blueprint row per
+// numbered question of the CBSE 2026-27 design in sqp_blueprints.js, so the
+// paper keeps CBSE's numbering and choices ("attempt any 4 of 5") question by
+// question.
+function buildQuestionRows(spec) {
   return spec.questions.map(q => ({
     name: q.section,
     type: `${q.q}. ${q.type}`,
     count: 1,
     unitMark: q.marks,
-    marksPerQ: q.each ? `${q.attempt} × ${q.each} Marks` : `${q.marks} Marks`,
+    marksPerQ: q.each ? `${q.attempt || q.marks / q.each} × ${q.each} Marks` : `${q.marks} Marks`,
     total: q.marks,
     choice: q.of ? `Attempt any ${q.attempt} of ${q.of}; ${q.detail}` : q.detail
   }));
@@ -582,7 +583,8 @@ function buildEnglishSections(spec) {
 
 // The syllabus group each checkbox of a subject sits in ("Section B : Writing
 // Skills", "Section C : First Flight (Poetry)" ...), keyed by the checkbox value
-// ("item", or "subgroup -> item" inside a nested group). Lets the prompt tell
+// ("item" or "group -> item", or "subgroup -> item" inside a nested group).
+// Lets the prompt tell
 // writing, grammar and literature items apart by where they sit, not by words
 // in their titles - "A Letter to God" is a story, not a letter to write.
 function getSyllabusGroupIndex(className, subjectName) {
@@ -591,7 +593,11 @@ function getSyllabusGroupIndex(className, subjectName) {
   if (!syllabus || typeof syllabus !== 'object' || Array.isArray(syllabus)) return index;
   Object.entries(syllabus).forEach(([group, items]) => {
     if (Array.isArray(items)) {
-      items.forEach(item => index.set(String(item).trim(), group));
+      // Some subjects' checkboxes carry "group -> item" (the Hindi lists do).
+      items.forEach(item => {
+        index.set(String(item).trim(), group);
+        index.set(`${group} -> ${item}`.trim(), group);
+      });
     } else if (items && typeof items === 'object') {
       Object.entries(items).forEach(([sub, subItems]) => {
         index.set(String(sub).trim(), group);
@@ -878,7 +884,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
         vyakaranType = "व्यावहारिक व्याकरण (वाच्य, पद-परिचय, वाक्य भेद, अलंकार)";
       } else if (subLower.includes("course-b") || subLower.includes("hindi b") || subLower.includes("hindi (r2") || subLower.includes("hindi r2") || subLower.includes("ganga") || subLower.includes("085")) {
         if (className === "Class 9") {
-          vyakaranType = "व्यावहारिक व्याकरण (शब्द व पद, अनुस्वार-अनुनासिक, उपसर्ग-प्रत्यय, स्वर संधि, विराम चिह्न, वाक्य भेद)";
+          vyakaranType = "व्यावहारिक व्याकरण (समानार्थी शब्द, मुहावरे, उपसर्ग-प्रत्यय, विराम चिह्न, संज्ञा-सर्वनाम-निपात)";
         } else {
           vyakaranType = "व्यावहारिक व्याकरण (पदबंध, रचना के आधार पर वाक्य रूपांतरण, समास, मुहावरे)";
         }
@@ -887,7 +893,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
       }
 
       sections = [
-        { name: "खण्ड 'क'", type: "अपठित बोध (1 अपठित गद्यांश - 250-300 शब्द)", count: 1, unitMark: 8, marksPerQ: "8 Marks", total: 8, choice: "MCQs & Short Comprehension" },
+        { name: "खण्ड 'क'", type: (className === "Class 9" || className === "Class 10") ? "अपठित बोध (1 अपठित गद्यांश - लगभग 200 शब्द)" : "अपठित बोध (1 अपठित गद्यांश - 250-300 शब्द)", count: 1, unitMark: 8, marksPerQ: "8 Marks", total: 8, choice: "MCQs & Short Comprehension" },
         { name: "खण्ड 'ख'", type: vyakaranType, count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "8 MCQs on Prescribed Topics" },
         { name: "खण्ड 'ग'", type: "पाठ्यपुस्तक व पूरक पुस्तक (साहित्य)", count: 4, unitMark: 3.5, marksPerQ: "3-4 Marks", total: 14, choice: "1 RTC (4M) + 2 SA (6M) + 1 LA (4M)" },
         { name: "खण्ड 'घ'", type: "रचनात्मक लेखन (अनुच्छेद लेखन 5M + पत्र/ई-मेल 5M)", count: 2, unitMark: 5, marksPerQ: "5 Marks", total: 10, choice: "Internal choices in both writing tasks" }
@@ -942,7 +948,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
 
     if (engSpec) {
       // Class 9 / 10 English (R1) on the CBSE 2026-27 design.
-      sections = buildEnglishSections(engSpec);
+      sections = buildQuestionRows(engSpec);
     } else if (className === "Class 11" || className === "Class 12") {
       // Class 11 follows the Class 12 board exam structure exactly (same
       // section layout, mark/question distribution) per school policy -
@@ -975,6 +981,10 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
     }
   }
   // 5. Hindi Course R1 & R2 (80 Marks / 3 Hours)
+  else if (subLower.includes("hindi") && marks >= 75 && getSecondaryHindi(className, subjectName)) {
+    // Class 9 / 10 Hindi (R2 - Ganga) on the CBSE 2026-27 design.
+    sections = buildQuestionRows(getSecondaryHindi(className, subjectName));
+  }
   else if (subLower.includes("hindi") && marks >= 75) {
     const isR1 = subLower.includes("r1") || subLower.includes("course a") || subLower.includes("hindi a");
     const readingType = isR1 ? "अपठित बोध (1 गद्यांश 200 शब्द 7M + 1 काव्यांश 80-100 शब्द 7M)" : "अपठित बोध (2 अपठित गद्यांश प्रत्येक 200 शब्द 7M+7M)";
@@ -2357,7 +2367,7 @@ function getPrescribedBookName(className, subjectName) {
     if (sub.includes("math")) return "Ganita Manjari (Class IX) (NCERT)";
     if (sub.includes("english") && sub.includes("r2")) return "Interact in English (Communicative) (CBSE)";
     if (sub.includes("english") || sub.includes("kaveri")) return "Kaveri (NCERT)";
-    if (sub.includes("ganga") || sub.includes("hindi (r2") || sub.includes("hindi r2")) return "Ganga (गंगा) & Sanchayan Part-1 (NCERT)";
+    if (sub.includes("ganga") || sub.includes("hindi (r2") || sub.includes("hindi r2")) return "Ganga (गंगा) (NCERT)";
     if (sub.includes("hindi")) return "Kshitij Part-1 & Kritika Part-1 / Ganga (NCERT)";
     if (sub.includes("sanskrit")) return "Shemushi Part-1 / Manika Part-1 (NCERT)";
     if (sub.includes("computer")) return "Computer Applications (Code 165)";
@@ -4308,8 +4318,15 @@ export async function buildPromptString(activeBtn) {
   const secEnglish = getSecondaryEnglish(className, subjectName);
   const engFullPaper = !!secEnglish && isFullLengthPaper;
   const engLongWords = className === 'Class 9' ? '120-150' : '100-120';
+  // Class 9 and 10 Hindi (R2 - Ganga), on the same terms as English.
+  const secHindi = getSecondaryHindi(className, subjectName);
+  const hinFullPaper = !!secHindi && isFullLengthPaper;
 
-  const constructedResponseLines = secEnglish ? [
+  const constructedResponseLines = secHindi ? [
+    `         - अपठित बोध short answers (2 Marks): inference, interpretation and evaluation of the passage.`,
+    `         - Textbook short answers (2 Marks, 25-30 words)${className === 'Class 10' ? ` and संचयन answers (3 Marks, 50-60 words)` : ` and longer answers (4 Marks, 60-80 words)`}: content, understanding, expression and appreciation.`,
+    `         - Writing tasks in the prescribed format and word limit, with internal choice.`
+  ].join('\n') : secEnglish ? [
     `         - Reading short answers (2 Marks, 30-40 words): inference, interpretation and evaluation of the passage.`,
     `         - Literature short answers (${className === 'Class 9' ? '2' : '3'} Marks, 40-50 words): interpretation, analysis, inference and evaluation of a text.`,
     `         - Literature long answers (${className === 'Class 9' ? '5' : '6'} Marks, ${engLongWords} words) and writing tasks: extrapolation beyond and across texts, theme, plot or character; writing in the prescribed format and word limit, with internal choice.`
@@ -4370,7 +4387,7 @@ export async function buildPromptString(activeBtn) {
 ${usesCaseBased ? `         - Real-world Case-Based Questions (CBQs) / Source-Based Integrated Studies${usesLetteredSections ? ` (Section E/D)` : ``}.\n` : ``}         - High-quality conceptual Multiple Choice Questions (MCQs) with diagnostic distractors testing common student misconceptions.
          - Standard CBSE Assertion-Reasoning (A-R) questions with official 4-option rubric.
       2. **Select Response / Foundational Objective Questions (20% Weightage):**
-         - Direct NCERT conceptual recall, standard definitions, ${secEnglish ? `vocabulary in context, and the facts, characters and events of the prescribed texts` : secSocial ? `dates, events, places, terms and constitutional provisions` : secMaths ? `formulae, standard values and mathematical terms` : `scientific laws, SI units, and chemical/mathematical nomenclature`}.
+         - Direct NCERT conceptual recall, standard definitions, ${secHindi ? `शब्द भंडार and the facts, characters and events of the prescribed lessons` : secEnglish ? `vocabulary in context, and the facts, characters and events of the prescribed texts` : secSocial ? `dates, events, places, terms and constitutional provisions` : secMaths ? `formulae, standard values and mathematical terms` : `scientific laws, SI units, and chemical/mathematical nomenclature`}.
       3. **Constructed Response & Step-Marking Questions (30% Weightage):**
 ${constructedResponseLines}
     - **Official CBSE Sourcing Matrix (To guarantee 100% board score preparation):**
@@ -4474,7 +4491,7 @@ ${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structure
       ? `*   **Question Design:** Follow the CBSE 2026-27 competency split given above (Knowledge & Understanding / Application / Formulate, Analyse, Evaluate & Create)\n`
       : sstFullPaper
       ? `*   **Question Design:** Follow the CBSE 2026-27 competency split given above (Remembering & Understanding / Applying / Analysing, Evaluating & Creating / Map Skill)\n`
-      : engFullPaper
+      : (engFullPaper || hinFullPaper)
       ? `*   **Question Design:** Follow the CBSE 2026-27 section design given above, question by question\n`
       : mathsFullPaper
       ? `*   **Question Design:** Follow the CBSE 2026-27 typology split given above (Remembering & Understanding / Applying / Analysing, Evaluating & Creating)\n`
@@ -4526,9 +4543,40 @@ ${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structure
         notes.push(`No poem is selected, so the poetry extract question is set as a second prose / drama extract with the same marks and sub-questions.`);
       }
       notes.forEach(n => { blueprintPromptText += `*   **Partial syllabus:** ${n}\n`; });
+    } else if (hinFullPaper) {
+      blueprintPromptText += `\n**CRITICAL — QUESTION NUMBERING FOR HINDI:** Each row above is ONE numbered question of the CBSE 2026-27 design (Q1 to Q${secHindi.questions.length}), inside the खंड named on its row. Keep that numbering and the choice written on each row ("Attempt any 4 of 5" means print 5 items and the student answers 4 - write it in Hindi as "किन्हीं चार प्रश्नों के उत्तर लिखिए"). Sub-questions are numbered (क), (ख), (ग) ... or I, II, III ... under their question. Put the marks against every question and sub-question.\n`;
+      // A literature question whose part has nothing selected is set from
+      // another part, keeping its marks and form.
+      const groupIndex = getSyllabusGroupIndex(className, subjectName);
+      const ticked = new Set();
+      selectedChaptersData.forEach(c => {
+        const group = groupIndex.get(c.name) || '';
+        Object.entries(secHindi.parts).forEach(([key, part]) => { if (group.includes(part.group)) ticked.add(key); });
+      });
+      if (ticked.size > 0) {
+        const fallbackOf = { supplementary: ['prose', 'poetry'], poetry: ['prose'], prose: ['poetry', 'supplementary'] };
+        Object.keys(secHindi.parts).filter(key => !ticked.has(key)).forEach(key => {
+          const fallback = (fallbackOf[key] || []).find(k => ticked.has(k));
+          const qs = secHindi.questions.filter(q => q.part === key).map(q => q.q);
+          if (fallback && qs.length) {
+            blueprintPromptText += `*   **Partial syllabus:** No ${secHindi.parts[key].label} lesson is selected, so ${qs.join(' and ')} ${qs.length > 1 ? 'are' : 'is'} set from the selected ${secHindi.parts[fallback].label} lessons instead, keeping ${qs.length > 1 ? 'their' : 'its'} marks, choice and word limit.\n`;
+          }
+        });
+      }
     } else if (isCombinedScience && subjectName.toLowerCase().includes('legacy')) {
       blueprintPromptText += `\n**CRITICAL — SECTION MEANING FOR SCIENCE:** Unlike most other subjects, Section A / B / C above are NOT question-type groupings. They are SUBJECT groupings: Section A = Biology questions only, Section B = Chemistry questions only, Section C = Physics questions only. Each section must internally contain its own full mix of MCQs, Assertion-Reasoning, VSA, SA, LA, and Case-Based questions in the exact counts given for that section — do NOT group all MCQs together across subjects, and do NOT create separate Section D/E for question types. This matches the real official CBSE Class 9/10 Science board exam structure.\n`;
     }
+  }
+
+  if (hinFullPaper) {
+    const sectionMarks = {};
+    secHindi.questions.forEach(q => { sectionMarks[q.section] = (sectionMarks[q.section] || 0) + q.marks; });
+    const headings = {};
+    secHindi.questions.forEach(q => { headings[q.section] = q.heading; });
+    difficultyDistribution = `\n*   **Official CBSE 2026-27 Question Paper Design — ${secHindi.paperLabel}, ${className} (MANDATORY):**
+    - Keep CBSE's section marks: ${Object.keys(sectionMarks).map(k => `${k} ${headings[k]} ${sectionMarks[k]}`).join(', ')}.
+    - अपठित बोध tests बोध, चिंतन, विश्लेषण and सराहना; the textbook questions test content knowledge, understanding, expression and काव्यबोध; writing tests logical, well-organised expression in the prescribed format. Mix MCQs with short and long answers exactly as the blueprint below lays out, question by question.${difficulty === "Advanced" ? `
+    - **Advanced difficulty:** Keep the structure unchanged. Choose denser passages, subtler options and more analytical textbook questions.` : ``}`;
   }
 
   if (engFullPaper) {
@@ -4544,6 +4592,17 @@ ${secEnglish.competencies.map((line, i) => `      ${i + 1}. ${line}`).join('\n')
   const englishWritingFormats = className === 'Class 9'
     ? `notice (up to 50 words, in a box, with the issuing body, title, date and signature) or informal invitation (up to 50 words); letter to the editor (sender's address, date, receiver's address, subject, salutation, body, complimentary close, name) or formal e-mail (to, subject, salutation, body, sign-off), 120-150 words; factual description or magazine article (title and byline for an article), 120-150 words; descriptive or narrative essay with a title, 200-250 words`
     : `formal letter (sender's address, date, receiver's address, subject, salutation, body, complimentary close, name and designation), 100-120 words; analytical paragraph (introduction, analysis citing the figures or points given, and a conclusion), 100-120 words. Notices and messages are for school tests only`;
+  const hindiWritingFormats = className === 'Class 9'
+    ? `अनुच्छेद (about 100 words, with a title and the संकेत-बिंदु given); अनौपचारिक पत्र (about 100 words: sender's address, date, संबोधन, अभिवादन, body, समापन); संवाद (about 80 words, between the named speakers, with हाव-भाव in brackets); चित्र पर आधारित लेखन (about 80 words, describing the scene and responding to it)`
+    : `अनुच्छेद (about 120 words, on the 3 संकेत-बिंदु given); औपचारिक पत्र (about 100 words: प्रेषक का पता, दिनांक, सेवा में/प्राप्तकर्ता, विषय, संबोधन, body, भवदीय/भवदीया, name); सूचना (about 60 words, in a box: issuing body, सूचना, date, title, body, name and designation); विज्ञापन (about 40 words, with a slogan; a box or picture is optional); ई-मेल (about 80 words: To, विषय, संबोधन, body, sign-off) OR लघुकथा (about 100 words, with a title)`;
+  const hindiTypology = secHindi ? `    *   **Language of the paper:** write the whole paper — instructions, questions and options — in standard Hindi (Devanagari), as CBSE Hindi papers are.
+    *   **1-Mark MCQs (अपठित बोध, व्याकरण and पठित अंश):** four options (क)–(घ) or (A)–(D), with the forms CBSE Hindi papers use: direct questions, "सही विकल्प चुनिए" with combinations of statements, कथन-कारण (with its four options printed), and meaning of a line or word in context.
+        - **Diagnostic options:** plausible distractors — true of the text but not the answer, or a near meaning.
+    *   **अपठित बोध short answers (2 Marks):** आशय स्पष्ट कीजिए / reasoned opinion on the passage (अपने विचार तर्क सहित), not copying one line.
+    *   **व्याकरण:** test ONLY the grammar prescribed for ${className}: ${secHindi.grammar}. Set each item as a sentence to work on, as directed (निर्देशानुसार), and print how many items to attempt.
+    *   **Textbook short answers (2 Marks, 25-30 words)${className === 'Class 10' ? ` and संचयन answers (3 Marks, 50-60 words)` : ` and longer answers (4 Marks, 60-80 words)`}:** name the lesson or poem in each question; test understanding, expression and appreciation (भाव, संदेश, पात्र, भाषा-शैली), not bare recall.
+    *   **रचनात्मक लेखन:** ${hindiWritingFormats}. Give internal choice exactly as the blueprint rows say.
+    *   **Marking-scheme value points:** frame every constructed response so it can be marked on content (विषयवस्तु), organisation and language, and print the word limit in the question.` : '';
   const englishTypology = secEnglish ? `    *   **1-Mark Objective Questions (reading, grammar and literature extracts):**
         - MCQs with four options, and the objective items CBSE English papers use: complete the sentence (from two given options, or from the text), true or false, analogy, fact or opinion, match or classify, identify the word or phrase from a named paragraph, and Assertion-Reason with its four options printed.
         - **Diagnostic options:** distractors are plausible — true of the passage but not the answer, near-synonyms, or the opposite of the writer's view.
@@ -4627,7 +4686,7 @@ ${blueprintPromptText}
 8.  **Official CBSE Board Typology Framing & 100% Score Exam Guidelines (NEP 2020 & Latest Board SQP Pattern):**
 ${usesLetteredSections ? `    *(Note: these typology rules apply to every question of the stated mark value, regardless of which lettered Section it physically appears in - some subjects group questions by type (Section A = all 1-mark, etc.), while Class 9/10 Science groups them by subject area instead (Section A = Biology, B = Chemistry, C = Physics), with every question type appearing inside each of those sections. Follow the "Section-wise Question Breakdown" blueprint above for the actual physical layout.)*
 ` : `    *(Note: these typology rules apply to every question of the stated mark value, wherever it sits in the paper. Follow the "Section-wise Question Breakdown" blueprint above for the actual physical layout.)*
-`}${secEnglish ? englishTypology : `    *   **1-Mark Objective & Assertion-Reasoning Questions:**
+`}${secEnglish ? englishTypology : secHindi ? hindiTypology : `    *   **1-Mark Objective & Assertion-Reasoning Questions:**
         - **Diagnostic MCQs:** Options (a), (b), (c), (d) must feature plausible distractors targeting common student misconceptions documented in CBSE Board Evaluation Reports (e.g., ${secSocial ? `wrong chronology of events, mixing up the Non-Cooperation and Civil Disobedience movements, confusing potential and reserve resources, GDP versus per capita income, horizontal versus vertical power sharing` : secMaths ? `sign errors in coordinates, confusing sector with segment area, wrong discriminant condition, radius/diameter mix-ups` : `reciprocal lens formula errors, Cartesian sign mistakes in mirror/coordinate geometry, incomplete definitions`}).
         - **Assertion-Reasoning:** Must strictly follow the official CBSE 4-option rubric:
           *(a) Both Assertion (A) and Reason (R) are true and Reason (R) is the correct explanation of Assertion (A).*
@@ -4671,7 +4730,9 @@ ${secMaths ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
         - ${secSocial ? `Frame questions whose answers are distinct value points: accurate dates, names, places and terms; examples from the NCERT text; the keyword the marking scheme looks for (for example "prudential reason", "holding together federation", "disguised unemployment"); and, in map questions, the correct symbol and the name written beside it.` : secMaths ? `Formulate questions requiring the formula to be stated, complete step-wise working, correct units in the final answer (cm, m², cm³, ₹, degrees), fully simplified answers, and neat labelled figures. Numbers must work out cleanly by hand, because calculators are not allowed.` : `Formulate questions requiring explicit formula statements, correct Cartesian sign conventions (+/-), final numerical answers with mandatory SI units (m, s, N, J, W, Pa, Ω, A, V, etc.), 100% balanced chemical equations with state symbols (s, l, g, aq), labeled biological diagrams with pointer lines, and clean schematic circuit symbols.`} Strict penalty cues train students for zero mark-deduction in board examinations.`}
 9.  **Strict Rationalization & Strict Syllabus Confinement:**
     *   Strictly **EXCLUDE** all deleted topics/chapters rationalized by CBSE/NCERT for ${fullSubjectDisplay} in ${className}.
-${engFullPaper ? `    *   **CBSE 2026-27 scope for ${className} English:**
+${hinFullPaper ? `    *   **CBSE 2026-27 scope for ${className} Hindi:**
+${secHindi.scope.map(line => `        - ${line}`).join('\n')}
+` : ''}${engFullPaper ? `    *   **CBSE 2026-27 scope for ${className} English:**
 ${secEnglish.scope.map(line => `        - ${line}`).join('\n')}
 ` : ''}${sstFullPaper ? `    *   **CBSE 2026-27 scope limits for ${className} Social Science (apply to every selected chapter):**
 ${secSocial.scope.map(line => `        - ${line}`).join('\n')}
@@ -4791,6 +4852,7 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
       "Class 9": ["Passage 1 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)", "Passage 2 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)"],
       "Class 10": ["Passage 1 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)", "Passage 2 (Prose, strictly NOT LESS THAN 200 words, approx. 200-250 words)"]
     };
+    if (secHindi) limits[className] = secHindi.readingLimits;
     const hindiBLimits = quoteLimitsFor(limits);
     if (hindiBLimits) {
       promptText += `\n11. **Hindi Reading Section Word Limits:** Ensure the unseen passages strictly adhere to these limits: ${hindiBLimits}. Passages must be intellectually rich, engaging, and strictly NOT LESS THAN 200 words each.`;
@@ -4834,7 +4896,7 @@ Anchor the passages in timeless human values:
       ? `\n    *   **In Reading Section (Unseen Passages):** ${marks >= 75 ? "Embed 1–2 Statement-Evaluation / Assertion-Reasoning questions (testing author's intent, cause-and-effect, and inference)." : marks >= 40 ? "Embed 1 Statement-Evaluation / Cause-and-Effect question in the reading comprehension passage." : "Keep questions direct and focused on core comprehension within the 45-minute limit."}`
       : ``;
     promptText += `\n12. **Assertion-Reasoning & Statement Evaluation in Language Papers:**${readingBullet}
-    *   **In Literature Section (RTC Extracts):** ${engFullPaper ? "Follow the sample paper: MCQs, complete-the-sentence and fill-in items and one 2-mark short answer; no Assertion-Reason in the literature extracts." : marks >= 75 ? "Include 1 Statement 1 vs Statement 2 relationship analysis question in the prose/drama extract." : "Ensure RTC questions test contextual literary analysis."}
+    *   **In Literature Section (RTC Extracts):** ${hinFullPaper ? "Follow the sample paper: each पठित काव्यांश / गद्यांश carries 5 MCQs; no Statement 1 / Statement 2 item is needed in them." : engFullPaper ? "Follow the sample paper: MCQs, complete-the-sentence and fill-in items and one 2-mark short answer; no Assertion-Reason in the literature extracts." : marks >= 75 ? "Include 1 Statement 1 vs Statement 2 relationship analysis question in the prose/drama extract." : "Ensure RTC questions test contextual literary analysis."}
     *   **In Grammar Section:** Strictly follow official CBSE MCQ / gap-filling / transformation formats (do NOT force artificial A-R templates into grammar).`;
   } else {
     promptText += `\n12. **Assertion-Reasoning Guidelines for Academic Subjects (Science/Math/SST/Physics/Chemistry/Commerce):**
@@ -4943,6 +5005,14 @@ ${isFullPaper
 *   **Case-based questions:** a real-life or experimental context with sub-parts A (1 mark), B (1 mark) and C OR D (2 marks).
 *   **Long answers:** split into sub-parts (I and II, or I to IV) with an internal choice of the whole question (option A OR option B).
 *   **Assertion-Reason:** print the four options (A)–(D) once, above the Assertion-Reason questions of each section.`;
+  }
+
+  if (hinFullPaper) {
+    promptText += `\n\n**CBSE 2026-27 HINDI REQUIREMENTS:**
+*   **Question by question:** set exactly the ${secHindi.questions.length} questions of the blueprint, in its order and with its marks, choices and word limits, and print the general instructions (सामान्य निर्देश) in Hindi at the top, as CBSE does.
+*   **अपठित गद्यांश:** original passages of about 200 words each, age-appropriate, on culture, society, environment or everyday life, with the source line (साभार) where adapted.
+*   **पठित अंश:** the पठित काव्यांश and पठित गद्यांश are quoted exactly from the selected lessons of ${Object.values(secHindi.parts).map(p => p.label).join(', ')}; name the lesson or poem with each question, and spread the questions across different lessons.
+*   **Writing:** every writing question states its word limit; give the internal choice (अथवा) exactly as the blueprint rows say. All details in the writing questions are imaginary.`;
   }
 
   if (engFullPaper) {
@@ -9153,7 +9223,11 @@ function exportSyllabusSheetToExcel() {
                 return checkedSet.has(`${topName} -> ${sub}`) || checkedSet.has(sub) || checkedSet.has(`${secKey}: ${sub}`);
               });
             }
-            const isWritingSubGroup = /short writing|long writing|लघु लेखन|दीर्घ लेखन|लघु रचनात्मक|दीर्घ रचनात्मक/i.test(topName);
+            // A writing section's subgroups ("Essay Writing (200-250 words)",
+            // "अनुच्छेद लेखन (लगभग 100 शब्द)") all name a task, as the older
+            // short / long writing labels do.
+            const isWritingSubGroup = /short writing|long writing|लघु लेखन|दीर्घ लेखन|लघु रचनात्मक|दीर्घ रचनात्मक/i.test(topName) ||
+              /writing|रचनात्मक लेखन/i.test(secKey);
             const isParentChecked = !checkedSet || (checkedSet.has(topName) || checkedSet.has(`${secKey}: ${topName}`) || checkedSubs.length > 0);
             if (isParentChecked) {
               const effectiveTopics = checkedSubs.length > 0 ? checkedSubs : (Array.isArray(subtopicsList) ? subtopicsList : []);

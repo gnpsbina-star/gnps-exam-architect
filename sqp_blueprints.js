@@ -586,12 +586,182 @@ this is the design printed in CBSE's Class IX 2026-27 curriculum. The paper has 
     Q13. One of two questions assessing extrapolation beyond and across the texts, about 120-150 words (5 marks).
     Q14. One of two questions assessing theme / plot / character, about 120-150 words (5 marks).`;
 
+// Class 9 and 10 Hindi, from the CBSE 2026-27 curriculum documents
+// (Hindi_B_SecP1_2026-27 for Class X Hindi Course B, code 085;
+// Hindi_SecP1IX_2026-27 for Class IX R2) and the Class X Course B 2026-27
+// sample paper. The school's "Hindi (R2 - Ganga)" is Course B at Class 10
+// (Sparsh Part 2 and Sanchayan Part 2) and R2 at Class 9 (the new NCERT
+// textbook Ganga, which CBSE says serves R1 and R2 alike).
+//
+// Class 10: 16 questions in 14 / 16 / 28 / 22 marks, question by question as
+// the sample paper sets them (the poetry extract comes before the prose one).
+// Class 9: CBSE prints the section marks (14 / 16 / 30 / 20) and the grammar
+// and writing breakdown, but not the 30-mark textbook section. That section is
+// set here on the Class 10 pattern (school policy): poetry and prose extracts
+// of 5 MCQs, 3 of 4 short answers from each, and one 2 of 3 question of 4
+// marks that makes up the other two marks.
+//
+// `part` says which part of the syllabus a literature question comes from,
+// so the prompt can move it when that part has no chapter selected.
+export const secondaryHindi = {
+  "Class 10": {
+    code: "085",
+    paperLabel: "हिंदी पाठ्यक्रम 'ब' (085)",
+    parts: {
+      prose: { label: "स्पर्श भाग-2 (गद्य खंड)", group: "स्पर्श भाग-2 (गद्य खंड)" },
+      poetry: { label: "स्पर्श भाग-2 (काव्य खंड)", group: "स्पर्श भाग-2 (काव्य खंड)" },
+      supplementary: { label: "संचयन भाग-2", group: "संचयन" }
+    },
+    readingLimits: ["Passage 1 (अपठित गद्यांश, about 200 words)", "Passage 2 (अपठित गद्यांश, about 200 words)"],
+    grammar: "पदबंध, रचना के आधार पर वाक्य रूपांतरण, समास and मुहावरे",
+    scope: [
+      "Grammar is set ONLY on the four Course B items: पदबंध, रचना के आधार पर वाक्य रूपांतरण, समास, मुहावरे (4 of 5 items each).",
+      "Literature comes ONLY from स्पर्श भाग-2 and संचयन भाग-2, from the selected lessons. These lessons are NOT examined in 2026-27: बिहारी के दोहे, महादेवी वर्मा - मधुर-मधुर मेरे दीपक जल, अंतोन चेखव - गिरगिट.",
+      "Writing is ONLY the five Course B tasks: अनुच्छेद (about 120 words), औपचारिक पत्र (about 100 words), सूचना (about 60 words), विज्ञापन (about 40 words), and ई-मेल (about 80 words) OR लघुकथा (about 100 words). Do NOT set a संदेश, संवाद or अनौपचारिक पत्र."
+    ],
+    questions: [
+      { section: "खंड 'क'", heading: "अपठित बोध", q: "Q1", type: "अपठित गद्यांश (about 200 words)", marks: 7,
+        detail: "3 MCQs of 1 mark (one may be कथन-कारण) and 2 short answers of 2 marks" },
+      { section: "खंड 'क'", heading: "अपठित बोध", q: "Q2", type: "अपठित गद्यांश (about 200 words)", marks: 7,
+        detail: "3 MCQs of 1 mark (one may be कथन-कारण) and 2 short answers of 2 marks" },
+      { section: "खंड 'ख'", heading: "व्यावहारिक व्याकरण", q: "Q3", type: "पदबंध", marks: 4, each: 1, attempt: 4, of: 5,
+        detail: "identify the पदबंध and its type in a sentence" },
+      { section: "खंड 'ख'", heading: "व्यावहारिक व्याकरण", q: "Q4", type: "रचना के आधार पर वाक्य रूपांतरण", marks: 4, each: 1, attempt: 4, of: 5,
+        detail: "convert between सरल, संयुक्त and मिश्र वाक्य, or identify the type" },
+      { section: "खंड 'ख'", heading: "व्यावहारिक व्याकरण", q: "Q5", type: "समास", marks: 4, each: 1, attempt: 4, of: 5,
+        detail: "समास-विग्रह and naming the समास, or forming the समस्त पद" },
+      { section: "खंड 'ख'", heading: "व्यावहारिक व्याकरण", q: "Q6", type: "मुहावरे", marks: 4, each: 1, attempt: 4, of: 5,
+        detail: "use the मुहावरा correctly in context, or choose the मुहावरा that fits the sentence" },
+      { section: "खंड 'ग'", heading: "पाठ्यपुस्तक एवं पूरक पाठ्यपुस्तक", q: "Q7", type: "पठित काव्यांश (स्पर्श भाग-2)", marks: 5, each: 1, part: "poetry",
+        detail: "5 MCQs of 1 mark on the extract" },
+      { section: "खंड 'ग'", heading: "पाठ्यपुस्तक एवं पूरक पाठ्यपुस्तक", q: "Q8", type: "काव्य खंड प्रश्न (25-30 words)", marks: 6, each: 2, attempt: 3, of: 4, part: "poetry",
+        detail: "2 marks each, testing काव्यबोध" },
+      { section: "खंड 'ग'", heading: "पाठ्यपुस्तक एवं पूरक पाठ्यपुस्तक", q: "Q9", type: "पठित गद्यांश (स्पर्श भाग-2)", marks: 5, each: 1, part: "prose",
+        detail: "5 MCQs of 1 mark on the extract" },
+      { section: "खंड 'ग'", heading: "पाठ्यपुस्तक एवं पूरक पाठ्यपुस्तक", q: "Q10", type: "गद्य खंड प्रश्न (25-30 words)", marks: 6, each: 2, attempt: 3, of: 4, part: "prose",
+        detail: "2 marks each, on content, understanding and expression" },
+      { section: "खंड 'ग'", heading: "पाठ्यपुस्तक एवं पूरक पाठ्यपुस्तक", q: "Q11", type: "पूरक पाठ्यपुस्तक संचयन भाग-2 (50-60 words)", marks: 6, each: 3, attempt: 2, of: 3, part: "supplementary",
+        detail: "3 marks each" },
+      { section: "खंड 'घ'", heading: "रचनात्मक लेखन", q: "Q12", type: "अनुच्छेद लेखन (about 120 words)", marks: 5, attempt: 1, of: 3,
+        detail: "three current, practical topics, each with 3 संकेत-बिंदु" },
+      { section: "खंड 'घ'", heading: "रचनात्मक लेखन", q: "Q13", type: "औपचारिक पत्र (about 100 words)", marks: 5, attempt: 1, of: 2,
+        detail: "to a principal, editor or official, in the prescribed format" },
+      { section: "खंड 'घ'", heading: "रचनात्मक लेखन", q: "Q14", type: "सूचना लेखन (about 60 words)", marks: 4, attempt: 1, of: 2,
+        detail: "on a matter of everyday school or community life, in a box" },
+      { section: "खंड 'घ'", heading: "रचनात्मक लेखन", q: "Q15", type: "विज्ञापन लेखन (about 40 words)", marks: 3, attempt: 1, of: 2,
+        detail: "for a product, service or cause, with a slogan" },
+      { section: "खंड 'घ'", heading: "रचनात्मक लेखन", q: "Q16", type: "ई-मेल लेखन (about 80 words) OR लघुकथा लेखन (about 100 words)", marks: 5, attempt: 1, of: 2,
+        detail: "a formal e-mail on a given subject, or a short story on a given topic or title" }
+    ]
+  },
+  "Class 9": {
+    code: "R2",
+    paperLabel: "हिंदी (आर-2), गंगा",
+    parts: {
+      prose: { label: "गंगा (गद्य खंड)", group: "गंगा (गद्य खंड)" },
+      poetry: { label: "गंगा (काव्य खंड)", group: "गंगा (काव्य खंड)" }
+    },
+    readingLimits: ["Passage 1 (अपठित गद्यांश, about 200 words)", "Passage 2 (अपठित गद्यांश, about 200 words)"],
+    grammar: "शब्द भंडार (समानार्थी शब्द, मुहावरे), शब्द-निर्माण (उपसर्ग, प्रत्यय), विराम चिह्न, and संज्ञा, सर्वनाम, निपात",
+    scope: [
+      "Class 9 Hindi follows the CBSE 2026-27 R2 design for the NEW NCERT textbook गंगा: खंड क 14, खंड ख 16, खंड ग 30, खंड घ 20 marks. Use ONLY गंगा: never क्षितिज, कृतिका, स्पर्श or संचयन.",
+      "Grammar is set ONLY on the R2 items: समानार्थी शब्द and मुहावरे (from the textbook), उपसर्ग and प्रत्यय, विराम चिह्न, and संज्ञा, सर्वनाम, निपात. Do NOT set संधि, समास, अलंकार, वाक्य-भेद, अनुस्वार-अनुनासिक or नुक़्ता.",
+      "Writing is ONLY the four R2 tasks: अनुच्छेद (about 100 words), अनौपचारिक पत्र (about 100 words), संवाद (about 80 words) and चित्र पर आधारित लेखन (about 80 words). Do NOT set सूचना, विज्ञापन, संदेश, ई-मेल, लघुकथा or औपचारिक पत्र.",
+      "CBSE does not break down the 30-mark textbook section for Class 9; follow the blueprint's questions for it."
+    ],
+    questions: [
+      { section: "खंड 'क'", heading: "अपठित बोध", q: "Q1", type: "अपठित गद्यांश (about 200 words)", marks: 7,
+        detail: "3 MCQs of 1 mark and 2 short answers of 2 marks" },
+      { section: "खंड 'क'", heading: "अपठित बोध", q: "Q2", type: "अपठित गद्यांश (about 200 words)", marks: 7,
+        detail: "3 MCQs of 1 mark and 2 short answers of 2 marks" },
+      { section: "खंड 'ख'", heading: "व्यावहारिक व्याकरण", q: "Q3", type: "शब्द भंडार: समानार्थी शब्द और मुहावरे (पाठ्यपुस्तक के आधार पर)", marks: 4, each: 1,
+        detail: "समानार्थी शब्द 2 of 3 and मुहावरे 2 of 3, 1 mark each" },
+      { section: "खंड 'ख'", heading: "व्यावहारिक व्याकरण", q: "Q4", type: "शब्द-निर्माण: उपसर्ग और प्रत्यय", marks: 4, each: 1, attempt: 4, of: 5,
+        detail: "उपसर्ग 2 marks and प्रत्यय 2 marks" },
+      { section: "खंड 'ख'", heading: "व्यावहारिक व्याकरण", q: "Q5", type: "विराम चिह्न", marks: 2, each: 1, attempt: 2, of: 3,
+        detail: "add or correct the punctuation" },
+      { section: "खंड 'ख'", heading: "व्यावहारिक व्याकरण", q: "Q6", type: "संज्ञा, सर्वनाम और निपात", marks: 6, each: 1, attempt: 6, of: 7,
+        detail: "2 marks each for संज्ञा, सर्वनाम and निपात" },
+      { section: "खंड 'ग'", heading: "पाठ्यपुस्तक", q: "Q7", type: "पठित काव्यांश (गंगा)", marks: 5, each: 1, part: "poetry",
+        detail: "5 MCQs of 1 mark on the extract" },
+      { section: "खंड 'ग'", heading: "पाठ्यपुस्तक", q: "Q8", type: "काव्य खंड प्रश्न (25-30 words)", marks: 6, each: 2, attempt: 3, of: 4, part: "poetry",
+        detail: "2 marks each, testing काव्यबोध" },
+      { section: "खंड 'ग'", heading: "पाठ्यपुस्तक", q: "Q9", type: "पठित गद्यांश (गंगा)", marks: 5, each: 1, part: "prose",
+        detail: "5 MCQs of 1 mark on the extract" },
+      { section: "खंड 'ग'", heading: "पाठ्यपुस्तक", q: "Q10", type: "गद्य खंड प्रश्न (25-30 words)", marks: 6, each: 2, attempt: 3, of: 4, part: "prose",
+        detail: "2 marks each, on content, understanding and expression" },
+      { section: "खंड 'ग'", heading: "पाठ्यपुस्तक", q: "Q11", type: "गद्य एवं काव्य खंड प्रश्न (60-80 words)", marks: 8, each: 4, attempt: 2, of: 3, part: "either",
+        detail: "4 marks each, from prose and poetry together, testing thought and expression across lessons" },
+      { section: "खंड 'घ'", heading: "रचनात्मक लेखन", q: "Q12", type: "अनुच्छेद लेखन (about 100 words)", marks: 5, attempt: 1, of: 3,
+        detail: "three current, practical topics, each with संकेत-बिंदु" },
+      { section: "खंड 'घ'", heading: "रचनात्मक लेखन", q: "Q13", type: "अनौपचारिक पत्र (about 100 words)", marks: 5, attempt: 1, of: 2,
+        detail: "to a friend or relative, focused on expression" },
+      { section: "खंड 'घ'", heading: "रचनात्मक लेखन", q: "Q14", type: "संवाद लेखन (about 80 words)", marks: 5, attempt: 1, of: 2,
+        detail: "on a given topic or situation" },
+      { section: "खंड 'घ'", heading: "रचनात्मक लेखन", q: "Q15", type: "चित्र पर आधारित लेखन (about 80 words)", marks: 5,
+        detail: "on a picture of a scene or event, with NO choice" }
+    ]
+  }
+};
+
+// Class 9 and 10 "Hindi (R2 - Ganga)" only; other Hindi courses keep their layout.
+export function getSecondaryHindi(className, subjectName) {
+  if (subjectName !== "Hindi (R2 - Ganga)") return null;
+  return secondaryHindi[className] || null;
+}
+
+const class10HindiPattern = `हिंदी पाठ्यक्रम 'ब' - CODE NO. 085, Class X, Maximum Marks 80, Time Allowed 3 hours.
+The question paper has 16 questions. All questions are compulsory. It is divided into four sections - क, ख, ग and घ.
+  खंड क - अपठित बोध (14 marks): Q1-Q2, two unseen prose passages of about 200 words, each with 3 MCQs (1 mark)
+          and 2 short answers (2 marks) - 7 + 7.
+  खंड ख - व्यावहारिक व्याकरण (16 marks): 20 items, 16 to be answered.
+          Q3 पदबंध, Q4 रचना के आधार पर वाक्य रूपांतरण, Q5 समास, Q6 मुहावरे - 4 of 5 items in each, 1 mark each.
+  खंड ग - पाठ्यपुस्तक एवं पूरक पाठ्यपुस्तक (28 marks):
+          Q7 पठित काव्यांश from स्पर्श भाग-2, 5 MCQs (5). Q8 3 of 4 questions on the poems, 25-30 words (3 x 2 = 6).
+          Q9 पठित गद्यांश from स्पर्श भाग-2, 5 MCQs (5). Q10 3 of 4 questions on the prose lessons, 25-30 words (3 x 2 = 6).
+          Q11 2 of 3 questions on संचयन भाग-2, 50-60 words (2 x 3 = 6).
+  खंड घ - रचनात्मक लेखन (22 marks), with internal choice:
+          Q12 अनुच्छेद, about 120 words, one of three topics with संकेत-बिंदु (5).
+          Q13 औपचारिक पत्र, about 100 words (5).   Q14 सूचना, about 60 words (4).   Q15 विज्ञापन, about 40 words (3).
+          Q16 ई-मेल, about 80 words, OR लघुकथा, about 100 words (5).
+Answer the questions following the instructions given, and as far as possible answer the four sections in order.`;
+
+const class9HindiPattern = `हिंदी (आर-2), Class IX, Maximum Marks 80, Time Allowed 3 hours - CBSE 2026-27 R2 design for the NCERT
+textbook गंगा. Class 9 is a school examination, so CBSE publishes no sample paper for it. CBSE's Class IX
+curriculum sets the section marks and the grammar and writing questions; the textbook section's questions
+are set on the Class 10 Course B pattern (school policy). The paper has 15 questions in four sections:
+  खंड क - अपठित बोध (14 marks): Q1-Q2, two unseen prose passages of about 200 words, each with 3 MCQs (1 mark)
+          and 2 short answers (2 marks) - 7 + 7.
+  खंड ख - व्यावहारिक व्याकरण (16 marks), 16 items to be answered:
+          Q3 शब्द भंडार - समानार्थी शब्द (2 of 3) and मुहावरे (2 of 3), from the textbook (4).
+          Q4 शब्द-निर्माण - उपसर्ग and प्रत्यय, 4 of 5 (4).   Q5 विराम चिह्न, 2 of 3 (2).
+          Q6 संज्ञा, सर्वनाम, निपात, 6 of 7 (6).
+  खंड ग - पाठ्यपुस्तक गंगा (30 marks):
+          Q7 पठित काव्यांश, 5 MCQs (5). Q8 3 of 4 questions on the poems, 25-30 words (6).
+          Q9 पठित गद्यांश, 5 MCQs (5). Q10 3 of 4 questions on the prose lessons, 25-30 words (6).
+          Q11 2 of 3 questions across prose and poetry, 60-80 words (2 x 4 = 8).
+  खंड घ - रचनात्मक लेखन (20 marks):
+          Q12 अनुच्छेद, about 100 words, one of three topics with संकेत-बिंदु (5).
+          Q13 अनौपचारिक पत्र, about 100 words, with choice (5).   Q14 संवाद, about 80 words, with choice (5).
+          Q15 चित्र पर आधारित लेखन, about 80 words, with no choice (5).`;
+
 const acc = accountancyPaper;
 const accIC = acc.internalChoice;
 const accLadder = acc.markLadder.join(', ').replace(/, (\d+)$/, ' and $1');
 const accExcluded = acc.excludedMarks.map(m => `${m}-mark`).join(' or ');
 
 export const sqpBlueprints = {
+  "Class 10 || Hindi (R2 - Ganga)": {
+    year: "2026-27",
+    text: `${class10HindiPattern}
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 9 || Hindi (R2 - Ganga)": {
+    year: "2026-27",
+    text: class9HindiPattern
+  },
+
   "Class 10 || English (R1)": {
     year: "2026-27",
     text: `${class10EnglishPattern}
