@@ -5049,11 +5049,26 @@
       "Unit 3: Introduction to Computer Networks",
       "Unit 4: Societal Impacts (Digital Footprint, Cyber Safety, Netiquettes, IT Act)"
     ],
-    "History": [
-      "Part I: Themes in Indian History (Bricks, Beads and Bones; Kings, Farmers and Towns; Kinship, Caste and Class; Thinkers, Beliefs and Buildings)",
-      "Part II: Themes in Indian History (Through the Eyes of Travellers; Bhakti-Sufi Traditions; An Imperial Capital: Vijayanagara; Peasants, Zamindars and the State)",
-      "Part III: Themes in Indian History (Colonialism and the Countryside; Rebels and the Raj; Mahatma Gandhi and the Nationalist Movement; Framing the Constitution)"
-    ],
+    "History": {
+      "Part I: Themes in Indian History": [
+        "Theme 1: Bricks, Beads and Bones - The Harappan Civilisation",
+        "Theme 2: Kings, Farmers and Towns - Early States and Economies (c. 600 BCE-600 CE)",
+        "Theme 3: Kinship, Caste and Class - Early Societies (c. 600 BCE-600 CE)",
+        "Theme 4: Thinkers, Beliefs and Buildings - Cultural Developments (c. 600 BCE-600 CE)"
+      ],
+      "Part II: Themes in Indian History": [
+        "Theme 5: Through the Eyes of Travellers - Perceptions of Society (c. tenth to seventeenth century)",
+        "Theme 6: Bhakti-Sufi Traditions - Changes in Religious Beliefs and Devotional Texts (c. eighth to eighteenth century)",
+        "Theme 7: An Imperial Capital - Vijayanagara (c. fourteenth to sixteenth century)",
+        "Theme 8: Peasants, Zamindars and the State - Agrarian Society and the Mughal Empire (c. sixteenth-seventeenth centuries)"
+      ],
+      "Part III: Themes in Indian History": [
+        "Theme 9: Colonialism and the Countryside - Exploring Official Archives",
+        "Theme 10: Rebels and the Raj - The Revolt of 1857 and its Representations",
+        "Theme 11: Mahatma Gandhi and the Nationalist Movement - Civil Disobedience and Beyond",
+        "Theme 12: Framing the Constitution - The Beginning of a New Era"
+      ]
+    },
     "Political Science": [
       "Part A: Contemporary World Politics (The End of Bipolarity, Contemporary Centres of Power, Contemporary South Asia, International Organisations, Security in the Contemporary World, Environment and Natural Resources, Globalisation)",
       "Part B: Politics in India Since Independence (Challenges of Nation-Building, Era of One-Party Dominance, Politics of Planned Development, India's External Relations, Challenges to and Restoration of the Congress System, The Crisis of Democratic Order, Regional Aspirations, Recent Developments in Indian Politics)"

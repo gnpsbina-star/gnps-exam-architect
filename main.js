@@ -1,5 +1,5 @@
-import { cbseData } from './data.js?v=47';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper, accountancyChoiceText } from './sqp_blueprints.js?v=16';
+import { cbseData } from './data.js?v=48';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, getSeniorPaper, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper, accountancyChoiceText } from './sqp_blueprints.js?v=17';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -273,7 +273,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_27_senior_accountancy_v29';
+      const CURRENT_SYLLABUS_VER = '2026_27_senior_history_v30';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -767,7 +767,8 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
     ];
   }
   // 0b. Business Studies and Economics short tests keep the 1 / 3 / 4 / 6 mark
-  // ladder of their board papers (sqp_blueprints.js), like Accountancy above.
+  // ladder of their board papers (sqp_blueprints.js), like Accountancy above;
+  // History keeps its own question types.
   else if (ladderSpec && marks > 0 && marks < ladderSpec.fullMarks) {
     sections = (marks <= 25 ? ladderSpec.shortTests.unit : ladderSpec.shortTests.periodic).map(row => ({ ...row }));
   }
@@ -4321,11 +4322,14 @@ function buildUnitWeightageText(spec, selectedChaptersData, totalMarks) {
     byUnit.get(unit).push(ch);
   });
 
+  // Map work (History) keeps its own marks; the units share the rest.
+  const mapMarks = spec.mapMarks || 0;
+  const unitMarks = totalMarks - mapMarks;
   const units = [...byUnit.keys()];
   const cbseSum = units.reduce((a, u) => a + u.marks, 0) || 1;
-  const exact = units.map(u => u.marks * totalMarks / cbseSum);
+  const exact = units.map(u => u.marks * unitMarks / cbseSum);
   const alloc = exact.map(Math.floor);
-  let remaining = totalMarks - alloc.reduce((a, b) => a + b, 0);
+  let remaining = unitMarks - alloc.reduce((a, b) => a + b, 0);
   exact.map((x, i) => [x - Math.floor(x), i]).sort((a, b) => b[0] - a[0])
     .forEach(([, i]) => { if (remaining > 0) { alloc[i]++; remaining--; } });
 
@@ -4333,7 +4337,8 @@ function buildUnitWeightageText(spec, selectedChaptersData, totalMarks) {
     `The examination syllabus consists EXCLUSIVELY of the following ${selectedChaptersData.length} selected topic(s):\n` +
     selectedChaptersData.map(c => `- ${c.name}`).join('\n') + `\n\n` +
     `*UNIT-WISE MARKS (from the CBSE 2026-27 course structure${units.length < spec.units.length ? `, shared in proportion among the units selected` : ``}):*\n` +
-    units.map((u, i) => `- **${u.name}** — ${alloc[i]} marks (CBSE full-paper weightage ${u.marks}/${spec.fullMarks || 80}): ${byUnit.get(u).join('; ')}`).join('\n') + `\n`;
+    units.map((u, i) => `- **${u.name}** — ${alloc[i]} marks (CBSE full-paper weightage ${u.marks}/${spec.fullMarks || 80}): ${byUnit.get(u).join('; ')}`).join('\n') + `\n` +
+    (mapMarks ? `- **Map work** — ${mapMarks} marks: places from the selected ${units.length === 1 ? 'unit' : 'units'} only\n` : ``);
   if (unmatched.length > 0) {
     text += `- Also selected (share the marks with the unit they belong to): ${unmatched.join('; ')}\n`;
   }
@@ -4519,6 +4524,16 @@ export async function buildPromptString(activeBtn) {
     - ${secSenior.designText}
     - ${secSenior.sourcing}${difficulty === "Advanced" ? `
     - **Advanced difficulty:** Keep the structure unchanged. Choose longer, less familiar applied situations and closer MCQ options.` : ``}`;
+  } else if (srFullPaper && secSenior.design.lines) {
+    // A competency split CBSE gives in more than three parts (History:
+    // knowledge, understanding, applying, evaluating and map skills).
+    const d = secSenior.design;
+    difficultyDistribution = `\n*   **Official CBSE 2026-27 Question Paper Design — ${secSenior.paperLabel} (MANDATORY):**
+    - Split the marks of EACH set by competency exactly as CBSE's 2026-27 curriculum prescribes:
+${d.lines.map((l, i) => `      ${i + 1}. ${l}`).join('\n')}
+    - Every section mixes these levels; the split above applies to the paper as a whole: ${d.note}
+    - ${secSenior.sourcing}${difficulty === "Advanced" ? `
+    - **Advanced difficulty:** Keep the CBSE marks split above unchanged. Within each level, choose less familiar sources and questions that ask for sharper analysis and judgement.` : ``}`;
   } else if (srFullPaper) {
     const totalMarks = parseInt(marks, 10) || secSenior.fullMarks;
     const d = secSenior.design;
@@ -4656,6 +4671,8 @@ ${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structure
       ? `*   **Question Design:** Follow the CBSE 2026-27 section design given above, question by question\n`
       : (srFullPaper && !secSenior.design)
       ? `*   **Question Design:** Follow the CBSE 2026-27 sample paper design given above\n`
+      : (srFullPaper && secSenior.design.lines)
+      ? `*   **Question Design:** Follow the CBSE 2026-27 competency split given above\n`
       : (mathsFullPaper || srFullPaper)
       ? `*   **Question Design:** Follow the CBSE 2026-27 typology split given above (Remembering & Understanding / Applying / Analysing, Evaluating & Creating)\n`
       : `*   **Competency-focused Questions:** Minimum 50% of total marks\n`;

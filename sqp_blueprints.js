@@ -1762,6 +1762,106 @@ const ecoFormats = {
         - Simple cartoons or images described in a caption, and data tables (national income data, sector shares, indicators of India, China and Pakistan) as HTML tables.`
 };
 
+// Class 11 and 12 History (027), from the CBSE 2026-27 curriculum document
+// (History_SecP2_2026-27) and the Class XII 2026-27 sample paper (design
+// unchanged): 34 questions - 21 MCQs, 6 short answers of 3 marks (60-80
+// words), 3 long answers of 8 marks (300-350 words), 3 source-based questions
+// of 4 marks and a 5-mark map question. In Class XII each of the three NCERT
+// books carries 25 marks (7 MCQs, 2 short answers, 1 long answer, 1 source);
+// Class XI's own design has the same totals, spread over its themes.
+// CBSE's competency split has five parts (map skills among them), so it is
+// given as `design.lines` rather than the three-level split.
+const historyQuestions = (perBook) => [
+  { section: "Section A", q: "Q1-Q21", type: "Multiple choice questions", count: 21, each: 1, marks: 21, detail: `${perBook.mcq}; varied forms: statement-based, Assertion-Reason, match the columns, chronological order, and picture-based ones with a words-only alternative for visually impaired candidates; no internal choice` },
+  { section: "Section B", q: "Q22-Q27", type: "Short answer (60-80 words)", count: 6, each: 3, marks: 18, detail: `${perBook.sa}; internal choice in 2 questions (Q22 and Q27 in the sample paper)` },
+  { section: "Section C", q: "Q28-Q30", type: "Long answer (300-350 words)", count: 3, each: 8, marks: 24, detail: `${perBook.la}; internal choice in all 3` },
+  { section: "Section D", q: "Q31-Q33", type: "Source-based questions", count: 3, each: 4, marks: 12, detail: `${perBook.source}: a source of about 150-200 words from the NCERT textbook with its title and source line, followed by sub-questions of 1, 1 and 2 marks; no internal choice` },
+  { section: "Section E", q: "Q34", type: "Map-based question", count: 1, each: 5, marks: 5, detail: `34.1 locate and label 3 places (one with an internal choice) and 34.2 identify 2 places marked A and B, on ${perBook.map || "an outline political map of India"}; a words-only alternative for visually impaired candidates` }
+];
+
+const historyDesign = {
+  lines: [
+    "**Knowledge** (recall facts, terms, basic concepts and answers): **21 marks (26.25%)**.",
+    "**Understanding** (organise, translate, interpret, describe and state main ideas): **18 marks (22.5%)**.",
+    "**Applying and Analysing** (apply knowledge, facts, techniques and rules to solve problems): **24 marks (30%)**.",
+    "**Formulating, Evaluating and Creating** (examine, infer, find evidence for generalisations, present and defend judgements): **12 marks (15%)**.",
+    "**Map skills**: **5 marks (6.25%)** - the map question."
+  ],
+  note: "most short and long answers ask the student to explain, analyse, compare or justify with evidence from the sources, not only to recall."
+};
+
+const historyGeneralInstructions = [
+  "This question paper contains 34 questions. All questions are compulsory.",
+  "Question paper is divided into five Sections – Sections A, B, C, D and E.",
+  "Section A – question number 1 to 21 are Multiple Choice type questions. Each question carries 1 mark.",
+  "Section B – question number 22 to 27 are Short Answer type questions. Each question carries 3 marks. Write answer to each question in 60 to 80 words.",
+  "Section C – question number 28 to 30 are Long Answer (LA) type questions. Each question carries 8 marks. Write answer to each question in 300 to 350 words.",
+  "Section D – question number 31 to 33 are Source-based questions having three sub-questions. Each question carries 4 marks.",
+  "Section E – question number 34 is Map-based question that includes the identification and location of significant test items. This question carries 5 marks. Attach the Map with the answer-book.",
+  "There is no overall choice. However, an internal choice has been provided in Sections B, C and E of question paper. A candidate has to write answer for only one of the alternatives in such questions.",
+  "Note that a separate question has been provided for Candidates with Visual Impairment in lieu of questions having visual inputs, Map etc. Such questions are to be attempted by Visually Impaired candidates only."
+];
+
+const historyMapList12 = `Part I (Themes 1-4): mature Harappan sites - Harappa, Banawali, Kalibangan, Balakot, Rakhigarhi, Dholavira, Nageshwar, Lothal, Mohenjodaro, Chanhudaro, Kot Diji; Mahajanapadas and cities - Vajji, Magadha, Kosala, Kuru, Panchala, Gandhara, Avanti, Rajgir, Ujjain, Taxila, Varanasi; Ashokan pillar inscriptions - Sanchi, Topra, Meerut Pillar, Kaushambi; kingdoms of the Cholas, Cheras and Pandyas; kingdoms and towns - Kushanas, Shakas, Satavahanas, Vakatakas, Guptas, Mathura, Kanauj, Puhar, Bharukachchha, Shravasti, Rajgir, Vaishali, Varanasi, Vidisha; Buddhist sites - Nagarjunakonda, Sanchi, Amaravati, Lumbini, Bharhut, Bodh Gaya, Ajanta.
+Part II (Themes 5-8): Bidar, Golconda, Bijapur, Vijayanagar, Chandragiri, Kanchipuram, Mysore, Thanjavur, Kolar, Tirunelveli; territories under Babur, Akbar and Aurangzeb - Delhi, Agra, Panipat, Amber, Ajmer, Lahore, Goa.
+Part III (Themes 9-12): territories and cities under British control in 1857 - Punjab, Sindh, Bombay, Madras, Berar, Bengal, Bihar, Orissa, Surat, Calcutta, Patna, Allahabad; main centres of the Revolt of 1857 - Delhi, Meerut, Jhansi, Lucknow, Kanpur, Azamgarh, Calcutta, Benaras, Gwalior, Jabalpur, Agra, Awadh; centres of the National Movement - Champaran, Kheda, Ahmedabad, Benaras, Amritsar, Chauri Chaura, Lahore, Bardoli, Dandi, Bombay (Quit India Resolution), Karachi.`;
+
+// Short tests keep History's own question types (1-mark MCQs, 3-mark short
+// answers, 4-mark sources, 8-mark long answers, the 5-mark map), never a 2-
+// or 5-mark written answer.
+const historyShortTests = {
+  unit: [
+    { name: "Section A", type: "MCQs (statement-based, Assertion-Reason, chronological order)", count: 5, unitMark: 1, marksPerQ: "1 Mark", total: 5, choice: "Compulsory" },
+    { name: "Section B", type: "Short answer (60-80 words)", count: 1, unitMark: 3, marksPerQ: "3 Marks", total: 3, choice: "Internal choice" },
+    { name: "Section C", type: "Source-based question (sub-questions of 1, 1 and 2 marks)", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "Compulsory" },
+    { name: "Section D", type: "Long answer (300-350 words)", count: 1, unitMark: 8, marksPerQ: "8 Marks", total: 8, choice: "Internal choice" }
+  ],
+  periodic: [
+    { name: "Section A", type: "MCQs (statement-based, Assertion-Reason, match the columns, chronological order, picture-based)", count: 10, unitMark: 1, marksPerQ: "1 Mark", total: 10, choice: "Compulsory" },
+    { name: "Section B", type: "Short answer (60-80 words)", count: 3, unitMark: 3, marksPerQ: "3 Marks", total: 9, choice: "Internal choice in 1 Q" },
+    { name: "Section C", type: "Long answer (300-350 words)", count: 1, unitMark: 8, marksPerQ: "8 Marks", total: 8, choice: "Internal choice" },
+    { name: "Section D", type: "Source-based questions (sub-questions of 1, 1 and 2 marks)", count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "Compulsory" },
+    { name: "Section E", type: "Map question (locate and label 3, identify 2 marked A and B)", count: 1, unitMark: 5, marksPerQ: "5 Marks", total: 5, choice: "Internal choice in 1 item" }
+  ]
+};
+
+const historyFormats = {
+  fullMarks: 80,
+  mapMarks: 5,
+  markLadder: [1, 3, 4, 8],
+  letteredSections: true,
+  shortTests: historyShortTests,
+  design: historyDesign,
+  generalInstructions: historyGeneralInstructions,
+  arOptions: ["(A) Both (A) and (R) are true and (R) is the correct explanation of (A).", "(B) Both (A) and (R) are true, but (R) is not the correct explanation of (A).", "(C) (A) is true, but (R) is false.", "(D) (A) is false, but (R) is true."],
+  foundational: "dates, events, people, places and terms from the themes",
+  constructed: [
+    "Short Answer (3 Marks, 60-80 words): explain, compare or justify with 3 value points.",
+    "Long Answer (8 Marks, 300-350 words): explain, analyse or evaluate a theme with evidence, with internal choice (A) OR (B).",
+    "Source-based (4 Marks): a passage from the NCERT textbook with sub-questions of 1, 1 and 2 marks."
+  ],
+  sourcing: "Source questions from the NCERT Themes textbooks (their sources, pictures and maps), CBSE's sample and practice papers and past board papers.",
+  arPlacement: "under each Assertion-Reason question",
+  arAnswered: "answered from the four options printed below it",
+  typology: {
+    sa: "Answer in **60-80 words** with **3 value points**: explain, compare, analyse a statement or justify with examples (\"Justify the statement with suitable examples\").",
+    laHeading: "8-Mark Long Answer and 4-Mark Source-Based Questions",
+    la: [
+      "Long answers (8 marks, 300-350 words): explain, analyse or evaluate an aspect of a theme with evidence, each with an internal choice (A) OR (B) from the same theme or book.",
+      "Source-based questions (4 marks): a titled passage of about 150-200 words quoted from the NCERT textbook with its source line (for example \"Source - NCERT History Book 1, Chapter 3\"), followed by three sub-questions of 1, 1 and 2 marks that test understanding and interpretation of the source."
+    ]
+  },
+  rigor: "Formulate questions whose answers are distinct value points: accurate names, dates, places and terms from the NCERT text, and evidence from the sources for every argument.",
+  instructionsNote: "",
+  mandatesTitle: null,
+  mandates: [],
+  numberingNote: "Number the questions Q1 to Q34 continuously across Sections A to E, in the order of the rows above (a row \"Q1-Q21\" is twenty-one separate questions). Source-based sub-questions are numbered 31.1, 31.2, 31.3; the map question 34.1 and 34.2. An internal choice sits under one number as A OR B.",
+  figureQuota: "Set **1 outline political map of India** for the map question, and **1 or 2 picture-based MCQs** (a sculpture, coin, inscription or photograph described in a caption), each with a words-only alternative for visually impaired candidates",
+  diagramRules: `
+    *   **History Map:** where the paper has a map question, print an outline political map of India at the end of the paper, headed with the map question's number ("Map for Q. 34" in the full paper). Mark ONLY the two places the student identifies (A and B); the places the student locates and labels are left unmarked.
+    *   **Pictures:** where an MCQ uses a picture from the NCERT textbook, describe it in a caption inside a bordered box (no photographs), with its source.`
+};
+
 export const seniorPapers = {
   "Class 12 || Physics": {
     code: "042",
@@ -2175,6 +2275,58 @@ export const seniorPapers = {
       { name: "Producer Behaviour and Supply", marks: 14, chapters: ["Production Function", "Cost and Revenue", "Producer's Equilibrium", "Theory of Supply"] },
       { name: "Perfect Competition: Price Determination and Simple Applications", marks: 8, chapters: ["Forms of Market"] }
     ]
+  },
+  "Class 12 || History": {
+    code: "027",
+    paperLabel: "History (027)",
+    ...historyFormats,
+    questions: historyQuestions({ mcq: "7 from each of the three books", sa: "2 from each book", la: "one from each book", source: "one from each book" }),
+    misconceptions: "the sequence of Harappan sites and features, Mahajanapadas vs later kingdoms, Bhakti vs Sufi traditions, zamindars vs jagirdars, Permanent Settlement vs ryotwari, the phases and leaders of the national movement",
+    scope: [
+      "Class XII History is Themes in Indian History, Parts I, II and III (NCERT), 25 marks each, and 5 marks of map work. Each book gives 7 MCQs, 2 short answers, 1 long answer and 1 source-based question; with fewer books selected, share the questions equally among them.",
+      "Map items come ONLY from CBSE's 2026-27 list for the selected themes:\n        " + historyMapList12.replace(/\n/g, '\n        '),
+      "Content marked excluded for 2026-27 in the NCERT textbooks is not assessed."
+    ],
+    requirements: [
+      "**Book spread:** Section A has 7 MCQs from each book (Part I, II, III), Section B 2 short answers from each, Section C one long answer and Section D one source from each book, in book order.",
+      "**Map question (Section E):** 34.1 asks the student to locate and label three places from the list in the scope limits (one of them with an internal choice, printed as OR); 34.2 marks two places A and B for the student to identify. Print \"Attach the Map with the answer-book\" and, directly below, the words-only questions \"for the Candidates with Visual Impairment only, in lieu of Q. 34\".",
+      "**Internal choice:** 2 questions in Section B, all 3 in Section C and one item of the map question; none in Sections A and D."
+    ],
+    units: [
+      { name: "Themes in Indian History Part I (Themes 1-4)", marks: 25, chapters: ["Theme 1:", "Theme 2:", "Theme 3:", "Theme 4:"] },
+      { name: "Themes in Indian History Part II (Themes 5-8)", marks: 25, chapters: ["Theme 5:", "Theme 6:", "Theme 7:", "Theme 8:"] },
+      { name: "Themes in Indian History Part III (Themes 9-12)", marks: 25, chapters: ["Theme 9:", "Theme 10:", "Theme 11:", "Theme 12:"] }
+    ]
+  },
+  "Class 11 || History": {
+    code: "027",
+    paperLabel: "History (027), Class XI",
+    ...historyFormats,
+    questions: historyQuestions({ mcq: "spread across the sections of Themes in World History as CBSE's Class XI design sets them (3 from Early Societies, 4 from Empires, 6 from Changing Traditions, 8 from Towards Modernisation)", sa: "1 from Early Societies, 2 from Changing Traditions and 3 from Towards Modernisation", la: "2 from Empires and 1 from Towards Modernisation", source: "1 from Early Societies and 2 from Changing Traditions", map: "an outline map of the world or of the region the selected themes cover" }),
+    misconceptions: "the chronology of the timelines, Mesopotamian writing vs city life, the Roman Republic vs Empire, the three orders of feudal society, Renaissance humanism, the modernisation of Japan vs China",
+    scope: [
+      "Class XI History is Themes in World History (NCERT): Theme 1 Writing and City Life, Theme 2 An Empire Across Three Continents, Theme 3 Nomadic Empires, Theme 4 The Three Orders, Theme 5 Changing Cultural Traditions, Theme 6 Displacing Indigenous Peoples, Theme 7 Paths to Modernisation, with 5 marks of map work.",
+      "Map items come from the map work of the selected themes (for example Mesopotamian cities, the extent of the Roman Empire, the Mongol Empire, the Americas and Australia, Japan and China), on an outline map of the world or of the region the theme covers.",
+      "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
+    ],
+    requirements: [
+      "**Theme spread:** follow CBSE's Class XI design - Early Societies (Theme 1) 10 marks: 3 MCQs, 1 short answer, 1 source; Empires (Themes 2-3) 20 marks: 4 MCQs, 2 long answers; Changing Traditions (Themes 4-5) 20 marks: 6 MCQs, 2 short answers, 2 sources; Towards Modernisation (Themes 6-7) 25 marks: 8 MCQs, 3 short answers, 1 long answer; map 5 marks. With fewer themes selected, share the questions among them.",
+      "**Map question (Section E):** locate and label three places (one with an internal choice) and identify two marked A and B, on an outline map of the world or region, with a words-only alternative for visually impaired candidates.",
+      "**Internal choice:** 2 questions in Section B, all 3 in Section C and one item of the map question; none in Sections A and D."
+    ],
+    figureQuota: "Set **1 outline map** (of the world or the region the selected themes cover) for the map question, and **1 or 2 picture-based MCQs**, each with a words-only alternative for visually impaired candidates",
+    diagramRules: `
+    *   **History Map:** where the paper has a map question, print an outline map of the world or of the region the question covers at the end of the paper, headed with the map question's number ("Map for Q. 34" in the full paper). Mark ONLY the two places the student identifies (A and B); the places the student locates and labels are left unmarked.
+    *   **Pictures:** where an MCQ uses a picture from the NCERT textbook, describe it in a caption inside a bordered box (no photographs), with its source.`,
+    units: [
+      { name: "Theme 1: Writing and City Life", marks: 10, chapters: ["Theme 1:"] },
+      { name: "Theme 2: An Empire Across Three Continents", marks: 10, chapters: ["Theme 2:"] },
+      { name: "Theme 3: Nomadic Empires", marks: 10, chapters: ["Theme 3:"] },
+      { name: "Theme 4: The Three Orders", marks: 10, chapters: ["Theme 4:"] },
+      { name: "Theme 5: Changing Cultural Traditions", marks: 10, chapters: ["Theme 5:"] },
+      { name: "Theme 6: Displacing Indigenous Peoples", marks: 10, chapters: ["Theme 6:"] },
+      { name: "Theme 7: Paths to Modernisation", marks: 15, chapters: ["Theme 7:"] }
+    ]
   }
 };
 
@@ -2433,6 +2585,30 @@ Class XII Economics 2026-27 sample paper layout, against the Class XI curriculum
 Two sections: Section A - Statistics for Economics (Q1-Q17, 40 marks); Section B - Introductory Microeconomics
 (Q18-Q34, 40 marks). Each section: 10 MCQs of 1 mark, 2 of 3 marks (60-80 words), 3 of 4 marks (80-100 words)
 and 2 of 6 marks (100-150 words). Internal choice in Q11, Q13, Q17, Q29, Q32 and Q33.`
+  },
+
+  "Class 12 || History": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `HISTORY (027), Class XII, Maximum Marks 80, Time Allowed 3 hours.
+34 questions in five sections:
+  Section A: Q1-Q21, MCQs of 1 mark (21) - 7 from each of the three books.
+  Section B: Q22-Q27, short answers of 3 marks in 60-80 words (18) - 2 from each book.
+  Section C: Q28-Q30, long answers of 8 marks in 300-350 words (24) - one from each book.
+  Section D: Q31-Q33, source-based questions of 4 marks with three sub-questions (12) - one from each book.
+  Section E: Q34, map question of 5 marks - locate and label, and identify.
+There is no overall choice; internal choice in Sections B, C and E. A separate question is provided for
+candidates with visual impairment in lieu of questions with visual inputs and the map.
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 11 || History": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `HISTORY (027), Class XI, Maximum Marks 80, Time Allowed 3 hours. CBSE's Class XI design has the same totals as
+the Class XII sample paper: 21 MCQs (1 mark), 6 short answers (3 marks, 60-80 words), 3 long answers (8 marks,
+300-350 words), 3 source-based questions (4 marks) and a map question (5 marks), in Sections A to E.
+Internal choice in Sections B, C and E; alternatives for candidates with visual impairment.`
   },
 
   "Class 12 || Accountancy": {
