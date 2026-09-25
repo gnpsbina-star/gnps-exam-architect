@@ -258,13 +258,14 @@ export function isSchoolExcludedSubject(subjectName) {
 }
 
 // Subjects the school does not offer in one class: Computer Science in Class
-// 8 (legacy), and Sanskrit in Classes 9 and 10, which the school does not
-// teach in 2026-27. The syllabus stays in data.js so the subject can return.
+// 8 (legacy), and Sanskrit and Computer Applications in Classes 9 and 10,
+// which the school does not teach in 2026-27. The syllabus stays in data.js
+// so the subject can return.
 function isClassExcludedSubject(cls, subjectName) {
   if (isSchoolExcludedSubject(subjectName)) return true;
   const sub = String(subjectName || '').toLowerCase();
   if (cls === 'Class 8' && sub.includes('computer science')) return true;
-  if ((cls === 'Class 9' || cls === 'Class 10') && sub.includes('sanskrit')) return true;
+  if ((cls === 'Class 9' || cls === 'Class 10') && (sub.includes('sanskrit') || sub.includes('computer applications'))) return true;
   return false;
 }
 
@@ -316,7 +317,7 @@ async function loadCustomSubjects() {
   }
 
   // Remove school-excluded subjects (English R2, Hindi R1, Class 8 legacy
-  // Computer Science, Class 9 / 10 Sanskrit)
+  // Computer Science, Class 9 / 10 Sanskrit and Computer Applications)
   for (const cls of Object.keys(cbseData)) {
     for (const subj of Object.keys(cbseData[cls])) {
       if (isClassExcludedSubject(cls, subj)) {
