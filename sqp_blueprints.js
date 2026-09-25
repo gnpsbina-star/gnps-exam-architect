@@ -973,6 +973,177 @@ const class11PhysicsScope = [
   "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
 ];
 
+// How a Physics paper is written, as the prompt describes it. Every field of
+// a senior paper spec below that holds prose is read by the prompt builder in
+// main.js; the Unit Test and PA prompts use `constructed`, `typology`,
+// `rigor`, `mandates` and `scope`, the full paper uses all of them.
+const physicsFormats = {
+  subject: "Physics",
+  constructed: [
+    "Very Short Answer (VSA - 2 Marks): a short numerical, a reason, or two parts I and II, worth exactly 2 marking-scheme value points. No word limit.",
+    "Short Answer (SA - 3 Marks): a numerical (formula, substitution, answer with SI unit), a derivation the curriculum allows, or an explanation in parts I, II, III, worth 3 value points. No word limit.",
+    "Long Answer (LA - 5 Marks): sub-parts such as 2 + 2 + 1 or 3 + 2 (a principle, derivation or labelled diagram, then a numerical or reasoning), with internal choice (A) OR (B)."
+  ],
+  designNote: "most 2-, 3- and 5-mark questions ask the student to solve, reason, compare or justify, not only to recall.",
+  sourcing: "Source questions from the NCERT textbook and NCERT Exemplar, CBSE competency-based question banks and past board papers, as the sample paper does; case studies may use recent real-world applications of physics.",
+  arPlacement: `once above the Assertion-Reason questions (note that D is "both false")`,
+  arAnswered: "answered from the four options printed once above them",
+  typology: {
+    vsa: "A short numerical, a reason, or two parts (I and II) earning **exactly 2 marking-scheme value points**. Physics answers carry NO word limit; a numerical shows the formula, the substitution and the answer with its SI unit.",
+    sa: `A numerical, a derivation the curriculum allows, or an explanation in parts I, II, III (for example "Explain: I ... II ... III ..."), worth **3 value points**, or a 2 + 1 split shown in the marks column. No word limit.`,
+    cbqHeading: "Case Study Based Questions",
+    cbq: [
+      "A passage of about 120-180 words on a real-world application, a recent development or a historic experiment (the sample paper uses flexible polymer semiconductors in wearables, and Einstein's explanation of the photoelectric effect), followed by **four sub-parts I, II, III and IV of 1 mark each**: mostly MCQs with four options, and one or two one-line answers (define, state why).",
+      "**No internal choice** inside a case study, as in the CBSE 2026-27 sample paper."
+    ]
+  },
+  rigor: "Formulate questions requiring the formula to be stated, the substitution shown, and the final numerical answer with its SI unit (m, s, N, J, W, Pa, Ω, A, V, T, eV) and correct sign convention; derivations set out step by step; labelled circuit and ray diagrams where the student draws. Numbers must work out by hand, because calculators are not allowed.",
+  instructionsNote: " (with the list of physical constants)",
+  requirements: [
+    `**Figures, as in the sample paper:** 2 to 3 questions give the student a figure (for example a circuit or bridge network in an MCQ, a current-carrying loop, a ray or wavefront diagram). Directly below EVERY question that depends on a figure, add an alternative headed "For Visually Impaired Students only" that tests the same concept in words only, with the same marks.`,
+    "**Student drawing:** one long answer asks for a neat labelled diagram (for example a transformer, a compound microscope or a p-n junction rectifier). Never print the answer figure; give its words-only alternative for visually impaired students.",
+    "**Assertion-Reason:** print the four options (A)-(D) once, above Q13, exactly as given in the typology rules above (rule 8).",
+    "**Case studies (Section D):** four 1-mark sub-parts I-IV each, no internal choice.",
+    "**Long answers (Section E):** each has an internal choice (A) OR (B) from the same unit and at the same level, split into sub-parts with the marks shown (for example 2+2+1 or 3+2)."
+  ],
+  figureQuota: "Set **2 to 3 figure-based questions** and **1 question in which the student draws a labelled diagram**, each with a words-only alternative for visually impaired students",
+  diagramRules: `
+    *   **Physics Diagrams:** MUST generate clean inline vector SVG for:
+        - Circuit schematics (cells, resistors, capacitors, Wheatstone bridge networks, ammeter in series, voltmeter in parallel, galvanometer, diode) with values labelled.
+        - Field and geometry figures (current-carrying loops and wires, field lines, charges and dipoles with distances), ray diagrams and wavefronts, graphs (V-I characteristics, binding energy per nucleon, photoelectric current vs potential).`
+};
+
+const physicsMandates = (roman, examples, samplePaper) => ({
+  mandatesTitle: `CBSE PHYSICS (${roman}) MANDATES & PEDAGOGICAL RIGOR`,
+  mandates: [
+    "**No calculators:** choose values that can be worked by hand (powers of ten, simple ratios, π² ≈ 10 where the sample paper style allows), and use the physical constants printed in the general instructions.",
+    "**Numerical working:** every numerical is marked on the formula, the substitution and the final answer with its SI unit and correct sign convention (Cartesian signs for mirrors and lenses, direction for vectors and fields).",
+    `**Derivations:** ask only for derivations the curriculum keeps (see the CBSE 2026-27 scope limits in rule 9 above); where the curriculum says "no derivation" or "qualitative only", ask for the use of the result or a qualitative explanation instead.`,
+    `**Physical reasoning:** include explain-why questions on everyday and technological situations (for example ${examples}), as the ${samplePaper}sample paper does.`
+  ]
+});
+
+// Class 11 and 12 Chemistry (043), from the CBSE 2026-27 curriculum document
+// (Chemistry_SecP2_2026-27) and the Class XII 2026-27 sample paper, which says
+// the question paper design is unchanged. The layout matches Physics (33
+// questions, 70 marks), but the formats differ: case-based questions are
+// 1 + 1 + 2 marks with a choice in the 2-mark part, only one Section B
+// question has a choice, and the Assertion-Reason options are the standard
+// ones, printed under each question. Topics the curriculum assesses only
+// formatively carry no question in a written paper.
+const chemistryPaperQuestions = [
+  { section: "Section A", q: "Q1-Q12", type: "Multiple Choice Questions", count: 12, each: 1, marks: 12,
+    detail: "Four options (A)-(D); some built on a data table, graph, figure or structural formulae, a figure-based one with a separate question for visually challenged learners" },
+  { section: "Section A", q: "Q13-Q16", type: "Assertion-Reason", count: 4, each: 1, marks: 4,
+    detail: "Each followed by 'Select the most appropriate answer from the options given below:' and the four options" },
+  { section: "Section B", q: "Q17-Q21", type: "Very Short Answer", count: 5, each: 2, marks: 10,
+    detail: "Internal choice in 1 question (Q17 in the sample paper, 'Attempt either A or B'); often two 1-mark parts (I) and (II)" },
+  { section: "Section C", q: "Q22-Q28", type: "Short Answer", count: 7, each: 3, marks: 21,
+    detail: "Internal choice in 1 question (Q27 in the sample paper); numericals, name reactions, conversions, IUPAC names and reasoning, split 1 + 2 or 3 x 1" },
+  { section: "Section D", q: "Q29-Q30", type: "Case-based / data-based", count: 2, each: 4, marks: 8,
+    detail: "A passage, experiment, graph or data table followed by (I) 1 mark, (II) 1 mark and (IIIA) OR (IIIB) 2 marks; choice only in part III" },
+  { section: "Section E", q: "Q31-Q33", type: "Long Answer", count: 3, each: 5, marks: 15,
+    detail: "Internal choice in all 3 ('Attempt either A or B'); split such as 3 x 1 + 2, 5 x 1 or 1 + 2 + 1 + 1" }
+];
+
+const chemistryPaperPattern = `There are 33 questions in this question paper with internal choice.
+SECTION A consists of 16 multiple-choice questions carrying 1 mark each (Q1-Q12 MCQ, Q13-Q16 Assertion-Reason).
+SECTION B consists of 5 very short answer questions carrying 2 marks each (Q17-Q21).
+SECTION C consists of 7 short answer questions carrying 3 marks each (Q22-Q28).
+SECTION D consists of 2 case-based questions carrying 4 marks each (Q29-Q30), with sub-parts of 1, 1 and 2 marks.
+SECTION E consists of 3 long answer questions carrying 5 marks each (Q31-Q33).
+All questions are compulsory. There is no overall choice; internal choice ("Attempt either A or B") is given in
+one question of Section B, one of Section C, the 2-mark part of each case-based question and all three long answers.
+In addition, a separate question is provided for visually impaired candidates in lieu of questions having visual inputs.
+Use of log tables and calculators is not allowed.`;
+
+const chemistryGeneralInstructions = [
+  "There are 33 questions in this question paper with internal choice.",
+  "SECTION A consists of 16 multiple-choice questions carrying 1 mark each.",
+  "SECTION B consists of 5 very short answer questions carrying 2 marks each.",
+  "SECTION C consists of 7 short answer questions carrying 3 marks each.",
+  "SECTION D consists of 2 case-based questions carrying 4 marks each.",
+  "SECTION E consists of 3 long answer questions carrying 5 marks each.",
+  "All questions are compulsory.",
+  "In addition to this, a separate question has been provided for visually impaired candidates in lieu of questions having visual inputs.",
+  "Use of log tables and calculators is not allowed."
+];
+
+// CBSE 2026-27 question paper design for Chemistry theory, Class XI and XII.
+const chemistryDesign = {
+  understanding: 28, applying: 21, analysing: 21, percent: [40, 30, 30],
+  labels: physicsDesign.labels
+};
+
+const chemistryArOptions = [
+  "A. Both A and R are true, and R is the correct explanation of A.",
+  "B. Both A and R are true, and R is not the correct explanation of A.",
+  "C. A is true but R is false.",
+  "D. A is false but R is true."
+];
+
+const chemistryNoLogs = "Log tables and calculators are not allowed: choose numbers that work by hand, and print in the question any logarithm or antilogarithm a numerical needs (for example log 2 = 0.3010, log 3 = 0.4771).";
+
+const class12ChemistryScope = [
+  "Surface Chemistry, General Principles and Processes of Isolation of Elements, Polymers and Chemistry in Everyday Life are assessed only formatively in 2026-27: set NO question from them.",
+  chemistryNoLogs,
+  "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
+];
+
+const class11ChemistryScope = [
+  "s- and p-Block Elements and the Gaseous State are assessed only formatively in 2026-27: set NO question from them.",
+  chemistryNoLogs,
+  "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
+];
+
+const chemistryFormats = {
+  subject: "Chemistry",
+  misconceptions: "SN1 vs SN2 stereochemistry (racemisation vs inversion), order vs molecularity, strong vs weak field ligands and high vs low spin, basicity of amines in water vs the gas phase, reducing vs non-reducing sugars, the effect of electron-withdrawing and electron-releasing groups on acidity",
+  constructed: [
+    "Very Short Answer (VSA - 2 Marks): two 1-mark parts (I) and (II) or one 2-mark question - complete and balance a reaction, account for an observation, a short numerical, or reflect on a statement - worth exactly 2 marking-scheme value points.",
+    "Short Answer (SA - 3 Marks): a numerical (formula, working, answer with unit), identifying name reactions and completing a sequence, conversions, IUPAC names, or reasoning split 1 + 2 or 3 x 1, worth 3 value points.",
+    "Long Answer (LA - 5 Marks): sub-parts such as 3 x 1 + 2, 5 x 1 or 1 + 2 + 1 + 1, with internal choice (A) OR (B)."
+  ],
+  designNote: "most 2-, 3- and 5-mark questions ask the student to explain, predict, justify, compare or interpret data, not only to recall.",
+  sourcing: "Source questions from the NCERT textbook and NCERT Exemplar, CBSE competency-based question banks and past board papers, as the sample paper does; case-based questions may use an experiment, test results, a data table or a graph.",
+  arPlacement: `under each Assertion-Reason question, after the line "Select the most appropriate answer from the options given below:"`,
+  arAnswered: "answered from the four options printed below it",
+  typology: {
+    vsa: "Two 1-mark parts (I) and (II), or one 2-mark question: complete and balance a reaction, account for an observation, a short numerical, or \"reflect on the statement\". Exactly **2 marking-scheme value points**; no fixed word limit.",
+    sa: "A numerical (formula, working and answer with unit), identify name reactions and complete the missing reactant or product, a conversion in two or three steps, an IUPAC name with reasoning, or explanations split 1 + 2 or 3 x 1. **3 value points**; no fixed word limit.",
+    cbqHeading: "Case-Based / Data-Based Questions",
+    cbq: [
+      "A short passage, experiment, data table or graph (the sample paper uses a bar graph of pKa values of substituted phenols, and the tests a class carries out to identify a carbohydrate), followed by **(I) a 1-mark MCQ, (II) a 1-mark MCQ and (III) a 2-mark question with an internal choice (IIIA) OR (IIIB)** that asks the student to predict, justify or interpret the data.",
+      "The internal choice is ONLY in part III. A case built on a graph or figure gets a separate words-only version for visually challenged learners."
+    ]
+  },
+  rigor: "Formulate questions requiring balanced equations with the reagent and conditions over the arrow, correct structural or condensed formulae, IUPAC names, numericals with the formula, working and the answer with its unit, and reasons that name the effect involved (inductive, resonance, steric, hydrogen bonding, crystal field). Numbers must work out by hand, because log tables and calculators are not allowed.",
+  instructionsNote: "",
+  requirements: [
+    `**Section instructions, as in the sample paper:** under each Section heading print CBSE's instruction line, for example "Question 1 to 16 are multiple choice questions. Only one of the choices is correct. Select and write the correct choice as well as the answer to these questions." and "Question No. 29 & 30 are case-based/data-based questions carrying 4 marks each."`,
+    `**Visual inputs, as in the sample paper:** about 4 to 6 questions use a figure, graph, data table or structural formula (for example a table of boiling points and pKb values in an MCQ, a gas-solution equilibrium figure, a DNA strand to complete, a log k vs 1/T graph, a pKa bar graph in a case-based question). Directly below every question that depends on a figure or graph, add a separate question headed "(For Visually Challenged Learners)" on the same concept in words only, with the same marks. A data table set in text needs no alternative.`,
+    `**Internal choice:** print "Attempt either A or B" and number the choices 17(A) OR 17(B); in a case-based question print "Attempt either (IIIA) or (IIIB)". Choice sits in one Section B question, one Section C question, part III of both case-based questions and all three long answers (about 33% of the marks).`,
+    "**Assertion-Reason:** print the line and the four options under EACH Assertion-Reason question, exactly as given in the typology rules above (rule 8).",
+    "**Real-life and experimental contexts:** a student's experiment or observation (named students are fine), test results, data tables and graphs, as the sample paper uses throughout."
+  ],
+  figureQuota: `Set **4 to 6 questions with a visual input** (figure, graph, data table or structural formula), each figure or graph with a separate question for visually challenged learners`,
+  diagramRules: `
+    *   **Chemistry Visuals:** MUST generate clean inline vector SVG or HTML tables for:
+        - Structural formulae of organic compounds (skeletal or condensed) and reaction schemes with the reagent and conditions written over the arrow and a blank for the missing reactant or product.
+        - Graphs with labelled axes and scales (log k vs 1/T, concentration vs time, vapour pressure vs mole fraction, molar conductivity vs square root of concentration, bar graphs of pKa or boiling points).
+        - Apparatus and models (galvanic or electrolytic cell, a gas above a solution under a piston, a DNA strand with bases to complete); data tables as HTML tables.`
+};
+
+const chemistryMandates = (roman, nameReactions) => ({
+  mandatesTitle: `CBSE CHEMISTRY (${roman}) MANDATES & PEDAGOGICAL RIGOR`,
+  mandates: [
+    "**Equations:** every reaction is balanced, with the reagent, catalyst and conditions (temperature, pressure, medium) written over the arrow; organic reactions show structural or condensed formulae.",
+    `**Name reactions and conversions:** ask the student to identify a named reaction and complete the missing reactant or product (${nameReactions}), or to convert one compound into another in two or three steps.`,
+    "**Numericals:** state the formula, substitute with units and give the answer with its unit; no log tables or calculators, so print any logarithm values needed.",
+    "**Reasoning:** \"Account for\", \"Give reason\", \"Predict\" and \"Justify\" questions name the effect behind the answer (inductive, resonance, hyperconjugation, steric, hydrogen bonding, crystal field splitting), as the sample paper does."
+  ]
+});
+
 export const seniorPapers = {
   "Class 12 || Physics": {
     code: "042",
@@ -983,6 +1154,8 @@ export const seniorPapers = {
     generalInstructions: physicsGeneralInstructions,
     arOptions: physicsArOptions,
     scope: class12PhysicsScope,
+    ...physicsFormats,
+    ...physicsMandates("XII", "a superconducting ball near a magnet, a bar magnet falling through a ring, why diamonds sparkle", ""),
     units: [
       { name: "Electrostatics + Current Electricity (Units I-II)", marks: 16, chapters: ["Electric Charges and Fields", "Electrostatic Potential", "Current Electricity"] },
       { name: "Magnetic Effects of Current and Magnetism + Electromagnetic Induction and Alternating Currents (Units III-IV)", marks: 17, chapters: ["Moving Charges", "Magnetism and Matter", "Electromagnetic Induction", "Alternating Current"] },
@@ -1000,11 +1173,60 @@ export const seniorPapers = {
     generalInstructions: physicsGeneralInstructions,
     arOptions: physicsArOptions,
     scope: class11PhysicsScope,
+    ...physicsFormats,
+    ...physicsMandates("XI", "why a cyclist leans on a turn, why a raindrop reaches a terminal velocity, why a metal feels colder than wood", "Class XII "),
     units: [
       { name: "Physical World and Measurement + Kinematics + Laws of Motion (Units I-III)", marks: 23, chapters: ["Units and Measurements", "Motion in a Straight Line", "Motion in a Plane", "Laws of Motion"] },
       { name: "Work, Energy and Power + Motion of System of Particles and Rigid Body + Gravitation (Units IV-VI)", marks: 17, chapters: ["Work, Energy and Power", "System of Particles", "Gravitation"] },
       { name: "Properties of Bulk Matter + Thermodynamics + Kinetic Theory (Units VII-IX)", marks: 20, chapters: ["Mechanical Properties of Solids", "Mechanical Properties of Fluids", "Thermal Properties", "Thermodynamics", "Kinetic Theory"] },
       { name: "Oscillations and Waves (Unit X)", marks: 10, chapters: ["Oscillations", "Waves"] }
+    ]
+  },
+  "Class 12 || Chemistry": {
+    code: "043",
+    paperLabel: "Chemistry (043)",
+    fullMarks: 70,
+    design: chemistryDesign,
+    questions: chemistryPaperQuestions,
+    generalInstructions: chemistryGeneralInstructions,
+    arOptions: chemistryArOptions,
+    scope: class12ChemistryScope,
+    ...chemistryFormats,
+    ...chemistryMandates("XII", "for example Aldol, Cannizzaro, Clemmensen, Wolff-Kishner, Etard, Rosenmund, Hell-Volhard-Zelinsky, Sandmeyer, Gabriel phthalimide, Hoffmann bromamide, Reimer-Tiemann, Kolbe"),
+    units: [
+      { name: "Solutions", marks: 7, chapters: ["Solutions"] },
+      { name: "Electrochemistry", marks: 9, chapters: ["Electrochemistry"] },
+      { name: "Chemical Kinetics", marks: 7, chapters: ["Chemical Kinetics"] },
+      { name: "d- and f-Block Elements", marks: 7, chapters: ["d- and f-", "d and f Block"] },
+      { name: "Coordination Compounds", marks: 7, chapters: ["Coordination Compounds"] },
+      { name: "Haloalkanes and Haloarenes", marks: 6, chapters: ["Haloalkanes"] },
+      { name: "Alcohols, Phenols and Ethers", marks: 6, chapters: ["Alcohols, Phenols"] },
+      { name: "Aldehydes, Ketones and Carboxylic Acids", marks: 8, chapters: ["Aldehydes"] },
+      { name: "Amines", marks: 6, chapters: ["Amines"] },
+      { name: "Biomolecules", marks: 7, chapters: ["Biomolecules"] }
+    ]
+  },
+  "Class 11 || Chemistry": {
+    code: "043",
+    paperLabel: "Chemistry (043), Class XI",
+    fullMarks: 70,
+    design: chemistryDesign,
+    questions: chemistryPaperQuestions,
+    generalInstructions: chemistryGeneralInstructions,
+    arOptions: chemistryArOptions,
+    scope: class11ChemistryScope,
+    ...chemistryFormats,
+    ...chemistryMandates("XI", "for example Wurtz reaction, Kolbe electrolysis, Markovnikov and anti-Markovnikov (Kharasch) addition, ozonolysis, Friedel-Crafts alkylation and acylation"),
+    units: [
+      { name: "Some Basic Concepts of Chemistry", marks: 7, chapters: ["Some Basic Concepts"] },
+      { name: "Structure of Atom", marks: 9, chapters: ["Structure of Atom"] },
+      { name: "Classification of Elements and Periodicity in Properties", marks: 6, chapters: ["Classification of Elements"] },
+      { name: "Chemical Bonding and Molecular Structure", marks: 7, chapters: ["Chemical Bonding"] },
+      { name: "Chemical Thermodynamics", marks: 9, chapters: ["Thermodynamics"] },
+      { name: "Equilibrium", marks: 7, chapters: ["Equilibrium"] },
+      { name: "Redox Reactions", marks: 4, chapters: ["Redox"] },
+      { name: "Organic Chemistry: Some Basic Principles and Techniques", marks: 11, chapters: ["Organic Chemistry"] },
+      { name: "Hydrocarbons", marks: 10, chapters: ["Hydrocarbons"] }
     ]
   }
 };
@@ -1116,6 +1338,24 @@ This paper is set on the Class XII Physics 2026-27 sample paper layout, against 
 curriculum and its unit weightage, so students meet the board format a year early.
 SUBJECT: PHYSICS (042), Class XI, Maximum Marks 70, Time Allowed 3 hours.
 ${physicsPaperPattern}`
+  },
+
+  "Class 12 || Chemistry": {
+    year: "2026-27",
+    fullMarks: 70,
+    text: `CHEMISTRY (CODE - 043), Class XII, Maximum Marks 70, Time Allowed 3 hours.
+${chemistryPaperPattern}
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 11 || Chemistry": {
+    year: "2026-27",
+    fullMarks: 70,
+    text: `Class 11 is a school examination, so CBSE publishes no sample paper for it.
+This paper is set on the Class XII Chemistry 2026-27 sample paper layout, against the Class XI
+curriculum and its unit weightage, so students meet the board format a year early.
+CHEMISTRY (CODE - 043), Class XI, Maximum Marks 70, Time Allowed 3 hours.
+${chemistryPaperPattern}`
   },
 
   "Class 12 || Accountancy": {
