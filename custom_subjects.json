@@ -565,77 +565,35 @@
           "Dialogue Completion (Conversational exchanges)"
         ],
         "Long Writing (80-100 words)": [
+          "Story Writing (From verbal outline/prompts with title & moral)",
+          "Paragraph Writing (Event, personality, or place)",
           "Formal Letter Writing (Application to Principal / Librarian)",
           "Informal Letter Writing (Sharing experiences, invitations)",
-          "Story Writing (From verbal outline/prompts with title & moral)",
-          "Descriptive Paragraph Writing (Event, personality, or place)",
           "Diary Entry (Personal reflections on memorable events)"
         ]
       },
-      "Section B: Applied Grammar": {
-        "The Sentence & Clause Structure": [
-          "Subject, Predicate, Direct & Indirect Objects, Subject Complement",
-          "Phrases vs Clauses (Noun phrase, Adjective phrase, Adverb phrase)",
-          "Main (Independent) vs Subordinate (Dependent) Clauses",
-          "Simple, Compound, and Complex Sentences"
-        ],
-        "Pronouns & Advanced Usages": [
-          "Possessive Nouns & Apostrophe Rules (children's, teachers')",
-          "Relative Pronouns (who, whom, whose, which, that) & Relative Clauses",
-          "Indefinite Pronouns (everyone, nobody, somebody, anything)",
-          "Distributive Pronouns (each, either, neither)"
-        ],
-        "Tenses & Aspects": [
-          "Simple, Continuous, Perfect & Perfect Continuous review",
-          "Present Perfect Tense (has/have + V3 with already, yet, just)",
-          "Present Perfect Continuous Tense (has/have been + V-ing with for/since)",
-          "Past Perfect Tense (had + V3 for earlier completed past action)",
-          "Future Continuous & Future Perfect Tenses",
-          "Tense Contrast: Past Continuous vs Simple Past (While I was reading...)",
-          "Tense Contrast: Present Perfect vs Simple Past"
-        ],
-        "Subject-Verb Concord (Intermediate)": [
-          "Agreement with Collective Nouns (singular vs plural sense)",
-          "Agreement with 'either...or' and 'neither...nor' (nearer subject rule)",
-          "Phrases like 'each of, neither of, one of the' + plural noun (takes singular verb)",
-          "Plural-form singular nouns (Mathematics, The news, Fifty miles)"
-        ],
-        "Modal Auxiliaries": [
-          "Modals of Ability: can, could, be able to",
-          "Modals of Permission & Politeness: may, can, could, would",
-          "Modals of Obligation & Advice: must, have to, ought to, should, need not",
-          "Modals of Possibility & Probability: may, might, could"
-        ],
-        "Active and Passive Voice": [
-          "Subject-Object inversion & use of 'by + agent'",
-          "Passive Voice: Simple Present, Simple Past & Simple Future",
-          "Passive Voice: Present & Past Continuous (is/are being + V3)",
-          "Passive Voice: Imperative Sentences (Let it be done)"
-        ],
-        "Reported Speech (Narration)": [
-          "Reporting Statements (Tense shifting, pronoun conversion, time/place words)",
-          "Reporting Wh- Questions (Where do you live? -> He asked where I lived)",
-          "Reporting Yes/No Questions using 'if / whether'",
-          "Reporting Verbs: said, told, asked, enquired"
-        ],
-        "Non-Finite Verbs": [
-          "The Infinitive (to + verb, Bare infinitive after modals)",
-          "The Gerund (verb + -ing functioning as subject/object noun)",
-          "Participles (Present participle -ing vs Past participle -ed/-en)"
-        ],
-        "Prepositions, Phrasals & Determiners": [
-          "Complex Prepositions (in front of, in spite of, according to, on behalf of)",
-          "Everyday Phrasal Verbs (look after, give up, put off, call off, turn down)",
-          "Determiners & Quantifiers: few/a few, little/a little, much/many, each/every",
-          "Question Tags (positive & negative tags: isn't it?, didn't he?)"
-        ],
-        "Integrated Functional Tasks": [
-          "Sentence Transformation (Assertive to Interrogative/Exclamatory, Active to Passive)",
-          "Editing / Error Correction (Incorrect & Correct columns)",
-          "Omission (Word before, missing word, word after)",
-          "Sentence Reordering & Dialogue Completion"
-        ]
-      },
+      "Section B: Applied Grammar": [
+        "1. Cases: Nominative, Accusative, Dative, Possessive",
+        "2. The Past",
+        "3. The Present",
+        "4. The Future",
+        "5. Finite and Non-finite Verbs",
+        "6. Complements",
+        "7. Noun Phrase",
+        "8. Verb Phrase",
+        "9. Adjective and Adverb Phrases",
+        "10. Prepositional Phrase",
+        "11. Conjunction: Coordinating, Correlative, Subordinating",
+        "12. Noun Clause",
+        "13. Adjective Clause",
+        "14. Adverb Clause",
+        "15. Relative Clauses",
+        "16. Interjections",
+        "17. Kinds of Sentences",
+        "18. Active and Passive Voice",
+        "19. Direct and Indirect Speech",
+        "20. Punctuation"
+      ],
       "Section C: Literature - Poorvi (Unit 1: Learning Together)": [
         "Chapter 1: The Day the River Spoke",
         "Chapter 2: Try Again (Poem)",
