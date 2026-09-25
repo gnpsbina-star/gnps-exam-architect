@@ -257,6 +257,17 @@ export function isSchoolExcludedSubject(subjectName) {
   return false;
 }
 
+// Subjects the school does not offer in one class: Computer Science in Class
+// 8 (legacy), and Sanskrit in Classes 9 and 10, which the school does not
+// teach in 2026-27. The syllabus stays in data.js so the subject can return.
+function isClassExcludedSubject(cls, subjectName) {
+  if (isSchoolExcludedSubject(subjectName)) return true;
+  const sub = String(subjectName || '').toLowerCase();
+  if (cls === 'Class 8' && sub.includes('computer science')) return true;
+  if ((cls === 'Class 9' || cls === 'Class 10') && sub.includes('sanskrit')) return true;
+  return false;
+}
+
 // Load custom subjects from server (with localStorage fallback)
 async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
@@ -304,10 +315,11 @@ async function loadCustomSubjects() {
     loadFromLocalCache();
   }
 
-  // Remove school-excluded subjects (English R2, Hindi R1, and Class 8 legacy Computer Science)
+  // Remove school-excluded subjects (English R2, Hindi R1, Class 8 legacy
+  // Computer Science, Class 9 / 10 Sanskrit)
   for (const cls of Object.keys(cbseData)) {
     for (const subj of Object.keys(cbseData[cls])) {
-      if (isSchoolExcludedSubject(subj) || (cls === 'Class 8' && subj.toLowerCase().includes('computer science'))) {
+      if (isClassExcludedSubject(cls, subj)) {
         delete cbseData[cls][subj];
       }
     }
@@ -316,7 +328,7 @@ async function loadCustomSubjects() {
     for (const [cls, subjects] of Object.entries(customSubjectsData)) {
       if (subjects && typeof subjects === 'object') {
         for (const subj of Object.keys(subjects)) {
-          if (isSchoolExcludedSubject(subj) || (cls === 'Class 8' && subj.toLowerCase().includes('computer science'))) {
+          if (isClassExcludedSubject(cls, subj)) {
             delete subjects[subj];
           }
         }
@@ -6709,7 +6721,7 @@ function buildPart4RowsHtml(cls, entries) {
   let p4Sno = 1;
 
   entries.forEach(([subjName]) => {
-    if (isSchoolExcludedSubject(subjName)) return;
+    if (isClassExcludedSubject(cls, subjName)) return;
     if (!isSubjectIncludedInSheet(cls, subjName)) return;
 
     const notebookDate = (sheetNotebookDates[cls] && sheetNotebookDates[cls][subjName]) ? sheetNotebookDates[cls][subjName] : '';
@@ -6803,7 +6815,7 @@ function getSheetSubjectsData(cls) {
 }
 
 function collectSheetSubjectsData(cls) {
-  const isExcluded = (subj) => isSchoolExcludedSubject(subj) || (cls === 'Class 8' && subj.toLowerCase().includes('computer science'));
+  const isExcluded = (subj) => isClassExcludedSubject(cls, subj);
 
   if (classSelect && classSelect.value === cls && subjectSelect && subjectSelect.options.length > 1) {
     const mainSubjectNames = Array.from(subjectSelect.options)
@@ -7208,7 +7220,7 @@ function isLanguageSkillSection(secKey) {
 }
 
 function getFlatItemsForSubject(cls, subj) {
-  if (!subj || isSchoolExcludedSubject(subj)) return [];
+  if (!subj || isClassExcludedSubject(cls, subj)) return [];
   if (subj.startsWith('SEA: ')) {
     const rawSubj = subj.replace('SEA: ', '').trim();
     const seaList = (cbseSEAData && cbseSEAData[cls]) ? cbseSEAData[cls] : [];
@@ -8194,7 +8206,7 @@ function renderSyllabusSheetPaper() {
     let p1Sno = 1;
 
     scholasticEntries.forEach(([subjName, subjSyllabus]) => {
-      if (isSchoolExcludedSubject(subjName)) return;
+      if (isClassExcludedSubject(cls, subjName)) return;
 
       const isRobo = /robotics|computer/i.test(subjName);
       if (isRobo && !roboticsHasWrittenExam(exam)) return;
@@ -8561,7 +8573,7 @@ function renderSyllabusSheetPaper() {
   let visibleRowIndex = 1;
 
   subjectEntries.forEach(([subjName, subjSyllabus], index) => {
-    if (isSchoolExcludedSubject(subjName)) return;
+    if (isClassExcludedSubject(cls, subjName)) return;
     const checkedSet = getSubjectSelectionForSheet(cls, subjName);
     const { contentHtml, checkedCount } = renderSubjectPortionContent(subjName, subjSyllabus, checkedSet);
 
