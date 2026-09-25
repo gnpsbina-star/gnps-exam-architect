@@ -273,7 +273,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_27_skill_subjects_v24';
+      const CURRENT_SYLLABUS_VER = '2026_27_class6_english_v25';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -4894,9 +4894,11 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
       promptText += `\n11. **English Reading Section Word Limits:** Ensure the unseen passages adhere to these limits: ${englishLimits}. These are approximate limits; you may increase the word limit by up to 10% if required to maintain passage quality.`;
     }
 
-    // Class 9/10 English (R1) sorts the ticked items by the syllabus group they
-    // sit in; other classes keep matching on words in the item names.
-    const groupIndex = secEnglish ? getSyllabusGroupIndex(className, subjectName) : null;
+    // Class 6 and Class 9/10 English (R1) sort the ticked items by the syllabus
+    // group they sit in (Class 6 grammar chapters such as "Direct and Indirect
+    // Speech" would otherwise read as writing tasks); other classes keep
+    // matching on words in the item names.
+    const groupIndex = (secEnglish || className === "Class 6") ? getSyllabusGroupIndex(className, subjectName) : null;
     const inGroup = (n, word) => groupIndex && (groupIndex.get(n) || '').toLowerCase().includes(word);
     const selectedGrammarTopics = selectedChaptersData
       .map(c => c.name)

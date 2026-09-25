@@ -161,68 +161,31 @@ export const cbseData = {
           "Dialogue Completion (Everyday situations)"
         ],
         "Long Writing (80-100 words)": [
+          "Story Writing (From given outline / verbal cues with moral)",
+          "Paragraph Writing (Person, place, or event)",
           "Formal Letter Writing (Application to Principal for leave / permission)",
           "Informal Letter Writing (To family, relatives, and friends)",
-          "Paragraph / Descriptive Writing (Person, place, or event)",
-          "Story Writing (From given outline / verbal cues with moral)"
+          "Diary Entry (Personal experience or a special day)"
         ]
       },
-      "Section B: Applied Grammar": {
-        "Nouns & Noun Types": [
-          "Common & Proper Nouns",
-          "Collective & Material Nouns",
-          "Abstract Nouns (Formation from adjectives & verbs)",
-          "Countable vs. Uncountable Nouns",
-          "Singular & Plural Rules (Regular & irregular plurals)",
-          "Noun Gender (Masculine, Feminine, Common, Neuter)"
-        ],
-        "Pronouns": [
-          "Personal Pronouns (Subject & Object forms: I/me, he/him, they/them)",
-          "Possessive Pronouns vs Possessive Adjectives (mine vs my, yours vs your)",
-          "Demonstrative Pronouns (this, that, these, those)",
-          "Reflexive & Emphatic Pronouns (myself, himself, yourself, ourselves)",
-          "Interrogative Pronouns (who, what, which, whose)"
-        ],
-        "Verbs & Tenses": [
-          "Action Verbs vs Helping/Auxiliary Verbs (is, are, was, were, has, have)",
-          "Transitive vs Intransitive Verbs",
-          "Regular & Irregular Verb Conjugation (V1, V2, V3 forms)",
-          "Simple Present Tense (Habits, facts & third-person -s/-es)",
-          "Simple Past Tense (Completed past actions with past time markers)",
-          "Simple Future Tense (will/shall + verb & 'going to')",
-          "Present Continuous Tense (is/am/are + verb-ing)",
-          "Past Continuous Tense (was/were + verb-ing)"
-        ],
-        "Subject-Verb Agreement (Basics)": [
-          "Singular/Plural Concord (The boy plays vs The boys play)",
-          "Agreement with 'there is / there are'",
-          "Compound Subjects joined by 'and'"
-        ],
-        "Adjectives & Adverbs": [
-          "Adjectives of Quality, Quantity & Number",
-          "Degrees of Comparison: Positive, Comparative (-er/more) & Superlative (-est/most)",
-          "Irregular Degrees (good/better/best, bad/worse/worst)",
-          "Adverbs of Manner (how), Time (when), Place (where) & Frequency (always/never)"
-        ],
-        "Prepositions & Conjunctions": [
-          "Prepositions of Place & Position (in, on, at, under, between, among, behind)",
-          "Prepositions of Time (at, on, in, for, since) & Movement (into, through)",
-          "Coordinating Conjunctions (and, but, or, so)",
-          "Subordinating Conjunctions of Cause & Time (because, since, when, before)"
-        ],
-        "Articles & Sentence Structure": [
-          "Indefinite Articles (a / an based on phonetic vowel sound)",
-          "Definite Article (the) & Omission of Articles (Zero Article)",
-          "Subject and Predicate identification",
-          "4 Sentence Types: Declarative, Interrogative, Imperative, Exclamatory"
-        ],
-        "Integrated Functional Tasks": [
-          "Gap Filling (Cloze test with tenses, articles, prepositions)",
-          "Sentence Reordering (Jumbled words into meaningful sentences)",
-          "Editing / Error Correction (Proofreading lines for 1 grammatical mistake)",
-          "Punctuation & Capitalization"
-        ]
-      },
+      "Section B: Applied Grammar": [
+        "1. Nouns",
+        "2. Nouns: Number",
+        "3. Nouns: Gender",
+        "4. Articles",
+        "5. Determiners",
+        "6. Pronouns",
+        "7. Verbs",
+        "8. Direct and Indirect Objects",
+        "9. Subject–Verb Agreement",
+        "10. Adjectives",
+        "11. Comparison of Adjectives",
+        "12. Prepositions",
+        "13. Adverbs",
+        "14. The Sentence",
+        "15. Active and Passive Voice",
+        "16. Direct and Indirect Speech"
+      ],
       "Section C: Literature - Poorvi (Unit 1: Fables and Folk Tales)": [
         "Chapter 1: A Bottle of Dew",
         "Chapter 2: The Raven and the Fox (Poem)",
