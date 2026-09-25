@@ -1955,6 +1955,108 @@ const polSciFormats = {
   numberingNote: "Number the questions Q1 to Q30 continuously across Sections A to E, in the order of the rows above (a row \"Q1-Q12\" is twelve separate questions). The parts of a picture, passage or map question are numbered I, II, III and IV. An internal choice sits under one number as A OR B."
 };
 
+// Class 11 and 12 Geography (029), from the CBSE 2026-27 curriculum document
+// (Geography_SecP2_2026-27) and the Class XII 2026-27 sample paper (design
+// unchanged). The theory paper is 70 marks (practical 30): 30 questions - 17
+// MCQs, 2 source-based questions of 3 marks, 4 short answers of 3 marks
+// (80-100 words), 5 long answers of 5 marks (120-150 words) and 2 map
+// questions of 5 marks (one on the world map, one on India's). Each book
+// carries 30 marks plus its 5-mark map question.
+const geoQuestions = (spread) => [
+  { section: "Section A", q: "Q1-Q17", type: "Multiple choice questions", count: 17, each: 1, marks: 17, detail: `${spread.mcq}; varied forms: match the columns, choose the correct statements, situation-based, data or table-based (including a short calculation such as population density or natural growth rate), Assertion-Reason, the incorrectly matched pair, and one or two map or graph-based items with a words-only alternative for visually impaired candidates; no internal choice` },
+  { section: "Section B", q: "Q18-Q19", type: "Source-based questions", count: 2, each: 3, marks: 6, detail: "Q18 on a map, picture or graph (with a words-only alternative for visually impaired candidates) and Q19 on a passage of about 150 words from the NCERT textbook; three parts each, marked 1, ½+½ and 1" },
+  { section: "Section C", q: "Q20-Q23", type: "Short answer (80-100 words)", count: 4, each: 3, marks: 12, detail: "explain a concept, analyse or apply it to a situation (some split 1+2); internal choice in one (Q23 in the sample paper)" },
+  { section: "Section D", q: "Q24-Q28", type: "Long answer (120-150 words)", count: 5, each: 5, marks: 25, detail: "explain, classify, distinguish (five points), examine or suggest measures, some split 2+3 or 2½+2½; internal choice in four (Q24, Q25, Q26 and Q28 in the sample paper)" },
+  { section: "Section E", q: "Q29-Q30", type: "Map-based questions", count: 2, each: 5, marks: 10, detail: `${spread.map}; each lists seven features (A to G) of which the student answers any five, and has words-only questions for visually impaired candidates in lieu of it (answer any five)` }
+];
+
+const geoDesign = {
+  understanding: 41, applying: 37, analysing: 22, percent: [41, 37, 22],
+  labels: ["Remembering and Understanding (recall facts, terms, basic concepts, data and information; organise, compare, interpret, describe and state main ideas)",
+           "Application (use a concept in a new situation; apply acquired knowledge, facts, techniques and rules)",
+           "Analysing, Evaluating and Creating (break information into parts, identify motives or causes, distinguish facts from inferences, find evidence for generalisations, synthesise)"]
+};
+
+const geoGeneralInstructions = [
+  "This question paper contains 30 questions. All questions are compulsory.",
+  "This question paper is divided into five sections: sections A, B, C, D, and E.",
+  "Section A - Question number 1 to 17 are multiple-choice type questions carrying 1 mark each.",
+  "Section B - Question number 18 and 19 are source-based questions carrying 3 marks each.",
+  "Section C - Question number 20 to 23 are Short Answer (SA) type questions carrying 3 marks each. The answer to these questions shall be written in 80 to 100 words.",
+  "Section D - Question number 24 to 28 are Long Answer (LA) type questions carrying 5 marks each. Answer to these questions shall be written in 120 to 150 words.",
+  "Section E - Question number 29 and 30 are map-based questions. Each question carries 5 marks.",
+  "In addition to this, NOTE that a separate question has been provided for Visually Impaired Candidates in lieu of questions having visual inputs, maps, etc. Such questions are to be attempted by Visually Impaired Candidates only.",
+  "There is no overall choice given in the question paper. However, an internal choice has been provided in a few questions in all sections, except Section A."
+];
+
+// Short tests keep the paper's 1 / 3 / 5 mark types.
+const geoShortTests = {
+  unit: [
+    { name: "Section A", type: "MCQs (situation, data or table-based, match the columns, Assertion-Reason)", count: 4, unitMark: 1, marksPerQ: "1 Mark", total: 4, choice: "Compulsory" },
+    { name: "Section B", type: "Source-based question (map, picture, graph or passage; parts of 1, ½+½ and 1)", count: 1, unitMark: 3, marksPerQ: "3 Marks", total: 3, choice: "Compulsory" },
+    { name: "Section C", type: "Short answer (80-100 words)", count: 1, unitMark: 3, marksPerQ: "3 Marks", total: 3, choice: "Internal choice" },
+    { name: "Section D", type: "Long answer (120-150 words)", count: 2, unitMark: 5, marksPerQ: "5 Marks", total: 10, choice: "Internal choice in 1 Q" }
+  ],
+  periodic: [
+    { name: "Section A", type: "MCQs (situation, data or table-based, match the columns, Assertion-Reason)", count: 8, unitMark: 1, marksPerQ: "1 Mark", total: 8, choice: "Compulsory" },
+    { name: "Section B", type: "Source-based questions (one on a map, picture or graph, one on a passage)", count: 2, unitMark: 3, marksPerQ: "3 Marks", total: 6, choice: "Compulsory" },
+    { name: "Section C", type: "Short answer (80-100 words)", count: 2, unitMark: 3, marksPerQ: "3 Marks", total: 6, choice: "Internal choice in 1 Q" },
+    { name: "Section D", type: "Long answer (120-150 words)", count: 3, unitMark: 5, marksPerQ: "5 Marks", total: 15, choice: "Internal choice in 2 Qs" },
+    { name: "Section E", type: "Map question (any five of seven features from CBSE's map list for the selected chapters; a 5-mark long answer instead if they have no map items)", count: 1, unitMark: 5, marksPerQ: "5 Marks", total: 5, choice: "Any five of seven" }
+  ]
+};
+
+const geoFormats = {
+  fullMarks: 70,
+  mapMarks: 10,
+  markLadder: [1, 3, 5],
+  letteredSections: true,
+  shortTests: geoShortTests,
+  design: geoDesign,
+  generalInstructions: geoGeneralInstructions,
+  // As in the sample paper, except that its option D repeats C ("R is
+  // incorrect but A is correct"); the standard fourth option is used instead.
+  arOptions: ["A. Both A and R are correct and R is the correct explanation of A.", "B. Both A and R are correct and R is not the correct explanation of A.", "C. A is correct but R is incorrect.", "D. A is incorrect but R is correct."],
+  arPlacement: "under each Assertion-Reason question",
+  arAnswered: "answered from the four options printed below it",
+  designNote: "many questions set a real situation, a table of data or a map for the student to interpret, apply a concept to, or analyse, rather than only recall.",
+  foundational: "geographical terms, concepts, data, places and schemes from the textbooks",
+  constructed: [
+    "Source-based (3 Marks): a map, picture, graph or passage with three parts marked 1, ½+½ and 1.",
+    "Short Answer (3 Marks, 80-100 words): explain a concept, or apply it to a situation.",
+    "Long Answer (5 Marks, 120-150 words): explain, classify, distinguish, examine or suggest measures, with examples."
+  ],
+  sourcing: "Source questions from the NCERT textbooks (their text, tables, maps and figures), CBSE's sample and practice papers and past board papers.",
+  typology: {
+    sa: "Answer in **80-100 words**: explain a concept (\"Explain the concept of ... as introduced by ...\"), analyse a statement, or apply a concept to a situation (\"Which type ... should the company choose, and why?\"); marks may split 1+2.",
+    laHeading: "3-Mark Source-Based, 5-Mark Long Answer and 5-Mark Map Questions",
+    la: [
+      "Source-based (3 marks, Section B): one on a map, picture or graph (\"Study the map given below carefully and answer the following questions\"), one on a titled passage from the NCERT textbook; three parts (18.1, 18.2, 18.3 in the full paper, or I, II, III) marked 1, ½+½ and 1.",
+      "Long answer (5 marks, 120-150 words): \"Classify ... and illustrate each with examples\", \"Explain any five factors ...\", \"Distinguish between ... mentioning any five points\", \"Examine the role of ...\", \"Suggest suitable measures ...\"; internal choice (A) OR (B) in four of the five.",
+      "Map questions (5 marks each): seven features lettered A to G, of which the student answers any five; each map question is followed by words-only questions for visually impaired candidates in lieu of it."
+    ]
+  },
+  rigor: "Formulate questions whose answers are distinct value points: accurate terms, places, data and examples from the NCERT text, one point per mark.",
+  instructionsNote: "",
+  mandatesTitle: null,
+  mandates: [],
+  numberingNote: "Number the questions Q1 to Q30 continuously across Sections A to E, in the order of the rows above (a row \"Q1-Q17\" is seventeen separate questions). Source-based parts are numbered 18.1, 18.2, 18.3 (or I, II, III); map features are lettered A to G. An internal choice sits under one number as (A) OR (B)."
+};
+
+const geoMapList12 = {
+  world: "Fundamentals of Human Geography (identification on an outline political map of the world): areas of subsistence gathering, nomadic herding, commercial livestock rearing, extensive commercial grain farming and mixed farming; terminal stations of the Trans-Siberian, Trans-Canadian and Trans-Australian railways; major seaports - North Cape, London, Hamburg, Vancouver, San Francisco, New Orleans, Rio de Janeiro, Colon, Valparaiso, Suez, Cape Town, Yokohama, Shanghai, Hong Kong, Aden, Karachi, Kolkata, Perth, Sydney, Melbourne; major airports - Tokyo, Beijing, Mumbai, Jeddah, Aden, Johannesburg, Nairobi, Moscow, London, Paris, Berlin, Rome, Chicago, New Orleans, Mexico City, Buenos Aires, Santiago, Darwin, Wellington; inland waterways - Suez Canal, Panama Canal, Rhine waterway, St. Lawrence Seaway.",
+  india: "India - People and Economy (locating and labelling on an outline political map of India): the States with the highest and the lowest population density (2011); leading producing States of rice, wheat, cotton, jute, sugarcane, tea and coffee; iron-ore mines - Mayurbhanj, Bailadila, Ratnagiri, Bellary; manganese - Balaghat, Shimoga; copper - Hazaribagh, Singhbhum, Khetri; bauxite - Katni, Bilaspur, Koraput; coal - Jharia, Bokaro, Raniganj, Neyveli; oil refineries - Mathura, Jamnagar, Barauni; seaports - Kandla, Mumbai, Marmagao, Kochi, Mangalore, Tuticorin, Chennai, Visakhapatnam, Paradip, Haldia; international airports - Ahmedabad, Mumbai, Bengaluru, Chennai, Kolkata, Guwahati, Delhi, Amritsar, Thiruvananthapuram, Hyderabad."
+};
+
+const geoMapList11 = {
+  world: "Fundamentals of Physical Geography (locating and labelling on an outline political map of the world): the continents; the Indian, Pacific, Atlantic, Arctic and Southern Oceans; major and minor lithospheric plates, the Ring of Fire, the Mid-Atlantic Ridge; hot deserts - Mojave, Patagonian, Sahara, Gobi, Thar, Great Victoria; seas - Black, Baltic, Caspian, Mediterranean, North, Red, and the Bay of Fundy; cold currents - Humboldt, California, Falkland, Canaries, West Australian, Oyashio, Labrador; warm currents - Alaska, Brazilian, Agulhas, Kuroshio, Gulf Stream.",
+  india: "India - Physical Environment (locating and labelling on an outline political map of India): the latitudinal and longitudinal extent, the Standard Meridian, the Tropic of Cancer, Kanniyakumari; the Karakoram, Garo-Khasi-Jaintia, Aravalli, Vindhya and Satpura ranges, the Western and Eastern Ghats; peaks - K2, Kanchenjunga, Nanda Devi, Nanga Parbat, Namcha Barwa, Anaimudi; passes - Shipki La, Nathu La, Palghat, Bhor Ghat, Thal Ghat; the Malwa, Chhotanagpur, Meghalaya and Deccan plateaus; the Saurashtra, Konkan, North and South Kanara, Malabar, Coromandel and Northern Circars coasts; the Andaman and Nicobar and Lakshadweep islands; rivers - Brahmaputra, Indus, Satluj, Ganga, Yamuna, Chambal, Damodar, Mahanadi, Krishna, Kaveri, Godavari, Narmada, Tapti, Luni; lakes (identification) - Wular, Sambhar, Chilika, Kolleru, Pulicat, Vembanad; the Palk Strait, Rann of Kachchh, Gulf of Kachchh, Gulf of Mannar, Gulf of Khambhat; the areas of highest and lowest temperature and rainfall; forest types (identification) - tropical evergreen, tropical deciduous, tropical thorn, montane, littoral/swamp; national parks - Corbett, Kaziranga, Ranthambore, Shivpuri, Simlipal; bird sanctuaries - Keoladeo Ghana, Ranganathittu; wildlife sanctuaries - Periyar, Rajaji, Mudumalai, Dachigam."
+};
+
+const geoDiagramRules = (worldNote) => `
+    *   **Maps:** where the paper has a map question, print the outline map it uses at the end of the paper, headed with the question's number ("Map for Q. 29" / "Map for Q. 30" in the full paper). ${worldNote}
+    *   **Maps, graphs and pictures in other questions:** draw a simple map, bar or line graph, or describe a picture in a caption inside a bordered box, with its source; add a words-only alternative for visually impaired candidates.`;
+
 export const seniorPapers = {
   "Class 12 || Physics": {
     code: "042",
@@ -2506,6 +2608,70 @@ export const seniorPapers = {
       { name: "Citizenship and Nationalism", marks: 8, chapters: ["Citizenship", "Nationalism"] },
       { name: "Secularism", marks: 6, chapters: ["Secularism"] }
     ]
+  },
+  "Class 12 || Geography": {
+    code: "029",
+    paperLabel: "Geography (029)",
+    ...geoFormats,
+    questions: geoQuestions({
+      mcq: "from both books in proportion to their unit marks",
+      map: "Q29: seven features marked A to G on an outline political map of the world, from the Fundamentals of Human Geography map list, to be identified from clues; Q30: seven features from the India - People and Economy map list to be located and labelled with appropriate symbols on an outline political map of India"
+    }),
+    misconceptions: "population density vs growth rate, Environmental Determinism vs Possibilism vs Neo-Determinism, intensive subsistence vs extensive commercial farming, BPO vs KPO, footloose vs raw-material-oriented industries, balance of trade vs balance of payments, INSAT vs IRS satellites, the National Waterways and their stretches",
+    scope: [
+      "Class XII Geography theory (70 marks) is Fundamentals of Human Geography (30 marks and a 5-mark world map question) and India - People and Economy (30 marks and a 5-mark India map question) (NCERT). The practical book is examined separately and is not part of this paper.",
+      "Map items come ONLY from CBSE's 2026-27 map lists for the selected chapters:\n        " + geoMapList12.world + "\n        " + geoMapList12.india,
+      "CBSE assesses these topics only formatively, so they are NOT set in this paper: population composition (sex composition, age structure, age-sex pyramid, rural-urban composition, literacy, occupational structure), the classification, types and patterns of rural and urban settlements and their problems, and migration (types, causes, consequences). Content marked excluded for 2026-27 in the NCERT textbooks is not assessed either."
+    ],
+    requirements: [
+      "**Book spread:** Fundamentals of Human Geography and India - People and Economy carry 30 marks each across Sections A to D, in proportion to their unit marks, plus one map question each. With only one book selected, all questions come from it and both map questions use its map list.",
+      "**Map questions (Section E):** Q29 marks seven features A to G on an outline political map of the world and gives a clue for each (\"A - An area of nomadic herding\"); the student identifies any five. Q30 lists seven features for the student to locate and label with appropriate symbols on an outline political map of India; any five. Each is followed by words-only questions \"for Visually Impaired Candidates only in lieu of\" it.",
+      "**Internal choice:** one question in Section C and four in Section D; Section E by answering any five of seven; none in Sections A and B."
+    ],
+    figureQuota: "Set **2 outline maps** (the world for Q29 and India for Q30), **1 map, picture or graph** for source-based Q18, and **1 or 2 map, table or graph-based MCQs**, each visual item with a words-only alternative for visually impaired candidates",
+    diagramRules: geoDiagramRules("On the world map mark ONLY the seven features A to G; the India map is left blank for the student to locate and label."),
+    units: [
+      { name: "Fundamentals of Human Geography: Unit I Human Geography", marks: 3, chapters: ["Human Geography: Nature and Scope"] },
+      { name: "Fundamentals of Human Geography: Unit II People (World Population, Human Development)", marks: 8, chapters: ["World Population", "Human Development"] },
+      { name: "Fundamentals of Human Geography: Unit III Human Activities (Chapters 4-8)", marks: 19, chapters: ["Primary Activities", "Secondary Activities", "Tertiary and Quaternary Activities", "Transport, Communication and Trade", "International Trade"] },
+      { name: "India - People and Economy: Unit I Population", marks: 5, chapters: ["Growth and Composition"] },
+      { name: "India - People and Economy: Unit II Human Settlements", marks: 3, chapters: ["Human Settlements"] },
+      { name: "India - People and Economy: Unit III Resources and Development (Chapters 3-6)", marks: 10, chapters: ["Land Resources and Agriculture", "Water Resources", "Mineral and Energy Resources", "Planning and Sustainable Development"] },
+      { name: "India - People and Economy: Unit IV Transport, Communication and International Trade", marks: 7, chapters: ["Transport and Communication (India)", "International Trade (India)"] },
+      { name: "India - People and Economy: Unit V Geographical Perspective on Selected Issues and Problems", marks: 5, chapters: ["Geographical Perspective"] }
+    ]
+  },
+  "Class 11 || Geography": {
+    code: "029",
+    paperLabel: "Geography (029), Class XI",
+    ...geoFormats,
+    questions: geoQuestions({
+      mcq: "from both books in proportion to their unit marks",
+      map: "Q29: seven features from the Fundamentals of Physical Geography map list on an outline political map of the world; Q30: seven features from the India - Physical Environment map list on an outline political map of India; the student locates and labels (or, where the list says so, identifies) any five"
+    }),
+    misconceptions: "endogenic vs exogenic processes, weathering vs erosion, the layers of the Earth's interior and of the atmosphere, conduction vs convection vs advection, relative vs absolute humidity, warm vs cold ocean currents, tides vs waves, the Himalayan vs peninsular rivers, the south-west vs north-east monsoon",
+    scope: [
+      "Class XI Geography theory (70 marks) is Fundamentals of Physical Geography (30 marks and a 5-mark world map question) and India - Physical Environment (30 marks and a 5-mark India map question) (NCERT), on the Class XII sample paper's layout. The practical book is examined separately and is not part of this paper.",
+      "Map items come ONLY from CBSE's 2026-27 map lists for the selected chapters:\n        " + geoMapList11.world + "\n        " + geoMapList11.india,
+      "CBSE tests World Climate and Climate Change, Biodiversity and Conservation, and Natural Hazards and Disasters only through internal assessment (projects and presentations), and Minerals and Rocks only formatively, so they are NOT set in this paper. Content marked excluded for 2026-27 in the NCERT textbooks is not assessed either."
+    ],
+    requirements: [
+      "**Book spread:** Fundamentals of Physical Geography and India - Physical Environment carry 30 marks each across Sections A to D, in proportion to their unit marks, plus one map question each. With only one book selected, all questions come from it and both map questions use its map list.",
+      "**Map questions (Section E):** each lists seven features lettered A to G from the map list, of which the student answers any five, on an outline political map of the world (Q29) and of India (Q30). Each is followed by words-only questions \"for Visually Impaired Candidates only in lieu of\" it.",
+      "**Internal choice:** one question in Section C and four in Section D; Section E by answering any five of seven; none in Sections A and B."
+    ],
+    figureQuota: "Set **2 outline maps** (the world for Q29 and India for Q30), **1 map, diagram or graph** for source-based Q18, and **1 or 2 map, diagram or graph-based MCQs**, each visual item with a words-only alternative for visually impaired candidates",
+    diagramRules: geoDiagramRules("Leave both maps blank for the student to locate and label, except any feature the list asks the student to identify, which is marked with its letter."),
+    units: [
+      { name: "Fundamentals of Physical Geography: Unit I Geography as a Discipline", marks: 3, chapters: ["Geography as a Discipline"] },
+      { name: "Fundamentals of Physical Geography: Unit II The Earth (Chapters 2-4)", marks: 9, chapters: ["Origin and Evolution of the Earth", "Interior of the Earth", "Distribution of Oceans and Continents"] },
+      { name: "Fundamentals of Physical Geography: Unit III Landforms (Chapters 5-6)", marks: 6, chapters: ["Geomorphic Processes", "Landforms and their Evolution"] },
+      { name: "Fundamentals of Physical Geography: Unit IV Climate (Chapters 7-10)", marks: 8, chapters: ["Composition and Structure of Atmosphere", "Solar Radiation", "Atmospheric Circulation", "Water in the Atmosphere"] },
+      { name: "Fundamentals of Physical Geography: Unit V Water (Oceans) (Chapters 12-13)", marks: 4, chapters: ["Water (Oceans)", "Movements of Ocean Water"] },
+      { name: "India - Physical Environment: Unit I Introduction (India - Location)", marks: 5, chapters: ["India - Location"] },
+      { name: "India - Physical Environment: Unit II Physiography (Chapters 2-3)", marks: 13, chapters: ["Structure and Physiography", "Drainage System"] },
+      { name: "India - Physical Environment: Unit III Climate and Vegetation (Chapters 4-5)", marks: 12, chapters: ["Climate", "Natural Vegetation"] }
+    ]
   }
 };
 
@@ -2813,6 +2979,32 @@ layout: 12 MCQs (1 mark), 6 short answers of 2 marks (50-60 words), 5 of 4 marks
 choice in two), 3 picture/cartoon and passage-based questions of 4 marks, and 4 long answers of 6 marks
 (170-180 words, internal choice in all), in Sections A to E. Indian Constitution at Work and Political
 Theory carry 40 marks each.`
+  },
+
+  "Class 12 || Geography": {
+    year: "2026-27",
+    fullMarks: 70,
+    text: `GEOGRAPHY (029), Class XII, Theory: Maximum Marks 70, Time Allowed 3 hours (practical 30 marks, examined separately).
+30 questions in five sections:
+  Section A: Q1-Q17, MCQs of 1 mark (17).
+  Section B: Q18-Q19, source-based questions of 3 marks (6) - one on a map, picture or graph, one on a passage.
+  Section C: Q20-Q23, short answers of 3 marks in 80-100 words (12).
+  Section D: Q24-Q28, long answers of 5 marks in 120-150 words (25).
+  Section E: Q29-Q30, map questions of 5 marks (10) - the world map (identify any five of seven) and India's
+  (locate and label any five of seven).
+No overall choice; internal choice in a few questions in all sections except Section A. Separate questions for
+visually impaired candidates in lieu of visual inputs and maps. Fundamentals of Human Geography and India -
+People and Economy carry 30 marks each plus a 5-mark map question each. No change in design for 2026-27.`
+  },
+
+  "Class 11 || Geography": {
+    year: "2026-27",
+    fullMarks: 70,
+    text: `GEOGRAPHY (029), Class XI, Theory: Maximum Marks 70, Time Allowed 3 hours (practical 30 marks, examined separately),
+on the Class XII sample paper's layout: 17 MCQs (1 mark), 2 source-based questions (3 marks), 4 short answers
+(3 marks, 80-100 words), 5 long answers (5 marks, 120-150 words) and 2 map questions (5 marks: the world and
+India), in Sections A to E. Fundamentals of Physical Geography and India - Physical Environment carry 30 marks
+each plus a 5-mark map question each.`
   },
 
   "Class 12 || Accountancy": {

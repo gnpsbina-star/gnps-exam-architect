@@ -4110,10 +4110,29 @@
         "Chapter 8: Secularism"
       ]
     },
-    "Geography": [
-      "Part A: Fundamentals of Physical Geography (Geography as Discipline, Origin of Earth, Interior of Earth, Oceans & Continents, Minerals & Rocks, Geomorphic Processes, Atmosphere, Climate, Water Oceans, Life on Earth)",
-      "Part B: India: Physical Environment (India-Location, Structure & Physiography, Drainage System, Climate, Natural Vegetation, Soils, Natural Hazards & Disasters)"
-    ],
+    "Geography": {
+      "Part A: Fundamentals of Physical Geography": [
+        "Chapter 1: Geography as a Discipline",
+        "Chapter 2: The Origin and Evolution of the Earth",
+        "Chapter 3: Interior of the Earth",
+        "Chapter 4: Distribution of Oceans and Continents",
+        "Chapter 5: Geomorphic Processes",
+        "Chapter 6: Landforms and their Evolution",
+        "Chapter 7: Composition and Structure of Atmosphere",
+        "Chapter 8: Solar Radiation, Heat Balance and Temperature",
+        "Chapter 9: Atmospheric Circulation and Weather Systems",
+        "Chapter 10: Water in the Atmosphere",
+        "Chapter 12: Water (Oceans)",
+        "Chapter 13: Movements of Ocean Water"
+      ],
+      "Part B: India - Physical Environment": [
+        "Chapter 1: India - Location",
+        "Chapter 2: Structure and Physiography",
+        "Chapter 3: Drainage System",
+        "Chapter 4: Climate",
+        "Chapter 5: Natural Vegetation"
+      ]
+    },
     "Psychology": [
       "Chapter 1: What is Psychology?",
       "Chapter 2: Methods of Enquiry in Psychology",
@@ -5110,10 +5129,29 @@
         "Chapter 8: Recent Developments in Indian Politics"
       ]
     },
-    "Geography": [
-      "Part A: Fundamentals of Human Geography (Human Geography: Nature & Scope, The World Population, Human Development, Primary Activities, Secondary Activities, Tertiary & Quaternary Activities, Transport Communication & Trade, International Trade)",
-      "Part B: India: People and Economy (Population: Distribution Density Growth, Human Settlements, Land Resources & Agriculture, Water Resources, Mineral & Energy Resources, Planning & Sustainable Development, Transport & Communication, International Trade, Geographical Perspective on Selected Issues)"
-    ],
+    "Geography": {
+      "Part A: Fundamentals of Human Geography": [
+        "Chapter 1: Human Geography: Nature and Scope",
+        "Chapter 2: The World Population: Distribution, Density and Growth",
+        "Chapter 3: Human Development",
+        "Chapter 4: Primary Activities",
+        "Chapter 5: Secondary Activities",
+        "Chapter 6: Tertiary and Quaternary Activities",
+        "Chapter 7: Transport, Communication and Trade",
+        "Chapter 8: International Trade"
+      ],
+      "Part B: India - People and Economy": [
+        "Chapter 1: Population: Distribution, Density, Growth and Composition",
+        "Chapter 2: Human Settlements",
+        "Chapter 3: Land Resources and Agriculture",
+        "Chapter 4: Water Resources",
+        "Chapter 5: Mineral and Energy Resources",
+        "Chapter 6: Planning and Sustainable Development in Indian Context",
+        "Chapter 7: Transport and Communication (India)",
+        "Chapter 8: International Trade (India)",
+        "Chapter 9: Geographical Perspective on Selected Issues and Problems"
+      ]
+    },
     "Psychology": [
       "Chapter 1: Variations in Psychological Attributes",
       "Chapter 2: Self and Personality",
