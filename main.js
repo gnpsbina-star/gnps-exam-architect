@@ -91,7 +91,6 @@ const marksInput = document.getElementById('marks');
 const durationInput = document.getElementById('duration');
 
 // Custom Subject & Syllabus DOM Elements
-const openAddSubjectModalBtn = document.getElementById('openAddSubjectModalBtn');
 const closeAddSubjectModalBtn = document.getElementById('closeAddSubjectModalBtn');
 const cancelAddSubjectBtn = document.getElementById('cancelAddSubjectBtn');
 const saveAddSubjectBtn = document.getElementById('saveAddSubjectBtn');
@@ -102,7 +101,6 @@ const modalTitle = document.getElementById('modalTitle');
 const modalSubtitle = document.getElementById('modalSubtitle');
 const subjectSearchFilter = document.getElementById('subjectSearchFilter');
 const cbseSubjectDropdown = document.getElementById('cbseSubjectDropdown');
-const deleteCustomSubjectBtn = document.getElementById('deleteCustomSubjectBtn');
 const blueprintContainer = document.getElementById('blueprintContainer');
 const blueprintBadge = document.getElementById('blueprintBadge');
 const difficultySelect = document.getElementById('difficulty');
@@ -2359,7 +2357,6 @@ classSelect.addEventListener('change', (e) => {
   updateExamDetails();
   
   syllabusContainer.innerHTML = '<span class="placeholder-text">Select a subject first</span>';
-  deleteCustomSubjectBtn.classList.add('hidden');
   
   populateSubjectsDropdown(selectedClass);
   updateExamBlueprint();
@@ -3282,13 +3279,6 @@ subjectSelect.addEventListener('change', (e) => {
   const selectedClass = classSelect.value;
   const selectedSubject = e.target.value;
   
-  const isCustom = customSubjectsData && customSubjectsData[selectedClass] && (selectedSubject in customSubjectsData[selectedClass]);
-  if (isCustom) {
-    deleteCustomSubjectBtn.classList.remove('hidden');
-  } else {
-    deleteCustomSubjectBtn.classList.add('hidden');
-  }
-  
   const syllabusData = cbseData[selectedClass] ? cbseData[selectedClass][selectedSubject] : null;
   renderSyllabusChecklist(syllabusData);
 
@@ -3304,40 +3294,6 @@ subjectSelect.addEventListener('change', (e) => {
   updateExamBlueprint();
   if (typeof syncSyllabusSheetFromPromptModule === 'function') {
     syncSyllabusSheetFromPromptModule();
-  }
-});
-
-// Delete Custom Subject Handler
-deleteCustomSubjectBtn.addEventListener('click', async () => {
-  const selectedClass = classSelect.value;
-  const selectedSubject = subjectSelect.value;
-  
-  if (!confirm(`Are you sure you want to delete the custom subject "${selectedSubject}" for ${selectedClass}?`)) {
-    return;
-  }
-  
-  try {
-    const res = await fetch('/api/custom-subjects', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken },
-      body: JSON.stringify({ action: 'delete', class: selectedClass, subject: selectedSubject })
-    });
-    
-    if (res.ok) {
-      if (customSubjectsData[selectedClass]) {
-        delete customSubjectsData[selectedClass][selectedSubject];
-      }
-      if (cbseData[selectedClass]) {
-        delete cbseData[selectedClass][selectedSubject];
-      }
-      localStorage.setItem('gnps_custom_subjects', JSON.stringify(customSubjectsData));
-      
-      deleteCustomSubjectBtn.classList.add('hidden');
-      populateSubjectsDropdown(selectedClass);
-      syllabusContainer.innerHTML = '<span class="placeholder-text">Subject deleted. Please select another subject.</span>';
-    }
-  } catch (err) {
-    alert("Error deleting custom subject: " + err.message);
   }
 });
 
@@ -3451,43 +3407,6 @@ function renderFilteredCbseOptions(filterText = '') {
 
 subjectSearchFilter.addEventListener('input', (e) => {
   renderFilteredCbseOptions(e.target.value);
-});
-
-openAddSubjectModalBtn.addEventListener('click', async () => {
-  let selectedClass = classSelect.value;
-  if (!selectedClass) {
-    classSelect.focus();
-    alert("Please select a Class first from the Class dropdown!");
-    return;
-  }
-  
-  modalTitle.textContent = `Add Subject for ${selectedClass}`;
-  modalSubtitle.textContent = `Select an official CBSE subject to add`;
-  addSubjectModal.classList.remove('hidden');
-  modalLoadingSpinner.classList.remove('hidden');
-  modalBodyForm.classList.add('hidden');
-  subjectSearchFilter.value = '';
-  
-  try {
-    const res = await fetch(`/api/cbse-subjects?class=${encodeURIComponent(selectedClass)}`, {
-      headers: { 'Authorization': `Bearer ${authToken}`, 'X-Auth-Token': authToken }
-    });
-    if (!res.ok) throw new Error("Failed to fetch CBSE subjects");
-    
-    fetchedCbseSubjectsList = await res.json();
-    
-    modalLoadingSpinner.classList.add('hidden');
-    modalBodyForm.classList.remove('hidden');
-    modalSubtitle.textContent = `Select from ${fetchedCbseSubjectsList.length} CBSE official subjects & electives:`;
-    
-    renderFilteredCbseOptions('');
-    subjectSearchFilter.focus();
-    
-  } catch (err) {
-    alert("Error querying CBSE directory: " + err.message);
-    modalLoadingSpinner.classList.add('hidden');
-    modalBodyForm.classList.remove('hidden');
-  }
 });
 
 function closeModal() {

@@ -80,21 +80,11 @@
                   </div>
 
                   <div class="form-group">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                      <label for="subjectSelect" style="margin-bottom: 0;">Subject</label>
-                      <button type="button" id="openAddSubjectModalBtn" class="btn-subtle" title="Add Subject directly from CBSE Official Website">
-                        <span>+ Add Subject</span>
-                      </button>
-                    </div>
-                    <div style="display: flex; gap: 0.5rem; align-items: center;">
-                      <select id="subjectSelect" required disabled style="flex: 1;">
-                        <option value="" disabled selected>Select Subject</option>
-                        <!-- Populated by JS -->
-                      </select>
-                      <button type="button" id="deleteCustomSubjectBtn" class="btn-icon-danger hidden" title="Delete this custom subject">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                      </button>
-                    </div>
+                    <label for="subjectSelect">Subject</label>
+                    <select id="subjectSelect" required disabled>
+                      <option value="" disabled selected>Select Subject</option>
+                      <!-- Populated by JS -->
+                    </select>
                   </div>
                 </div>
                 
