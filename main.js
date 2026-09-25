@@ -9807,7 +9807,10 @@ function initGoogleSignIn() {
       theme: 'outline',
       size: 'large',
       text: 'signin_with',
-      shape: 'pill'
+      shape: 'pill',
+      logo_alignment: 'center',
+      // Fill the login card; Google accepts widths from 200 to 400 px.
+      width: Math.min(400, Math.max(200, btnContainer.clientWidth || 320))
     });
 
     // Google's script sometimes fails silently (no exception) when the

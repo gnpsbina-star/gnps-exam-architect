@@ -3805,72 +3805,144 @@ div.portion-print-summary {
   position: fixed;
   inset: 0;
   z-index: 99999;
-  background: radial-gradient(circle at 50% 30%, var(--c-surface-sunken) 0%, var(--c-surface-black) 70%, #000000 100%);
+  /* The sign-in gate keeps the school's own indigo in both themes, so the
+     ivory card and its colours below never depend on the page theme. */
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(245, 130, 31, 0.16), transparent 55%),
+    repeating-radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 22px),
+    radial-gradient(circle at 50% 40%, #2b2d8c 0%, #1c1d66 55%, #111247 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  padding: 4.5rem 1.25rem 1.5rem;
+  overflow-y: auto;
+}
+
+.login-stack {
+  width: 100%;
+  max-width: 430px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.35rem;
 }
 
 .login-card {
+  position: relative;
   width: 100%;
-  max-width: 440px;
-  background: rgba(var(--rgb-surface), 0.90);
-  border: 1px solid rgba(var(--rgb-veil), 0.12);
-  border-radius: 1.25rem;
-  box-shadow: 0 25px 50px -12px rgba(var(--rgb-shadow), 0.6), 0 0 40px rgba(var(--rgb-accent), 0.1);
-  padding: 2.25rem 2rem;
-  color: var(--c-text-strong);
+  background: #fffdf7;
+  border-radius: 18px;
+  box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.6), inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+  padding: 4.5rem 2.25rem 1.75rem;
+  color: #2a2b52;
+  text-align: center;
+}
+
+/* Inner keyline, like the border of a certificate. */
+.login-card::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(46, 48, 146, 0.12);
+  border-radius: 12px;
+  pointer-events: none;
 }
 
 .login-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  margin-bottom: 1.25rem;
 }
 
 .login-crest {
-  font-size: 2.2rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 60px;
-  height: 60px;
-  border-radius: 1rem;
-  background: linear-gradient(135deg, #2563eb, #4f46e5);
-  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.35);
-  margin-bottom: 0.75rem;
+  position: absolute;
+  top: -56px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 112px;
+  height: 112px;
+  background: #ffffff;
+  border-radius: 50%;
+  padding: 5px;
+  box-shadow: 0 0 0 3px #f5821f, 0 16px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 .login-school-title {
-  font-size: 1.15rem;
-  font-weight: 900;
-  letter-spacing: 0.8px;
-  color: #ffffff;
-  margin: 0 0 0.25rem 0;
-  text-transform: uppercase;
+  font-family: 'Cinzel', 'Trajan Pro', Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  color: #2e3092;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.login-rule {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.login-rule::before,
+.login-rule::after {
+  content: "";
+  width: 56px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #f5821f);
+}
+
+.login-rule::after {
+  transform: scaleX(-1);
+}
+
+.login-rule i {
+  display: block;
+  width: 7px;
+  height: 7px;
+  background: #f5821f;
+  transform: rotate(45deg);
 }
 
 .login-sub-title {
   font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--c-accent-bright);
-  letter-spacing: 1px;
-  margin: 0 0 0.65rem 0;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #55588f;
+  margin: 0;
 }
 
 .login-badge-pill {
-  display: inline-block;
-  background: rgba(var(--rgb-surface-alt), 0.8);
-  border: 1px solid rgba(var(--rgb-veil), 0.08);
-  color: var(--c-text-muted);
   font-size: 0.68rem;
   font-weight: 700;
-  padding: 3px 10px;
-  border-radius: 9999px;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  color: #9a4a06;
+  background: #fff1e3;
+  border: 1px solid #f8c79a;
+  padding: 4px 12px;
+  border-radius: 9999px;
+}
+
+.login-affiliation {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.66);
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 4.25rem 1.25rem 1.5rem;
+  }
+  .login-school-title {
+    font-size: 1.2rem;
+  }
 }
 
 .login-alert-box {
@@ -3883,21 +3955,21 @@ div.portion-print-summary {
 }
 
 .login-alert-box.alert-error {
-  background: rgba(225, 29, 72, 0.15);
-  border: 1px solid rgba(225, 29, 72, 0.4);
-  color: var(--c-error-text);
+  background: #fdecee;
+  border: 1px solid #f3b6bf;
+  color: #9f1239;
 }
 
 .login-alert-box.alert-success {
-  background: rgba(16, 185, 129, 0.15);
-  border: 1px solid rgba(16, 185, 129, 0.4);
-  color: var(--c-success-text);
+  background: #e8f7ef;
+  border: 1px solid #a7dfc0;
+  color: #166534;
 }
 
 .login-alert-box.alert-withdrawn {
-  background: rgba(239, 68, 68, 0.2);
-  border: 1.5px solid var(--c-error-hard);
-  color: var(--c-error-soft);
+  background: #fde8e8;
+  border: 1.5px solid #ef4444;
+  color: #991b1b;
   font-weight: 700;
 }
 
@@ -4038,28 +4110,45 @@ div.portion-print-summary {
 }
 
 .login-google-wrap {
-  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.85rem;
+  gap: 0.9rem;
 }
 
 .login-google-hint {
-  font-size: 0.78rem;
-  color: var(--c-text-muted);
-  text-align: center;
+  font-size: 0.82rem;
+  color: #5b5d78;
   margin: 0;
 }
 
+.login-google-hint strong {
+  color: #2e3092;
+}
+
+.login-google-button {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  min-height: 44px;
+}
+
 .login-footer-notice {
-  margin-top: 1.25rem;
-  padding-top: 0.85rem;
-  border-top: 1px solid rgba(var(--rgb-veil), 0.08);
-  text-align: center;
-  font-size: 0.68rem;
-  color: var(--c-text-faint);
+  margin-top: 1.35rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ecebe4;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  text-align: left;
+  font-size: 0.72rem;
+  color: #7a7c93;
   line-height: 1.5;
+}
+
+.login-footer-notice svg {
+  flex-shrink: 0;
+  margin-top: 1px;
 }
 
 /* ==========================================================================
