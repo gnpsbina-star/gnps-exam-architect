@@ -871,6 +871,149 @@ export function getSecondarySkill(className, subjectName) {
   return { ...subject, units: subject[className], employabilityUnits, questions: skillPaperQuestions, pattern: skillPaperPattern };
 }
 
+// Class 11 and 12 Physics (042), from the CBSE 2026-27 curriculum document
+// (Physics_SecP2_2026-27) and the Class XII 2026-27 sample paper, which says
+// the question paper design is unchanged for 2026-27. The full paper is 70
+// marks (30 more are practical) and `questions` is its layout, read from the
+// sample paper: 33 questions in Sections A to E. Class 11 is a school
+// examination with no CBSE sample paper, so it is set on the Class 12 layout
+// (school policy) with its own unit weightage.
+//
+// Unit Tests and Periodic Assessments keep their own short shape; only the
+// question formats (Assertion-Reason options, case studies, no word limits on
+// numericals) and the scope limits apply to them as well.
+//
+// `units` are CBSE's mark bands. CBSE gives marks to groups of units (Units I
+// and II together carry 16), so each band lists its chapters; `chapters` are
+// words matched against the chapter titles in data.js, longest match wins.
+const physicsPaperQuestions = [
+  { section: "Section A", q: "Q1-Q12", type: "Multiple Choice Questions", count: 12, each: 1, marks: 12,
+    detail: "Four options (A)-(D); at least one MCQ built on a figure (a circuit or a field diagram), with a words-only alternative for visually impaired students" },
+  { section: "Section A", q: "Q13-Q16", type: "Assertion-Reason", count: 4, each: 1, marks: 4,
+    detail: "The four options printed once above Q13; a question may open with a one-line context before the Assertion" },
+  { section: "Section B", q: "Q17-Q21", type: "Very Short Answer", count: 5, each: 2, marks: 10,
+    detail: "Internal choice in 2 questions (Q20 and Q21 in the sample paper); a short numerical, a reason, or two parts I and II" },
+  { section: "Section C", q: "Q22-Q28", type: "Short Answer", count: 7, each: 3, marks: 21,
+    detail: "Internal choice in 1 question (Q27 in the sample paper); numericals, derivations the curriculum allows, and explain-type questions in parts I, II, III" },
+  { section: "Section D", q: "Q29-Q30", type: "Case study based", count: 2, each: 4, marks: 8,
+    detail: "Each a passage of about 120-180 words followed by 4 sub-parts I-IV of 1 mark each (MCQs and one-line answers); no internal choice" },
+  { section: "Section E", q: "Q31-Q33", type: "Long Answer", count: 3, each: 5, marks: 15,
+    detail: "Internal choice in all 3 (A OR B); each split into sub-parts such as 2+2+1 or 3+2; one asks for a neat labelled diagram" }
+];
+
+const physicsPaperPattern = `There are 33 questions in all. All questions are compulsory.
+This question paper has five sections: Section A, Section B, Section C, Section D and Section E.
+All the sections are compulsory.
+  Section A contains sixteen questions, twelve MCQ (Q1-Q12) and four Assertion-Reasoning based (Q13-Q16), of 1 mark each.
+  Section B contains five questions of two marks each (Q17-Q21).
+  Section C contains seven questions of three marks each (Q22-Q28).
+  Section D contains two case study based questions of four marks each (Q29-Q30), each with four 1-mark sub-parts.
+  Section E contains three long answer questions of five marks each (Q31-Q33).
+There is no overall choice. However, an internal choice has been provided in two questions in Section B,
+one question in Section C, and all three questions in Section E. You have to attempt only one of the
+choices in such questions.
+Use of calculators is not allowed.
+The general instructions list the physical constants, to be used wherever necessary:
+  c = 3 x 10^8 m/s; me = 9.1 x 10^-31 kg; mp = 1.7 x 10^-27 kg; e = 1.6 x 10^-19 C; mu0 = 4 pi x 10^-7 T m A^-1;
+  h = 6.63 x 10^-34 J s; epsilon0 = 8.854 x 10^-12 C^2 N^-1 m^-2; Avogadro's number = 6.023 x 10^23 per gram mole;
+  radius of nucleus ~ 10^-15 m.
+A figure-based question carries a words-only alternative "For Visually Impaired Students only".`;
+
+const physicsGeneralInstructions = [
+  "There are 33 questions in all. All questions are compulsory.",
+  "This question paper has five sections: Section A, Section B, Section C, Section D and Section E. All the sections are compulsory.",
+  "Section A contains sixteen questions, twelve MCQ and four Assertion-Reasoning based of 1 mark each, Section B contains five questions of two marks each, Section C contains seven questions of three marks each, Section D contains two case study-based questions of four marks each and Section E contains three long answer questions of five marks each.",
+  "There is no overall choice. However, an internal choice has been provided in two questions in Section B, one question in Section C, and all three questions in Section E. You have to attempt only one of the choices in such questions.",
+  "Use of calculators is not allowed.",
+  "You may use the following values of physical constants wherever necessary: c = 3 × 10⁸ m/s; mₑ = 9.1 × 10⁻³¹ kg; mₚ = 1.7 × 10⁻²⁷ kg; e = 1.6 × 10⁻¹⁹ C; μ₀ = 4π × 10⁻⁷ T m A⁻¹; h = 6.63 × 10⁻³⁴ J s; ε₀ = 8.854 × 10⁻¹² C² N⁻¹ m⁻²; Avogadro's number = 6.023 × 10²³ per gram mole; radius of nucleus ≈ 10⁻¹⁵ m."
+];
+
+// CBSE 2026-27 question paper design for Physics theory, Class XI and XII.
+const physicsDesign = {
+  understanding: 27, applying: 22, analysing: 21, percent: [38, 32, 30],
+  labels: ["Remembering and Understanding (recall facts, terms and basic concepts; organise, compare, interpret, describe and state main ideas)",
+           "Applying (solve problems in new situations using acquired knowledge, facts, techniques and rules)",
+           "Analysing, Evaluating and Creating (break information into parts, make inferences, judge validity, combine elements in a new pattern)"]
+};
+
+// The Assertion-Reason options exactly as the 2026-27 Physics sample paper
+// prints them. Option D is "both false", not "A false, R true".
+const physicsArOptions = [
+  "A. Both Assertion and Reason are true and Reason is the correct explanation of Assertion.",
+  "B. Both Assertion and Reason are true but Reason is not the correct explanation of Assertion.",
+  "C. Assertion is true but Reason is false.",
+  "D. Both Assertion and Reason are false."
+];
+
+const class12PhysicsScope = [
+  "Energy stored in a capacitor: formulae only, NO derivation.",
+  "Straight solenoid: qualitative treatment only. Ampere's circuital law is applied to an infinitely long straight wire; no proof of the law.",
+  "Bar magnet as an equivalent solenoid, the field of a bar magnet along and perpendicular to its axis, and the torque on a bar magnet in a uniform field: qualitative treatment only. No time period of a magnet oscillating in a field.",
+  "Moving coil galvanometer: current sensitivity and conversion to ammeter and voltmeter.",
+  "Alternating current: LCR series circuit with phasors only; resonance, power, power factor and wattless current. No LC oscillations.",
+  "Electromagnetic waves: displacement current as a basic idea; transverse nature is qualitative; the spectrum with elementary facts about uses.",
+  "Young's double slit experiment: use the fringe width expression, do NOT ask for its derivation. Single-slit diffraction: width of the central maximum is qualitative only. No polarisation.",
+  "Atoms: Bohr model with the expressions for the radius, velocity and energy of the nth orbit; hydrogen line spectra qualitative only (no Rydberg-formula numericals on spectral series).",
+  "Nuclei: no radioactivity, no decay laws or half-life.",
+  "Semiconductors: energy bands qualitative only; p-n junction, diode I-V characteristics and the diode as a rectifier. No Zener diode, special-purpose diodes, transistors or logic gates.",
+  "The meter bridge and potentiometer are practical-examination experiments: do not set them as theory questions.",
+  "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
+];
+
+const class11PhysicsScope = [
+  "Units and Measurements: units, systems of units, SI units, significant figures, uncertainty in a result, dimensions and dimensional analysis.",
+  "Kinematics: frame of reference, position-time and velocity-time graphs, equations of uniformly accelerated motion (graphical and calculus treatment); vectors, projectile motion and uniform circular motion.",
+  "Work, Energy and Power includes motion in a vertical circle and elastic and inelastic collisions in one and two dimensions.",
+  "Rotational motion: centre of mass of a two-particle system and of a uniform rod; moments of inertia of simple objects are used, NOT derived.",
+  "Mechanical Properties of Solids: shear modulus and applications of elastic behaviour are qualitative only.",
+  "Mechanical Properties of Fluids: Bernoulli's theorem applied to Torricelli's law and dynamic lift; surface tension, excess pressure across a curved surface, drops, bubbles and capillary rise. No Reynolds number.",
+  "Thermal Properties of Matter: blackbody radiation, Wien's law and Stefan's law are qualitative only.",
+  "Kinetic Theory: the law of equipartition of energy is stated, not derived; mean free path is a concept only (no derivation).",
+  "Oscillations: simple pendulum time period derived. No damped or forced oscillations.",
+  "Content marked excluded for 2026-27 in the NCERT textbook is not assessed."
+];
+
+export const seniorPapers = {
+  "Class 12 || Physics": {
+    code: "042",
+    paperLabel: "Physics (042)",
+    fullMarks: 70,
+    design: physicsDesign,
+    questions: physicsPaperQuestions,
+    generalInstructions: physicsGeneralInstructions,
+    arOptions: physicsArOptions,
+    scope: class12PhysicsScope,
+    units: [
+      { name: "Electrostatics + Current Electricity (Units I-II)", marks: 16, chapters: ["Electric Charges and Fields", "Electrostatic Potential", "Current Electricity"] },
+      { name: "Magnetic Effects of Current and Magnetism + Electromagnetic Induction and Alternating Currents (Units III-IV)", marks: 17, chapters: ["Moving Charges", "Magnetism and Matter", "Electromagnetic Induction", "Alternating Current"] },
+      { name: "Electromagnetic Waves + Optics (Units V-VI)", marks: 18, chapters: ["Electromagnetic Waves", "Ray Optics", "Wave Optics"] },
+      { name: "Dual Nature of Radiation and Matter + Atoms and Nuclei (Units VII-VIII)", marks: 12, chapters: ["Dual Nature", "Atoms", "Nuclei"] },
+      { name: "Electronic Devices (Unit IX)", marks: 7, chapters: ["Semiconductor"] }
+    ]
+  },
+  "Class 11 || Physics": {
+    code: "042",
+    paperLabel: "Physics (042), Class XI",
+    fullMarks: 70,
+    design: physicsDesign,
+    questions: physicsPaperQuestions,
+    generalInstructions: physicsGeneralInstructions,
+    arOptions: physicsArOptions,
+    scope: class11PhysicsScope,
+    units: [
+      { name: "Physical World and Measurement + Kinematics + Laws of Motion (Units I-III)", marks: 23, chapters: ["Units and Measurements", "Motion in a Straight Line", "Motion in a Plane", "Laws of Motion"] },
+      { name: "Work, Energy and Power + Motion of System of Particles and Rigid Body + Gravitation (Units IV-VI)", marks: 17, chapters: ["Work, Energy and Power", "System of Particles", "Gravitation"] },
+      { name: "Properties of Bulk Matter + Thermodynamics + Kinetic Theory (Units VII-IX)", marks: 20, chapters: ["Mechanical Properties of Solids", "Mechanical Properties of Fluids", "Thermal Properties", "Thermodynamics", "Kinetic Theory"] },
+      { name: "Oscillations and Waves (Unit X)", marks: 10, chapters: ["Oscillations", "Waves"] }
+    ]
+  }
+};
+
+export function getSeniorPaper(className, subjectName) {
+  if (!className || !subjectName) return null;
+  return seniorPapers[`${className} || ${subjectName}`] || null;
+}
+
 const acc = accountancyPaper;
 const accIC = acc.internalChoice;
 const accLadder = acc.markLadder.join(', ').replace(/, (\d+)$/, ' and $1');
@@ -955,6 +1098,24 @@ CBSE states there is no change in the Question Paper Design and Assessment Patte
 This paper is set on the Class 10 Mathematics 2026-27 sample paper layout, against the
 Class 9 curriculum, so students meet the board format a year early.
 ${mathsPaperLayout}`
+  },
+
+  "Class 12 || Physics": {
+    year: "2026-27",
+    fullMarks: 70,
+    text: `SUBJECT: PHYSICS (042), Class XII, Maximum Marks 70, Time Allowed 3 hours.
+${physicsPaperPattern}
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 11 || Physics": {
+    year: "2026-27",
+    fullMarks: 70,
+    text: `Class 11 is a school examination, so CBSE publishes no sample paper for it.
+This paper is set on the Class XII Physics 2026-27 sample paper layout, against the Class XI
+curriculum and its unit weightage, so students meet the board format a year early.
+SUBJECT: PHYSICS (042), Class XI, Maximum Marks 70, Time Allowed 3 hours.
+${physicsPaperPattern}`
   },
 
   "Class 12 || Accountancy": {

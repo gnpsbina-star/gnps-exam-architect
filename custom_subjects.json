@@ -3189,26 +3189,26 @@
     "Physics": {
       "Chapter 1: Units and Measurements": [
         "1.1 The International System of Units (SI Base & Supplementary Units)",
-        "1.2 Measurement of Length, Mass and Time",
+        "1.2 Need for Measurement: Systems of Units, Fundamental and Derived Units",
         "1.3 Accuracy, Precision of Instruments and Errors in Measurement (Systematic, Random, Absolute, Relative & Percentage Errors)",
         "1.4 Significant Figures and Rules for Arithmetic Operations with Significant Figures",
         "1.5 Dimensions of Physical Quantities & Dimensional Formulae",
         "1.6 Dimensional Analysis and its Applications: Checking Correctness, Conversion of Units and Deducing Relations"
       ],
       "Chapter 2: Motion in a Straight Line": [
-        "2.1 Position, Path Length and Displacement in One Dimension",
+        "2.1 Frame of Reference, Position, Path Length and Displacement in One Dimension",
         "2.2 Average Velocity and Average Speed",
         "2.3 Instantaneous Velocity and Speed (Calculus Definitions v = dx/dt)",
         "2.4 Acceleration: Instantaneous Acceleration (a = dv/dt = v dv/dx) and Retardation",
-        "2.5 Kinematic Equations for Uniformly Accelerated Motion by Calculus Method (v=u+at, s=ut+1/2at^2, v^2-u^2=2as, s_nth)",
-        "2.6 Motion Under Gravity (Free Fall, Maximum Height, Time of Flight) & Relative Velocity in 1D"
+        "2.5 Kinematic Equations for Uniformly Accelerated Motion by Graphical and Calculus Treatment (v=u+at, s=ut+1/2at^2, v^2-u^2=2as); Position-Time and Velocity-Time Graphs",
+        "2.6 Motion Under Gravity (Free Fall, Maximum Height, Time of Flight)"
       ],
       "Chapter 3: Motion in a Plane": [
         "3.1 Scalars and Vectors, Position and Displacement Vectors, Equality of Vectors",
         "3.2 Multiplication of Vectors by Real Numbers, Addition and Subtraction of Vectors (Triangle & Parallelogram Laws)",
         "3.3 Resolution of Vectors into Rectangular Components (Unit Vectors i, j, k)",
         "3.4 Scalar (Dot) Product and Vector (Cross) Product of Two Vectors with Properties",
-        "3.5 Motion in a Plane with Constant Acceleration and Relative Velocity in Two Dimensions (River-Boat, Rain-Man Problems)",
+        "3.5 Motion in a Plane: Cases of Uniform Velocity and Uniform Acceleration",
         "3.6 Projectile Motion: Equation of Path of a Projectile, Time of Maximum Height, Time of Flight, Maximum Height and Horizontal Range",
         "3.7 Uniform Circular Motion: Angular Displacement, Angular Velocity, Centripetal Acceleration (a = v^2/r = omega^2 * r)"
       ],
@@ -3218,27 +3218,28 @@
         "4.3 Newton's Third Law of Motion and Conservation of Linear Momentum",
         "4.4 Equilibrium of Concurrent Forces and Lami's Theorem",
         "4.5 Common Forces in Mechanics: Tension, Normal Reaction, Spring Force",
-        "4.6 Friction: Static Friction, Limiting Friction (f_s <= mu_s * N), Kinetic Friction (f_k = mu_k * N), Laws of Friction and Rolling Friction",
+        "4.6 Friction: Static Friction, Limiting Friction (f_s <= mu_s * N), Kinetic Friction (f_k = mu_k * N), Laws of Friction, Rolling Friction and Lubrication",
         "4.7 Circular Motion Dynamics: Motion of a Car on a Level Circular Road and Banked Road (Optimum & Safe Speed Limits)"
       ],
       "Chapter 5: Work, Energy and Power": [
         "5.1 Scalar Product of Vectors and Work Done by a Constant Force (W = F . d)",
         "5.2 Kinetic Energy and Work-Energy Theorem for a Constant and Variable Force",
         "5.3 Work Done by a Variable Force and Graphical Determination (Integral F dx)",
-        "5.4 Potential Energy: Conservative and Non-Conservative Forces (Properties and Curl)",
+        "5.4 Notion of Potential Energy: Conservative and Non-Conservative Forces",
         "5.5 Gravitational Potential Energy and Conservation of Mechanical Energy (Free Fall Proof)",
         "5.6 Potential Energy of a Spring: Elastic Potential Energy (U = 1/2 k x^2) and Conservation of Energy",
         "5.7 Power: Average and Instantaneous Power (P = F . v) and Efficiency",
-        "5.8 Collisions in One and Two Dimensions: Elastic and Inelastic Collisions, Coefficient of Restitution (e)"
+        "5.8 Elastic and Inelastic Collisions in One and Two Dimensions",
+        "5.9 Motion in a Vertical Circle"
       ],
       "Chapter 6: System of Particles and Rotational Motion": [
-        "6.1 Center of Mass of a Two-Particle System and Rigid Body (Discrete and Continuous Mass Distributions)",
+        "6.1 Centre of Mass of a Two-Particle System, of a Rigid Body and of a Uniform Rod",
         "6.2 Motion of Center of Mass, Linear Momentum of a System of Particles and Center of Mass Velocity/Acceleration",
         "6.3 Vector Product of Two Vectors and Angular Velocity and its Relation with Linear Velocity (v = omega x r)",
         "6.4 Torque / Moment of a Force (tau = r x F) and Angular Momentum (L = r x p)",
         "6.5 Conservation of Angular Momentum (tau_ext = dL/dt = 0 => L = const) and Applications",
         "6.6 Equilibrium of a Rigid Body: Conditions for Translational and Rotational Equilibrium (Principle of Moments)",
-        "6.7 Moment of Inertia (I = sum m_i r_i^2), Radius of Gyration and Values for Standard Geometrical Bodies",
+        "6.7 Moment of Inertia (I = sum m_i r_i^2), Radius of Gyration and Values for Simple Geometrical Objects (No Derivation)",
         "6.8 Kinematics and Dynamics of Rotational Motion about a Fixed Axis (tau = I * alpha, W = tau * theta, K_rot = 1/2 I omega^2)"
       ],
       "Chapter 7: Gravitation": [
@@ -3247,24 +3248,23 @@
         "7.3 Acceleration due to Gravity of the Earth (g = GM/R^2) and its Variation with Altitude (Height h) and Depth (d)",
         "7.4 Gravitational Potential Energy (U = -GMm/r) and Gravitational Potential (V = -GM/r)",
         "7.5 Escape Speed / Escape Velocity from Earth Surface (v_e = sqrt[2gR] = 11.2 km/s)",
-        "7.6 Earth Satellites: Orbital Speed (v_o = sqrt[gR]), Time Period of Satellite and Energy of an Orbiting Satellite",
-        "7.7 Geostationary and Polar Satellites and Weightlessness"
+        "7.6 Earth Satellites: Orbital Speed (v_o = sqrt[gR]), Time Period of Satellite and Energy of an Orbiting Satellite"
       ],
       "Chapter 8: Mechanical Properties of Solids": [
         "8.1 Elastic Behavior of Solids, Deforming Force, Restoring Force and Intermolecular Nature",
         "8.2 Stress and Strain: Tensile, Compressive, Shearing (Tangential) and Volumetric Stress and Strain",
         "8.3 Hooke's Law and Stress-Strain Curve for a Metallic Wire (Proportional Limit, Yield Point, Ultimate Tensile Strength, Breaking Point)",
-        "8.4 Moduli of Elasticity: Young's Modulus (Y), Shear Modulus / Modulus of Rigidity (G / eta) and Bulk Modulus (B)",
-        "8.5 Poisson's Ratio (sigma = lateral strain / longitudinal strain) and Elastic Potential Energy Stored in a Stretched Wire (U = 1/2 * stress * strain * volume)"
+        "8.4 Moduli of Elasticity: Young's Modulus (Y), Bulk Modulus (B) and Shear Modulus of Rigidity (Qualitative Idea Only)",
+        "8.5 Poisson's Ratio, Elastic Energy Stored in a Stretched Wire (U = 1/2 * stress * strain * volume) and Applications of Elastic Behaviour (Qualitative Idea Only)"
       ],
       "Chapter 9: Mechanical Properties of Fluids": [
         "9.1 Pressure in a Fluid: Pascal's Law and its Applications (Hydraulic Lift and Hydraulic Brakes)",
         "9.2 Variation of Pressure with Depth (P = P_0 + rho*g*h), Atmospheric Pressure, Gauge Pressure and Barometer",
         "9.3 Streamline Flow, Turbulent Flow, Critical Velocity and Equation of Continuity (A1*v1 = A2*v2)",
-        "9.4 Bernoulli's Principle and Theorem (P + 1/2 rho v^2 + rho g h = const) and Applications (Venturimeter, Torricelli's Law of Efflux, Dynamic Lift of Aerofoil)",
-        "9.5 Viscosity, Coefficient of Viscosity (eta), Poiseuille's Formula and Stokes' Law (F = 6 pi eta r v)",
-        "9.6 Terminal Velocity Derivation for a Falling Sphere in a Viscous Medium and Reynolds Number",
-        "9.7 Surface Tension, Surface Energy, Angle of Contact, Capillarity and Ascent Formula for Capillary Rise (h = 2T cos theta / rho g r)"
+        "9.4 Bernoulli's Theorem (P + 1/2 rho v^2 + rho g h = const) and its Simple Applications (Torricelli's Law and Dynamic Lift)",
+        "9.5 Viscosity, Coefficient of Viscosity (eta) and Stokes' Law (F = 6 pi eta r v)",
+        "9.6 Terminal Velocity of a Sphere Falling in a Viscous Medium",
+        "9.7 Surface Tension, Surface Energy, Angle of Contact, Excess Pressure across a Curved Surface, Drops, Bubbles and Capillary Rise (h = 2T cos theta / rho g r)"
       ],
       "Chapter 10: Thermal Properties of Matter": [
         "10.1 Temperature and Heat, Measurement of Temperature and Temperature Scales Conversion",
@@ -3273,7 +3273,7 @@
         "10.4 Heat Capacity, Specific Heat Capacity (s = Q / m Delta T), Molar Specific Heat Capacities (Cp and Cv) and Calorimetry",
         "10.5 Change of State: Melting, Fusion, Vaporisation, Sublimation and Latent Heat (Latent Heat of Fusion and Vaporisation)",
         "10.6 Modes of Heat Transfer: Conduction (Thermal Conductivity k), Convection and Radiation (Thermal Radiation)",
-        "10.7 Black Body Radiation, Wien's Displacement Law (lambda_max * T = b), Stefan-Boltzmann Law (E = sigma T^4) and Newton's Law of Cooling"
+        "10.7 Qualitative Ideas of Black Body Radiation, Wien's Displacement Law (lambda_max * T = b) and Stefan's Law (E = sigma T^4)"
       ],
       "Chapter 11: Thermodynamics": [
         "11.1 Thermal Equilibrium and Zeroth Law of Thermodynamics (Definition of Temperature)",
@@ -3285,13 +3285,13 @@
         "11.7 Second Law of Thermodynamics: Kelvin-Planck and Clausius Statements, Reversible and Irreversible Processes"
       ],
       "Chapter 12: Kinetic Theory": [
-        "12.1 Molecular Nature of Matter and Ideal Gas Equation of State (PV = nRT = N k_B T)",
+        "12.1 Equation of State of a Perfect Gas (PV = nRT = N k_B T) and Work Done in Compressing a Gas",
         "12.2 Kinetic Theory of Gases: Fundamental Assumptions and Molecular Model",
         "12.3 Pressure of an Ideal Gas: Derivation of P = 1/3 rho v_rms^2 and Kinetic Interpretation of Temperature (E_k = 3/2 k_B T)",
-        "12.4 Root Mean Square (rms) Speed, Most Probable Speed and Average Speed of Gas Molecules",
-        "12.5 Law of Equipartition of Energy (1/2 k_B T per degree of freedom) and Degrees of Freedom for Monoatomic, Diatomic and Polyatomic Gases",
+        "12.4 Root Mean Square (rms) Speed of Gas Molecules",
+        "12.5 Degrees of Freedom and Law of Equipartition of Energy (Statement Only) for Monoatomic, Diatomic and Polyatomic Gases",
         "12.6 Specific Heat Capacities of Gases (Cp, Cv, gamma) Calculated from Degrees of Freedom",
-        "12.7 Mean Free Path of Gas Molecules: Derivation of l = 1 / (sqrt[2] n pi d^2)"
+        "12.7 Concept of Mean Free Path and Avogadro's Number"
       ],
       "Chapter 13: Oscillations": [
         "13.1 Periodic and Oscillatory Motions, Period and Frequency",
@@ -4106,7 +4106,7 @@
         "2.7 Capacitors and Capacitance (C = Q/V) and Parallel Plate Capacitor (C_0 = eps_0 A / d)",
         "2.8 Effect of Dielectric Slab and Conducting Slab on Capacitance",
         "2.9 Combination of Capacitors in Series (1/C = 1/C1 + 1/C2) and Parallel (C = C1 + C2)",
-        "2.10 Energy Stored in a Capacitor (U = 1/2 CV^2 = 1/2 Q^2/C = 1/2 QV) and Energy Density (u = 1/2 eps_0 E^2)"
+        "2.10 Energy Stored in a Capacitor (U = 1/2 CV^2 = 1/2 Q^2/C = 1/2 QV): Formulae Only, No Derivation"
       ],
       "Chapter 3: Current Electricity": [
         "3.1 Electric Current, Current Density (j = I/A) and Drift Velocity of Electrons (v_d = -e E tau / m)",
@@ -4116,7 +4116,7 @@
         "3.5 Electromotive Force (EMF), Internal Resistance (r), Terminal Potential Difference (V = E - Ir) and Maximum Power Transfer",
         "3.6 Cells in Series, Parallel and Mixed Grouping",
         "3.7 Kirchhoff's Laws: Junction Rule (Conservation of Charge) and Loop Rule (Conservation of Energy)",
-        "3.8 Wheatstone Bridge: Balanced Condition Derivation (P/Q = R/S) and Meter Bridge Applications"
+        "3.8 Wheatstone Bridge and its Balanced Condition (P/Q = R/S)"
       ],
       "Chapter 4: Moving Charges and Magnetism": [
         "4.1 Magnetic Force on Moving Charge (Lorentz Force F = q(E + v x B)) and Work Done by Magnetic Field",
@@ -4124,16 +4124,16 @@
         "4.3 Magnetic Force on a Current-Carrying Conductor (F = I L x B)",
         "4.4 Biot-Savart Law and Vector Formulation",
         "4.5 Applications of Biot-Savart Law: Magnetic Field on the Axis and Centre of a Circular Current Loop",
-        "4.6 Ampere's Circuital Law and Proof",
-        "4.7 Applications of Ampere's Circuital Law: Magnetic Field due to Infinitely Long Straight Wire and Long Solenoid",
+        "4.6 Ampere's Circuital Law (Statement, No Proof)",
+        "4.7 Applications of Ampere's Circuital Law: Magnetic Field due to an Infinitely Long Straight Wire; Straight Solenoid (Qualitative Treatment Only)",
         "4.8 Force between Two Parallel Current-Carrying Conductors and Definition of 1 Ampere",
         "4.9 Torque on a Current Loop in a Uniform Magnetic Field: Magnetic Dipole Moment (M = NIA, tau = M x B)",
         "4.10 Moving Coil Galvanometer: Principle, Working, Current Sensitivity, Voltage Sensitivity and Conversion into Ammeter and Voltmeter"
       ],
       "Chapter 5: Magnetism and Matter": [
         "5.1 Current Loop as a Magnetic Dipole and Magnetic Dipole Moment of a Revolving Electron (Bohr Magneton)",
-        "5.2 Bar Magnet as an Equivalent Solenoid and Magnetic Field Lines Properties",
-        "5.3 Bar Magnet in a Uniform Magnetic Field: Torque, Potential Energy and Time Period of Oscillation (T = 2 pi sqrt[I / MB])",
+        "5.2 Bar Magnet as an Equivalent Solenoid, its Field along and Perpendicular to its Axis (Qualitative Treatment Only) and Magnetic Field Lines",
+        "5.3 Torque on a Bar Magnet in a Uniform Magnetic Field (Qualitative Treatment Only)",
         "5.4 Gauss's Law in Magnetism (Closed Integral B . dA = 0 and Non-Existence of Magnetic Monopoles)",
         "5.5 Magnetisation (M), Magnetic Intensity (H), Magnetic Susceptibility (chi) and Permeability (mu = mu_0(1 + chi))",
         "5.6 Magnetic Properties of Materials: Diamagnetic, Paramagnetic and Ferromagnetic Substances (Curie's Law and Domain Theory)"
@@ -4154,12 +4154,11 @@
         "7.3 AC Voltage Applied to a Series LCR Circuit: Phasor Diagram, Impedance (Z = sqrt[R^2 + (X_L - X_C)^2]) and Phase Angle (tan phi)",
         "7.4 Resonance in Series LCR Circuit: Resonant Frequency (omega_0 = 1 / sqrt[LC]), Sharpness of Resonance and Quality Factor (Q)",
         "7.5 Power in AC Circuits: Real Power, Apparent Power, Power Factor (cos phi = R/Z) and Wattless Current",
-        "7.6 LC Oscillations: Qualitative and Analytical Treatment (Conservation of Energy)",
-        "7.7 Transformers: Principle, Construction, Working, Step-Up and Step-Down, Transformation Ratio and Energy Losses"
+        "7.6 Transformers: Principle, Construction, Working, Step-Up and Step-Down, Transformation Ratio and Energy Losses"
       ],
       "Chapter 8: Electromagnetic Waves": [
         "8.1 Displacement Current: Inconsistency in Ampere's Law and Maxwell-Ampere Circuital Law (I_d = eps_0 d Phi_E / dt)",
-        "8.2 Electromagnetic Waves: Production, Characteristics, Transverse Nature and Speed in Vacuum (c = 1 / sqrt[mu_0 eps_0] = E_0 / B_0)",
+        "8.2 Electromagnetic Waves: Characteristics, Transverse Nature (Qualitative Idea Only) and Speed in Vacuum (c = 1 / sqrt[mu_0 eps_0] = E_0 / B_0)",
         "8.3 Electromagnetic Spectrum: Radio Waves, Micro Waves, Infra-Red, Visible Light, Ultra-Violet, X-Rays, Gamma Rays (Wavelength Ranges, Production and Uses)"
       ],
       "Chapter 9: Ray Optics and Optical Instruments": [
@@ -4180,8 +4179,8 @@
         "10.3 Proof of Laws of Reflection and Refraction using Huygens' Principle",
         "10.4 Coherent Sources of Light and Conditions for Sustained Interference",
         "10.5 Interference of Light and Young's Double Slit Experiment (YDSE): Path Difference, Constructive & Destructive Interference Conditions",
-        "10.6 Derivation of Fringe Width in YDSE (beta = lambda D / d) and Intensity Distribution Graph",
-        "10.7 Diffraction of Light due to a Single Slit: Central Maximum, Secondary Maxima and Minima Conditions and Width of Central Maximum (2 lambda D / d)"
+        "10.6 Fringe Width in YDSE (beta = lambda D / d): Final Expression Only, No Derivation",
+        "10.7 Diffraction of Light due to a Single Slit and Width of the Central Maximum (Qualitative Treatment Only)"
       ],
       "Chapter 11: Dual Nature of Radiation and Matter": [
         "11.1 Electron Emission: Thermionic, Field and Photoelectric Emission",
@@ -4199,7 +4198,7 @@
         "12.4 Bohr's Model of the Hydrogen Atom: Postulates (Quantisation of Angular Momentum L = nh / 2 pi)",
         "12.5 Radii of Permitted Orbits (r_n = eps_0 n^2 h^2 / pi m e^2 = n^2 r_1) and Speed of Electron",
         "12.6 Energy Levels of Hydrogen Atom: Kinetic, Potential and Total Energy (E_n = -13.6 / n^2 eV)",
-        "12.7 Hydrogen Line Spectrum: Rydberg Formula and Spectral Series (Lyman, Balmer, Paschen, Brackett, Pfund Series)",
+        "12.7 Hydrogen Line Spectra (Qualitative Treatment Only)",
         "12.8 de Broglie's Explanation of Bohr's Second Postulate of Quantisation"
       ],
       "Chapter 13: Nuclei": [
@@ -4212,7 +4211,7 @@
         "13.7 Nuclear Fission: Uranium Fission Chain Reaction and Nuclear Fusion: Stellar Energy (p-p cycle)"
       ],
       "Chapter 14: Semiconductor Electronics: Materials, Devices and Simple Circuits": [
-        "14.1 Energy Bands in Solids: Valence Band, Conduction Band and Energy Band Gap (E_g) Classification (Metals, Semiconductors, Insulators)",
+        "14.1 Energy Bands in Conductors, Semiconductors and Insulators: Valence Band, Conduction Band and Band Gap (Qualitative Ideas Only)",
         "14.2 Intrinsic Semiconductors (Pure Si, Ge): Thermal Generation of Electron-Hole Pairs, Electrical Conduction (n_e = n_h = n_i)",
         "14.3 Extrinsic Semiconductors: Doping, n-Type (Pentavalent Impurities, n_e >> n_h) and p-Type Semiconductors (Trivalent Impurities, n_h >> n_e)",
         "14.4 p-n Junction Formation: Diffusion and Drift Currents, Depletion Region and Barrier Potential",
