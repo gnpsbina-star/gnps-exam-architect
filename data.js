@@ -997,76 +997,39 @@ export const cbseData = {
       "Section B: Writing Skills": {
         "Short Writing (Up to 50 words)": [
           "Notice Writing (School events, competitions, appeals, lost & found)",
-          "Message Writing (Telephonic message relay & informational memo)",
-          "Email Writing (Informal to friend / Semi-formal to teacher)"
+          "Diary Entry (Personal emotional reflection on challenging situations)"
         ],
         "Long Writing (100-120 words)": [
           "Formal Letter Writing: Letter to Principal (Leave, absence, facilities)",
           "Formal Letter Writing: Letter to Editor & Authorities (Civic issues, complaints)",
           "Informal Letter Writing (Invitations, advice, sharing experiences)",
           "Story Writing (From given outline / verbal cues or opening line)",
-          "Descriptive / Analytical Paragraph (Person, place, or visual chart data)",
-          "Diary Entry (Personal emotional reflection on challenging situations)",
           "Article Writing (Social, environmental, and educational themes)",
-          "Speech Writing (Morning assembly addresses & awareness speeches)"
+          "Analytical Paragraph (Chart, graph, or table data)"
         ]
       },
-      "Section B: Applied Grammar": {
-        "Tenses Mastery & Conditionals": [
-          "Comprehensive review of all 12 Tense Forms in context",
-          "Zero Conditional: Universal & scientific truths (If water reaches 100°C...)",
-          "First Conditional: Probable future (If it rains, we will cancel...)",
-          "Second Conditional: Hypothetical/Unreal present (If I won a lottery...)",
-          "Third Conditional: Past impossible condition (If they had trained harder...)"
-        ],
-        "Reported Speech (Advanced Narration)": [
-          "Reporting Statements with varied verbs (explained, admitted, claimed, warned)",
-          "Reporting Interrogative Sentences (Wh- and Yes/No with inverted word order)",
-          "Reporting Imperatives: Orders, Requests, Warnings & Advice (urged to, commanded to)",
-          "Reporting Exclamatory Sentences & Wishes (exclaimed with joy/sorrow, prayed)",
-          "Multi-turn Dialogue Reporting in Paragraph Format (CBSE Board format)"
-        ],
-        "Active and Passive Voice (Advanced)": [
-          "Passive Voice across all tenses including Perfect forms (has been + V3)",
-          "Passive Voice with Modal Auxiliaries (modal + be + V3, modal + have been + V3)",
-          "Passivisation of Sentences with Two Objects (Direct vs Indirect object)",
-          "Prepositional Passive Verbs (The matter was looked into by the committee)",
-          "Passive Voice of Imperatives & Agent Omission (when agent is obvious/unknown)"
-        ],
-        "Subject-Verb Concord (Advanced)": [
-          "Subjects connected by 'as well as, along with, together with, in addition to'",
-          "Indefinite Pronouns Concord (each, everyone, nobody, neither take singular)",
-          "Concord in Inverted Sentences (Here come the winners)",
-          "Collective quantities & Book/Film Titles (Fifty thousand rupees is...)"
-        ],
-        "Modal Auxiliaries & Semi-Modals": [
-          "Nuance of 'must' vs 'have to' (internal desire vs external obligation)",
-          "Semi-Modals: 'used to' (discontinued habit), 'need to / need not', 'dare'",
-          "Past Modal Deductions/Regrets (should have / could have / must have + V3)"
-        ],
-        "Non-Finite Verbs & Participle Clauses": [
-          "Bare Infinitives (after make, let, bid, watch) & Infinitives of Purpose",
-          "Gerund vs Present Participle functional distinction in syntax",
-          "Combining sentences using Participle Clauses (Having finished his work...)"
-        ],
-        "Clauses & Sentence Synthesis": [
-          "Noun Clauses (acting as subject, object, or complement)",
-          "Adjective (Relative) Clauses: Defining vs Non-defining relative clauses",
-          "Adverb Clauses: Condition, Contrast (although, though), Cause, and Purpose",
-          "Combining pairs of sentences into Simple, Compound, and Complex sentences"
-        ],
-        "Determiners, Prepositions & Collocations": [
-          "Exact distinctions: few/a few/the few, little/a little/the little, less vs fewer",
-          "Prepositional Collocations (prone to, capable of, abstain from, accustomed to)",
-          "High-frequency Phrasal Verbs (carry out, bring about, run out of, break down)"
-        ],
-        "Integrated Grammar (CBSE Pattern)": [
-          "Editing: Finding grammatical errors per line with Incorrect & Correct words",
-          "Omission: Supplying missing words with Word Before, Missing Word, Word After",
-          "Cloze Gap-Filling testing integrated tenses, prepositions, and determiners",
-          "Sentence Reordering into Coherent Paragraphs"
-        ]
-      },
+      "Section B: Applied Grammar": [
+        "1. Word Formation",
+        "2. Infinitives",
+        "3. Infinitives with ‘Too’ and ‘Enough’",
+        "4. Gerunds",
+        "5. Participles",
+        "6. Causative Verbs: Have, Get, Make and Let",
+        "7. Phrasal Verbs",
+        "8. Mood",
+        "9. Intensifiers and Mitigators",
+        "10. Modals 1",
+        "11. Modals 2",
+        "12. Quantifiers",
+        "13. Question Tags",
+        "14. Parallel Structures",
+        "15. Conditionals",
+        "16. Transformation of Sentences 1",
+        "17. Transformation of Sentences 2",
+        "18. Active and Passive Voice",
+        "19. Direct and Indirect Speech",
+        "20. Punctuation"
+      ],
       "Section C: Literature - Poorvi (Unit 1: Wit and Wisdom)": [
         "Chapter 1: The Wit that Won Hearts",
         "Chapter 2: A Concrete Example",

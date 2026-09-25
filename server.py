@@ -375,6 +375,7 @@ CURRICULUM_UPDATES = [
     ("2026-27-english", [("Class 9", "English (R1)")]),
     ("2026-27-class6-english-grammar", [("Class 6", "English (R1)")]),
     ("2026-27-class7-english-grammar", [("Class 7", "English (R1)")]),
+    ("2026-27-class8-english-grammar", [("Class 8", "English (R1)")]),
     ("2026-27-hindi", [("Class 9", "Hindi (R2 - Ganga)"), ("Class 10", "Hindi (R2 - Ganga)")]),
     ("2026-27-skill-subjects", [(cls, subj) for cls in ("Class 9", "Class 10")
                                 for subj in ("Introduction to Financial Markets (405)", "Health Care (413)",
