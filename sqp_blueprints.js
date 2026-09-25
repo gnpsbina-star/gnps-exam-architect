@@ -1862,6 +1862,99 @@ const historyFormats = {
     *   **Pictures:** where an MCQ uses a picture from the NCERT textbook, describe it in a caption inside a bordered box (no photographs), with its source.`
 };
 
+// Class 11 and 12 Political Science (028), from the CBSE 2026-27 curriculum
+// document (PoliticalScience_SecP2_2026-27) and the Class XII 2026-27 sample
+// paper (design unchanged): 30 questions in Sections A-E - 12 MCQs, 6 short
+// answers of 2 marks (50-60 words), 5 of 4 marks (100-120 words), 3 picture,
+// passage and map questions of 4 marks (four 1-mark parts) and 4 long answers
+// of 6 marks (170-180 words). Each book carries 40 marks. CBSE's competency
+// split has four parts, given as `design.lines`.
+const polSciQuestions = (spread) => [
+  { section: "Section A", q: "Q1-Q12", type: "Multiple choice questions", count: 12, each: 1, marks: 12, detail: `${spread.mcq}; varied forms: statement-based (Statement-I / Statement-II), Assertion-Reason, match the columns, chronological order, fill in the blank, find the incorrect pair or statement; no internal choice` },
+  { section: "Section B", q: "Q13-Q18", type: "Short answer I (50-60 words)", count: 6, each: 2, marks: 12, detail: `${spread.sa2}; state, highlight or explain any two points; no internal choice` },
+  { section: "Section C", q: "Q19-Q23", type: "Short answer II (100-120 words)", count: 5, each: 4, marks: 20, detail: `${spread.sa4}; explain, analyse or justify with four points; internal choice in 2 questions (Q21 and Q22 in the sample paper)` },
+  { section: "Section D", q: "Q24-Q26", type: spread.dType, count: 3, each: 4, marks: 12, detail: `${spread.d}; each has four parts of 1 mark; no internal choice` },
+  { section: "Section E", q: "Q27-Q30", type: "Long answer (170-180 words)", count: 4, each: 6, marks: 24, detail: `${spread.la}; internal choice in all 4` }
+];
+
+const polSciDesign = {
+  lines: [
+    "**Knowledge and Remembering** (recall facts, terms and basic concepts): **22 marks (27.5%)**.",
+    "**Understanding** (organise, compare, explain, describe and state main ideas): **24 marks (30%)**.",
+    "**Applying** (apply knowledge and facts to interpret a situation, cartoon, clipping, source or map): **22 marks (27.5%)**.",
+    "**Analysis and Evaluation** (classify, compare and contrast, integrate information from several sources, identify motives or causes, make inferences with evidence): **12 marks (15%)**."
+  ],
+  note: "CBSE sets half of the paper as competency-based questions (situations, cartoons, passages, maps and 'analyse' or 'justify' questions)."
+};
+
+const polSciGeneralInstructions = [
+  "The question paper consists of five sections (A, B, C, D and E) with 30 questions in total.",
+  "All questions are compulsory.",
+  "Question numbers 1-12 are multiple choice questions of one mark each.",
+  "Question numbers 13-18 are of 2 marks each. Answers to these questions should not exceed 50-60 words each.",
+  "Question numbers 19-23 are of 4 marks each. Answers to these questions should not exceed 100-120 words each. There is an internal choice in two of the 4-mark questions.",
+  "Question numbers 24-26 are picture, passage and map based questions. Answer accordingly.",
+  "Question numbers 27-30 are of 6 marks each. Answers to these questions should not exceed 170-180 words.",
+  "There are internal choices in all the 6 marks questions."
+];
+
+// Short tests keep the paper's own 1 / 2 / 4 / 6 mark types.
+const polSciShortTests = {
+  unit: [
+    { name: "Section A", type: "MCQs (statement-based, Assertion-Reason, match the columns, chronological order)", count: 4, unitMark: 1, marksPerQ: "1 Mark", total: 4, choice: "Compulsory" },
+    { name: "Section B", type: "Short answer I (50-60 words)", count: 1, unitMark: 2, marksPerQ: "2 Marks", total: 2, choice: "Compulsory" },
+    { name: "Section C", type: "Short answer II (100-120 words)", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "Internal choice" },
+    { name: "Section D", type: "Picture/cartoon or passage-based question (four parts of 1 mark)", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "Compulsory" },
+    { name: "Section E", type: "Long answer (170-180 words)", count: 1, unitMark: 6, marksPerQ: "6 Marks", total: 6, choice: "Internal choice" }
+  ],
+  periodic: [
+    { name: "Section A", type: "MCQs (statement-based, Assertion-Reason, match the columns, chronological order)", count: 6, unitMark: 1, marksPerQ: "1 Mark", total: 6, choice: "Compulsory" },
+    { name: "Section B", type: "Short answer I (50-60 words)", count: 3, unitMark: 2, marksPerQ: "2 Marks", total: 6, choice: "Compulsory" },
+    { name: "Section C", type: "Short answer II (100-120 words)", count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "Internal choice in 1 Q" },
+    { name: "Section D", type: "Picture/cartoon, passage or map-based questions (four parts of 1 mark)", count: 2, unitMark: 4, marksPerQ: "4 Marks", total: 8, choice: "Compulsory" },
+    { name: "Section E", type: "Long answer (170-180 words)", count: 2, unitMark: 6, marksPerQ: "6 Marks", total: 12, choice: "Internal choice in both" }
+  ]
+};
+
+const polSciFormats = {
+  fullMarks: 80,
+  markLadder: [1, 2, 4, 6],
+  letteredSections: true,
+  shortTests: polSciShortTests,
+  design: polSciDesign,
+  generalInstructions: polSciGeneralInstructions,
+  arOptions: ["(A) Both the Assertion (A) and the Reason (R) are correct and the Reason (R) is the correct explanation of the Assertion (A).", "(B) Both the Assertion (A) and the Reason (R) are correct, but the Reason (R) is not the correct explanation of the Assertion (A).", "(C) The Assertion (A) is incorrect, but the Reason (R) is correct.", "(D) The Assertion (A) is correct, but the Reason (R) is incorrect."],
+  arPlacement: "under each Assertion-Reason question (note the order: (C) is 'Assertion incorrect, Reason correct' and (D) is 'Assertion correct, Reason incorrect')",
+  arAnswered: "answered from the four options printed below it",
+  foundational: "dates, events, leaders, organisations, terms and constitutional provisions from the textbooks",
+  constructed: [
+    "Short Answer I (2 Marks, 50-60 words): state, highlight or explain any two points.",
+    "Short Answer II (4 Marks, 100-120 words): explain, analyse or justify a statement with four points.",
+    "Long Answer (6 Marks, 170-180 words): explain, analyse or evaluate with examples, with internal choice (A) OR (B)."
+  ],
+  sourcing: "Source questions from the NCERT textbooks (their text, cartoons, pictures and maps), CBSE's sample and practice papers and past board papers.",
+  typology: {
+    vsa: "Answer in **50-60 words** with **two points** (\"State any two ...\", \"Highlight any two ...\", \"Explain any two ...\"); one mark per point.",
+    laHeading: "4-Mark Short Answer II and 6-Mark Long Answer Questions",
+    la: [
+      "Short answer II (4 marks, 100-120 words): \"Analyse any four reasons ...\", \"Justify the statement with any four suitable arguments\", \"Explain any four ...\"; four points of 1 mark each. Internal choice (A) OR (B) in two of them.",
+      "Long answer (6 marks, 170-180 words): explain, analyse or evaluate a statement or development with examples (\"Support your answer with one example ...\"); every one has an internal choice (A) OR (B) from the same book."
+    ],
+    cbqHeading: "Picture, Passage and Map-Based Questions",
+    cbq: [
+      "Each carries four parts of 1 mark (numbered I to IV), mostly MCQs with options (A) to (D) that test interpretation of the stimulus, not only recall.",
+      "Picture or cartoon: \"Study the picture given below and answer the questions based on it\", with the source line of the NCERT page (for example \"Source - Page no. 46, Contemporary World Politics, NCERT\").",
+      "Passage: a titled passage of about 150-200 words from the NCERT textbook with its source line.",
+      "A picture or map question is followed by words-only questions \"for the Candidates with Visual Impairment only, in lieu of\" it."
+    ]
+  },
+  rigor: "Formulate questions whose answers are distinct value points: accurate names, dates, events, organisations and constitutional terms from the NCERT text, and an example for every argument.",
+  instructionsNote: "",
+  mandatesTitle: null,
+  mandates: [],
+  numberingNote: "Number the questions Q1 to Q30 continuously across Sections A to E, in the order of the rows above (a row \"Q1-Q12\" is twelve separate questions). The parts of a picture, passage or map question are numbered I, II, III and IV. An internal choice sits under one number as A OR B."
+};
+
 export const seniorPapers = {
   "Class 12 || Physics": {
     code: "042",
@@ -2327,6 +2420,92 @@ export const seniorPapers = {
       { name: "Theme 6: Displacing Indigenous Peoples", marks: 10, chapters: ["Theme 6:"] },
       { name: "Theme 7: Paths to Modernisation", marks: 15, chapters: ["Theme 7:"] }
     ]
+  },
+  "Class 12 || Political Science": {
+    code: "028",
+    paperLabel: "Political Science (028)",
+    ...polSciFormats,
+    questions: polSciQuestions({
+      mcq: "6 from each book",
+      sa2: "3 from each book",
+      sa4: "3 from Contemporary World Politics and 2 from Politics in India Since Independence",
+      dType: "Picture, passage and map-based questions",
+      d: "1 from Contemporary World Politics and 2 from Politics in India Since Independence; in the sample paper Q24 is a cartoon, Q25 a passage and Q26 a map of India with four States marked (A) to (D) to be identified from clues. The map always comes from Politics in India Since Independence; the cartoon and passage may come from either book",
+      la: "2 from each book"
+    }),
+    misconceptions: "the SAARC and ASEAN members and dates, UN bodies vs other international organisations (WTO, IMF, World Bank), traditional vs non-traditional security, the Planning Commission vs NITI Aayog, the Congress split of 1969 (Congress (O) vs Congress (R)), the order of general elections and coalition governments after 1989",
+    scope: [
+      "Class XII Political Science is Contemporary World Politics (Part A, 40 marks) and Politics in India Since Independence (Part B, 40 marks) (NCERT). Each book gives 6 MCQs, 3 short answers of 2 marks and 2 long answers; Contemporary World Politics gives 3 short answers of 4 marks and 1 Section D question, Politics in India 2 short answers of 4 marks and 2 Section D questions (the map among them).",
+      "The map question uses an outline political map of India and asks for States, princely states or places from the selected Politics in India chapters (the reorganisation of States, the integration of princely states, election results, regional movements).",
+      "The additional reference material in CBSE's annexure is for classroom teaching and is not assessed. Content marked excluded for 2026-27 in the NCERT textbooks is not assessed."
+    ],
+    requirements: [
+      "**Book spread:** Contemporary World Politics - 6 MCQs, 3 questions of 2 marks, 3 of 4 marks, 1 in Section D, 2 long answers (40 marks); Politics in India Since Independence - 6 MCQs, 3 of 2 marks, 2 of 4 marks, 2 in Section D, 2 long answers (40 marks). With only one book selected, all questions come from it.",
+      "**Section D:** Q24 a cartoon or picture with the NCERT source line, Q25 a passage with its source line, Q26 an outline political map of India with four places marked (A) to (D), each identified from a clue (i) to (iv), answered in a table (serial number of the clue, alphabet, name). Print words-only alternatives \"for the Candidates with Visual Impairment only, in lieu of\" Q24 and Q26.",
+      "**Internal choice:** 2 of the 4-mark questions in Section C and all 4 long answers in Section E; none in Sections A, B and D."
+    ],
+    figureQuota: "Set **1 cartoon or picture** (Q24, described in a caption box) and **1 outline political map of India** (Q26, four places marked (A) to (D)), each with a words-only alternative for visually impaired candidates",
+    diagramRules: `
+    *   **Map:** where the paper has a map question, print an outline political map of India with the four places marked (A) to (D) and NOT named, headed "Map for Q. 26" in the full paper, followed by the answer table (Serial number of the information used / Concerned alphabet given in the map / Name of the State).
+    *   **Cartoons and pictures:** describe the NCERT cartoon or picture in a caption inside a bordered box (no photographs), with its source line.`,
+    units: [
+      { name: "The End of Bipolarity", marks: 6, chapters: ["End of Bipolarity"] },
+      { name: "Contemporary Centres of Power", marks: 6, chapters: ["Contemporary Centres of Power"] },
+      { name: "Contemporary South Asia", marks: 6, chapters: ["Contemporary South Asia"] },
+      { name: "International Organisations", marks: 6, chapters: ["International Organisations"] },
+      { name: "Security in the Contemporary World", marks: 6, chapters: ["Security in the Contemporary World"] },
+      { name: "Environment and Natural Resources", marks: 6, chapters: ["Environment and Natural Resources"] },
+      { name: "Globalisation", marks: 4, chapters: ["Globalisation"] },
+      { name: "Challenges of Nation-Building", marks: 6, chapters: ["Nation-Building"] },
+      { name: "Era of One-Party Dominance", marks: 4, chapters: ["One-Party Dominance"] },
+      { name: "Politics of Planned Development", marks: 2, chapters: ["Planned Development"] },
+      { name: "India's External Relations", marks: 6, chapters: ["External Relations"] },
+      { name: "Challenges to and Restoration of the Congress System", marks: 4, chapters: ["Restoration of the Congress System"] },
+      { name: "The Crisis of Democratic Order", marks: 4, chapters: ["Crisis of Democratic Order"] },
+      { name: "Regional Aspirations", marks: 6, chapters: ["Regional Aspirations"] },
+      { name: "Recent Developments in Indian Politics", marks: 8, chapters: ["Recent Developments in Indian Politics"] }
+    ]
+  },
+  "Class 11 || Political Science": {
+    code: "028",
+    paperLabel: "Political Science (028), Class XI",
+    ...polSciFormats,
+    questions: polSciQuestions({
+      mcq: "6 from each book",
+      sa2: "3 from each book",
+      sa4: "3 from Indian Constitution at Work and 2 from Political Theory",
+      dType: "Picture/cartoon and passage-based questions",
+      d: "1 from Indian Constitution at Work and 2 from Political Theory: a cartoon or picture from the NCERT textbook and passages with their source lines",
+      la: "2 from each book"
+    }),
+    misconceptions: "fundamental rights vs directive principles, the powers of the President vs the Prime Minister, Lok Sabha vs Rajya Sabha, original vs appellate jurisdiction, the 73rd vs 74th amendments, negative vs positive liberty, formal equality vs equality of opportunity, the Indian vs Western model of secularism",
+    scope: [
+      "Class XI Political Science is Indian Constitution at Work (Part A, 40 marks) and Political Theory (Part B, 40 marks) (NCERT). The paper follows the Class XII sample paper's layout: each book gives 6 MCQs, 3 short answers of 2 marks and 2 long answers; Indian Constitution at Work gives 3 short answers of 4 marks and 1 Section D question, Political Theory 2 and 2.",
+      "Section D uses cartoons, pictures and passages from the NCERT textbooks; CBSE sets map questions only from the Class XII book Politics in India Since Independence.",
+      "The additional reference material in CBSE's annexure is for classroom teaching and is not assessed. Content marked excluded for 2026-27 in the NCERT textbooks is not assessed."
+    ],
+    requirements: [
+      "**Book spread:** Indian Constitution at Work - 6 MCQs, 3 questions of 2 marks, 3 of 4 marks, 1 in Section D, 2 long answers (40 marks); Political Theory - 6 MCQs, 3 of 2 marks, 2 of 4 marks, 2 in Section D, 2 long answers (40 marks). With only one book selected, all questions come from it.",
+      "**Section D:** a cartoon or picture with the NCERT source line and passages with their source lines, each with four parts of 1 mark; a picture question is followed by words-only questions \"for the Candidates with Visual Impairment only, in lieu of\" it.",
+      "**Internal choice:** 2 of the 4-mark questions in Section C and all 4 long answers in Section E; none in Sections A, B and D."
+    ],
+    figureQuota: "Set **1 cartoon or picture** from the NCERT textbook (described in a caption box) in Section D, with a words-only alternative for visually impaired candidates",
+    diagramRules: `
+    *   **Cartoons and pictures:** describe the NCERT cartoon or picture in a caption inside a bordered box (no photographs), with its source line.`,
+    units: [
+      { name: "Constitution: Why and How? and Rights in the Indian Constitution", marks: 8, chapters: ["Constitution: Why and How", "Rights in the Indian Constitution"] },
+      { name: "Election and Representation", marks: 6, chapters: ["Election and Representation"] },
+      { name: "Executive, Legislature and Judiciary", marks: 12, chapters: ["Executive", "Legislature", "Judiciary"] },
+      { name: "Federalism", marks: 6, chapters: ["Federalism"] },
+      { name: "Local Governments", marks: 4, chapters: ["Local Governments"] },
+      { name: "Constitution as a Living Document and The Philosophy of the Constitution", marks: 4, chapters: ["Constitution as a Living Document", "Philosophy of the Constitution"] },
+      { name: "Political Theory: An Introduction", marks: 4, chapters: ["Political Theory: An Introduction"] },
+      { name: "Freedom and Equality", marks: 12, chapters: ["Freedom", "Equality"] },
+      { name: "Social Justice", marks: 6, chapters: ["Social Justice"] },
+      { name: "Rights", marks: 4, chapters: ["Rights"] },
+      { name: "Citizenship and Nationalism", marks: 8, chapters: ["Citizenship", "Nationalism"] },
+      { name: "Secularism", marks: 6, chapters: ["Secularism"] }
+    ]
   }
 };
 
@@ -2609,6 +2788,31 @@ CBSE states there is no change in the Question Paper Design and Assessment Patte
 the Class XII sample paper: 21 MCQs (1 mark), 6 short answers (3 marks, 60-80 words), 3 long answers (8 marks,
 300-350 words), 3 source-based questions (4 marks) and a map question (5 marks), in Sections A to E.
 Internal choice in Sections B, C and E; alternatives for candidates with visual impairment.`
+  },
+
+  "Class 12 || Political Science": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `POLITICAL SCIENCE (028), Class XII, Maximum Marks 80, Time Allowed 3 hours.
+30 questions in five sections:
+  Section A: Q1-Q12, MCQs of 1 mark (12) - 6 from each book.
+  Section B: Q13-Q18, short answers of 2 marks in 50-60 words (12) - 3 from each book.
+  Section C: Q19-Q23, short answers of 4 marks in 100-120 words (20); internal choice in two of them.
+  Section D: Q24-Q26, picture, passage and map-based questions of 4 marks (12), four 1-mark parts each.
+  Section E: Q27-Q30, long answers of 6 marks in 170-180 words (24); internal choice in all four.
+Contemporary World Politics and Politics in India Since Independence carry 40 marks each; the map comes
+from Politics in India Since Independence. Alternatives for candidates with visual impairment in lieu of
+the picture and map questions. CBSE states there is no change in the Question Paper Design for 2026-27.`
+  },
+
+  "Class 11 || Political Science": {
+    year: "2026-27",
+    fullMarks: 80,
+    text: `POLITICAL SCIENCE (028), Class XI, Maximum Marks 80, Time Allowed 3 hours, on the Class XII sample paper's
+layout: 12 MCQs (1 mark), 6 short answers of 2 marks (50-60 words), 5 of 4 marks (100-120 words, internal
+choice in two), 3 picture/cartoon and passage-based questions of 4 marks, and 4 long answers of 6 marks
+(170-180 words, internal choice in all), in Sections A to E. Indian Constitution at Work and Political
+Theory carry 40 marks each.`
   },
 
   "Class 12 || Accountancy": {

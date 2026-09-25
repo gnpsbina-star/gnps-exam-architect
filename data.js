@@ -4086,10 +4086,30 @@ export const cbseData = {
       "Theme 6: Displacing Indigenous Peoples (Americas & Australia)",
       "Theme 7: Paths to Modernisation (East Asia)"
     ],
-    "Political Science": [
-      "Part A: Indian Constitution at Work (Constitution: Why and How?, Rights, Election & Representation, Executive, Legislature, Judiciary, Federalism, Local Governments, Constitution as a Living Document)",
-      "Part B: Political Theory (Introduction, Freedom, Equality, Social Justice, Rights, Citizenship, Nationalism, Secularism)"
-    ],
+    "Political Science": {
+      "Part A: Indian Constitution at Work": [
+        "Chapter 1: Constitution: Why and How?",
+        "Chapter 2: Rights in the Indian Constitution",
+        "Chapter 3: Election and Representation",
+        "Chapter 4: Executive",
+        "Chapter 5: Legislature",
+        "Chapter 6: Judiciary",
+        "Chapter 7: Federalism",
+        "Chapter 8: Local Governments",
+        "Chapter 9: Constitution as a Living Document",
+        "Chapter 10: The Philosophy of the Constitution"
+      ],
+      "Part B: Political Theory": [
+        "Chapter 1: Political Theory: An Introduction",
+        "Chapter 2: Freedom",
+        "Chapter 3: Equality",
+        "Chapter 4: Social Justice",
+        "Chapter 5: Rights",
+        "Chapter 6: Citizenship",
+        "Chapter 7: Nationalism",
+        "Chapter 8: Secularism"
+      ]
+    },
     "Geography": [
       "Part A: Fundamentals of Physical Geography (Geography as Discipline, Origin of Earth, Interior of Earth, Oceans & Continents, Minerals & Rocks, Geomorphic Processes, Atmosphere, Climate, Water Oceans, Life on Earth)",
       "Part B: India: Physical Environment (India-Location, Structure & Physiography, Drainage System, Climate, Natural Vegetation, Soils, Natural Hazards & Disasters)"
@@ -5069,10 +5089,27 @@ export const cbseData = {
         "Theme 12: Framing the Constitution - The Beginning of a New Era"
       ]
     },
-    "Political Science": [
-      "Part A: Contemporary World Politics (The End of Bipolarity, Contemporary Centres of Power, Contemporary South Asia, International Organisations, Security in the Contemporary World, Environment and Natural Resources, Globalisation)",
-      "Part B: Politics in India Since Independence (Challenges of Nation-Building, Era of One-Party Dominance, Politics of Planned Development, India's External Relations, Challenges to and Restoration of the Congress System, The Crisis of Democratic Order, Regional Aspirations, Recent Developments in Indian Politics)"
-    ],
+    "Political Science": {
+      "Part A: Contemporary World Politics": [
+        "Chapter 1: The End of Bipolarity",
+        "Chapter 2: Contemporary Centres of Power",
+        "Chapter 3: Contemporary South Asia",
+        "Chapter 4: International Organisations",
+        "Chapter 5: Security in the Contemporary World",
+        "Chapter 6: Environment and Natural Resources",
+        "Chapter 7: Globalisation"
+      ],
+      "Part B: Politics in India Since Independence": [
+        "Chapter 1: Challenges of Nation-Building",
+        "Chapter 2: Era of One-Party Dominance",
+        "Chapter 3: Politics of Planned Development",
+        "Chapter 4: India's External Relations",
+        "Chapter 5: Challenges to and Restoration of the Congress System",
+        "Chapter 6: The Crisis of Democratic Order",
+        "Chapter 7: Regional Aspirations",
+        "Chapter 8: Recent Developments in Indian Politics"
+      ]
+    },
     "Geography": [
       "Part A: Fundamentals of Human Geography (Human Geography: Nature & Scope, The World Population, Human Development, Primary Activities, Secondary Activities, Tertiary & Quaternary Activities, Transport Communication & Trade, International Trade)",
       "Part B: India: People and Economy (Population: Distribution Density Growth, Human Settlements, Land Resources & Agriculture, Water Resources, Mineral & Energy Resources, Planning & Sustainable Development, Transport & Communication, International Trade, Geographical Perspective on Selected Issues)"

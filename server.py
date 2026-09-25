@@ -384,6 +384,7 @@ CURRICULUM_UPDATES = [
     ("2026-27-senior-english", [("Class 11", "English Core"), ("Class 12", "English Core")]),
     ("2026-27-senior-accountancy", [("Class 12", "Accountancy")]),
     ("2026-27-senior-history", [("Class 12", "History")]),
+    ("2026-27-senior-polsci", [("Class 11", "Political Science"), ("Class 12", "Political Science")]),
 ]
 CURRICULUM_UPDATES_FILE = os.path.join(DATA_DIR, "curriculum_updates_applied.json")
 
