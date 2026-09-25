@@ -221,9 +221,10 @@ export function getSecondaryScience(className, subjectName) {
   return secondaryScience[className] || null;
 }
 
-// Which section a chapter title belongs to, or null (also for chapters that
-// are not assessed in the annual examination).
-export function scienceSectionOf(spec, chapterTitle) {
+// Which section of a discipline-split paper (Science or Social Science) a
+// chapter title belongs to, or null (also for chapters that are not assessed
+// in the annual examination).
+export function disciplineSectionOf(spec, chapterTitle) {
   const title = String(chapterTitle).toLowerCase();
   if ((spec.notAssessed || []).some(k => title.includes(k.toLowerCase()))) return null;
   let best = null, bestLen = 0;
@@ -250,12 +251,201 @@ Long answers are split into sub-parts (for example I and II, or I to IV).
 Figures: 9 questions carry a figure, 3 in each section, and every figure-based question has an
 alternative for visually impaired students. 2 questions ask the student to draw.`;
 
+// Class 9 and 10 Social Science (087), from the CBSE 2026-27 curriculum
+// documents (SocialScience_SecP1X_2026-27 for Class X, SocialScience_SecP1IX
+// for Class IX) and the Class X 2026-27 sample paper. Like Science, the paper
+// is split into sections by DISCIPLINE - History, Geography, Political Science
+// and Economics, 20 marks each - and `counts` is each section's mix, read
+// question by question from the sample paper (History Q1-Q9: 4 MCQs, one
+// 2-mark, one 3-mark, a case study, a long answer and a 2-mark map question,
+// and so on). Across the paper that is CBSE's published type weightage:
+// 20 MCQs, 4 x 2, 5 x 3, 3 case studies, 4 long answers and 5 marks of maps.
+//
+// `map` is the section's map question. It is only set when one of its
+// `chapters` is selected, since the map list comes from those chapters; with
+// none selected its marks become a 2- or 3-mark question instead. `choiceIn`
+// says where the sample paper puts internal choice in that section: the 3-mark
+// question (History Q6), the long answer, or one item of the map question
+// (Geography Q19).
+//
+// Class 9 moves to the new integrated NCERT textbook in 2026-27, and CBSE's
+// Class IX document says its course structure "will be provided shortly", so
+// there are no Class 9 unit marks yet. Class 9 is a school examination with no
+// CBSE sample paper, so it is set on the Class 10 layout (school policy): the
+// same four 20-mark discipline sections, grouped as data.js groups the book's
+// themes, with map questions drawn from the curriculum's map-related learning
+// outcomes.
+export const socialScienceQuestionMarks = { mcq: 1, ar: 1, vsa: 2, sa: 3, cbq: 4, la: 5 };
+
+// CBSE 2026-27 weightage to competency levels, out of 80 (Class X document).
+// CBSE prints 13.25% for Applying; 11 of 80 marks is 13.75%.
+const socialScienceDesign = {
+  understanding: 24, applying: 11, analysing: 40, mapSkill: 5,
+  labels: ["Remembering and Understanding (recall facts, terms and basic concepts; organise, interpret, describe and state main ideas)",
+           "Applying (solve problems in new situations using acquired knowledge, facts, techniques and rules)",
+           "Analysing, Evaluating and Creating (identify motives or causes, make inferences, find evidence for generalisations, judge ideas, combine information in a new way or propose alternatives)",
+           "Map Skill (locate, label and identify places on an outline map)"]
+};
+
+const class10SocialScienceScope = [
+  "Subtopics marked [Not assessed in the Board exam], and chapters marked (Periodic Assessment only) or (Board exam: map pointing only), may appear in the syllabus list above because they are taught; follow the marking: they carry NO written question in this paper, and the discipline sections of the blueprint, not the length of the list, decide the marks.",
+  "The Making of a Global World: ONLY subtopics 1 to 1.3 are assessed - the pre-modern world: silk routes, food travels, and conquest, disease and trade. The nineteenth century (1815-1914), the inter-war economy and the post-war era are internally assessed through the interdisciplinary project: set NO question from them.",
+  "The Age of Industrialisation is assessed in Periodic Assessment only: set NO question from it in this paper.",
+  "Lifelines of National Economy: ONLY map pointing (major sea ports and international airports) is assessed. Set no theory question from it.",
+  "Globalisation and the Indian Economy: ONLY 'What is Globalisation?' and 'Factors that have enabled Globalisation' (technology, and liberalisation of foreign trade and foreign investment) are assessed. Production across countries, interlinking production, Chinese toys in India, the WTO, the impact of globalisation and the struggle for a fair globalisation are internally assessed through the interdisciplinary project: set NO question from them.",
+  "Consumer Rights is project work only: set NO question from it.",
+  "Map questions use ONLY the items on CBSE's 2026-27 map list given in the Social Science requirements below."
+];
+
+const class9SocialScienceScope = [
+  "Class 9 follows the NEW NCERT integrated textbook, Social Science Part 1 and Part 2 (2026-27). Set questions ONLY from its themes as listed in the syllabus. Do NOT use the old Class 9 books (India and the Contemporary World-I, Contemporary India-I, Democratic Politics-I, Economics): no French Revolution, Nazism, Physical Features or Drainage of India, Constitutional Design, Village Palampur, Poverty as a Challenge or Food Security questions.",
+  "Keep to the concepts in the CBSE 2026-27 Class IX course outline for each theme, for example: Elections - electoral systems, the Delimitation Commission, the Election Commission of India, constituency, electoral rolls, the party system, coalition government and the anti-defection law; Smart Ways to Manage Your Finances - inflation, simple and compound interest, budgeting, savings and investment options, risk and insurance, personal income tax."
+];
+
+const class10MapList = {
+  history: `History (Nationalism in India) - on an outline map of India:
+    Congress sessions: 1920 Calcutta, 1920 Nagpur, 1927 Madras.
+    Satyagraha movements: Kheda, Champaran, Ahmedabad (mill workers).
+    Jallianwala Bagh (Amritsar). Dandi (Dandi March).`,
+  geography: `Geography - on an outline map of India:
+    Resources and Development: identify the major soil types.
+    Water Resources (locate and label dams): Salal, Bhakra Nangal, Tehri, Rana Pratap Sagar, Sardar Sarovar, Hirakud, Nagarjuna Sagar, Tungabhadra.
+    Agriculture (identify): major areas of rice and wheat; the largest / major producer states of sugarcane, tea, coffee, rubber, cotton and jute.
+    Minerals and Energy Resources (identify): iron ore mines - Mayurbhanj, Durg, Bailadila, Bellary, Kudremukh; coal mines - Raniganj, Bokaro, Talcher, Neyveli; oil fields - Digboi, Naharkatia, Mumbai High, Bassien, Kalol, Ankaleshwar. Locate and label power plants: thermal - Namrup, Singrauli, Ramagundam; nuclear - Narora, Kakrapara, Tarapur, Kalpakkam.
+    Manufacturing Industries (locate and label): cotton textile - Mumbai, Indore, Surat, Kanpur, Coimbatore; iron and steel plants - Durgapur, Bokaro, Jamshedpur, Bhilai, Vijayanagar, Salem; software technology parks - Noida, Gandhinagar, Mumbai, Pune, Hyderabad, Bengaluru, Chennai, Thiruvananthapuram.
+    Lifelines of National Economy (locate and label): major sea ports - Kandla, Tuticorin, Mumbai, Chennai, Marmagao, Visakhapatnam, New Mangalore, Paradip, Kochi, Haldia; international airports - Amritsar (Raja Sansi - Sri Guru Ram Dass Ji), Delhi (Indira Gandhi), Mumbai (Chhatrapati Shivaji), Chennai (Meenambakkam), Kolkata (Netaji Subhash Chandra Bose), Hyderabad (Rajiv Gandhi).
+    Items listed for locating and labelling may also be given for identification.`
+};
+
+// CBSE has not published a Class 9 map list for the new textbook. These are
+// the map tasks its Class IX learning outcomes and pedagogy notes name.
+const class9MapList = {
+  history: `History - on an outline map of the world or of India, as the item needs:
+    sites of the Harappan civilisation and its contemporary cultures; the Mesopotamian, Egyptian and Chinese civilisations;
+    the extent of important early Indian empires; India's ancient trade routes and major trading ports
+    (with Mesopotamia, Greece, the Roman Empire, China and Southeast Asia).`,
+  geography: `Geography - on an outline map of the world or of India, as the item needs:
+    the major tectonic plates (world map); the climatic zones of the world and the monsoon winds over India;
+    the biosphere reserves of India (map of India).`
+};
+
+export const secondarySocialScience = {
+  "Class 10": {
+    design: socialScienceDesign,
+    scope: class10SocialScienceScope,
+    mapList: class10MapList,
+    mapPaper: "one outline map of India",
+    notAssessed: ["Age of Industrialisation"],
+    sections: [
+      { key: "history", label: "History", units: "India and the Contemporary World-II", marks: 20,
+        counts: { mcq: 4, ar: 0, vsa: 1, sa: 1, cbq: 1, la: 1 },
+        map: { marks: 2, task: "identify two places marked A and B on the outline map of India", chapters: ["Nationalism in India"] },
+        choiceIn: ["sa", "la"],
+        chapters: ["Rise of Nationalism in Europe", "Nationalism in India", "Making of a Global World", "Age of Industrialisation", "Print Culture"] },
+      { key: "geography", label: "Geography", units: "Contemporary India-II", marks: 20,
+        counts: { mcq: 5, ar: 1, vsa: 1, sa: 0, cbq: 1, la: 1 },
+        map: { marks: 3, task: "locate and label three items with suitable symbols on the outline map of India, one of them with an OR", chapters: ["Resources and Development", "Water Resources", "Agriculture", "Minerals and Energy", "Manufacturing Industries", "Lifelines"] },
+        choiceIn: ["la", "map"],
+        chapters: ["Resources and Development", "Forest and Wildlife", "Water Resources", "Agriculture", "Minerals and Energy", "Manufacturing Industries", "Lifelines"] },
+      { key: "political", label: "Political Science", units: "Democratic Politics-II", marks: 20,
+        counts: { mcq: 3, ar: 1, vsa: 2, sa: 1, cbq: 1, la: 1 },
+        choiceIn: ["la"],
+        chapters: ["Power Sharing", "Power-sharing", "Federalism", "Gender, Religion and Caste", "Political Parties", "Outcomes of Democracy"] },
+      { key: "economics", label: "Economics", units: "Understanding Economic Development", marks: 20,
+        counts: { mcq: 5, ar: 1, vsa: 0, sa: 3, cbq: 0, la: 1 },
+        choiceIn: ["la"],
+        chapters: ["Development", "Sectors of the Indian Economy", "Money and Credit", "Globalisation"] }
+    ]
+  },
+  "Class 9": {
+    design: socialScienceDesign,
+    scope: class9SocialScienceScope,
+    mapList: class9MapList,
+    mapPaper: "an outline map of India, and an outline map of the world only if an item needs it,",
+    notAssessed: [],
+    sections: [
+      { key: "history", label: "History", units: "Social Science Part 1 and 2 - History themes", marks: 20,
+        counts: { mcq: 4, ar: 0, vsa: 1, sa: 1, cbq: 1, la: 1 },
+        map: { marks: 2, task: "identify two places or areas marked A and B on an outline map", chapters: ["Early Humans", "State and Society", "India and the World"] },
+        choiceIn: ["sa", "la"],
+        chapters: ["Understanding Social Science", "Early Humans", "State and Society", "Resistance and Resilience", "India and the World"] },
+      { key: "geography", label: "Geography", units: "Social Science Part 1 and 2 - Geography themes", marks: 20,
+        counts: { mcq: 5, ar: 1, vsa: 1, sa: 0, cbq: 1, la: 1 },
+        map: { marks: 3, task: "locate and label three items with suitable symbols on an outline map, one of them with an OR", chapters: ["Shaping of the Earth", "Atmosphere and Climate", "Life on Earth"] },
+        choiceIn: ["la", "map"],
+        chapters: ["Shaping of the Earth", "Atmosphere and Climate", "Oceans and Life", "Life on Earth"] },
+      { key: "political", label: "Political Science", units: "Social Science Part 1 and 2 - Political Science themes", marks: 20,
+        counts: { mcq: 3, ar: 1, vsa: 2, sa: 1, cbq: 1, la: 1 },
+        choiceIn: ["la"],
+        chapters: ["Democracy", "Elections", "Authority"] },
+      { key: "economics", label: "Economics", units: "Social Science Part 1 and 2 - Economics themes", marks: 20,
+        counts: { mcq: 5, ar: 1, vsa: 0, sa: 3, cbq: 0, la: 1 },
+        choiceIn: ["la"],
+        chapters: ["Building Blocks", "Price Puzzle", "Ideas to Startups", "Manage Your Finances"] }
+    ]
+  }
+};
+
+export function getSecondarySocialScience(className, subjectName) {
+  if (subjectName !== "Social Science") return null;
+  return secondarySocialScience[className] || null;
+}
+
+const class10SocialSciencePattern = `There are 38 questions in the question paper. All questions are compulsory.
+The question paper has four sections, one per discipline, with MCQs, VSA, SA, LA and CBQ in each:
+  Section A - History (20 marks), Q1-Q9: 4 MCQs (1 mark each), 1 VSA (2 marks), 1 SA (3 marks),
+              1 long answer (5 marks), 1 case-based question (4 marks), 1 map question (2 marks).
+  Section B - Geography (20 marks), Q10-Q19: 5 MCQs and 1 Assertion-Reason (1 mark each), 1 VSA (2 marks),
+              1 long answer (5 marks), 1 case-based question (4 marks), 1 map question (3 marks).
+  Section C - Political Science (20 marks), Q20-Q28: 3 MCQs and 1 Assertion-Reason, 2 VSA (2 marks each),
+              1 SA (3 marks), 1 long answer (5 marks), 1 case-based question (4 marks).
+  Section D - Economics (20 marks), Q29-Q38: 5 MCQs and 1 Assertion-Reason, 3 SA (3 marks each),
+              1 long answer (5 marks).
+Very Short Answer (VSA) questions carry 2 marks each; answers should not exceed 40 words.
+Short Answer (SA) questions carry 3 marks each; answers should not exceed 60 words.
+Long Answer (LA) questions carry 5 marks each; answers should not exceed 120 words.
+Case-based questions (CBQ) have three sub-questions and carry 4 marks each; answers should not exceed 100 words.
+The map-based questions carry 5 marks in two parts: Q9 in Section A - History (2 marks) and Q19 in
+Section B - Geography (3 marks), on one outline map of India printed at the end of the paper.
+There is no overall choice. Internal choice is provided in a few questions: all four long answers,
+the History 3-mark question and one item of the Geography map question.
+A separate question is provided for visually impaired candidates in lieu of every question with a
+visual input (picture, cartoon or map). Such questions are to be attempted by visually impaired candidates only.`;
+
+const class9SocialSciencePattern = `Class 9 is a school examination, so CBSE publishes no sample paper for it, and CBSE's Class IX
+2026-27 curriculum says its course structure (marks per unit) will be provided shortly. This paper is
+set on the Class 10 Social Science 2026-27 sample paper layout against the Class 9 curriculum (the new
+NCERT Social Science Part 1 and Part 2), with the same four 20-mark discipline sections:
+  Section A - History (20 marks), Q1-Q9: 4 MCQs, 1 VSA (2 marks), 1 SA (3 marks), 1 long answer
+              (5 marks), 1 case-based question (4 marks), 1 map question (2 marks).
+  Section B - Geography (20 marks), Q10-Q19: 5 MCQs and 1 Assertion-Reason, 1 VSA (2 marks), 1 long answer
+              (5 marks), 1 case-based question (4 marks), 1 map question (3 marks).
+  Section C - Political Science (20 marks), Q20-Q28: 3 MCQs and 1 Assertion-Reason, 2 VSA, 1 SA,
+              1 long answer, 1 case-based question.
+  Section D - Economics (20 marks), Q29-Q38: 5 MCQs and 1 Assertion-Reason, 3 SA (3 marks each), 1 long answer.
+Everything else follows the Class 10 paper: 38 questions, all compulsory; word limits of 40 (VSA),
+60 (SA), 100 (CBQ) and 120 (LA) words; internal choice in every long answer, the History 3-mark
+question and one item of the Geography map question; a separate question for visually impaired
+candidates in lieu of every question with a visual input.`;
+
 const acc = accountancyPaper;
 const accIC = acc.internalChoice;
 const accLadder = acc.markLadder.join(', ').replace(/, (\d+)$/, ' and $1');
 const accExcluded = acc.excludedMarks.map(m => `${m}-mark`).join(' or ');
 
 export const sqpBlueprints = {
+  "Class 10 || Social Science": {
+    year: "2026-27",
+    text: `SOCIAL SCIENCE - CODE NO. 087, Class X, Maximum Marks 80, Time Allowed 3 hours.
+${class10SocialSciencePattern}
+CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`
+  },
+
+  "Class 9 || Social Science": {
+    year: "2026-27",
+    text: class9SocialSciencePattern
+  },
+
   "Class 10 || Science": {
     year: "2026-27",
     text: `SCIENCE - CODE NO. 086, Class X, Maximum Marks 80, Time Allowed 3 hours.

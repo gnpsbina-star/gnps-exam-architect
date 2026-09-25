@@ -1,5 +1,5 @@
-import { cbseData } from './data.js?v=38';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, scienceSectionOf, scienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=4';
+import { cbseData } from './data.js?v=39';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=5';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -262,7 +262,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_27_science_curriculum_v20';
+      const CURRENT_SYLLABUS_VER = '2026_27_social_science_curriculum_v21';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -421,6 +421,18 @@ function getCleanLiteratureBookName(className, subjectName) {
   return full.replace(/\s*\((?:NCERT|CBSE|Grade\s*\d+|Class\s*[IXVLCDM]+)\)/gi, '').trim();
 }
 
+// Shares `totalMarks` among sections in proportion to their CBSE marks, with
+// largest-remainder rounding so the shares add up exactly.
+function shareSectionMarks(baseMarks, totalMarks) {
+  const baseTotal = baseMarks.reduce((a, b) => a + b, 0);
+  const exact = baseMarks.map(m => m * totalMarks / baseTotal);
+  const target = exact.map(Math.floor);
+  let remaining = totalMarks - target.reduce((a, b) => a + b, 0);
+  exact.map((x, i) => [x - Math.floor(x), i]).sort((a, b) => b[0] - a[0])
+    .forEach(([, i]) => { if (remaining > 0) { target[i]++; remaining--; } });
+  return target;
+}
+
 // Builds the Class 9/10 Science sections from the sample-paper mix in
 // sqp_blueprints.js. `scienceKeys` lists the disciplines that have at least
 // one selected chapter; a discipline with none is dropped and the remaining
@@ -433,12 +445,7 @@ function buildScienceSections(spec, scienceKeys, totalMarks) {
   let secs = spec.sections.filter(sec => !scienceKeys || scienceKeys.includes(sec.key));
   if (secs.length === 0) secs = spec.sections;
 
-  const baseTotal = secs.reduce((a, sec) => a + sec.marks, 0);
-  const exact = secs.map(sec => sec.marks * totalMarks / baseTotal);
-  const target = exact.map(Math.floor);
-  let remaining = totalMarks - target.reduce((a, b) => a + b, 0);
-  exact.map((x, i) => [x - Math.floor(x), i]).sort((a, b) => b[0] - a[0])
-    .forEach(([, i]) => { if (remaining > 0) { target[i]++; remaining--; } });
+  const target = shareSectionMarks(secs.map(sec => sec.marks), totalMarks);
 
   return secs.map((sec, i) => {
     let c = { ...sec.counts };
@@ -474,27 +481,121 @@ function buildScienceSections(spec, scienceKeys, totalMarks) {
       marksPerQ: "Mixed (1/2/3/4/5 Marks)",
       total,
       choice: `${parts}. Internal choice in the Long Answer, the Case-Based 2-mark sub-part and one 2/3-mark question`,
-      scienceKey: sec.key,
-      scienceCounts: c
+      disciplineKey: sec.key,
+      disciplineCounts: c
     };
   });
 }
 
-// The disciplines (biology / chemistry / physics) with at least one chapter
-// ticked, or null when nothing assessable is ticked (then all three stand).
-function getSelectedScienceKeys(className, subjectName) {
-  const spec = getSecondaryScience(className, subjectName);
-  if (!spec) return null;
-  const keys = new Set();
-  document.querySelectorAll('#syllabusContainer .chapter-cb:checked').forEach(cb => {
-    const sec = scienceSectionOf(spec, String(cb.value).split('->')[0]);
-    if (sec) keys.add(sec.key);
+// Builds the Class 9/10 Social Science sections (History, Geography, Political
+// Science, Economics) from the sample-paper mix in sqp_blueprints.js, on the
+// same rules as Science: a discipline with no chapter selected is dropped and
+// the others share its marks. A section's map question stands only when one of
+// its map chapters is selected; otherwise its 2 or 3 marks become one more 2-
+// or 3-mark written question. A scaled section keeps its map question and one
+// long answer, keeps a case study where CBSE sets one, and scales the 1-, 2-
+// and 3-mark questions, giving any marks left over to 2- and 3-mark questions.
+function buildSocialScienceSections(spec, sel, totalMarks) {
+  const M = socialScienceQuestionMarks;
+  const keys = sel && sel.keys;
+  let secs = spec.sections.filter(sec => !keys || keys.includes(sec.key));
+  if (secs.length === 0) secs = spec.sections;
+
+  const target = shareSectionMarks(secs.map(sec => sec.marks), totalMarks);
+  const written = c => c.vsa * M.vsa + c.sa * M.sa + c.cbq * M.cbq + c.la * M.la;
+
+  return secs.map((sec, i) => {
+    const hasMap = !!sec.map && (!sel || !sel.mapKeys || sel.mapKeys.includes(sec.key));
+    const mapMarks = hasMap ? sec.map.marks : 0;
+    const base = { ...sec.counts };
+    if (sec.map && !hasMap) {
+      if (sec.map.marks === M.vsa) base.vsa++; else base.sa++;
+    }
+    let c = { ...base };
+    if (target[i] !== sec.marks) {
+      const f = (target[i] - mapMarks) / (sec.marks - mapMarks);
+      c = {
+        vsa: Math.round(base.vsa * f),
+        sa: Math.round(base.sa * f),
+        cbq: base.cbq ? Math.max(1, Math.round(base.cbq * f)) : 0,
+        la: Math.max(1, Math.round(base.la * f))
+      };
+      // Objective questions scale with the section like the rest, so they keep
+      // about their CBSE share; marks left over go to 2- and 3-mark questions.
+      const objBase = base.mcq + base.ar;
+      let objective = Math.round(objBase * f);
+      let rest = target[i] - mapMarks - objective - written(c);
+      while (rest >= M.vsa + M.sa) { c.vsa++; c.sa++; rest -= M.vsa + M.sa; }
+      if (rest >= M.sa) { c.sa++; rest -= M.sa; }
+      if (rest >= M.vsa) { c.vsa++; rest -= M.vsa; }
+      objective += rest;
+      while (objective < 2 && c.vsa > 0) { c.vsa--; objective += M.vsa; }
+      while (objective < 2 && c.sa > 0) { c.sa--; objective += M.sa; }
+      while (objective < 2 && c.cbq > 0) { c.cbq--; objective += M.cbq; }
+      c.ar = base.ar ? Math.min(objective, Math.max(1, Math.round(objective * base.ar / objBase))) : 0;
+      c.mcq = objective - c.ar;
+    }
+    const count = c.mcq + c.ar + c.vsa + c.sa + c.cbq + c.la + (hasMap ? 1 : 0);
+    const total = c.mcq * M.mcq + c.ar * M.ar + written(c) + mapMarks;
+    const parts = [
+      c.ar ? `${c.mcq} MCQ + ${c.ar} Assertion-Reason (1M each)` : `${c.mcq} MCQ (1M each)`,
+      c.vsa ? `${c.vsa} × 2M (40 words)` : null,
+      c.sa ? `${c.sa} × 3M (60 words)` : null,
+      c.la ? `${c.la} Long Answer (5M, 120 words)` : null,
+      c.cbq ? `${c.cbq} Case-Based (4M)` : null,
+      hasMap ? `1 Map Skill question (${mapMarks}M)` : null
+    ].filter(Boolean).join(' + ');
+    const choicePlaces = {
+      sa: c.sa === 1 ? "the 3-mark question" : c.sa ? "one 3-mark question" : null,
+      la: c.la === 1 ? "the Long Answer" : "every Long Answer",
+      map: hasMap ? "one item of the map question" : null
+    };
+    const choiceIn = (sec.choiceIn || []).map(k => choicePlaces[k]).filter(Boolean);
+    return {
+      name: `Section ${String.fromCharCode(65 + i)}`,
+      type: `${sec.label} (${sec.units})`,
+      count,
+      unitMark: Math.round(total / count * 10) / 10,
+      marksPerQ: "Mixed (1/2/3/4/5 Marks)",
+      total,
+      choice: `${parts}. Internal choice in ${choiceIn.join(' and ')}`,
+      disciplineKey: sec.key,
+      disciplineCounts: { ...c, map: mapMarks }
+    };
   });
-  if (keys.size === 0) return null;
-  return spec.sections.map(sec => sec.key).filter(k => keys.has(k));
 }
 
-function calculateExamBlueprint(className, subjectName, examName, marksVal, durationVal, scienceKeys = null) {
+// Class 9/10 Science and Social Science are split into discipline sections.
+// This is the spec for that split, or null for every other subject.
+function getDisciplineSpec(className, subjectName) {
+  return getSecondaryScience(className, subjectName) || getSecondarySocialScience(className, subjectName);
+}
+
+// Which disciplines have at least one chapter ticked (`keys`), and which of
+// their map questions have one of its map chapters ticked (`mapKeys`). Both are
+// null when nothing assessable is ticked, and then every section stands.
+// `sig` identifies the selection, so a blueprint drawn for other ticks can be
+// spotted. Null for a subject without a discipline split.
+function getDisciplineSelection(className, subjectName) {
+  const spec = getDisciplineSpec(className, subjectName);
+  if (!spec) return null;
+  const keys = new Set();
+  const mapKeys = new Set();
+  document.querySelectorAll('#syllabusContainer .chapter-cb:checked').forEach(cb => {
+    const title = String(cb.value).split('->')[0];
+    const sec = disciplineSectionOf(spec, title);
+    if (!sec) return;
+    keys.add(sec.key);
+    if (sec.map && sec.map.chapters.some(k => title.toLowerCase().includes(k.toLowerCase()))) mapKeys.add(sec.key);
+  });
+  if (keys.size === 0) return { keys: null, mapKeys: null, sig: '' };
+  const order = spec.sections.map(sec => sec.key);
+  const sel = { keys: order.filter(k => keys.has(k)), mapKeys: order.filter(k => mapKeys.has(k)) };
+  sel.sig = `${sel.keys.join(',')}|${sel.mapKeys.join(',')}`;
+  return sel;
+}
+
+function calculateExamBlueprint(className, subjectName, examName, marksVal, durationVal, disciplineSel = null) {
   if (!className || !subjectName) return null;
   
   let marks = parseInt(marksVal) || 0;
@@ -916,10 +1017,11 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
     // sections, two of which would have no syllabus. The legacy 086 syllabus
     // keeps its old layout.
     const sciSpec = getSecondaryScience(className, subjectName);
+    const sstSpec = getSecondarySocialScience(className, subjectName);
     const isLegacyScience = !isSecSocial && className === "Class 9" && subLower.includes("science") && subLower.includes("legacy");
 
     if (sciSpec) {
-      sections = buildScienceSections(sciSpec, scienceKeys, marks);
+      sections = buildScienceSections(sciSpec, disciplineSel && disciplineSel.keys, marks);
     } else if (isLegacyScience) {
       // CBSE's real Class 9/10 Science paper is NOT split into type-based
       // sections (MCQ/VSA/SA/LA/Case) - it's split into 3 SUBJECT sections
@@ -932,6 +1034,10 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
         { name: "Section B", type: "Chemistry (Chemical Substances - Nature & Behaviour)", count: 12, unitMark: 2.1, marksPerQ: "Mixed (1/2/3/4/5 Marks)", total: 25, choice: "6 MCQ/Assertion-Reasoning (6M) + 2 VSA (4M) + 2 SA (6M) + 1 LA (5M) + 1 Case-Based (4M)" },
         { name: "Section C", type: "Physics (Natural Phenomena + Effects of Current)", count: 12, unitMark: 2.1, marksPerQ: "Mixed (1/2/3/4/5 Marks)", total: 25, choice: "6 MCQ/Assertion-Reasoning (6M) + 2 VSA (4M) + 2 SA (6M) + 1 LA (5M) + 1 Case-Based (4M)" }
       ];
+    } else if (sstSpec) {
+      // Class 9/10 Social Science: History / Geography / Political Science /
+      // Economics sections on the CBSE 2026-27 layout in sqp_blueprints.js.
+      sections = buildSocialScienceSections(sstSpec, disciplineSel, marks);
     } else if (isSecSocial) {
       sections = [
         { name: "Section A", type: "MCQs & Assertion-Reasoning", count: 20, unitMark: 1, marksPerQ: "1 Mark", total: 20, choice: "18 MCQs + 2 Assertion-Reason" },
@@ -965,7 +1071,8 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
     totalQuestions,
     competencyRatio,
     sections,
-    scienceKeys: sections.some(s => s.scienceKey) ? sections.map(s => s.scienceKey) : null,
+    disciplineKeys: sections.some(s => s.disciplineKey) ? sections.map(s => s.disciplineKey) : null,
+    disciplineSig: sections.some(s => s.disciplineKey) && disciplineSel ? disciplineSel.sig : '',
     isModified: false
   };
 }
@@ -1626,11 +1733,11 @@ async function updateExamBlueprint(forceRecalculate = false) {
     return;
   }
 
-  const scienceKeys = getSelectedScienceKeys(className, subjectName);
-  const configKey = `${className}|${subjectName}|${examName}|${marksVal}|${durationVal}|${scienceKeys ? scienceKeys.join(',') : ''}`;
+  const disciplineSel = getDisciplineSelection(className, subjectName);
+  const configKey = `${className}|${subjectName}|${examName}|${marksVal}|${durationVal}|${disciplineSel ? disciplineSel.sig : ''}`;
   
   if (forceRecalculate || !currentBlueprintState || configKey !== lastBlueprintConfigKey) {
-    currentBlueprintState = calculateExamBlueprint(className, subjectName, examName, marksVal, durationVal, scienceKeys);
+    currentBlueprintState = calculateExamBlueprint(className, subjectName, examName, marksVal, durationVal, disciplineSel);
     lastBlueprintConfigKey = configKey;
   }
 
@@ -2030,17 +2137,19 @@ if (syllabusContainer) {
   }, true);
 }
 
-// Class 9/10 Science drops the section of a discipline with no chapter ticked,
-// so the blueprint follows the chapter ticks. Capture phase, for the same
-// reason as above; the timeout lets a parent box finish updating its children.
-// updateExamBlueprint only recalculates when the set of disciplines changes.
+// Class 9/10 Science and Social Science drop the section of a discipline with
+// no chapter ticked (and Social Science drops a map question whose map
+// chapters are unticked), so the blueprint follows the chapter ticks. Capture
+// phase, for the same reason as above; the timeout lets a parent box finish
+// updating its children. updateExamBlueprint only recalculates when the
+// selection of disciplines and map questions changes.
 if (syllabusContainer) {
-  let scienceBlueprintTimer = null;
+  let disciplineBlueprintTimer = null;
   syllabusContainer.addEventListener('change', (e) => {
     if (!e.target || !e.target.classList || !e.target.classList.contains('chapter-cb')) return;
-    if (!getSecondaryScience(classSelect.value, subjectSelect.value)) return;
-    clearTimeout(scienceBlueprintTimer);
-    scienceBlueprintTimer = setTimeout(() => updateExamBlueprint(), 0);
+    if (!getDisciplineSpec(classSelect.value, subjectSelect.value)) return;
+    clearTimeout(disciplineBlueprintTimer);
+    disciplineBlueprintTimer = setTimeout(() => updateExamBlueprint(), 0);
   }, true);
 }
 
@@ -3971,9 +4080,9 @@ function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = fa
     *   **Statistics:** ${(className === 'Class 9' || className === 'Class 10') ? `Grouped frequency tables and bar graphs (stacked / 100% stacked bar graphs for Class 9). No ogives or cumulative frequency curves — they are not in the 2026-27 syllabus.` : `Clear histograms, frequency polygons, or ogives with numbered axis intervals.`}`;
   } else if (isSst) {
     let count = marks >= 70 ? "3 to 5" : "1 to 2";
-    quotaText = `Mandate **${count} visual / map / data-based questions**.`;
+    quotaText = quotaOverride || `Mandate **${count} visual / map / data-based questions**.`;
     subjectSpecificRules = `
-    *   **Map Skill Frame (Section F / Geography):** When map questions are included, generate a clean schematic outline locator frame with labelled markers [A], [B], [C] representing specific Indian geographical/historical locations (e.g., dams, ports, major historical congress sessions) for identification.
+    *   **Map Skill Frame:** When map questions are included, generate a clean schematic outline locator frame with labelled markers [A], [B], [C] representing specific Indian geographical/historical locations (e.g., dams, ports, major historical congress sessions) for identification. Places the student must locate and label are left unmarked.
     *   **Economics & Civics:** Comparative bar charts (e.g., GDP sector shares, formal vs informal credit) and flowcharts (e.g., judicial hierarchy, manufacturing stages).`;
   } else if (isEnglish) {
     // No reading section means no passage to hang a chart on, and with a single
@@ -4156,8 +4265,17 @@ export async function buildPromptString(activeBtn) {
   const mathsFullPaper = !!secMaths && isFullLengthPaper;
   const secScience = getSecondaryScience(className, subjectName);
   const sciFullPaper = !!secScience && isFullLengthPaper;
+  // Class 9 and 10 Social Science: CBSE's word limits and answer presentation
+  // apply to every paper; the 2026-27 discipline layout, competency split,
+  // scope limits, map list and case-study format govern full-length papers.
+  const secSocial = getSecondarySocialScience(className, subjectName);
+  const sstFullPaper = !!secSocial && isFullLengthPaper;
 
-  const constructedResponseLines = secMaths ? [
+  const constructedResponseLines = secSocial ? [
+    `         - Very Short Answer (VSA - 2 Marks, answer in not more than 40 words, exactly 2 marking-scheme value points).`,
+    `         - Short Answer (SA - 3 Marks, answer in not more than 60 words, exactly 3 value points).`,
+    `         - Long Answer (LA - 5 Marks, answer in not more than 120 words, 5 value points; one question or a split such as 1 + 2 + 2, with internal choice).`
+  ].join('\n') : secMaths ? [
     `         - Very Short Answer (VSA - 2 Marks): short working or a short proof worth exactly 2 marking-scheme value points. No word limit.`,
     `         - Short Answer (SA - 3 Marks): step-wise working with 3 value points. No word limit.`,
     `         - Long Answer (LA - 5 Marks): one complete multi-step problem, or a theorem proof followed by an application. Sub-parts are optional.`
@@ -4210,7 +4328,7 @@ export async function buildPromptString(activeBtn) {
 ${usesCaseBased ? `         - Real-world Case-Based Questions (CBQs) / Source-Based Integrated Studies${usesLetteredSections ? ` (Section E/D)` : ``}.\n` : ``}         - High-quality conceptual Multiple Choice Questions (MCQs) with diagnostic distractors testing common student misconceptions.
          - Standard CBSE Assertion-Reasoning (A-R) questions with official 4-option rubric.
       2. **Select Response / Foundational Objective Questions (20% Weightage):**
-         - Direct NCERT conceptual recall, standard definitions, ${secMaths ? `formulae, standard values and mathematical terms` : `scientific laws, SI units, and chemical/mathematical nomenclature`}.
+         - Direct NCERT conceptual recall, standard definitions, ${secSocial ? `dates, events, places, terms and constitutional provisions` : secMaths ? `formulae, standard values and mathematical terms` : `scientific laws, SI units, and chemical/mathematical nomenclature`}.
       3. **Constructed Response & Step-Marking Questions (30% Weightage):**
 ${constructedResponseLines}
     - **Official CBSE Sourcing Matrix (To guarantee 100% board score preparation):**
@@ -4295,17 +4413,14 @@ ${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structure
       `100% of the total ${marks} marks MUST be drawn strictly from the chapters listed above. Under NO circumstances should any question, MCQ, extract, or term be taken from any unselected chapter.\n\n`;
   }
 
-    // A Science paper's sections follow the disciplines ticked, so rebuild the
-    // blueprint if the ticks changed since it was drawn. Only the discipline
-    // layout carries scienceKeys; other blueprints (and a teacher's edits to
-    // them) are used as they are.
-    const scienceKeys = getSelectedScienceKeys(className, subjectName);
-    let activeBlueprint = currentBlueprintState || calculateExamBlueprint(className, subjectName, examName, marks, duration, scienceKeys);
-    if (secScience && activeBlueprint && activeBlueprint.scienceKeys) {
-      const wanted = (scienceKeys || secScience.sections.map(x => x.key)).join(',');
-      if (activeBlueprint.scienceKeys.join(',') !== wanted) {
-        activeBlueprint = calculateExamBlueprint(className, subjectName, examName, marks, duration, scienceKeys);
-      }
+    // A Science or Social Science paper's sections follow the disciplines
+    // ticked, so rebuild the blueprint if the ticks changed since it was drawn.
+    // Only the discipline layout carries disciplineKeys; other blueprints (and
+    // a teacher's edits to them) are used as they are.
+    const disciplineSel = getDisciplineSelection(className, subjectName);
+    let activeBlueprint = currentBlueprintState || calculateExamBlueprint(className, subjectName, examName, marks, duration, disciplineSel);
+    if (disciplineSel && activeBlueprint && activeBlueprint.disciplineKeys && activeBlueprint.disciplineSig !== disciplineSel.sig) {
+      activeBlueprint = calculateExamBlueprint(className, subjectName, examName, marks, duration, disciplineSel);
     }
   let blueprintPromptText = "";
   if (activeBlueprint && activeBlueprint.sections.length > 0) {
@@ -4315,6 +4430,8 @@ ${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structure
     blueprintPromptText += `*   **Total Questions:** ${activeBlueprint.totalQuestions} Questions\n`;
     blueprintPromptText += sciFullPaper
       ? `*   **Question Design:** Follow the CBSE 2026-27 competency split given above (Knowledge & Understanding / Application / Formulate, Analyse, Evaluate & Create)\n`
+      : sstFullPaper
+      ? `*   **Question Design:** Follow the CBSE 2026-27 competency split given above (Remembering & Understanding / Applying / Analysing, Evaluating & Creating / Map Skill)\n`
       : mathsFullPaper
       ? `*   **Question Design:** Follow the CBSE 2026-27 typology split given above (Remembering & Understanding / Applying / Analysing, Evaluating & Creating)\n`
       : `*   **Competency-focused Questions:** Minimum 50% of total marks\n`;
@@ -4325,16 +4442,54 @@ ${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structure
     blueprintPromptText += `\n*(Note: You must construct BOTH Set A and Set B strictly conforming to this exact section layout and question count)*\n`;
 
     const isCombinedScience = (className === 'Class 9' || className === 'Class 10') && subjectName.toLowerCase().includes('science') && !subjectName.toLowerCase().includes('social');
-    if (secScience && activeBlueprint.scienceKeys) {
+    if (secScience && activeBlueprint.disciplineKeys) {
       const sectionList = activeBlueprint.sections.map(sec => `${sec.name} = ${sec.type.split(' (')[0]}`).join(', ');
-      const dropped = secScience.sections.filter(sec => !activeBlueprint.scienceKeys.includes(sec.key)).map(sec => sec.label);
+      const dropped = secScience.sections.filter(sec => !activeBlueprint.disciplineKeys.includes(sec.key)).map(sec => sec.label);
       blueprintPromptText += `\n**CRITICAL — SECTION MEANING FOR SCIENCE:** The sections above are DISCIPLINE sections, not question-type groups: ${sectionList}. Each section contains its own full mix of question types in the exact counts given for it. Within each section, order the questions as the CBSE sample paper does: MCQs, then Assertion-Reason, then 2-mark, 3-mark, the 4-mark case-based question, and finally the 5-mark long answer. Number the questions continuously across all sections (Q1 to Q${activeBlueprint.totalQuestions}) — do NOT restart numbering in each section, and do NOT create extra sections for question types.\n`;
       if (dropped.length > 0) {
         blueprintPromptText += `*   **Partial syllabus:** No ${dropped.join(' or ')} chapter is selected for this exam, so there is no ${dropped.join(' / ')} section; its marks have been shared among the sections above.\n`;
       }
+    } else if (secSocial && activeBlueprint.disciplineKeys) {
+      const sectionList = activeBlueprint.sections.map(sec => `${sec.name} = ${sec.type.split(' (')[0]}`).join(', ');
+      const dropped = secSocial.sections.filter(sec => !activeBlueprint.disciplineKeys.includes(sec.key)).map(sec => sec.label);
+      blueprintPromptText += `\n**CRITICAL — SECTION MEANING FOR SOCIAL SCIENCE:** The sections above are DISCIPLINE sections, not question-type groups: ${sectionList}. Each section contains its own mix of question types in the exact counts given for it. Within each section, order the questions as the CBSE 2026-27 sample paper does: the 1-mark MCQs (Assertion-Reason among them), then the 2-mark, the 3-mark, the 5-mark long answer, the 4-mark case-based question, and last the map question. Number the questions continuously across all sections (Q1 to Q${activeBlueprint.totalQuestions}) — do NOT restart numbering in each section, and do NOT create extra sections for question types.\n`;
+      if (dropped.length > 0) {
+        blueprintPromptText += `*   **Partial syllabus:** No ${dropped.join(' or ')} chapter is selected for this exam, so there is no ${dropped.join(' / ')} section; its marks have been shared among the sections above.\n`;
+      }
+      activeBlueprint.sections.forEach(sec => {
+        const spec = secSocial.sections.find(x => x.key === sec.disciplineKey);
+        if (spec && spec.map && sec.disciplineCounts && !sec.disciplineCounts.map) {
+          blueprintPromptText += `*   **No map question in ${sec.name} (${spec.label}):** none of its map chapters (${spec.map.chapters.join(', ')}) is selected, so its ${spec.map.marks} map marks are set as one more ${spec.map.marks}-mark written question.\n`;
+        }
+      });
     } else if (isCombinedScience && subjectName.toLowerCase().includes('legacy')) {
       blueprintPromptText += `\n**CRITICAL — SECTION MEANING FOR SCIENCE:** Unlike most other subjects, Section A / B / C above are NOT question-type groupings. They are SUBJECT groupings: Section A = Biology questions only, Section B = Chemistry questions only, Section C = Physics questions only. Each section must internally contain its own full mix of MCQs, Assertion-Reasoning, VSA, SA, LA, and Case-Based questions in the exact counts given for that section — do NOT group all MCQs together across subjects, and do NOT create separate Section D/E for question types. This matches the real official CBSE Class 9/10 Science board exam structure.\n`;
     }
+  }
+
+  // Social Science's competency split carries the map marks separately, so it
+  // is worked out once the blueprint says how many map marks the paper has.
+  const sstSections = sstFullPaper && activeBlueprint && activeBlueprint.disciplineKeys ? activeBlueprint.sections : null;
+  const sstCount = key => sstSections ? sstSections.reduce((a, sec) => a + ((sec.disciplineCounts && sec.disciplineCounts[key]) || 0), 0) : null;
+  if (sstFullPaper) {
+    const totalMarks = activeBlueprint ? activeBlueprint.marks : (parseInt(marks, 10) || 80);
+    const d = secSocial.design;
+    const mapMarks = sstSections ? sstCount('map') : d.mapSkill;
+    const rest = totalMarks - mapMarks;
+    const levels = d.understanding + d.applying + d.analysing;
+    const applyingMarks = Math.round(d.applying * rest / levels);
+    const analysingMarks = Math.round(d.analysing * rest / levels);
+    const understandingMarks = rest - applyingMarks - analysingMarks;
+    const pct = m => `${Math.round(m * 10000 / totalMarks) / 100}%`;
+    difficultyDistribution = `\n*   **Official CBSE 2026-27 Question Paper Design — Social Science (087), ${className} (MANDATORY):**
+    - Split the marks of EACH set by competency exactly as CBSE's 2026-27 curriculum prescribes${className === 'Class 9' ? ` for Class X (CBSE has not yet published a Class IX design, so the school uses the Class X one)` : ``}:
+      1. **${d.labels[0]}:** **${understandingMarks} marks (${pct(understandingMarks)})**.
+      2. **${d.labels[1]}:** **${applyingMarks} marks (${pct(applyingMarks)})**.
+      3. **${d.labels[2]}:** **${analysingMarks} marks (${pct(analysingMarks)})**.${mapMarks ? `
+      4. **${d.labels[3]}:** **${mapMarks} marks (${pct(mapMarks)})** — the map questions.` : ``}
+    - Every section mixes these levels; the split above applies to the paper as a whole. With about half the marks on analysing, evaluating and creating, most 2-, 3-, 4- and 5-mark questions ask the student to analyse, evaluate, justify, compare or suggest, not only to recall.
+    - Internal choice only where the blueprint below says so; there is no overall choice.${difficulty === "Advanced" ? `
+    - **Advanced difficulty:** Keep the CBSE marks split above unchanged. Within each level, choose the more demanding CBSE competency-based and past board-paper style questions.` : ``}`;
   }
 
   const cleanClass = className.replace(/[^a-zA-Z0-9]/g, '_');
@@ -4386,7 +4541,7 @@ ${blueprintPromptText}
 ${usesLetteredSections ? `    *(Note: these typology rules apply to every question of the stated mark value, regardless of which lettered Section it physically appears in - some subjects group questions by type (Section A = all 1-mark, etc.), while Class 9/10 Science groups them by subject area instead (Section A = Biology, B = Chemistry, C = Physics), with every question type appearing inside each of those sections. Follow the "Section-wise Question Breakdown" blueprint above for the actual physical layout.)*
 ` : `    *(Note: these typology rules apply to every question of the stated mark value, wherever it sits in the paper. Follow the "Section-wise Question Breakdown" blueprint above for the actual physical layout.)*
 `}    *   **1-Mark Objective & Assertion-Reasoning Questions:**
-        - **Diagnostic MCQs:** Options (a), (b), (c), (d) must feature plausible distractors targeting common student misconceptions documented in CBSE Board Evaluation Reports (e.g., ${secMaths ? `sign errors in coordinates, confusing sector with segment area, wrong discriminant condition, radius/diameter mix-ups` : `reciprocal lens formula errors, Cartesian sign mistakes in mirror/coordinate geometry, incomplete definitions`}).
+        - **Diagnostic MCQs:** Options (a), (b), (c), (d) must feature plausible distractors targeting common student misconceptions documented in CBSE Board Evaluation Reports (e.g., ${secSocial ? `wrong chronology of events, mixing up the Non-Cooperation and Civil Disobedience movements, confusing potential and reserve resources, GDP versus per capita income, horizontal versus vertical power sharing` : secMaths ? `sign errors in coordinates, confusing sector with segment area, wrong discriminant condition, radius/diameter mix-ups` : `reciprocal lens formula errors, Cartesian sign mistakes in mirror/coordinate geometry, incomplete definitions`}).
         - **Assertion-Reasoning:** Must strictly follow the official CBSE 4-option rubric:
           *(a) Both Assertion (A) and Reason (R) are true and Reason (R) is the correct explanation of Assertion (A).*
           *(b) Both Assertion (A) and Reason (R) are true, but Reason (R) is NOT the correct explanation of Assertion (A).*
@@ -4399,14 +4554,24 @@ ${secMaths ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
     *   **5-Mark Long Answer (LA) Questions:**
         - One complete multi-step problem (for example a quadratic word problem, a heights-and-distances problem or a combination-of-solids problem), or a theorem to prove followed by an application of it. Sub-parts are allowed but NOT required — CBSE's own Maths papers mostly set single 5-mark problems.
         - **Internal choice:** give internal choice ONLY where the blueprint above says so (in a full paper, exactly 2 of the 4 Long Answer questions).
-` : ''}${!secMaths && usesMark(2) ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
+` : ''}${secSocial ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
+        - Answer in not more than **40 words**. Frame the question so the answer carries **exactly 2 marking-scheme value points** (for example "Justify the statement by giving two reasons", "Suggest two ...").
+    *   **3-Mark Short Answer (SA) Questions:**
+        - Answer in not more than **60 words**, with **3 value points** (for example "Analyse ... by giving three valid arguments", or a 1 + 2 split).
+    *   **5-Mark Long Answer (LA) Questions:**
+        - Answer in not more than **120 words**. A single analytical question (explain, evaluate, analyse, compare) is normal in CBSE Social Science papers; a split such as (1 + 2 + 2) is also used, for example on a data table. Show the split in the marks column when there is one.
+        - **Internal choice:** ${sstFullPaper ? `EVERY long answer has an internal choice (A) OR (B), from the same chapter and at the same level, as in the CBSE 2026-27 sample paper.` : `provide an internal choice (A) OR (B) where the blueprint above says so.`}
+` : ''}${!secMaths && !secSocial && usesMark(2) ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
         - Word limit: 30–50 words. Formulate questions so students provide **exactly 2 distinct marking points** (1M each or 0.5M × 4), matching official CBSE Marking Scheme value points.
-` : ''}${!secMaths && usesMark(3) ? `    *   **3-Mark Short Answer (SA) Questions:**
+` : ''}${!secMaths && !secSocial && usesMark(3) ? `    *   **3-Mark Short Answer (SA) Questions:**
         - Word limit: 50–80 words. Formulate questions so answers require **3 distinct step-wise value points** (or a structured 2M + 1M split).
-` : ''}${!secMaths && usesMark(5) ? `    *   **5-Mark Long Answer (LA) Questions:**
+` : ''}${!secMaths && !secSocial && usesMark(5) ? `    *   **5-Mark Long Answer (LA) Questions:**
         - **CBSE Board Rule:** Never frame an unstructured single 5-mark essay. All 5-mark questions MUST be sub-divided into structured sub-parts (e.g., '(a) [2 Marks] + (b) [2 Marks] + (c) [1 Mark]' or '(a) [3 Marks] + (b) [2 Marks]'), exactly as official CBSE Board SQPs do.
         - **100% Internal Choice:** Provide mandatory internal choice between two questions testing the same chapter and skill level.
-` : ''}${usesCaseBased ? `    *   **4-Mark Case-Based Questions (CBQs):**
+` : ''}${sstFullPaper ? `    *   **4-Mark Case-Based Questions (CBQs):**
+        - A source passage of about 120-180 words adapted from the NCERT textbook, with a heading and a source line (for example "Source: Contemporary India-II, NCERT, Chapter 2"), followed by **three sub-questions of 1, 1 and 2 marks** (in any order), numbered like 8.1, 8.2, 8.3. Answers in not more than 100 words in all.
+        - No internal choice inside a case-based question, as in the CBSE 2026-27 sample paper.
+` : ''}${usesCaseBased && !sstFullPaper ? `    *   **4-Mark Case-Based Questions (CBQs):**
         - Authentic real-world case/scenario, diagram, or data table from NCERT or CBSE Question Bank followed by:
           - (i) 1 Mark (factual/conceptual)
           - (ii) 1 Mark (analytical/application)
@@ -4416,10 +4581,12 @@ ${secMaths ? `    *   **2-Mark Very Short Answer (VSA) Questions:**
         - For a 40-Mark Periodic Assessment (90 Min): 10 Objective Questions (8 MCQs + 2 A/R) [10M], 3 VSA [6M], 3 SA [9M], 1 LA [5M], 2 Case Studies [10M] = 40 Marks.
         - Every examination, regardless of duration, builds authentic board exam presentation habits and time-management skills from Day 1.
 ` : ''}    *   **100% Score Presentation Rigor (Marking Scheme Value Points):**
-        - ${secMaths ? `Formulate questions requiring the formula to be stated, complete step-wise working, correct units in the final answer (cm, m², cm³, ₹, degrees), fully simplified answers, and neat labelled figures. Numbers must work out cleanly by hand, because calculators are not allowed.` : `Formulate questions requiring explicit formula statements, correct Cartesian sign conventions (+/-), final numerical answers with mandatory SI units (m, s, N, J, W, Pa, Ω, A, V, etc.), 100% balanced chemical equations with state symbols (s, l, g, aq), labeled biological diagrams with pointer lines, and clean schematic circuit symbols.`} Strict penalty cues train students for zero mark-deduction in board examinations.
+        - ${secSocial ? `Frame questions whose answers are distinct value points: accurate dates, names, places and terms; examples from the NCERT text; the keyword the marking scheme looks for (for example "prudential reason", "holding together federation", "disguised unemployment"); and, in map questions, the correct symbol and the name written beside it.` : secMaths ? `Formulate questions requiring the formula to be stated, complete step-wise working, correct units in the final answer (cm, m², cm³, ₹, degrees), fully simplified answers, and neat labelled figures. Numbers must work out cleanly by hand, because calculators are not allowed.` : `Formulate questions requiring explicit formula statements, correct Cartesian sign conventions (+/-), final numerical answers with mandatory SI units (m, s, N, J, W, Pa, Ω, A, V, etc.), 100% balanced chemical equations with state symbols (s, l, g, aq), labeled biological diagrams with pointer lines, and clean schematic circuit symbols.`} Strict penalty cues train students for zero mark-deduction in board examinations.
 9.  **Strict Rationalization & Strict Syllabus Confinement:**
     *   Strictly **EXCLUDE** all deleted topics/chapters rationalized by CBSE/NCERT for ${fullSubjectDisplay} in ${className}.
-${secScience ? `    *   **CBSE 2026-27 scope limits for ${className} Science (apply to every selected chapter):**
+${sstFullPaper ? `    *   **CBSE 2026-27 scope limits for ${className} Social Science (apply to every selected chapter):**
+${secSocial.scope.map(line => `        - ${line}`).join('\n')}
+` : ''}${secScience ? `    *   **CBSE 2026-27 scope limits for ${className} Science (apply to every selected chapter):**
 ${secScience.scope.map(line => `        - ${line}`).join('\n')}
 ` : ''}${secMaths ? `    *   **CBSE 2026-27 scope limits for ${className} Mathematics (apply to every selected chapter):**
 ${secMaths.scope.map(line => `        - ${line}`).join('\n')}
@@ -4671,7 +4838,7 @@ ${isFullPaper
   }
 
   if (sciFullPaper) {
-    const nSections = activeBlueprint && activeBlueprint.scienceKeys ? activeBlueprint.scienceKeys.length : secScience.sections.length;
+    const nSections = activeBlueprint && activeBlueprint.disciplineKeys ? activeBlueprint.disciplineKeys.length : secScience.sections.length;
     promptText += `\n\n**CBSE 2026-27 SCIENCE REQUIREMENTS:**
 *   **Figures — exactly as the sample paper:** ${nSections * 3} questions must give the student a figure, **3 in EACH section**, spread across question types as CBSE does (for example one MCQ whose stem or options are a figure, one 3-mark question built on a figure such as a ray diagram or circuit, and the case-based or long-answer question). Use apparatus setups, graphs, data tables, labelled biological diagrams, structural formulae, circuits and ray diagrams.
 *   **Student drawing:** in addition, 2 questions ask the student to draw (for example an electron-dot structure, a ray diagram, or a labelled biological diagram). Never print the answer figure.
@@ -4679,6 +4846,33 @@ ${isFullPaper
 *   **Case-based questions:** a real-life or experimental context with sub-parts A (1 mark), B (1 mark) and C OR D (2 marks).
 *   **Long answers:** split into sub-parts (I and II, or I to IV) with an internal choice of the whole question (option A OR option B).
 *   **Assertion-Reason:** print the four options (A)–(D) once, above the Assertion-Reason questions of each section.`;
+  }
+
+  if (sstFullPaper) {
+    const sections = sstSections || [];
+    const specOf = sec => secSocial.sections.find(x => x.key === sec.disciplineKey);
+    const mapSecs = sections.filter(sec => sec.disciplineCounts && sec.disciplineCounts.map);
+    const mapLines = mapSecs.map(sec => {
+      const spec = specOf(sec);
+      return `    - **${sec.name} (${spec.label}), ${sec.disciplineCounts.map} marks:** ${spec.map.task}. Use ONLY these items:\n      ${secSocial.mapList[spec.key].replace(/\n\s*/g, '\n      ')}`;
+    }).join('\n');
+    const hasSection = key => sections.some(sec => sec.disciplineKey === key);
+    const visuals = [
+      hasSection('history') ? `one History MCQ built on a picture from the NCERT textbook, with its source printed below it` : null,
+      hasSection('political') ? `one Political Science MCQ built on a cartoon from the NCERT textbook, with its source` : null,
+      hasSection('economics') ? `Economics questions on data tables (for example a table-completion MCQ, and a long answer on a table of development indicators); a data table set in text needs no alternative` : null
+    ].filter(Boolean);
+    const arCount = sstCount('ar');
+    promptText += `\n\n**CBSE 2026-27 SOCIAL SCIENCE REQUIREMENTS:**
+${mapSecs.length ? `*   **Map skill questions (${sstCount('map')} marks):** Print ${secSocial.mapPaper} at the END of each set, headed "Map for ${mapSecs.map(sec => `Q. no. __ (${sec.name})`).join(' & ')}", and refer to it from each map question ("Map is given at the end of the paper").
+${mapLines}
+    - In the identification question, mark only the places A and B on the map, with a blank line beside each for the answer. For locate-and-label items, the student draws the symbol and writes the name: do NOT mark or name those places on the printed map.
+` : `*   **No map question:** none of the selected chapters carries a CBSE map item, so the paper has no map question.
+`}*   **Visual inputs, as in the sample paper:** ${visuals.length ? visuals.join('; ') + '.' : 'use pictures, cartoons or data tables from the NCERT textbook where they suit the question.'}
+*   **Visually impaired candidates:** Directly below EVERY question with a visual input (picture, cartoon or map), add "Note: The following question is for Visually Impaired candidates only, in lieu of Q. No. __" and a words-only question on the same content with the same marks. For a map question, ask for the same kind of places in words (for example "Name the place where ...").
+*   **MCQ variety, as in the sample paper:** mix direct MCQs with statement-based (Statement I / Statement II), multi-statement ("Only a and c"), match-the-columns, chronological order (arrange I to IV), picture or cartoon based and, in Economics, a short numerical MCQ (for example sector shares of GDP) and a table to complete. Each MCQ has four options.${arCount ? `
+*   **Assertion-Reason:** exactly ${arCount} in the paper, placed in the sections the blueprint gives them to, each printed with its four options, as the sample paper does.` : ``}
+*   **Source-based framing:** case-based passages and pictures are adapted from the NCERT textbooks and name their source; long answers and 3-mark questions are analytical (analyse, evaluate, assess, justify), as in the sample paper.`;
   }
 
   if (secMaths) {
@@ -4689,8 +4883,10 @@ ${isFullPaper
 *   **Assertion-Reason:** print the four options (A)–(D) once, above the Assertion-Reason questions, as CBSE does.`;
   }
 
-  const scienceFigureQuota = sciFullPaper && activeBlueprint && activeBlueprint.scienceKeys
-    ? `Mandate **exactly ${activeBlueprint.scienceKeys.length * 3} figure-based questions — 3 in each section** — plus 2 questions in which the student draws, as set out in the CBSE 2026-27 Science requirements above.`
+  const scienceFigureQuota = sciFullPaper && activeBlueprint && activeBlueprint.disciplineKeys
+    ? `Mandate **exactly ${activeBlueprint.disciplineKeys.length * 3} figure-based questions — 3 in each section** — plus 2 questions in which the student draws, as set out in the CBSE 2026-27 Science requirements above.`
+    : sstSections
+    ? `Set the visual inputs exactly as the CBSE 2026-27 Social Science requirements above say: the picture and cartoon MCQs, the data tables, and ${sstCount('map') ? `one outline map at the end of the paper for the map questions` : `no map`}.`
     : null;
   const diagramProtocol = buildDiagramProtocol(className, subjectName, marks, false, unseenPassageCount, scienceFigureQuota);
   if (diagramProtocol) {
@@ -4711,9 +4907,13 @@ ${isFullPaper
     // Only a paper shorter than the 80-mark reference needs scaling down;
     // telling an 80-mark paper to shrink to 80 marks reads as a contradiction
     // and invites the AI to drop questions.
-    const droppedScience = sciFullPaper && activeBlueprint && activeBlueprint.scienceKeys &&
-      activeBlueprint.scienceKeys.length < secScience.sections.length;
-    const scalingNote = droppedScience
+    const droppedScience = sciFullPaper && activeBlueprint && activeBlueprint.disciplineKeys &&
+      activeBlueprint.disciplineKeys.length < secScience.sections.length;
+    // A Social Science paper also departs from the sample paper when a map
+    // question gives way to a written question.
+    const droppedSocial = !!sstSections && (sstSections.length < secSocial.sections.length ||
+      sstSections.some(sec => { const spec = secSocial.sections.find(x => x.key === sec.disciplineKey); return spec && spec.map && !sec.disciplineCounts.map; }));
+    const scalingNote = droppedScience || droppedSocial
       ? `\n\n**CRITICAL: PARTIAL SYLLABUS:**\nThis paper covers only the sections listed in the blueprint above. Follow that blueprint for the number of questions in each section; use the reference below for the question style, the order of question types within a section, and where internal choice goes.`
       : marks < 80
       ? `\n\n**CRITICAL: DOWNSCALING REQUIRED:**\nSince this official reference pattern is for a full 80-mark / 3-hour exam, you MUST proportionally downscale the number of questions in each section to fit the target ${marks} Marks and ${duration} time limit requested above. Maintain the exact same ratio of MCQ vs Short Answer vs Long Answer questions, just fewer of them.`

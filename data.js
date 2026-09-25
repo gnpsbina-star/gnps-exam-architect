@@ -2484,12 +2484,12 @@ export const cbseData = {
         ],
         "Chapter 3: The Making of a Global World": [
           "3.1 The Pre-Modern World: Silk Routes Linking the World, Food Travels (Spaghetti and Potato) and Conquest, Disease and Trade (Smallpox in America)",
-          "3.2 The Nineteenth Century (1815-1914): Three Flows in International Economic Exchanges (Flow of Trade, Labour and Capital)",
-          "3.3 A World Economy Takes Shape: Abolition of Corn Laws in Britain, Global Agricultural Market and Role of Technology (Refrigerated Ships)",
-          "3.4 Late Nineteenth-Century Colonialism, Rinderpest / Cattle Plague in Africa and Indentured Labour Migration from India (Caribbean, Fiji)",
-          "3.5 Indian Entrepreneurs Abroad (Shikaripuri Shroffs, Nattukottai Chettiars) and Indian Trade, Colonialism and the Global System"
+          "3.2 The Nineteenth Century (1815-1914): Three Flows in International Economic Exchanges (Flow of Trade, Labour and Capital) [Not assessed in the Board exam]",
+          "3.3 A World Economy Takes Shape: Abolition of Corn Laws in Britain, Global Agricultural Market and Role of Technology (Refrigerated Ships) [Not assessed in the Board exam]",
+          "3.4 Late Nineteenth-Century Colonialism, Rinderpest / Cattle Plague in Africa and Indentured Labour Migration from India (Caribbean, Fiji) [Not assessed in the Board exam]",
+          "3.5 Indian Entrepreneurs Abroad (Shikaripuri Shroffs, Nattukottai Chettiars) and Indian Trade, Colonialism and the Global System [Not assessed in the Board exam]"
         ],
-        "Chapter 4: The Age of Industrialisation": [
+        "Chapter 4: The Age of Industrialisation (Periodic Assessment only)": [
           "4.1 Before the Industrial Revolution: Proto-Industrialisation System and The Coming Up of the Factory (Richard Arkwright's Cotton Mill)",
           "4.2 The Pace of Industrial Change: Hand Labour and Steam Power (Demand for Seasonal Labour, Life of the Workers)",
           "4.3 Industrialisation in the Colonies: The Age of Indian Textiles (Decline of Surat & Hoogly, Rise of Bombay & Calcutta), What Happened to Weavers? (Gomasthas)",
@@ -2565,7 +2565,7 @@ export const cbseData = {
           "6.7 Automobile Industry and Information Technology & Electronics Industry (Bengaluru as Electronic Capital, Hardware Parks, BPO Employment)",
           "6.8 Industrial Pollution and Environmental Degradation: Air Pollution, Water Pollution, Thermal Pollution, Noise Pollution and Control of Environmental Degradation (NTPC Guidelines)"
         ],
-        "Chapter 7: Lifelines of National Economy": [
+        "Chapter 7: Lifelines of National Economy (Board exam: map pointing only)": [
           "7.1 Roadways: Advantages over Railways, Golden Quadrilateral Super Highways (North-South, East-West Corridors), National Highways (NHAI), State Highways, District Roads, Rural Roads (PMGSY), Border Roads (BRO)",
           "7.2 Road Density and Road Transportation Challenges",
           "7.3 Railways: Principal Mode of Freight and Passengers, Gauges (Broad, Metre, Narrow), Distribution Factors (Northern Plains vs Himalayan vs Desert)",
@@ -2656,16 +2656,16 @@ export const cbseData = {
           "3.9 Self-Help Groups (SHGs) for the Poor: Composition, Functioning, Collateral-Free Loans, Overcoming Rural Moneylenders and Empowering Rural Women (Grameen Bank of Bangladesh Model)"
         ],
         "Chapter 4: Globalisation and the Indian Economy": [
-          "4.1 Production Across Countries: Multinational Corporations (MNCs), Setting Up Production Across Geographic Boundaries to Minimise Costs",
-          "4.2 Interlinking Production Across Countries: FDI by MNCs, Joint Ventures with Local Companies, Buying Up Local Companies (Cargill Foods - Parakh Foods), Placing Orders with Small Producers",
-          "4.3 Foreign Trade and Integration of Markets: Connecting Producers and Consumers Worldwide, Chinese Toys in India Example",
+          "4.1 Production Across Countries: Multinational Corporations (MNCs), Setting Up Production Across Geographic Boundaries to Minimise Costs [Not assessed in the Board exam]",
+          "4.2 Interlinking Production Across Countries: FDI by MNCs, Joint Ventures with Local Companies, Buying Up Local Companies (Cargill Foods - Parakh Foods), Placing Orders with Small Producers [Not assessed in the Board exam]",
+          "4.3 Foreign Trade and Integration of Markets: Connecting Producers and Consumers Worldwide, Chinese Toys in India Example [Not assessed in the Board exam]",
           "4.4 What is Globalisation? Rapid Integration and Interconnection of Countries through Foreign Trade, Foreign Investment and Migration",
           "4.5 Factors that have Enabled Globalisation: Rapid Improvements in Transportation Technology (Containers for Goods) and Information and Communication Technology (Telecommunications, Computers, Internet)",
           "4.6 Liberalisation of Foreign Trade and Foreign Investment Policy: Removal of Trade Barriers (Customs Duties, Quotas), New Economic Policy 1991 in India",
-          "4.7 World Trade Organisation (WTO): Aims, Free Trade Advocacy, Developing vs Developed Countries Asymmetry in Agricultural Subsidies",
-          "4.8 Impact of Globalisation in India: Benefits to MNCs, Large Indian Companies (Tata Motors, Infosys, Ranbaxy becoming MNCs), Service Sector Jobs (Call Centers, IT)",
-          "4.9 Struggles of Small Producers: Competition, Battery and Capacitor Closures, Unorganised Labour Insecurity and Steps to Attract Foreign Investment (SEZs / Special Economic Zones)",
-          "4.10 The Struggle for a Fair Globalisation: Role of Government in Protecting Small Producers, Enforcing Labour Laws and Aligning with Developing Nations"
+          "4.7 World Trade Organisation (WTO): Aims, Free Trade Advocacy, Developing vs Developed Countries Asymmetry in Agricultural Subsidies [Not assessed in the Board exam]",
+          "4.8 Impact of Globalisation in India: Benefits to MNCs, Large Indian Companies (Tata Motors, Infosys, Ranbaxy becoming MNCs), Service Sector Jobs (Call Centers, IT) [Not assessed in the Board exam]",
+          "4.9 Struggles of Small Producers: Competition, Battery and Capacitor Closures, Unorganised Labour Insecurity and Steps to Attract Foreign Investment (SEZs / Special Economic Zones) [Not assessed in the Board exam]",
+          "4.10 The Struggle for a Fair Globalisation: Role of Government in Protecting Small Producers, Enforcing Labour Laws and Aligning with Developing Nations [Not assessed in the Board exam]"
         ]
       }
     },
