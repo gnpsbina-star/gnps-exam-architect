@@ -5791,6 +5791,8 @@ const PDF_EDGE_GUARD_PX = 3;
 // Units that read as one piece: a figure with its caption, an MCQ option grid.
 const PDF_KEEP_WHOLE_SELECTOR = 'img, svg, canvas, figure, video, .diagram-container, .diagram, .mcq-table';
 const PDF_HEADING_TEXT_RE = /^\s*(SECTION|PART|खण्ड|खंड)\b/i;
+// The divider between two internal-choice alternatives: "— OR —", "अथवा".
+const PDF_OR_LINE_RE = /^[\s—–\-()]*(OR|अथवा)[\s—–\-()]*$/i;
 
 function makePagePad(heightPx) {
   const pad = document.createElement('div');
@@ -5842,10 +5844,16 @@ function isSideBySide(style) {
     (/^(inline-)?flex$/.test(style.display) && !/column/.test(style.flexDirection));
 }
 
+// A line that introduces what follows it: a section heading or subtitle, or
+// the OR between two alternatives. Left alone at the foot of a page it reads
+// as if it belonged to the page before.
 function isHeadingLike(el) {
   if (/^H[1-6]$/.test(el.tagName)) return true;
-  const text = el.textContent || '';
-  return text.length <= 100 && PDF_HEADING_TEXT_RE.test(text);
+  const text = (el.textContent || '').trim();
+  if (!text || text.length > 100) return false;
+  if (PDF_HEADING_TEXT_RE.test(text) || PDF_OR_LINE_RE.test(text)) return true;
+  if (/^Fig/i.test(text)) return false; // a figure caption belongs with its figure
+  return getComputedStyle(el).textAlign === 'center' && el.getBoundingClientRect().height <= 40;
 }
 
 function isInlineLevel(el) {
@@ -5884,13 +5892,14 @@ function insertSafePageBreaks(root, pageHeightPx) {
 
     // A section heading, or a question's short opening line (its number and
     // title), must travel with what follows it rather than be stranded.
-    const prev = previousContent(el);
-    if (prev && prev.nodeType === Node.ELEMENT_NODE && onThisPage(prev)) {
+    // Several can stack up: a section title, its subtitle, then the question.
+    for (let step = 0; step < 3; step++) {
+      const prev = previousContent(el);
+      if (!prev || prev.nodeType !== Node.ELEMENT_NODE || !onThisPage(prev)) break;
       const prevHeight = prev.getBoundingClientRect().height;
-      if ((isHeadingLike(prev) && prevHeight < pageHeightPx * 0.15) ||
-          (!previousContent(prev) && prevHeight <= PDF_MIN_LEAD_PX)) {
-        el = prev;
-      }
+      if (!((isHeadingLike(prev) && prevHeight < pageHeightPx * 0.15) ||
+            (!previousContent(prev) && prevHeight <= PDF_MIN_LEAD_PX))) break;
+      el = prev;
     }
 
     // Moving the very first thing in a block moves the block, and moving the
@@ -5966,11 +5975,21 @@ function insertSafePageBreaks(root, pageHeightPx) {
         lineTop = Math.min(lineTop, prev.top);
       }
 
-      // The block's own first line: move the block (and its table row).
-      if (first === 0 && container !== root && !previousContent(nodes[0])) {
-        pushToNextPage(container, topOf(container));
-        i = 0;
-        continue;
+      // The block's own first line: move the block (and its table row). Text
+      // that opens straight after an OR line or heading takes that line along.
+      if (first === 0) {
+        const lead = previousContent(nodes[0]);
+        if (!lead && container !== root) {
+          pushToNextPage(container, topOf(container));
+          i = 0;
+          continue;
+        }
+        if (lead && lead.nodeType === Node.ELEMENT_NODE && isHeadingLike(lead) &&
+            pageOf(topOf(lead)) === pageOf(lineTop)) {
+          pushToNextPage(lead, topOf(lead));
+          i = 0;
+          continue;
+        }
       }
 
       const t = tokens[first];
