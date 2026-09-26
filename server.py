@@ -751,15 +751,18 @@ def fetch_syllabus_from_cbse(cls, subject_name):
         f"Unit 5: Practical Skills & Project Applications"
     ]
 
-# Folders in the repo that must never be served as static files.
-# tests/ holds real exam papers used by the PDF regression check.
+# Paths that must never be served as static files.
+# tests/ holds real exam papers used by the PDF regression check; the
+# .json files are runtime auth/data files that sit in the served folder
+# whenever DATA_DIR is not set to a separate disk (read via /api only).
 PRIVATE_PATH_PREFIXES = ('/tests/',)
+PRIVATE_FILE_NAMES = {'sessions.json', 'users.json', 'login_logs.json', 'custom_subjects.json'}
 
 class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     def send_head(self):
         # Covers both GET and HEAD for static files.
         path = '/' + posixpath.normpath(urllib.parse.unquote(urllib.parse.urlparse(self.path).path)).lstrip('/').lower()
-        if (path + '/').startswith(PRIVATE_PATH_PREFIXES):
+        if (path + '/').startswith(PRIVATE_PATH_PREFIXES) or posixpath.basename(path) in PRIVATE_FILE_NAMES:
             self.send_error(404, "File not found")
             return None
         return super().send_head()
