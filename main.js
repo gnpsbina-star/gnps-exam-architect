@@ -4002,6 +4002,7 @@ You must format the entire worksheet in clean, modern, print-ready HTML and CSS 
         \`<div style="background: #1e293b; color: #ffffff; padding: 4px 8px; font-weight: bold; font-size: 9.5pt; margin: 12px 0 8px 0; letter-spacing: 0.5px; border-left: 4px solid #0284c7;">[SECTION NAME]: [SECTION TITLE & MARKS]</div>\`
     *   **CRITICAL ZERO ANSWER SPACE MANDATE:** Do NOT include any dotted lines, blank lines, answer write-in boxes, or working space anywhere in the question sections. This is a compact, high-density question paper; students will solve all questions in their separate answer notebooks.
     *   Keep question spacing tight (\`margin-bottom: 8px;\`) to maximize questions per page and conserve paper.
+    *   **NO HALF-EMPTY PAGES:** Fill every page from top to bottom; the GNPS Exam Architect PDF converter paginates the worksheet and breaks long questions cleanly between their parts. Do NOT put \`page-break-inside: avoid;\` / \`break-inside: avoid;\` on a \`q-row\`, a case study, a passage or a section banner — only on diagram containers and the small MCQ option grid — and use no empty spacer blocks, runs of \`<br>\` or fixed heights. Put each sub-part ((a), (b), (i), (ii)) in its own \`<div>\` inside the question cell.
     *   Wrap each question in a table row:
         \`<div class="q-row" style="width: 100%; margin-bottom: 8px; display: table;">\`
         - Left cell: \`<div style="display: table-cell; width: 35px; font-weight: bold; vertical-align: top;">Q1.</div>\`
@@ -4173,7 +4174,7 @@ ${subjectSpecificRules}
          \`<svg viewBox="0 0 W H" width="240" height="130" style="display: block; margin: 0 auto; max-width: 100%;">...</svg>\`
          \`<div style="font-size: 10pt; font-weight: bold; margin-top: 4px; font-style: italic;">Fig. X: [Concise CBSE Caption]</div>\`
        \`</div>\`
-    4. **Anti-Page Break:** The diagram container MUST have \`page-break-inside: avoid;\` so diagrams never get awkwardly split across page breaks. Keep dimensions compact (width: 200px–340px, height: 100px–180px) to preserve strict even-page budgeting.`;
+    4. **Anti-Page Break:** The diagram container MUST have \`page-break-inside: avoid;\` so diagrams never get awkwardly split across page breaks. Keep dimensions compact (width: 200px–340px, height: 100px–180px) so a diagram that has to move to the next page never leaves a large blank gap behind it.`;
 }
 
 // CBSE gives Class 9/10 Mathematics marks per unit, not per chapter. The units
@@ -4692,11 +4693,15 @@ ${blueprintPromptText}
 2.  **Official CBSE Typography & Diagram Styling:** Style Section headings with **centered bold text only** — do NOT use \`text-decoration: underline\` on a heading/banner block, as the underline misplaces itself onto the next line when the paper is converted to PDF. In your HTML/CSS template, you must set the font family to 'Times New Roman' (or 'Mangal / Noto Serif Devanagari / Kruti Dev 010' for Hindi/Sanskrit), 12pt body text, 14pt bold sub-headings / section headers, and 18pt centered bold main header. For any diagram, chart, or graphic, wrap inside '<div class="diagram-container">' with 'text-align: center; margin: 8px auto 12px auto; page-break-inside: avoid;' and a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'.
 3.  **Line Spacing & Margins:** Enforce a strict CSS line-height: 1.25 and standard margins of 19mm (0.75 inches) on all sides ('@page { size: A4 portrait; margin: 19mm; }').
 4.  **Alignment & Footer:** Ensure clean vertical alignment with right-aligned marks (e.g., [1], [2], [3], [5]) matching official board papers. **DO NOT add a page footer, page numbers, or "Page X of Y" text anywhere in the HTML** — you cannot know how the content will paginate, so any footer you write would land in the middle of a page. The running footer ("GNPS / ${examName.toUpperCase()} / ${fullSubjectDisplay.toUpperCase()} / SET A" on the left and "Page X of Y" on the right) is stamped automatically onto every page by the GNPS Exam Architect PDF converter. Simply leave the bottom of the document clean.
-5.  **Even-Page Budgeting & Page Breaks (Critical for Printing):**
-    *   The final output for EACH PDF must fit EXACTLY into an even number of pages (e.g., exactly 2, 4, or 6 pages).
+5.  **Space Optimisation & Page Breaks (Critical for Printing — NO HALF-EMPTY PAGES):**
+    *   **Fill every page from top to bottom.** The paper must read as one continuous flow of questions with no blank gaps. Do NOT try to control where pages end or aim for a particular page count: the GNPS Exam Architect PDF converter paginates the paper itself and breaks long questions cleanly between their parts, so any attempt to keep a question on one page only leaves the rest of the previous page blank.
     *   **NEVER force a page break between sections.** Do NOT put \`page-break-before: always;\` on any Section or Part banner/heading. They must flow continuously down the page, one starting immediately after the previous one ends, otherwise the paper wastes half-empty pages. The ONLY permitted forced page break is between Set A and Set B (and those are separate documents anyway).
+    *   **NO KEEP-TOGETHER RULES ON BIG BLOCKS:** Do NOT put \`page-break-inside: avoid;\` / \`break-inside: avoid;\` (or \`display: inline-block\`, \`display: flex\` or \`display: grid\`) on a question, a question wrapper, a case study, a reading passage, an OR-choice block, an internal-choice (Option A / Option B) block or a section. A whole question pushed to the next page leaves the previous page half empty. The ONLY elements that may carry \`page-break-inside: avoid;\` are a diagram container and the small 2x2 MCQ option table (e.g., \`.mcq-table tr { page-break-inside: avoid; }\`). Never apply it globally to all table rows ('tr').
+    *   **Build every question from separate small blocks:** put the question stem, each case-study passage paragraph, each sub-part (A, B, C, D / (I), (II) / (a), (b), (c)), each "— OR —" line and each "(Option A)" / "(Option B)" heading in its OWN \`<div>\` or \`<p>\`, one after another. Do NOT put a whole question inside a single table cell, and do NOT stack sub-parts with \`<br>\` tags inside one block — separate blocks are what let a long question continue neatly onto the next page.
+    *   **No wasted vertical space:** no empty \`<p>\`/\`<div>\` spacers, no runs of \`<br>\`, no \`min-height\` or fixed \`height\` on text blocks, and no answer-writing space. Keep gaps tight: about 6–8px between questions, 2–4px between sub-parts, 8–12px above a Section heading.
+    *   **Marks on the last line of text:** place each mark allocation (e.g., [1], [2], [3], [5]) right-aligned at the END of the last line of the question or sub-part it belongs to (for example, \`<span style="float: right; font-weight: bold;">[3]</span>\` as the very last thing inside that block, straight after its final word), NOT in a separate block or on a line of its own — a marks-only line wastes a full line and can end up alone at the top of a page.
     *   Compact your line gaps and format MCQ options into a 2x2 grid ((a) ... (b) ... / (c) ... (d) ...).
-    *   **CRITICAL CSS RULE FOR PAGE BREAKS:** You must NOT apply 'page-break-inside: avoid;' globally to all table rows ('tr'). Doing so causes long text blocks (like Reading Passages) to jump entirely to the next page, leaving massive blank spaces. You must allow main question rows to break naturally across pages. You may ONLY apply 'page-break-inside: avoid;' strictly to small, nested elements such as the 2x2 MCQ option tables (e.g., '.mcq-table tr { page-break-inside: avoid; }'). The files must be completely ready for double-sided printing.
+    *   The files must be completely ready for double-sided printing.
 6.  **Dual Balanced Sets (Set A & Set B):**
     *   Generate **EXACTLY TWO DISTINCT SETS** (**Set A** and **Set B**), delivered as two separate standalone HTML documents in two separate \`\`\`html \`\`\` code blocks (see Rule 1).
     *   Both sets must feature 100% different questions while maintaining the exact same difficulty level, chapter weightage, and blueprint question counts.
@@ -5759,18 +5764,34 @@ function scopeCssToStage(cssText, scopeSelector) {
 
 const PDF_STAGE_WIDTH = 794; // A4 portrait at 96dpi
 const PDF_PAGE_MARGIN_MM = 12; // top/bottom margin, applied by html2pdf on every page
-const PDF_PAGE_HEIGHT_PX = ((297 - 2 * PDF_PAGE_MARGIN_MM) / 25.4) * 96; // usable A4 height at 96dpi
+const PDF_CANVAS_SCALE = 2;
+// html2pdf slices the captured canvas every floor(width x inner-page ratio)
+// canvas pixels. Use that exact figure: the plain 96dpi height is a fraction
+// of a pixel shorter, and the gap grows page by page until lines get cut.
+const PDF_PAGE_HEIGHT_PX = Math.floor(PDF_STAGE_WIDTH * PDF_CANVAS_SCALE * (297 - 2 * PDF_PAGE_MARGIN_MM) / 210) / PDF_CANVAS_SCALE;
 const PDF_PAGE_PADDING = '0 48px'; // side margins (~12mm); vertical margin comes from html2pdf
 const PDF_STAGE_ID = 'ai-pdf-paper';
 
-// Push any block that would straddle a page boundary onto the next page, so a
-// line of text is never sliced through the middle.
+// Fill every page to the bottom without ever slicing a line of text through
+// the middle. When something straddles a page boundary, break *inside* it at
+// the smallest safe point — between sub-parts, between rows, or at the start
+// of the line that would be cut — and move only that piece to the next page.
+// Moving the whole question instead is what left pages half empty whenever a
+// long answer, case study or OR-choice question didn't fit in the space left.
 //
 // html2pdf's own 'avoid-all' cannot be relied on here: it measures against the
 // viewport rather than the paper (so its spacers land a few pixels short and
-// cut the line anyway) and it gives up entirely on any block taller than a
-// page, which is exactly what a case study with a figure is. Measuring against
-// the paper and recursing into oversized blocks fixes both.
+// cut the line anyway), and it moves whole blocks, which wastes the page.
+
+// Starting a question in the last line or two of a page only strands its
+// number there, so a block whose first piece would be this short moves whole.
+const PDF_MIN_LEAD_PX = 48;
+// Ink this close to a cut still risks losing a sliver of a letter to it.
+const PDF_EDGE_GUARD_PX = 3;
+// Units that read as one piece: a figure with its caption, an MCQ option grid.
+const PDF_KEEP_WHOLE_SELECTOR = 'img, svg, canvas, figure, video, .diagram-container, .diagram, .mcq-table';
+const PDF_HEADING_TEXT_RE = /^\s*(SECTION|PART|खण्ड|खंड)\b/i;
+
 function makePagePad(heightPx) {
   const pad = document.createElement('div');
   pad.dataset.pdfPad = '1';
@@ -5778,61 +5799,227 @@ function makePagePad(heightPx) {
   return pad;
 }
 
-// A block's opening line is usually loose text with no element of its own (a
-// case study's heading, say), so it cannot be pushed like a child can. Measure
-// it with a Range and, if it straddles, pad from inside the block — wrapping it
-// in a div instead would knock a floated mark allocation onto its own line.
-function padLeadingInlineContent(el, paperTop, pageHeightPx) {
-  const leading = [];
-  for (const node of Array.from(el.childNodes)) {
-    if (node.nodeType === Node.ELEMENT_NODE) {
-      const display = getComputedStyle(node).display;
-      if (display !== 'inline' && display !== 'inline-block') break;
+// A table row can only take another row as its sibling.
+function makeRowPad(row, heightPx) {
+  const pad = document.createElement('tr');
+  pad.dataset.pdfPad = '1';
+  const cell = document.createElement('td');
+  cell.colSpan = Math.max(1, Array.from(row.cells).reduce((n, c) => n + c.colSpan, 0));
+  cell.style.cssText = `height: ${Math.ceil(heightPx)}px; padding: 0; border: 0; font-size: 0; line-height: 0;`;
+  pad.appendChild(cell);
+  return pad;
+}
+
+function isPagePad(node) {
+  return node.nodeType === Node.ELEMENT_NODE && node.dataset.pdfPad === '1';
+}
+
+function isKeptWhole(el, style, rect, pageHeightPx) {
+  if (el.matches(PDF_KEEP_WHOLE_SELECTOR)) return true;
+  if (/^(inline-)?grid$/.test(style.display)) return true;
+  if (/^(inline-)?flex$/.test(style.display) && !/column/.test(style.flexDirection)) return true;
+  // Option rows and small option grids only; a question laid out as a table
+  // row is split like any other question.
+  if (el.tagName === 'TR') return rect.height <= pageHeightPx * 0.1;
+  if (el.tagName === 'TABLE') return rect.height <= pageHeightPx * 0.12;
+  // A short boxed note (directions, the visually-impaired alternative) reads
+  // badly with its frame broken across two pages.
+  const framed = parseFloat(style.borderTopWidth) > 0 || parseFloat(style.borderLeftWidth) > 0 ||
+    !/^(transparent|rgba\(0, 0, 0, 0\)|rgb\(255, 255, 255\))$/.test(style.backgroundColor);
+  if (framed && rect.height <= pageHeightPx * 0.15) return true;
+  // A figure and its caption, however the AI happened to wrap them.
+  if (el.querySelector('img, svg, canvas') && (el.textContent || '').trim().length <= 160) return true;
+  // The AI's own keep-together hints are honoured only for small blocks.
+  const avoid = /avoid/.test(style.breakInside || '') || /avoid/.test(style.pageBreakInside || '');
+  return avoid && rect.height <= pageHeightPx * 0.2;
+}
+
+function isHeadingLike(el) {
+  if (/^H[1-6]$/.test(el.tagName)) return true;
+  const text = el.textContent || '';
+  return text.length <= 100 && PDF_HEADING_TEXT_RE.test(text);
+}
+
+function isInlineLevel(el) {
+  if (el.tagName === 'BR') return true;
+  const style = getComputedStyle(el);
+  return style.float !== 'none' || style.display.startsWith('inline') || style.display === 'contents';
+}
+
+// The nearest earlier sibling that actually renders something, or null when
+// the node is the first thing in its parent.
+function previousContent(node) {
+  for (let prev = node.previousSibling; prev; prev = prev.previousSibling) {
+    if (prev.nodeType === Node.TEXT_NODE) {
+      if (prev.data.trim()) return prev;
+    } else if (prev.nodeType === Node.ELEMENT_NODE && !isPagePad(prev) && !/^(STYLE|SCRIPT)$/.test(prev.tagName) &&
+               getComputedStyle(prev).display !== 'none') {
+      return prev;
     }
-    leading.push(node);
   }
-  if (!leading.length || !leading.some(node => (node.textContent || '').trim())) return;
-
-  const range = document.createRange();
-  range.setStartBefore(leading[0]);
-  range.setEndAfter(leading[leading.length - 1]);
-  const rect = range.getBoundingClientRect();
-  if (!rect || rect.height <= 0) return;
-
-  const top = rect.top - paperTop;
-  const bottom = rect.bottom - paperTop;
-  if (Math.floor(top / pageHeightPx) === Math.floor((bottom - 1) / pageHeightPx)) return;
-
-  el.insertBefore(makePagePad(pageHeightPx - (top % pageHeightPx)), el.firstChild);
+  return null;
 }
 
 function insertSafePageBreaks(root, pageHeightPx) {
   const paperTop = root.getBoundingClientRect().top;
+  const pageOf = (y) => Math.floor(y / pageHeightPx);
+  const toPaper = (rect) => ({ top: rect.top - paperTop, bottom: rect.bottom - paperTop });
+  const straddles = (box) => box.bottom > box.top && pageOf(box.top) !== pageOf(box.bottom - 1 + PDF_EDGE_GUARD_PX);
+  const roomLeft = (top) => (pageOf(top) + 1) * pageHeightPx - top;
+  const padFor = (top) => roomLeft(top) + PDF_EDGE_GUARD_PX;
 
-  const walk = (parent, depth) => {
-    if (depth > 4) return;
-    for (const el of Array.from(parent.children)) {
-      if (el.tagName === 'STYLE' || el.dataset.pdfPad === '1') continue;
+  const topOf = (el) => toPaper(el.getBoundingClientRect()).top;
 
-      const rect = el.getBoundingClientRect();
-      if (rect.height <= 0) continue;
+  const pushToNextPage = (el, top) => {
+    const page = pageOf(top);
+    const onThisPage = (candidate) => pageOf(topOf(candidate)) === page;
 
-      const top = rect.top - paperTop;
-      const bottom = rect.bottom - paperTop;
-      if (Math.floor(top / pageHeightPx) === Math.floor((bottom - 1) / pageHeightPx)) continue;
+    // A section heading, or a question's short opening line (its number and
+    // title), must travel with what follows it rather than be stranded.
+    const prev = previousContent(el);
+    if (prev && prev.nodeType === Node.ELEMENT_NODE && onThisPage(prev)) {
+      const prevHeight = prev.getBoundingClientRect().height;
+      if ((isHeadingLike(prev) && prevHeight < pageHeightPx * 0.15) ||
+          (!previousContent(prev) && prevHeight <= PDF_MIN_LEAD_PX)) {
+        el = prev;
+      }
+    }
 
-      if (rect.height > pageHeightPx && el.children.length) {
-        // Too tall to move as one piece, so break between its parts instead.
-        padLeadingInlineContent(el, paperTop, pageHeightPx);
-        walk(el, depth + 1);
+    // Moving the very first thing in a block moves the block, and moving the
+    // first thing in a table cell moves its whole row, so the question number
+    // and marks in the neighbouring cells go along with it.
+    while (el.parentElement && el.parentElement !== root && !previousContent(el)) {
+      const parent = el.parentElement;
+      const next = getComputedStyle(parent).display === 'table-cell' && parent.parentElement !== root
+        ? parent.parentElement
+        : parent;
+      if (!onThisPage(next)) break;
+      el = next;
+    }
+
+    const room = padFor(topOf(el));
+    const pad = el.tagName === 'TR' ? makeRowPad(el, room) : makePagePad(room);
+    el.parentNode.insertBefore(pad, el);
+  };
+
+  // Loose text is broken at the start of the line the boundary would cut.
+  const breakInlineRun = (nodes, container) => {
+    const tokens = [];
+    const collect = (node) => {
+      if (node.nodeType === Node.TEXT_NODE) {
+        const word = /\S+/g;
+        let m;
+        while ((m = word.exec(node.data)) !== null) tokens.push({ node, start: m.index, end: m.index + m[0].length });
+        return;
+      }
+      if (node.nodeType !== Node.ELEMENT_NODE || isPagePad(node) || node.tagName === 'BR') return;
+      const style = getComputedStyle(node);
+      if (style.display === 'none' || style.position === 'absolute' || style.position === 'fixed') return;
+      if ((style.display === 'inline' || style.display === 'contents') && style.float === 'none') {
+        node.childNodes.forEach(collect);
+      } else {
+        tokens.push({ el: node }); // an image, inline-block or float moves as one piece
+      }
+    };
+    nodes.forEach(collect);
+
+    const boxOf = (t) => {
+      if (t.el) return toPaper(t.el.getBoundingClientRect());
+      const range = document.createRange();
+      range.setStart(t.node, t.start);
+      range.setEnd(t.node, t.end);
+      return toPaper(range.getBoundingClientRect());
+    };
+
+    for (let i = 0; i < tokens.length; i++) {
+      const box = boxOf(tokens[i]);
+      if (!straddles(box) || box.bottom - box.top > pageHeightPx) continue;
+
+      // Back up to the first word on the same line so the whole line moves.
+      let first = i;
+      let lineTop = box.top;
+      while (first > 0) {
+        const prev = boxOf(tokens[first - 1]);
+        if (prev.bottom <= box.top || prev.top >= box.bottom) break;
+        first--;
+        lineTop = Math.min(lineTop, prev.top);
+      }
+
+      // The block's own first line: move the block (and its table row).
+      if (first === 0 && container !== root && !previousContent(nodes[0])) {
+        pushToNextPage(container, topOf(container));
+        i = 0;
         continue;
       }
 
-      el.parentNode.insertBefore(makePagePad(pageHeightPx - (top % pageHeightPx)), el);
+      const t = tokens[first];
+      const pad = makePagePad(padFor(lineTop));
+      if (t.el) {
+        t.el.parentNode.insertBefore(pad, t.el);
+      } else {
+        const whole = t.node;
+        const cut = t.start;
+        const rest = cut > 0 ? whole.splitText(cut) : whole;
+        rest.parentNode.insertBefore(pad, rest);
+        if (rest !== whole) {
+          for (let k = first; k < tokens.length; k++) {
+            if (tokens[k].node !== whole) continue;
+            tokens[k].node = rest;
+            tokens[k].start -= cut;
+            tokens[k].end -= cut;
+          }
+        }
+      }
+      i = first;
     }
   };
 
-  walk(root, 0);
+  const breakInside = (el, depth) => {
+    let run = [];
+    const flushRun = () => {
+      if (run.length) breakInlineRun(run, el);
+      run = [];
+    };
+    for (const node of Array.from(el.childNodes)) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        run.push(node);
+      } else if (node.nodeType === Node.ELEMENT_NODE && !isPagePad(node)) {
+        if (isInlineLevel(node)) {
+          run.push(node);
+        } else {
+          flushRun();
+          visit(node, depth);
+        }
+      }
+    }
+    flushRun();
+  };
+
+  const visit = (el, depth) => {
+    if (/^(STYLE|SCRIPT)$/.test(el.tagName)) return;
+    const rect = el.getBoundingClientRect();
+    // scrollHeight also counts a float hanging out of the bottom, like marks
+    // floated right inside an otherwise empty line.
+    const box = toPaper({ top: rect.top, bottom: Math.max(rect.bottom, rect.top + el.scrollHeight) });
+    if (!straddles(box)) return;
+
+    const style = getComputedStyle(el);
+    if (style.position === 'absolute' || style.position === 'fixed') return;
+    // Something taller than a page cannot be moved clear of the boundary.
+    const fitsOnOnePage = box.bottom - box.top <= pageHeightPx;
+
+    if (isKeptWhole(el, style, rect, pageHeightPx) || depth >= 12) {
+      if (fitsOnOnePage) pushToNextPage(el, box.top);
+      return;
+    }
+    if (fitsOnOnePage && roomLeft(box.top) < PDF_MIN_LEAD_PX) {
+      pushToNextPage(el, box.top);
+      return;
+    }
+    breakInside(el, depth + 1);
+  };
+
+  breakInside(root, 0);
 }
 
 async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
@@ -5872,6 +6059,13 @@ async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
 
   insertSafePageBreaks(content, PDF_PAGE_HEIGHT_PX);
 
+  // Every keep-together decision was just made above, against the paper.
+  // Left in place, the AI's own break-inside: avoid hints would make html2pdf's
+  // 'css' mode push whole questions to the next page all over again.
+  const breakReset = document.createElement('style');
+  breakReset.textContent = `#${PDF_STAGE_ID}, #${PDF_STAGE_ID} * { break-inside: auto !important; page-break-inside: auto !important; }`;
+  content.appendChild(breakReset);
+
   // Margins are split deliberately. Vertical margins go to html2pdf so every
   // page gets them (padding on this wrapper would only indent the first and
   // last page, letting the rest run into the paper edge). Horizontal margin
@@ -5882,7 +6076,7 @@ async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
     margin: [PDF_PAGE_MARGIN_MM, 0, PDF_PAGE_MARGIN_MM, 0],
     filename,
     image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2, useCORS: true, logging: false, letterRendering: true, scrollX: 0, scrollY: 0 },
+    html2canvas: { scale: PDF_CANVAS_SCALE, useCORS: true, logging: false, letterRendering: true, scrollX: 0, scrollY: 0 },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
     pagebreak: { mode: ['css', 'legacy'] }
   };
