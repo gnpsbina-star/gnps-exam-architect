@@ -6107,6 +6107,18 @@ function moveTrailingMarksUp(root) {
   });
 }
 
+// A floated "[5]" that no longer fits on its question's last line drops to
+// the next line, where the following block (often the "— OR —" line) would
+// sit beside it and seem to own it. Start that block below the mark instead.
+function keepMarksWithTheirText(root) {
+  root.querySelectorAll('*').forEach(mark => {
+    if (mark.children.length || !MARKS_TEXT_RE.test(mark.textContent || '')) return;
+    if (getComputedStyle(mark).float === 'none') return;
+    const next = nextContent(mark);
+    if (next && next.nodeType === Node.ELEMENT_NODE && !isInlineLevel(next)) next.style.clear = 'both';
+  });
+}
+
 function insertSafePageBreaks(root, pageHeightPx) {
   const paperTop = root.getBoundingClientRect().top;
   const pageOf = (y) => Math.floor(y / pageHeightPx);
@@ -6316,6 +6328,7 @@ async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
 
   await renderTexMath(content);
   moveTrailingMarksUp(content);
+  keepMarksWithTheirText(content);
   // A floated mark allocation inherits its block's text-indent; under a
   // hanging indent (text-indent: -14px) that draws "[3]" over the last word.
   content.querySelectorAll('*').forEach(el => {
