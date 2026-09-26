@@ -4009,6 +4009,7 @@ You must format the entire worksheet in clean, modern, print-ready HTML and CSS 
         - Center cell: \`<div style="display: table-cell; vertical-align: top; text-align: justify;">[Question Text]</div>\`
         - Right cell: \`<div style="display: table-cell; width: 45px; text-align: right; font-weight: bold; vertical-align: top;">[1]</div>\`
     *   **Assertion-Reason Layout:** Format with standard CBSE options (a), (b), (c), (d) cleanly displayed.
+    *   **Vectors:** write a vector quantity as \`<span class="vec">E</span>\` and add \`.vec { position: relative; display: inline-block; } .vec::before { content: '\\2192'; position: absolute; left: 0; right: 0; top: -0.55em; font-size: 0.7em; line-height: 1; text-align: center; }\` to your stylesheet so an arrow is drawn over the letter. NEVER write LaTeX-style \`&vec;\` — it is not HTML and prints as the literal text "&vec;".
     *   **MCQ Layout:** Format options \`(a)\`, \`(b)\`, \`(c)\`, \`(d)\` into a compact 2x2 grid table immediately below the question stem without extra margins.
     *   **Diagrams & Visuals:** Wrap all diagrams and graphics in '<div class="diagram-container" style="text-align: center; margin: 8px auto 10px auto; page-break-inside: avoid;">' containing an inline vector '<svg>...</svg>' and a bold italic figure caption '<div class="diagram-caption" style="font-size: 10pt; font-weight: bold; margin-top: 4px; font-style: italic;">Fig. X: [Label]</div>'.
 5.  **No Footer or Page Numbers:** Do NOT write a footer, page numbers, or "Page X of Y" into the HTML — you cannot know where the pages will break, so it would land mid-page. The GNPS Exam Architect PDF converter stamps the running footer on every page automatically.
@@ -4690,7 +4691,7 @@ ${blueprintPromptText}
     *   **STRICTLY DO NOT write or execute Python scripts, and DO NOT use or require any external compiler or CLI tools.** The document is designed to render directly in the browser preview / Gemini Canvas.
     *   **TWO SEPARATE DOCUMENTS (CRITICAL):** Output **Set A** and **Set B** as **TWO INDEPENDENT, COMPLETE HTML DOCUMENTS in TWO SEPARATE \`\`\`html \`\`\` code blocks**, one immediately after the other. Each code block MUST start with its own \`<!DOCTYPE html>\` and contain its own \`<html>\`, \`<head>\` (with the full embedded \`<style>\`) and \`<body>\` with its own complete school header. **DO NOT merge both sets into one HTML document separated by a page break** — they must be two standalone files so each can be saved and printed as its own separate PDF.
     *   Embed complete print styling (\`@media print { size: A4 portrait; margin: 19mm; }\`) and include a floating print button (\`<button onclick="window.print()" class="no-print" style="position: fixed; top: 16px; right: 16px; padding: 10px 18px; font-weight: bold; background: #0284c7; color: #fff; border: none; border-radius: 8px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">🖨️ Print / Save as PDF</button>\`) so the user can immediately preview and save as a pixel-perfect CBSE A4 PDF directly from their browser (\`Ctrl+P\` / \`Cmd+P\` -> Save as PDF).
-2.  **Official CBSE Typography & Diagram Styling:** Style Section headings with **centered bold text only** — do NOT use \`text-decoration: underline\` on a heading/banner block, as the underline misplaces itself onto the next line when the paper is converted to PDF. In your HTML/CSS template, you must set the font family to 'Times New Roman' (or 'Mangal / Noto Serif Devanagari / Kruti Dev 010' for Hindi/Sanskrit), 12pt body text, 14pt bold sub-headings / section headers, and 18pt centered bold main header. For any diagram, chart, or graphic, wrap inside '<div class="diagram-container">' with 'text-align: center; margin: 8px auto 12px auto; page-break-inside: avoid;' and a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'.
+2.  **Official CBSE Typography & Diagram Styling:** Style Section headings with **centered bold text only** — do NOT use \`text-decoration: underline\` on a heading/banner block, as the underline misplaces itself onto the next line when the paper is converted to PDF. In your HTML/CSS template, you must set the font family to 'Times New Roman' (or 'Mangal / Noto Serif Devanagari / Kruti Dev 010' for Hindi/Sanskrit), 12pt body text, 14pt bold sub-headings / section headers, and 18pt centered bold main header. For any diagram, chart, or graphic, wrap inside '<div class="diagram-container">' with 'text-align: center; margin: 8px auto 12px auto; page-break-inside: avoid;' and a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'. **Vectors:** write a vector quantity as \`<span class="vec">E</span>\` and add \`.vec { position: relative; display: inline-block; } .vec::before { content: '\\2192'; position: absolute; left: 0; right: 0; top: -0.55em; font-size: 0.7em; line-height: 1; text-align: center; }\` to your stylesheet so an arrow is drawn over the letter. NEVER write LaTeX-style \`&vec;\` — it is not HTML and prints as the literal text "&vec;".
 3.  **Line Spacing & Margins:** Enforce a strict CSS line-height: 1.25 and standard margins of 19mm (0.75 inches) on all sides ('@page { size: A4 portrait; margin: 19mm; }').
 4.  **Alignment & Footer:** Ensure clean vertical alignment with right-aligned marks (e.g., [1], [2], [3], [5]) matching official board papers. **DO NOT add a page footer, page numbers, or "Page X of Y" text anywhere in the HTML** — you cannot know how the content will paginate, so any footer you write would land in the middle of a page. The running footer ("GNPS / ${examName.toUpperCase()} / ${fullSubjectDisplay.toUpperCase()} / SET A" on the left and "Page X of Y" on the right) is stamped automatically onto every page by the GNPS Exam Architect PDF converter. Simply leave the bottom of the document clean.
 5.  **Space Optimisation & Page Breaks (Critical for Printing — NO HALF-EMPTY PAGES):**
@@ -5626,10 +5627,51 @@ function buildPrintableNode(htmlString) {
     }
   });
 
+  if (doc.body && drawVectorArrows(doc.body)) css += `\n${VECTOR_ARROW_CSS}`;
+
   const content = document.createElement('div');
   content.style.cssText = `width: ${PDF_STAGE_WIDTH}px; padding: ${PDF_PAGE_PADDING}; margin: 0; background: #ffffff; color: #000000; box-sizing: border-box;`;
   content.innerHTML = doc.body ? doc.body.innerHTML : htmlString;
   return { content, css };
+}
+
+// "&vec;" is LaTeX habit, not an HTML entity, so a Physics paper that writes
+// "&vec;E" for the electric field vector prints those six characters. Draw
+// the arrow over the letter instead; `.vec` is the markup the prompt asks for.
+const VECTOR_ARROW_CSS = `.pdf-vec, .vec { position: relative; display: inline-block; }
+.pdf-vec::before, .vec::before { content: '\\2192'; position: absolute; left: 0; right: 0; top: -0.55em; font-size: 0.7em; font-style: normal; font-weight: normal; line-height: 1; text-align: center; }`;
+
+function drawVectorArrows(root) {
+  const doc = root.ownerDocument;
+  const walker = doc.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const hits = [];
+  while (walker.nextNode()) {
+    if (walker.currentNode.data.includes('&vec;')) hits.push(walker.currentNode);
+  }
+  hits.forEach(node => {
+    const parts = node.data.split('&vec;');
+    const frag = doc.createDocumentFragment();
+    frag.appendChild(doc.createTextNode(parts[0]));
+    parts.slice(1).forEach((part, i) => {
+      const letter = part.match(/^\s*([A-Za-z\u0370-\u03FF])/);
+      if (letter) {
+        const vec = doc.createElement('span');
+        vec.className = 'pdf-vec';
+        vec.textContent = letter[1];
+        frag.appendChild(vec);
+        frag.appendChild(doc.createTextNode(part.slice(letter[0].length)));
+        return;
+      }
+      frag.appendChild(doc.createTextNode(part));
+      // "&vec;<em>E</em>": the letter sits in the next element.
+      const next = node.nextSibling;
+      if (i === parts.length - 2 && !part.trim() && next && next.nodeType === Node.ELEMENT_NODE) {
+        next.classList.add('pdf-vec');
+      }
+    });
+    node.replaceWith(frag);
+  });
+  return hits.length > 0 || !!root.querySelector('.vec');
 }
 
 // An <svg> without a viewBox clips anything drawn past its declared width or
