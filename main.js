@@ -4700,7 +4700,7 @@ ${blueprintPromptText}
     *   **NEVER force a page break between sections.** Do NOT put \`page-break-before: always;\` on any Section or Part banner/heading. They must flow continuously down the page, one starting immediately after the previous one ends, otherwise the paper wastes half-empty pages. The ONLY permitted forced page break is between Set A and Set B (and those are separate documents anyway).
     *   **NO KEEP-TOGETHER RULES ON BIG BLOCKS:** Do NOT put \`page-break-inside: avoid;\` / \`break-inside: avoid;\` (or \`display: inline-block\`, \`display: flex\` or \`display: grid\`) on a question, a question wrapper, a case study, a reading passage, an OR-choice block, an internal-choice (Option A / Option B) block or a section. A whole question pushed to the next page leaves the previous page half empty. The ONLY elements that may carry \`page-break-inside: avoid;\` are a diagram container and the small 2x2 MCQ option table (e.g., \`.mcq-table tr { page-break-inside: avoid; }\`). Never apply it globally to all table rows ('tr').
     *   **Build every question from separate small blocks:** put the question stem, each case-study passage paragraph, each sub-part (A, B, C, D / (I), (II) / (a), (b), (c)), each "— OR —" line and each "(Option A)" / "(Option B)" heading in its OWN \`<div>\` or \`<p>\`, one after another. Do NOT put a whole question inside a single table cell, and do NOT stack sub-parts with \`<br>\` tags inside one block — separate blocks are what let a long question continue neatly onto the next page.
-    *   **No wasted vertical space:** no empty \`<p>\`/\`<div>\` spacers, no runs of \`<br>\`, no \`min-height\` or fixed \`height\` on text blocks, and no answer-writing space. Keep gaps tight: about 6–8px between questions, 2–4px between sub-parts, 8–12px above a Section heading.
+    *   **No wasted vertical space:** no empty \`<p>\`/\`<div>\` spacers, no runs of \`<br>\`, no \`min-height\` or fixed \`height\` on text blocks, and no answer-writing space. Keep gaps compact but READABLE (never cramped): about 8–10px between questions, 5–6px between sub-parts, 12–14px above a Section heading; body line-height 1.25–1.3 for English and at least 1.4 for Hindi/Sanskrit (Devanagari matras need the extra room). Save space by removing spacers and empty lines, never by squeezing lines or questions together.
     *   **Marks on the last line of text:** place each mark allocation (e.g., [1], [2], [3], [5]) right-aligned at the END of the last line of the question or sub-part it belongs to (for example, \`<span style="float: right; font-weight: bold;">[3]</span>\` as the very last thing inside that block, straight after its final word), NOT in a separate block or on a line of its own — a marks-only line wastes a full line and can end up alone at the top of a page. For an MCQ, the \`[1]\` goes at the end of the question stem, BEFORE the options table — never after the options.
     *   Compact your line gaps and format MCQ options into a 2x2 grid ((a) ... (b) ... / (c) ... (d) ...).
     *   The files must be completely ready for double-sided printing.
@@ -6115,7 +6115,61 @@ function keepMarksWithTheirText(root) {
     if (mark.children.length || !MARKS_TEXT_RE.test(mark.textContent || '')) return;
     if (getComputedStyle(mark).float === 'none') return;
     const next = nextContent(mark);
-    if (next && next.nodeType === Node.ELEMENT_NODE && !isInlineLevel(next)) next.style.clear = 'both';
+    if (next && next.nodeType === Node.ELEMENT_NODE && !isInlineLevel(next)) {
+      // A zero-height clearer rather than clear on the block itself: the page
+      // break pass may later pad in front of that block, and clearance set on
+      // it would collapse into the pad and let it ride back over the cut.
+      const clearer = document.createElement('div');
+      clearer.dataset.pdfPad = '1';
+      clearer.style.cssText = 'clear: both; height: 0; margin: 0; padding: 0; border: 0;';
+      next.parentNode.insertBefore(clearer, next);
+    }
+  });
+}
+
+// Filling pages must never cost readability. Whatever spacing the pasted
+// paper asks for, keep a floor: enough line height for the script (Devanagari
+// needs extra room for its matras and conjuncts), a clear gap between two
+// questions, a smaller one between sub-parts, and air above section headings.
+const READABLE_LINE_HEIGHT = { latin: 1.25, devanagari: 1.4 };
+const QUESTION_GAP_EM = 0.5;
+const SUB_PART_GAP_EM = 0.35;
+const HEADING_GAP_EM = 0.9;
+const QUESTION_START_RE = /^(?:Q\.?\s*|प्र(?:श्न)?\s*\.?\s*)?\d{1,2}\s*[.)](?!\d)/i;
+const SUB_PART_START_RE = /^\(\s*(?:[ivx]{1,4}|[a-h]|[क-ङ]|च|छ|ज)\s*\)/i;
+
+function applyReadableSpacing(root) {
+  const text = root.textContent || '';
+  const devanagari = (text.match(/[\u0900-\u097F]/g) || []).length;
+  const latin = (text.match(/[A-Za-z]/g) || []).length;
+  const minLineHeight = devanagari > latin ? READABLE_LINE_HEIGHT.devanagari : READABLE_LINE_HEIGHT.latin;
+
+  root.querySelectorAll('*').forEach(el => {
+    if (/^(STYLE|SCRIPT|svg|SVG|IMG|BR)$/.test(el.tagName) || el.closest('svg, .katex')) return;
+    const style = getComputedStyle(el);
+    const fontSize = parseFloat(style.fontSize) || 16;
+
+    // Line height: "normal" is about 1.15; raise anything below the floor.
+    const lineHeight = style.lineHeight === 'normal' ? fontSize * 1.15 : parseFloat(style.lineHeight);
+    if (lineHeight / fontSize < minLineHeight - 0.01) el.style.lineHeight = String(minLineHeight);
+
+    // Gaps apply between stacked blocks, never inside a table cell, a list
+    // (the numbered instructions) or the paper's own header.
+    if (!/^(block|flow-root|table)$/.test(style.display) || el.closest('td, th, li')) return;
+    const prev = previousContent(el);
+    if (!prev || prev.nodeType !== Node.ELEMENT_NODE) return;
+    const lead = (el.textContent || '').trim().slice(0, 20);
+    let gapEm = 0;
+    // A heading gets air above it, but a subtitle stays tucked under its title.
+    if (isHeadingLike(el) && !PDF_OR_LINE_RE.test(lead)) gapEm = isHeadingLike(prev) ? 0 : HEADING_GAP_EM;
+    else if (QUESTION_START_RE.test(lead)) gapEm = QUESTION_GAP_EM;
+    // An options grid stays close to its own question; the air goes before
+    // the next sub-question instead.
+    else if (SUB_PART_START_RE.test(lead) && el.tagName !== 'TABLE') gapEm = SUB_PART_GAP_EM;
+    if (!gapEm) return;
+    const want = gapEm * fontSize;
+    const current = Math.max(parseFloat(style.marginTop) || 0, parseFloat(getComputedStyle(prev).marginBottom) || 0);
+    if (current < want) el.style.marginTop = `${want.toFixed(1)}px`;
   });
 }
 
@@ -6329,6 +6383,7 @@ async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
   await renderTexMath(content);
   moveTrailingMarksUp(content);
   keepMarksWithTheirText(content);
+  applyReadableSpacing(content);
   // A floated mark allocation inherits its block's text-indent; under a
   // hanging indent (text-indent: -14px) that draws "[3]" over the last word.
   content.querySelectorAll('*').forEach(el => {
