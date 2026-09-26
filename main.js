@@ -4168,7 +4168,7 @@ function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = fa
 ${subjectSpecificRules}
 *   **OFFICIAL CBSE DIAGRAM STYLING & PRINT-SAFE RULES:**
     1. **Monochrome / Grayscale:** All SVG line art MUST use high-contrast black strokes (stroke="#000", stroke-width="1.5" or "2", fill="none" or subtle grayscale fills like #f8fafc) suitable for high-speed risograph / photocopier double-sided printing.
-    2. **Typography in SVG:** All text, labels, and values inside <text> tags MUST use font-family="Times New Roman", serif (font-size: 10pt to 12pt) to blend seamlessly with official board typography.
+    2. **Typography in SVG:** All text, labels, and values inside <text> tags MUST use font-family="Times New Roman", serif (font-size: 10pt to 12pt) to blend seamlessly with official board typography. Inside an SVG, NEVER use HTML tags such as \`<sub>\`, \`<sup>\`, \`<i>\`, \`<b>\`, \`<span>\` or \`<br>\` — the browser ends the whole diagram at the first one and the rest of the figure disappears. Use SVG \`<tspan>\` instead: subscript \`&Lambda;<tspan baseline-shift="sub" font-size="75%">m</tspan>\`, superscript \`<tspan baseline-shift="super" font-size="75%">2+</tspan>\`, italic \`<tspan font-style="italic">k</tspan>\`.
     2b. **MANDATORY SVG ATTRIBUTES (or the diagram will be clipped when converted to PDF):** Every \`<svg>\` MUST carry ALL of \`xmlns="http://www.w3.org/2000/svg"\`, an explicit \`viewBox="0 0 W H"\`, and matching numeric \`width="W" height="H"\` attributes. Every drawn coordinate must lie INSIDE the viewBox bounds — never draw at x or y values larger than the viewBox width/height, or that part of the figure will be cut off.
     3. **Container & Sizing:** Wrap every diagram inside a centered container with an explicit caption:
        \`<div class="diagram-container" style="text-align: center; margin: 8px auto 10px auto; page-break-inside: avoid;">\`
@@ -5594,8 +5594,29 @@ function buildAiPdfFileName(label) {
 // The pasted markup comes from an external AI chat, so it is untrusted: strip
 // scripts, inline event handlers and javascript: URLs before it ever touches
 // the live DOM (this page holds the signed-in user's session).
+// Inside an <svg>, the HTML parser treats <sub>, <sup>, <i>, <b>, <span> and
+// friends as the end of the drawing: everything after the first one (the
+// curves, the remaining labels) is dropped out of the figure as loose text.
+// Rewrite them as their SVG equivalents before the paper is parsed.
+const SVG_TEXT_TAGS = {
+  sub: '<tspan baseline-shift="sub" font-size="75%">',
+  sup: '<tspan baseline-shift="super" font-size="75%">',
+  i: '<tspan font-style="italic">',
+  em: '<tspan font-style="italic">',
+  b: '<tspan font-weight="bold">',
+  strong: '<tspan font-weight="bold">',
+  span: '<tspan>',
+};
+
+function repairSvgTextMarkup(html) {
+  return html.replace(/<svg\b[\s\S]*?<\/svg>/gi, svg => svg
+    .replace(/<br\s*\/?>/gi, ' ')
+    .replace(/<(sub|sup|i|em|b|strong|span)\b[^>]*>/gi, (m, tag) => SVG_TEXT_TAGS[tag.toLowerCase()])
+    .replace(/<\/(sub|sup|i|em|b|strong|span)\s*>/gi, '</tspan>'));
+}
+
 function buildPrintableNode(htmlString) {
-  const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+  const doc = new DOMParser().parseFromString(repairSvgTextMarkup(htmlString), 'text/html');
   doc.querySelectorAll('script, .no-print, [data-no-print]').forEach(n => n.remove());
   doc.querySelectorAll('*').forEach(el => {
     Array.from(el.attributes).forEach(attr => {
@@ -5801,6 +5822,33 @@ function normalizeRenderedSvgs(root) {
 
     const viewBox = (svg.getAttribute('viewBox') || '').split(/[\s,]+/).filter(Boolean).map(Number);
     const isPlainNumber = (value) => value && /^\d+(\.\d+)?(px)?$/i.test(value);
+
+    // A label placed past the viewBox edge (an e_g / t_2g tag beside an energy
+    // level, say) is clipped off when the figure is turned into an image.
+    // Grow the viewBox to take in everything drawn, and the displayed size
+    // with it, so the drawing keeps its scale.
+    if (viewBox.length === 4 && viewBox[2] > 0 && viewBox[3] > 0) {
+      try {
+        const box = svg.getBBox();
+        const pad = 2;
+        const [x, y, w, h] = viewBox;
+        const left = Math.min(x, box.x - pad);
+        const top = Math.min(y, box.y - pad);
+        const right = Math.max(x + w, box.x + box.width + pad);
+        const bottom = Math.max(y + h, box.y + box.height + pad);
+        if (box.width > 0 && (left < x || top < y || right > x + w || bottom > y + h)) {
+          const scaleX = isPlainNumber(svg.getAttribute('width')) ? parseFloat(svg.getAttribute('width')) / w : 1;
+          const scaleY = isPlainNumber(svg.getAttribute('height')) ? parseFloat(svg.getAttribute('height')) / h : 1;
+          viewBox.splice(0, 4, left, top, right - left, bottom - top);
+          svg.setAttribute('viewBox', viewBox.join(' '));
+          if (isPlainNumber(svg.getAttribute('width'))) svg.setAttribute('width', Math.round(viewBox[2] * scaleX));
+          if (isPlainNumber(svg.getAttribute('height'))) svg.setAttribute('height', Math.round(viewBox[3] * scaleY));
+        }
+      } catch (err) {
+        /* getBBox throws for an empty or detached SVG; leave it as drawn */
+      }
+    }
+
     if (viewBox.length === 4 && viewBox[2] > 0 && viewBox[3] > 0) {
       if (!isPlainNumber(svg.getAttribute('width'))) svg.setAttribute('width', Math.round(viewBox[2]));
       if (!isPlainNumber(svg.getAttribute('height'))) svg.setAttribute('height', Math.round(viewBox[3]));
