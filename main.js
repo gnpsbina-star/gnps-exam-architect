@@ -4701,7 +4701,7 @@ ${blueprintPromptText}
     *   **NO KEEP-TOGETHER RULES ON BIG BLOCKS:** Do NOT put \`page-break-inside: avoid;\` / \`break-inside: avoid;\` (or \`display: inline-block\`, \`display: flex\` or \`display: grid\`) on a question, a question wrapper, a case study, a reading passage, an OR-choice block, an internal-choice (Option A / Option B) block or a section. A whole question pushed to the next page leaves the previous page half empty. The ONLY elements that may carry \`page-break-inside: avoid;\` are a diagram container and the small 2x2 MCQ option table (e.g., \`.mcq-table tr { page-break-inside: avoid; }\`). Never apply it globally to all table rows ('tr').
     *   **Build every question from separate small blocks:** put the question stem, each case-study passage paragraph, each sub-part (A, B, C, D / (I), (II) / (a), (b), (c)), each "— OR —" line and each "(Option A)" / "(Option B)" heading in its OWN \`<div>\` or \`<p>\`, one after another. Do NOT put a whole question inside a single table cell, and do NOT stack sub-parts with \`<br>\` tags inside one block — separate blocks are what let a long question continue neatly onto the next page.
     *   **No wasted vertical space:** no empty \`<p>\`/\`<div>\` spacers, no runs of \`<br>\`, no \`min-height\` or fixed \`height\` on text blocks, and no answer-writing space. Keep gaps tight: about 6–8px between questions, 2–4px between sub-parts, 8–12px above a Section heading.
-    *   **Marks on the last line of text:** place each mark allocation (e.g., [1], [2], [3], [5]) right-aligned at the END of the last line of the question or sub-part it belongs to (for example, \`<span style="float: right; font-weight: bold;">[3]</span>\` as the very last thing inside that block, straight after its final word), NOT in a separate block or on a line of its own — a marks-only line wastes a full line and can end up alone at the top of a page.
+    *   **Marks on the last line of text:** place each mark allocation (e.g., [1], [2], [3], [5]) right-aligned at the END of the last line of the question or sub-part it belongs to (for example, \`<span style="float: right; font-weight: bold;">[3]</span>\` as the very last thing inside that block, straight after its final word), NOT in a separate block or on a line of its own — a marks-only line wastes a full line and can end up alone at the top of a page. For an MCQ, the \`[1]\` goes at the end of the question stem, BEFORE the options table — never after the options.
     *   Compact your line gaps and format MCQ options into a 2x2 grid ((a) ... (b) ... / (c) ... (d) ...).
     *   The files must be completely ready for double-sided printing.
 6.  **Dual Balanced Sets (Set A & Set B):**
@@ -6072,6 +6072,41 @@ function previousContent(node) {
   return null;
 }
 
+// The nearest later sibling that renders something, or null at the end.
+function nextContent(node) {
+  for (let next = node.nextSibling; next; next = next.nextSibling) {
+    if (next.nodeType === Node.TEXT_NODE) {
+      if (next.data.trim()) return next;
+    } else if (next.nodeType === Node.ELEMENT_NODE && !isPagePad(next) && !/^(STYLE|SCRIPT)$/.test(next.tagName) &&
+               getComputedStyle(next).display !== 'none') {
+      return next;
+    }
+  }
+  return null;
+}
+
+// An AI often places an MCQ's "[1]" after its options table. Floated right on
+// a line of its own, it costs a full line per question and can end up alone
+// at the top of the next page. Move it up to the end of the question text,
+// where board papers print it.
+const MARKS_TEXT_RE = /^\s*\[\s*\d+(?:\.\d+)?\s*(?:marks?)?\s*\]\s*$/i;
+
+function moveTrailingMarksUp(root) {
+  root.querySelectorAll('*').forEach(mark => {
+    if (mark.children.length || !MARKS_TEXT_RE.test(mark.textContent || '')) return;
+    if (getComputedStyle(mark).float !== 'right' || nextContent(mark)) return;
+    const options = previousContent(mark);
+    if (!options || options.nodeType !== Node.ELEMENT_NODE || !/^(TABLE|UL|OL)$/.test(options.tagName)) return;
+    const stem = previousContent(options);
+    if (!stem) return;
+    if (stem.nodeType === Node.TEXT_NODE || isInlineLevel(stem)) {
+      stem.after(mark);
+    } else if ((stem.textContent || '').trim() && !stem.querySelector('img, svg, canvas, table')) {
+      stem.appendChild(mark);
+    }
+  });
+}
+
 function insertSafePageBreaks(root, pageHeightPx) {
   const paperTop = root.getBoundingClientRect().top;
   const pageOf = (y) => Math.floor(y / pageHeightPx);
@@ -6280,6 +6315,7 @@ async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
   await new Promise(resolve => setTimeout(resolve, 250));
 
   await renderTexMath(content);
+  moveTrailingMarksUp(content);
   // A floated mark allocation inherits its block's text-indent; under a
   // hanging indent (text-indent: -14px) that draws "[3]" over the last word.
   content.querySelectorAll('*').forEach(el => {
