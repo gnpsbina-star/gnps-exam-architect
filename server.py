@@ -751,18 +751,22 @@ def fetch_syllabus_from_cbse(cls, subject_name):
         f"Unit 5: Practical Skills & Project Applications"
     ]
 
-# Paths that must never be served as static files.
-# tests/ holds real exam papers used by the PDF regression check; the
-# .json files are runtime auth/data files that sit in the served folder
-# whenever DATA_DIR is not set to a separate disk (read via /api only).
-PRIVATE_PATH_PREFIXES = ('/tests/',)
-PRIVATE_FILE_NAMES = {'sessions.json', 'users.json', 'login_logs.json', 'custom_subjects.json'}
+# The only files the browser app loads. Everything else in the folder
+# (exam papers, tests/, server code, runtime auth/data .json files when
+# DATA_DIR is not a separate disk) is refused so it can't be downloaded.
+# Add a file here when index.html, style.css or main.js starts loading it.
+PUBLIC_FILES = {
+    'index.html', 'style.css', 'main.js', 'data.js', 'sqp_blueprints.js',
+    'literature_context.js', 'brand_assets.js', 'signature_asset.js',
+    'bg.jpg', 'gnps-crest.png', 'gnps-crest-hd.png', 'gnps-logo.png',
+    'principal_signature.png',
+}
 
 class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
     def send_head(self):
         # Covers both GET and HEAD for static files.
-        path = '/' + posixpath.normpath(urllib.parse.unquote(urllib.parse.urlparse(self.path).path)).lstrip('/').lower()
-        if (path + '/').startswith(PRIVATE_PATH_PREFIXES) or posixpath.basename(path) in PRIVATE_FILE_NAMES:
+        path = posixpath.normpath(urllib.parse.unquote(urllib.parse.urlparse(self.path).path)).lstrip('/')
+        if path not in ('', '.') and path not in PUBLIC_FILES:
             self.send_error(404, "File not found")
             return None
         return super().send_head()
