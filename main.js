@@ -4009,7 +4009,7 @@ You must format the entire worksheet in clean, modern, print-ready HTML and CSS 
         - Center cell: \`<div style="display: table-cell; vertical-align: top; text-align: justify;">[Question Text]</div>\`
         - Right cell: \`<div style="display: table-cell; width: 45px; text-align: right; font-weight: bold; vertical-align: top;">[1]</div>\`
     *   **Assertion-Reason Layout:** Format with standard CBSE options (a), (b), (c), (d) cleanly displayed.
-    *   **Vectors:** write a vector quantity as \`<span class="vec">E</span>\` and add \`.vec { position: relative; display: inline-block; } .vec::before { content: '\\2192'; position: absolute; left: 0; right: 0; top: -0.55em; font-size: 0.7em; line-height: 1; text-align: center; }\` to your stylesheet so an arrow is drawn over the letter. NEVER write LaTeX-style \`&vec;\` — it is not HTML and prints as the literal text "&vec;".
+    *   **Vectors:** write a vector quantity as \`<span class="vec">E</span>\` and add \`.vec { position: relative; display: inline-block; } .vec::before { content: '\\2192'; position: absolute; left: 0; right: 0; top: -0.55em; font-size: 0.7em; line-height: 1; text-align: center; }\` to your stylesheet so an arrow is drawn over the letter. NEVER write LaTeX-style \`&vec;\` — it is not HTML and prints as the literal text "&vec;". **Formulas, equations and units in plain HTML — NO LaTeX:** write every chemical formula, ion, equation, unit and symbol with HTML tags and entities, e.g. \`H<sub>2</sub>SO<sub>4</sub>\`, \`Cr<sup>3+</sup>\`, \`MnO<sub>4</sub><sup>&minus;</sup>\`, \`E&deg;<sub>cell</sub>\`, \`&Lambda;<sub>m</sub>\`, \`mol L<sup>&minus;1</sup> s<sup>&minus;1</sup>\`, \`1.2 &times; 10<sup>&minus;3</sup>\`, \`&rarr;\` and \`&rlhar;\`. NEVER use LaTeX or TeX syntax such as \`$...$\`, \`\\text{}\`, \`\\frac{}{}\`, \`^{...}\`, \`_{...}\` or \`\\ce{}\` — the paper is plain HTML, so LaTeX prints as raw code like "$E^\\circ(\\text{Cr}^{3+})$". Write a fraction as \`a/b\` or with a stacked \`<sup>\`/\`<sub>\` pair.
     *   **MCQ Layout:** Format options \`(a)\`, \`(b)\`, \`(c)\`, \`(d)\` into a compact 2x2 grid table immediately below the question stem without extra margins.
     *   **Diagrams & Visuals:** Wrap all diagrams and graphics in '<div class="diagram-container" style="text-align: center; margin: 8px auto 10px auto; page-break-inside: avoid;">' containing an inline vector '<svg>...</svg>' and a bold italic figure caption '<div class="diagram-caption" style="font-size: 10pt; font-weight: bold; margin-top: 4px; font-style: italic;">Fig. X: [Label]</div>'.
 5.  **No Footer or Page Numbers:** Do NOT write a footer, page numbers, or "Page X of Y" into the HTML — you cannot know where the pages will break, so it would land mid-page. The GNPS Exam Architect PDF converter stamps the running footer on every page automatically.
@@ -4691,7 +4691,7 @@ ${blueprintPromptText}
     *   **STRICTLY DO NOT write or execute Python scripts, and DO NOT use or require any external compiler or CLI tools.** The document is designed to render directly in the browser preview / Gemini Canvas.
     *   **TWO SEPARATE DOCUMENTS (CRITICAL):** Output **Set A** and **Set B** as **TWO INDEPENDENT, COMPLETE HTML DOCUMENTS in TWO SEPARATE \`\`\`html \`\`\` code blocks**, one immediately after the other. Each code block MUST start with its own \`<!DOCTYPE html>\` and contain its own \`<html>\`, \`<head>\` (with the full embedded \`<style>\`) and \`<body>\` with its own complete school header. **DO NOT merge both sets into one HTML document separated by a page break** — they must be two standalone files so each can be saved and printed as its own separate PDF.
     *   Embed complete print styling (\`@media print { size: A4 portrait; margin: 19mm; }\`) and include a floating print button (\`<button onclick="window.print()" class="no-print" style="position: fixed; top: 16px; right: 16px; padding: 10px 18px; font-weight: bold; background: #0284c7; color: #fff; border: none; border-radius: 8px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">🖨️ Print / Save as PDF</button>\`) so the user can immediately preview and save as a pixel-perfect CBSE A4 PDF directly from their browser (\`Ctrl+P\` / \`Cmd+P\` -> Save as PDF).
-2.  **Official CBSE Typography & Diagram Styling:** Style Section headings with **centered bold text only** — do NOT use \`text-decoration: underline\` on a heading/banner block, as the underline misplaces itself onto the next line when the paper is converted to PDF. In your HTML/CSS template, you must set the font family to 'Times New Roman' (or 'Mangal / Noto Serif Devanagari / Kruti Dev 010' for Hindi/Sanskrit), 12pt body text, 14pt bold sub-headings / section headers, and 18pt centered bold main header. For any diagram, chart, or graphic, wrap inside '<div class="diagram-container">' with 'text-align: center; margin: 8px auto 12px auto; page-break-inside: avoid;' and a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'. **Vectors:** write a vector quantity as \`<span class="vec">E</span>\` and add \`.vec { position: relative; display: inline-block; } .vec::before { content: '\\2192'; position: absolute; left: 0; right: 0; top: -0.55em; font-size: 0.7em; line-height: 1; text-align: center; }\` to your stylesheet so an arrow is drawn over the letter. NEVER write LaTeX-style \`&vec;\` — it is not HTML and prints as the literal text "&vec;".
+2.  **Official CBSE Typography & Diagram Styling:** Style Section headings with **centered bold text only** — do NOT use \`text-decoration: underline\` on a heading/banner block, as the underline misplaces itself onto the next line when the paper is converted to PDF. In your HTML/CSS template, you must set the font family to 'Times New Roman' (or 'Mangal / Noto Serif Devanagari / Kruti Dev 010' for Hindi/Sanskrit), 12pt body text, 14pt bold sub-headings / section headers, and 18pt centered bold main header. For any diagram, chart, or graphic, wrap inside '<div class="diagram-container">' with 'text-align: center; margin: 8px auto 12px auto; page-break-inside: avoid;' and a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'. **Vectors:** write a vector quantity as \`<span class="vec">E</span>\` and add \`.vec { position: relative; display: inline-block; } .vec::before { content: '\\2192'; position: absolute; left: 0; right: 0; top: -0.55em; font-size: 0.7em; line-height: 1; text-align: center; }\` to your stylesheet so an arrow is drawn over the letter. NEVER write LaTeX-style \`&vec;\` — it is not HTML and prints as the literal text "&vec;". **Formulas, equations and units in plain HTML — NO LaTeX:** write every chemical formula, ion, equation, unit and symbol with HTML tags and entities, e.g. \`H<sub>2</sub>SO<sub>4</sub>\`, \`Cr<sup>3+</sup>\`, \`MnO<sub>4</sub><sup>&minus;</sup>\`, \`E&deg;<sub>cell</sub>\`, \`&Lambda;<sub>m</sub>\`, \`mol L<sup>&minus;1</sup> s<sup>&minus;1</sup>\`, \`1.2 &times; 10<sup>&minus;3</sup>\`, \`&rarr;\` and \`&rlhar;\`. NEVER use LaTeX or TeX syntax such as \`$...$\`, \`\\text{}\`, \`\\frac{}{}\`, \`^{...}\`, \`_{...}\` or \`\\ce{}\` — the paper is plain HTML, so LaTeX prints as raw code like "$E^\\circ(\\text{Cr}^{3+})$". Write a fraction as \`a/b\` or with a stacked \`<sup>\`/\`<sub>\` pair.
 3.  **Line Spacing & Margins:** Enforce a strict CSS line-height: 1.25 and standard margins of 19mm (0.75 inches) on all sides ('@page { size: A4 portrait; margin: 19mm; }').
 4.  **Alignment & Footer:** Ensure clean vertical alignment with right-aligned marks (e.g., [1], [2], [3], [5]) matching official board papers. **DO NOT add a page footer, page numbers, or "Page X of Y" text anywhere in the HTML** — you cannot know how the content will paginate, so any footer you write would land in the middle of a page. The running footer ("GNPS / ${examName.toUpperCase()} / ${fullSubjectDisplay.toUpperCase()} / SET A" on the left and "Page X of Y" on the right) is stamped automatically onto every page by the GNPS Exam Architect PDF converter. Simply leave the bottom of the document clean.
 5.  **Space Optimisation & Page Breaks (Critical for Printing — NO HALF-EMPTY PAGES):**
@@ -5635,6 +5635,102 @@ function buildPrintableNode(htmlString) {
   return { content, css };
 }
 
+// Chemistry and Physics papers often come back with their formulas written in
+// LaTeX ("$E^\circ(\text{Cr}^{3+}/\text{Cr})$"), which a browser prints as
+// raw code. Typeset it with KaTeX before the page is measured and captured.
+// The library is only fetched when a paper actually contains LaTeX.
+const KATEX_BASE_URL = 'https://cdn.jsdelivr.net/npm/katex@0.18.9/dist';
+const TEX_MATH_RE = /\$\$[\s\S]+?\$\$|\$[^$\n]*\\[A-Za-z][^$\n]*\$|\\\([\s\S]+?\\\)|\\\[[\s\S]+?\\\]/;
+const TEX_SYMBOLS = {
+  alpha: 'α', beta: 'β', gamma: 'γ', delta: 'δ', epsilon: 'ε', varepsilon: 'ε', theta: 'θ', lambda: 'λ',
+  mu: 'μ', nu: 'ν', pi: 'π', rho: 'ρ', sigma: 'σ', tau: 'τ', phi: 'φ', omega: 'ω', Delta: 'Δ', Lambda: 'Λ',
+  Omega: 'Ω', Phi: 'Φ', circ: '°', degree: '°', times: '×', cdot: '·', pm: '±', to: '→', rightarrow: '→',
+  longrightarrow: '→', leftarrow: '←', rightleftharpoons: '⇌', leq: '≤', geq: '≥', le: '≤', ge: '≥',
+  neq: '≠', approx: '≈', infty: '∞', propto: '∝', sqrt: '√', bullet: '•',
+};
+const SUPERSCRIPTS = { '0': '⁰', '1': '¹', '2': '²', '3': '³', '4': '⁴', '5': '⁵', '6': '⁶', '7': '⁷', '8': '⁸', '9': '⁹', '+': '⁺', '-': '⁻', '−': '⁻', n: 'ⁿ' };
+const SUBSCRIPTS = { '0': '₀', '1': '₁', '2': '₂', '3': '₃', '4': '₄', '5': '₅', '6': '₆', '7': '₇', '8': '₈', '9': '₉', '+': '₊', '-': '₋', m: 'ₘ', e: 'ₑ' };
+
+function loadScriptOnce(src) {
+  const existing = document.querySelector(`script[src="${src}"]`);
+  if (existing && existing.dataset.loaded === '1') return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const script = existing || document.createElement('script');
+    script.addEventListener('load', () => { script.dataset.loaded = '1'; resolve(); }, { once: true });
+    script.addEventListener('error', () => reject(new Error(`Could not load ${src}`)), { once: true });
+    if (!existing) {
+      script.src = src;
+      document.head.appendChild(script);
+    }
+  });
+}
+
+function loadStylesheetOnce(href) {
+  if (document.querySelector(`link[href="${href}"]`)) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = href;
+  document.head.appendChild(link);
+}
+
+// SVG text cannot hold KaTeX's HTML, so a figure label written in LaTeX is
+// flattened to plain text with Unicode symbols, subscripts and superscripts.
+function flattenTexToText(text) {
+  const script = (chars, map) => [...chars].map(c => map[c] || c).join('');
+  return text
+    .replace(/\$\$?|\\[()[\]]/g, '')
+    .replace(/\\(?:text|mathrm|mathbf|mathit|operatorname|ce)\s*\{([^{}]*)\}/g, '$1')
+    .replace(/\\frac\s*\{([^{}]*)\}\s*\{([^{}]*)\}/g, '$1/$2')
+    .replace(/\\([A-Za-z]+)/g, (m, name) => TEX_SYMBOLS[name] || '')
+    .replace(/\^\{([^{}]*)\}|\^(\S)/g, (m, group, one) => script(group ?? one, SUPERSCRIPTS))
+    .replace(/_\{([^{}]*)\}|_(\S)/g, (m, group, one) => script(group ?? one, SUBSCRIPTS))
+    .replace(/[{}]/g, '')
+    .replace(/\\,|\;|\\ /g, ' ');
+}
+
+async function renderTexMath(root) {
+  if (!TEX_MATH_RE.test(root.textContent || '')) return;
+
+  root.querySelectorAll('svg text, svg tspan').forEach(label => {
+    if (label.children.length === 0 && /[$\\^_]/.test(label.textContent || '')) {
+      label.textContent = flattenTexToText(label.textContent);
+    }
+  });
+
+  try {
+    loadStylesheetOnce(`${KATEX_BASE_URL}/katex.min.css`);
+    await loadScriptOnce(`${KATEX_BASE_URL}/katex.min.js`);
+    await loadScriptOnce(`${KATEX_BASE_URL}/contrib/mhchem.min.js`);
+    await loadScriptOnce(`${KATEX_BASE_URL}/contrib/auto-render.min.js`);
+    window.renderMathInElement(root, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '\\[', right: '\\]', display: true },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '$', right: '$', display: false },
+      ],
+      ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'svg'],
+      throwOnError: false,
+    });
+    // KaTeX sets maths 21% larger than the text around it; match the paper.
+    const sizing = document.createElement('style');
+    sizing.textContent = `${root.id ? `#${root.id} ` : ''}.katex { font-size: 1.05em; }`;
+    root.insertBefore(sizing, root.firstChild);
+    await document.fonts.ready;
+  } catch (err) {
+    // Offline or blocked: flatten the LaTeX to readable text instead.
+    console.warn('LaTeX could not be typeset; flattening it to plain text.', err);
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(node => {
+      if (/[$\\]/.test(node.data) && !node.parentElement.closest('style, script')) {
+        node.data = node.data.replace(/\$\$[\s\S]+?\$\$|\$[^$\n]+\$/g, m => flattenTexToText(m));
+      }
+    });
+  }
+}
+
 // "&vec;" is LaTeX habit, not an HTML entity, so a Physics paper that writes
 // "&vec;E" for the electric field vector prints those six characters. Draw
 // the arrow over the letter instead; `.vec` is the markup the prompt asks for.
@@ -6125,6 +6221,7 @@ async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
 
   await new Promise(resolve => setTimeout(resolve, 250));
 
+  await renderTexMath(content);
   normalizeRenderedSvgs(content);
   await rasterizeSvgs(content);
 
