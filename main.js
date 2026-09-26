@@ -3505,6 +3505,11 @@ function getSubjectWithCode(subjectName, className) {
   const subLower = subjectName.toLowerCase().trim();
   const isSenior = className === "Class 11" || className === "Class 12";
 
+  // Class 9 Hindi R2 (Ganga) is printed without a subject code (school's choice).
+  if (className === "Class 9" && subLower.includes("hindi") && (subLower.includes("r2") || subLower.includes("ganga"))) {
+    return subjectName.trim();
+  }
+
   if (!isSenior) {
     if (subLower === "physics" || subLower === "science (physics)" || subLower === "physics (science)") return "Science (Physics) (086)";
     if (subLower === "chemistry" || subLower === "science (chemistry)" || subLower === "chemistry (science)") return "Science (Chemistry) (086)";
