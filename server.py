@@ -360,6 +360,29 @@ def _split_class10_maths():
 
 _split_class10_maths()
 
+# Class 10 Hindi is CBSE Hindi Course B (085), taught from Sparsh and Sanchayan
+# Part 2; "Ganga" is the Class 9 textbook. A live copy seeded under the old
+# name "Hindi (R2 - Ganga)" is renamed in place, keeping its position in the
+# dropdown and any admin edits.
+def _rename_class10_hindi():
+    data = get_custom_data()
+    class10 = data.get("Class 10")
+    old, new = "Hindi (R2 - Ganga)", "Hindi Course B"
+    if not isinstance(class10, dict) or old not in class10:
+        return
+    renamed = {}
+    for subj, chapters in class10.items():
+        key = new if subj == old else subj
+        if key not in renamed:
+            renamed[key] = chapters
+    data["Class 10"] = renamed
+    try:
+        save_custom_data(data)
+    except Exception as e:
+        print(f"Error renaming Class 10 Hindi in {CUSTOM_FILE}: {e}")
+
+_rename_class10_hindi()
+
 # Subjects whose chapter lists were rewritten from a CBSE curriculum document.
 # The live copy on DATA_DIR keeps whatever it was seeded with, and it overrides
 # data.js in the browser, so each rewrite is copied across from the shipped
@@ -377,7 +400,7 @@ CURRICULUM_UPDATES = [
     ("2026-27-class6-english-grammar", [("Class 6", "English (R1)")]),
     ("2026-27-class7-english-grammar", [("Class 7", "English (R1)")]),
     ("2026-27-class8-english-grammar", [("Class 8", "English (R1)")]),
-    ("2026-27-hindi", [("Class 9", "Hindi (R2 - Ganga)"), ("Class 10", "Hindi (R2 - Ganga)")]),
+    ("2026-27-hindi", [("Class 9", "Hindi (R2 - Ganga)"), ("Class 10", "Hindi Course B")]),
     ("2026-27-skill-subjects", [(cls, subj) for cls in ("Class 9", "Class 10")
                                 for subj in ("Introduction to Financial Markets (405)", "Health Care (413)",
                                              "Artificial Intelligence (417)", "Physical Activity Trainer (418)")]),

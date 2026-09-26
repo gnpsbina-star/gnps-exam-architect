@@ -1,5 +1,5 @@
-import { cbseData } from './data.js?v=42';
-import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=9';
+import { cbseData } from './data.js?v=43';
+import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=10';
 import { getLiteratureContext } from './literature_context.js?v=1';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
@@ -271,7 +271,7 @@ async function loadCustomSubjects() {
   // Clear obsolete cached syllabus from older sessions
   try {
     if (typeof localStorage !== 'undefined') {
-      const CURRENT_SYLLABUS_VER = '2026_27_class11_12_humanities_chapters_v28';
+      const CURRENT_SYLLABUS_VER = '2026_27_class10_hindi_course_b_v29';
       if (localStorage.getItem('gnps_syllabus_version') !== CURRENT_SYLLABUS_VER) {
         localStorage.removeItem('gnps_custom_subjects');
         localStorage.setItem('gnps_syllabus_version', CURRENT_SYLLABUS_VER);
@@ -588,7 +588,7 @@ function buildSocialScienceSections(spec, sel, totalMarks) {
   });
 }
 
-// Class 9/10 English (R1) and Hindi (R2 - Ganga): one blueprint row per
+// Class 9/10 English (R1) and Hindi (Class 9 R2 - Ganga, Class 10 Course B): one blueprint row per
 // numbered question of the CBSE 2026-27 design in sqp_blueprints.js, so the
 // paper keeps CBSE's numbering and choices ("attempt any 4 of 5") question by
 // question.
@@ -942,7 +942,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
       let vyakaranType = "व्यावहारिक व्याकरण (8 बहुविकल्पी प्रश्न)";
       if (subLower.includes("course-a") || subLower.includes("hindi a") || subLower.includes("hindi (r1)") || subLower.includes("hindi r1") || subLower.includes("002")) {
         vyakaranType = "व्यावहारिक व्याकरण (वाच्य, पद-परिचय, वाक्य भेद, अलंकार)";
-      } else if (subLower.includes("course-b") || subLower.includes("hindi b") || subLower.includes("hindi (r2") || subLower.includes("hindi r2") || subLower.includes("ganga") || subLower.includes("085")) {
+      } else if (subLower.includes("course-b") || subLower.includes("course b") || subLower.includes("hindi b") || subLower.includes("hindi (r2") || subLower.includes("hindi r2") || subLower.includes("ganga") || subLower.includes("085")) {
         if (className === "Class 9") {
           vyakaranType = "व्यावहारिक व्याकरण (समानार्थी शब्द, मुहावरे, उपसर्ग-प्रत्यय, विराम चिह्न, संज्ञा-सर्वनाम-निपात)";
         } else {
@@ -1047,7 +1047,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   }
   // 5. Hindi Course R1 & R2 (80 Marks / 3 Hours)
   else if (subLower.includes("hindi") && marks >= 75 && getSecondaryHindi(className, subjectName)) {
-    // Class 9 / 10 Hindi (R2 - Ganga) on the CBSE 2026-27 design.
+    // Class 9 Hindi (R2 - Ganga) and Class 10 Hindi Course B on the CBSE 2026-27 design.
     sections = buildQuestionRows(getSecondaryHindi(className, subjectName));
   }
   else if (subLower.includes("hindi") && marks >= 75) {
@@ -2434,7 +2434,7 @@ function getPrescribedBookName(className, subjectName) {
     if (sub.includes("math")) return "Mathematics (Class X) (NCERT)";
     if (sub.includes("english") && sub.includes("r2")) return "Interact in English (Communicative) (CBSE)";
     if (sub.includes("english")) return "First Flight & Footprints Without Feet (NCERT)";
-    if (sub.includes("course-b") || sub.includes("hindi b") || sub.includes("hindi (r2")) return "Sparsh Part-2 & Sanchayan Part-2 (NCERT)";
+    if (sub.includes("course-b") || sub.includes("course b") || sub.includes("hindi b") || sub.includes("hindi (r2")) return "Sparsh Part-2 & Sanchayan Part-2 (NCERT)";
     if (sub.includes("hindi")) return "Kshitij Part-2 & Kritika Part-2 (NCERT)";
     if (sub.includes("sanskrit")) return "Shemushi Part-2 / Manika Part-2 (NCERT)";
     if (sub.includes("computer")) return "Computer Applications (Code 165)";
@@ -4313,7 +4313,7 @@ export async function buildPromptString(activeBtn) {
   const secEnglish = getSecondaryEnglish(className, subjectName);
   const engFullPaper = !!secEnglish && isFullLengthPaper;
   const engLongWords = className === 'Class 9' ? '120-150' : '100-120';
-  // Class 9 and 10 Hindi (R2 - Ganga), on the same terms as English.
+  // Class 9 Hindi (R2 - Ganga) and Class 10 Hindi Course B, on the same terms as English.
   const secHindi = getSecondaryHindi(className, subjectName);
   const hinFullPaper = !!secHindi && isFullLengthPaper;
   // Class 9 and 10 Financial Markets, Health Care, AI and Physical Activity
@@ -4864,7 +4864,7 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
     }
   }
 
-  // The school's Hindi labels are "Hindi (R2 - Ganga)", "Hindi (R2)" and
+  // The school's Hindi labels are "Hindi (R2 - Ganga)", "Hindi Course B", "Hindi (R2)" and
   // "Hindi Core", so guards written for "Hindi A" / "Hindi B" / "085" never
   // matched and these word limits had never once been emitted. Matched loosely
   // now; the two tables cover Classes 6-8 and 9-10 respectively and simply
@@ -6892,7 +6892,7 @@ export const cbseSEAData = {
       ]
     },
     {
-      subject: "Hindi (R2 - Ganga)",
+      subject: "Hindi Course B",
       activities: [
         "गतिविधि 1: वाद-विवाद/आशुभाषण - 'स्वच्छ भारत अभियान' अथवा 'आत्मनिर्भर भारत' विषय पर ओजस्वी वक्तव्य।",
         "गतिविधि 2: श्रवण कौशल - समसामयिक परिचर्चा सुनकर वक्ता के तर्कों का विश्लेषणात्मक मूल्यांकन।",

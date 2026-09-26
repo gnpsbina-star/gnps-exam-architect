@@ -589,8 +589,8 @@ this is the design printed in CBSE's Class IX 2026-27 curriculum. The paper has 
 // Class 9 and 10 Hindi, from the CBSE 2026-27 curriculum documents
 // (Hindi_B_SecP1_2026-27 for Class X Hindi Course B, code 085;
 // Hindi_SecP1IX_2026-27 for Class IX R2) and the Class X Course B 2026-27
-// sample paper. The school's "Hindi (R2 - Ganga)" is Course B at Class 10
-// (Sparsh Part 2 and Sanchayan Part 2) and R2 at Class 9 (the new NCERT
+// sample paper. The school offers "Hindi Course B" at Class 10 (Sparsh Part 2
+// and Sanchayan Part 2) and "Hindi (R2 - Ganga)" at Class 9 (the new NCERT
 // textbook Ganga, which CBSE says serves R1 and R2 alike).
 //
 // Class 10: 16 questions in 14 / 16 / 28 / 22 marks, question by question as
@@ -704,9 +704,11 @@ export const secondaryHindi = {
   }
 };
 
-// Class 9 and 10 "Hindi (R2 - Ganga)" only; other Hindi courses keep their layout.
+// Class 9 "Hindi (R2 - Ganga)" and Class 10 "Hindi Course B" only; other Hindi
+// courses keep their layout.
+const SECONDARY_HINDI_SUBJECT = { "Class 9": "Hindi (R2 - Ganga)", "Class 10": "Hindi Course B" };
 export function getSecondaryHindi(className, subjectName) {
-  if (subjectName !== "Hindi (R2 - Ganga)") return null;
+  if (!subjectName || subjectName !== SECONDARY_HINDI_SUBJECT[className]) return null;
   return secondaryHindi[className] || null;
 }
 
@@ -877,7 +879,7 @@ const accLadder = acc.markLadder.join(', ').replace(/, (\d+)$/, ' and $1');
 const accExcluded = acc.excludedMarks.map(m => `${m}-mark`).join(' or ');
 
 export const sqpBlueprints = {
-  "Class 10 || Hindi (R2 - Ganga)": {
+  "Class 10 || Hindi Course B": {
     year: "2026-27",
     text: `${class10HindiPattern}
 CBSE states there is no change in the Question Paper Design and Assessment Pattern for 2026-27.`

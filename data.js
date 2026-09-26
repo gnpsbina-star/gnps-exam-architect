@@ -2790,7 +2790,7 @@ export const cbseData = {
         "9. The Book That Saved the Earth (Claire Boiko)"
       ]
     },
-    "Hindi (R2 - Ganga)": {
+    "Hindi Course B": {
       "खण्ड क : अपठित बोध": [
         "1. अपठित गद्यांश 1 (लगभग 200 शब्द)",
         "2. अपठित गद्यांश 2 (लगभग 200 शब्द)"
