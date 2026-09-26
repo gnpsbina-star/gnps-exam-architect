@@ -5712,6 +5712,15 @@ async function renderTexMath(root) {
       ignoredTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code', 'svg'],
       throwOnError: false,
     });
+    // LaTeX spacing typed outside the $...$ ("($r_0$)\ /\ $...$") survives
+    // as a literal backslash; turn it back into the space it stood for.
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      if (/\\[ ,;:!]/.test(node.data) && !node.parentElement.closest('.katex, style, script')) {
+        node.data = node.data.replace(/\\[ ,;:!]/g, ' ');
+      }
+    }
     // KaTeX sets maths 21% larger than the text around it; match the paper.
     const sizing = document.createElement('style');
     sizing.textContent = `${root.id ? `#${root.id} ` : ''}.katex { font-size: 1.05em; }`;
@@ -6222,6 +6231,12 @@ async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
   await new Promise(resolve => setTimeout(resolve, 250));
 
   await renderTexMath(content);
+  // A floated mark allocation inherits its block's text-indent; under a
+  // hanging indent (text-indent: -14px) that draws "[3]" over the last word.
+  content.querySelectorAll('*').forEach(el => {
+    const style = getComputedStyle(el);
+    if (style.float !== 'none' && parseFloat(style.textIndent) !== 0) el.style.textIndent = '0';
+  });
   normalizeRenderedSvgs(content);
   await rasterizeSvgs(content);
 
