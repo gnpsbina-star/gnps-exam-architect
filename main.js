@@ -5816,8 +5816,9 @@ function isPagePad(node) {
 
 function isKeptWhole(el, style, rect, pageHeightPx) {
   if (el.matches(PDF_KEEP_WHOLE_SELECTOR)) return true;
-  if (/^(inline-)?grid$/.test(style.display)) return true;
-  if (/^(inline-)?flex$/.test(style.display) && !/column/.test(style.flexDirection)) return true;
+  // A short side-by-side row (the CLASS / SET / SUBJECT line) moves as one;
+  // a question laid out as a flex row is split inside its text column.
+  if (isSideBySide(style)) return rect.height <= pageHeightPx * 0.15;
   // Option rows and small option grids only; a question laid out as a table
   // row is split like any other question.
   if (el.tagName === 'TR') return rect.height <= pageHeightPx * 0.1;
@@ -5832,6 +5833,13 @@ function isKeptWhole(el, style, rect, pageHeightPx) {
   // The AI's own keep-together hints are honoured only for small blocks.
   const avoid = /avoid/.test(style.breakInside || '') || /avoid/.test(style.pageBreakInside || '');
   return avoid && rect.height <= pageHeightPx * 0.2;
+}
+
+// Children laid out across rather than down: a pad placed among them would
+// sit beside the content instead of pushing it down.
+function isSideBySide(style) {
+  return /^(inline-)?grid$/.test(style.display) ||
+    (/^(inline-)?flex$/.test(style.display) && !/column/.test(style.flexDirection));
 }
 
 function isHeadingLike(el) {
@@ -5886,20 +5894,33 @@ function insertSafePageBreaks(root, pageHeightPx) {
     }
 
     // Moving the very first thing in a block moves the block, and moving the
-    // first thing in a table cell moves its whole row, so the question number
-    // and marks in the neighbouring cells go along with it.
-    while (el.parentElement && el.parentElement !== root && !previousContent(el)) {
+    // first thing in a table cell or flex row moves the whole row, so the
+    // question number and marks beside it go along with it.
+    let padInside = false;
+    while (el.parentElement && el.parentElement !== root) {
       const parent = el.parentElement;
-      const next = getComputedStyle(parent).display === 'table-cell' && parent.parentElement !== root
+      const parentStyle = getComputedStyle(parent);
+      const beside = isSideBySide(parentStyle);
+      if (!beside && previousContent(el)) break;
+      const next = parentStyle.display === 'table-cell' && parent.parentElement !== root
         ? parent.parentElement
         : parent;
-      if (!onThisPage(next)) break;
+      if (!onThisPage(next)) {
+        // A row that started on an earlier page cannot move; push this
+        // column's content down from inside it instead.
+        padInside = beside && !/^(img|svg|canvas|video|input|br|hr)$/i.test(el.tagName);
+        break;
+      }
       el = next;
     }
 
     const room = padFor(topOf(el));
-    const pad = el.tagName === 'TR' ? makeRowPad(el, room) : makePagePad(room);
-    el.parentNode.insertBefore(pad, el);
+    if (padInside) {
+      el.insertBefore(makePagePad(room), el.firstChild);
+    } else {
+      const pad = el.tagName === 'TR' ? makeRowPad(el, room) : makePagePad(room);
+      el.parentNode.insertBefore(pad, el);
+    }
   };
 
   // Loose text is broken at the start of the line the boundary would cut.
