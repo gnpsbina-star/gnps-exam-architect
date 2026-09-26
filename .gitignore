@@ -10,3 +10,6 @@ scratch/
 users.json
 sessions.json
 login_logs.json
+
+# PDF regression check output
+tests/pdf-regression/out/

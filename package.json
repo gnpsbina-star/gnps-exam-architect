@@ -6,9 +6,13 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:pdf": "node tests/pdf-regression/run.mjs"
   },
   "devDependencies": {
+    "html2pdf.js": "0.10.1",
+    "katex": "0.18.9",
+    "playwright": "1.56.1",
     "vite": "^5.0.0"
   }
 }

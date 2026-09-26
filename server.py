@@ -1,4 +1,5 @@
 import os
+import posixpath
 import sys
 
 # Ensure current working directory is always the folder where server.py is located
@@ -750,7 +751,19 @@ def fetch_syllabus_from_cbse(cls, subject_name):
         f"Unit 5: Practical Skills & Project Applications"
     ]
 
+# Folders in the repo that must never be served as static files.
+# tests/ holds real exam papers used by the PDF regression check.
+PRIVATE_PATH_PREFIXES = ('/tests/',)
+
 class MyHttpRequestHandler(http.server.SimpleHTTPRequestHandler):
+    def send_head(self):
+        # Covers both GET and HEAD for static files.
+        path = '/' + posixpath.normpath(urllib.parse.unquote(urllib.parse.urlparse(self.path).path)).lstrip('/').lower()
+        if (path + '/').startswith(PRIVATE_PATH_PREFIXES):
+            self.send_error(404, "File not found")
+            return None
+        return super().send_head()
+
     def end_headers(self):
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, DELETE')
