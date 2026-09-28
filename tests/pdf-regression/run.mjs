@@ -71,16 +71,34 @@ function installPageProbe() {
 
     // Ink on the first or last pixel row means something runs across the
     // page edge. A vertical rule (box or table border) legitimately does that,
-    // so a column only counts when it is not dark for the next 40 rows —
-    // taller than any glyph at exam font sizes.
+    // so a column only counts when it is neither solid for the next 40 rows
+    // (taller than any glyph at exam font sizes) nor a dashed line: four or
+    // more evenly sized, evenly spaced dashes, which glyph strokes never are.
     const RULE_ROWS = Math.min(40, h - 1);
+    const DASH_ROWS = Math.min(100, h - 1);
+    const isSolidRule = (x, y, step) => {
+      for (let k = 1; k <= RULE_ROWS; k++) if (!dark(x, y + k * step)) return false;
+      return true;
+    };
+    const isDashedRule = (x, y, step) => {
+      const runs = [], gaps = [];
+      let state = dark(x, y), len = 0;
+      for (let k = 0; k <= DASH_ROWS; k++) {
+        const d = dark(x, y + k * step);
+        if (d === state) { len++; continue; }
+        (state ? runs : gaps).push(len);
+        state = d; len = 1;
+      }
+      // The first dash is cut by the page edge and the last by the window.
+      const inner = runs.slice(1), innerGaps = gaps.slice(1);
+      if (inner.length < 3 || innerGaps.length < 3) return false;
+      const even = a => Math.max(...a) - Math.min(...a) <= 2;
+      return even(inner) && even(innerGaps) && Math.max(...inner) <= 16;
+    };
     const cutColumns = (y, step) => {
       let n = 0;
       for (let x = x0; x < x1; x++) {
-        if (!dark(x, y)) continue;
-        let rule = true;
-        for (let k = 1; k <= RULE_ROWS && rule; k++) rule = dark(x, y + k * step);
-        if (!rule) n++;
+        if (dark(x, y) && !isSolidRule(x, y, step) && !isDashedRule(x, y, step)) n++;
       }
       return n;
     };
