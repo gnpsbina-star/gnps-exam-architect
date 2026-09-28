@@ -3500,14 +3500,18 @@ cbseSubjectDropdown.addEventListener('dblclick', handleAddSelectedSubject);
 // Helper to get official CBSE subject with code
 function getSubjectWithCode(subjectName, className) {
   if (!subjectName) return "";
+  // Classes 6-8 papers never print a subject code (school's choice).
+  if (["Class 6", "Class 7", "Class 8"].includes(className)) {
+    return subjectName.replace(/\s*\([0-9]{3}\)\s*$/, '').trim();
+  }
   if (/\([0-9]{3}\)/.test(subjectName)) return subjectName.trim();
   
   const subLower = subjectName.toLowerCase().trim();
   const isSenior = className === "Class 11" || className === "Class 12";
 
-  // Class 6-9 Hindi R2 is printed without a subject code (school's choice);
+  // Class 9 Hindi R2 is printed without a subject code (school's choice);
   // 085 belongs to Class 10 Hindi Course B.
-  if (["Class 6", "Class 7", "Class 8", "Class 9"].includes(className) && subLower.includes("hindi") && (subLower.includes("r2") || subLower.includes("ganga"))) {
+  if (className === "Class 9" && subLower.includes("hindi") && (subLower.includes("r2") || subLower.includes("ganga"))) {
     return subjectName.trim();
   }
 
