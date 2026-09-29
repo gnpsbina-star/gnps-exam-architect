@@ -9,61 +9,66 @@ export const LITERATURE_SUMMARIES = {
   // ==========================================
   // CLASS 9 ENGLISH — KAVERI (NCERT NEP 2020)
   // ==========================================
+  // Eight units, each one prose piece + one poem. These summaries were first
+  // written from the chapter titles alone and were wrong for most chapters
+  // (Winds of Change as "social reform", Vitamin-M as "money", Canvas of Soil
+  // as "the peasant's toil"...), and the AI faithfully set questions on them.
+  // Every entry below is checked against the book; keep it that way.
   "how i taught my grandmother to read": {
     title: "How I Taught My Grandmother to Read (Sudha Murty)",
     type: "Prose",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "Narrator (12-year-old Sudha) lovingly teaches her illiterate 62-year-old grandmother Krishtakka how to read the Kannada alphabet so she can read Triveni's serialized novel 'Kashi Yatre' independently; celebrates determination, respect for teachers regardless of age, and lifelong empowerment through literacy."
+    summary: "Unit 1. Sudha Murty recalls how, at about twelve, she taught her grandmother Krishtakka (about 62) to read Kannada. Krishtakka followed Triveni's serialised novel 'Kashi Yatre' in the weekly magazine 'Karmaveera' by having Sudha read it aloud; when Sudha went away to a wedding in another village and came back, she found her grandmother in tears because she could not read the instalment herself and felt helpless and dependent. Krishtakka resolved to learn the alphabet, practised with great determination and read the novel on her own before the Dasara deadline she had set; on Vijayadashami she touched Sudha's feet, honouring her as her teacher. Themes: it is never too late to learn, the dignity of literacy, respect for a teacher regardless of age, the grandmother-granddaughter bond."
   },
   "the pot maker": {
     title: "The Pot Maker (Temsula Ao)",
     type: "Prose",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "Sentila, a young Ao Naga village girl, defies traditional tribal taboos and her mother Arenla's strict warnings to pursue the sacred art of clay pottery; explores artistic calling, indigenous craft heritage, perseverance, and breaking gender stereotypes."
+    summary: "Unit 2. Sentila, a young Ao Naga girl, wants to become a potter like her mother Arenla and her grandmother. Arenla wants her to learn weaving instead, because pot making is exhausting and poorly paid: the clay is fetched from a distant riverbank, pounded and fired in a kiln, all for very little money, and she wants to spare her daughter that hardship. Sentila keeps watching the expert potters and practising, guided by Onula, a kind widow who supervises the girls' dormitory and helps her shape the mouth of the pot. Through years of patience she masters the craft and Arenla comes to accept her calling. Themes: passion and perseverance, a mother's protective love, traditional crafts as the heritage of a whole community passed down the generations. The mother's objection is about hardship and poor earnings, NOT a tribal or clan taboo on women making pots; do not frame the story as defying taboos or gender prohibitions."
   },
   "winds of change": {
     title: "Winds of Change (Gaatha)",
     type: "Prose",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "Chronicles transformative historical milestones and progressive educational shifts in India's socio-cultural history, illustrating how courage, social reform, and education overcome rigid dogma and orthodoxy."
+    summary: "Unit 3. An expository article (from Gaatha, a crafts archive; no named author) on the traditional Indian hand fan, the pankha: the origin of the word, its history, regional variations in design and materials across India, and how the fan changed from an essential everyday object into a ceremonial and decorative craft piece once electric fans and modern technology arrived. Themes: regional craftsmanship, indigenous materials, cultural identity and the need to preserve traditional crafts. It is NOT about social or educational reform in history."
   },
   "vitamin m": {
-    title: "Vitamin-M (Favourite Stories for Boys)",
+    title: "Vitamin-M (Asha Nehemiah)",
     type: "Prose",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "A humorous and satirical narrative examining human psychology, money ('Vitamin-M'), and materialism; highlights how societal respect is distorted by wealth and emphasizes genuine character and moral values over financial status."
+    summary: "Unit 4. A humorous story by Asha Nehemiah. Ravi's elderly grandfather comes to live with the family; Ravi's mother Vidya worries about his failing memory, wishes there were a 'Vitamin-M' for memory, and asks Ravi to keep an eye on him during the holidays. Grandpa hates being treated like a child and insists on going out alone, so Ravi secretly follows him and lands in a series of funny, embarrassing situations. In the end it is Vidya who has forgotten Grandpa's birthday, and Grandpa gives Ravi a detective book, showing he knew all along that he was being followed. Themes: the dignity and independence of the elderly, understanding and patience in the family, old age is not incompetence. It is NOT about money, wealth or materialism."
   },
   "the world of limitless possibilities": {
     title: "The World of Limitless Possibilities",
     type: "Prose",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "An inspiring real-life account highlighting scientific curiosity, inclusion, and resilience; showcases how individuals with diverse physical challenges conquer societal hurdles and achieve groundbreaking intellectual triumphs."
+    summary: "Unit 5. An interview with Dr Deepa Malik, the Indian para-athlete. A spinal tumour left her paralysed below the waist at 29; she went on to become the first Indian woman to win a Paralympic medal (Rio 2016) and received the Khel Ratna and the Padma Shri. She speaks about choosing possibilities over regret, and about disability as a different ability rather than a limitation. Themes: resilience, determination, inclusion, the Paralympic spirit (paired with the poem 'Nine Gold Medals')."
   },
   "twin melodies": {
     title: "Twin Melodies (Mitra Phukan)",
     type: "Prose",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "Set in Assam, depicts the tender bond and artistic journey of musical siblings practicing classical traditions (Borgeet and instrumental music); highlights familial devotion, discipline, and the unifying power of music."
+    summary: "Unit 6. A play by Mitra Phukan. Shruti Sharma, a talented young violinist, secretly plays Indo-Western fusion music with her friends Iqbal (flute), Avinash (tabla) and Peter (keyboard), afraid of the disapproval of her father, Guru Nabin Sharma, a strict Hindustani classical musician. She finds the courage to tell him the truth, and he comes to see that music in all its forms deserves respect. Themes: tradition and innovation can coexist, honest communication, courage to follow one's passion, understanding between parents and children."
   },
   "carrier of words": {
     title: "Carrier of Words",
     type: "Prose",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "Chronicles the hazardous, historic journeys of traditional postal runners (dak runners) traversing rugged Himalayan terrains and dense forests; honors selfless duty, resilience, and personal letters as emotional lifelines."
+    summary: "Unit 7. A prose piece (no named author) about Khetaram, a Gramin Dak Sewak who delivers mail across the Thar Desert in Rajasthan. Through searing heat and endless sand dunes he carries letters, news and the money orders many desert families depend on. Themes: the unsung heroes of India Post, duty and dedication, letters and words as lifelines that connect people (paired with the poem 'Words'). It is NOT about Himalayan or forest dak runners."
   },
   "follow that dream": {
-    title: "Follow That Dream",
+    title: "Follow That Dream (Irene Chua)",
     type: "Prose",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "An uplifting biographical narrative on perseverance, ambition, and overcoming self-doubt; demonstrates that unwavering self-belief, disciplined hard work, and mentorship turn bold dreams into reality."
+    summary: "Unit 8. A letter dated 19 June 1995 from Irene Chua to her teenage daughter Ming, from the collection 'My Daughter, My Friend'. The mother urges Ming to pursue her dreams, but explains that dreams come true only with passion, planning, discipline, hard work and sacrifice; what separates greatness from the ordinary is the effort invested, and a world-class standard in any field takes about ten years of intense, single-minded dedication. Themes: ambition, perseverance, self-belief, a parent's guidance."
   },
 
   // Class 9 Kaveri (Poems)
@@ -72,56 +77,56 @@ export const LITERATURE_SUMMARIES = {
     type: "Poem",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "Patriotic ode celebrating India's sacred geography (Ganges, Himalayas), spiritual philosophy (Upanishads), gallant heroes, and cultural glory, while rallying for national integration, fraternity, and ending poverty and casteism."
+    summary: "Unit 1 poem. A patriotic poem celebrating India: the Ganga, the snow-crowned Himalayas, the Upanishads, its heroes and sages, and its cultural glory, with pride in the land and a call to national unity."
   },
   "gifts of grace honouring our vocations": {
     title: "Gifts of Grace: Honouring Our Vocations",
     type: "Poem",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "A reflective poetic tribute to the dignity of labour, everyday craftsmanship, and humble service, honoring the quiet dedication of diverse artisans and working hands who sustain humanity."
+    summary: "Unit 2 poem (poet not named in the book). Praises the workers and craftspersons of Bharat one by one: the farmer, the carpenter who shapes wood with exact measurements, the electrician who brings light, the boatmen who sing as they gather their nets and sail, the shoemaker who makes sure the shoes are well made, the cook whose food pleases like music, and the designers and masons who celebrate their creations. Every vocation has its own skill, identity and purpose and serves society. Theme: the dignity of labour and respect for every kind of work."
   },
   "canvas of soil": {
-    title: "Canvas of Soil",
+    title: "Canvas of Soil (Maya Anthony)",
     type: "Poem",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "Lyrical meditation on the living earth, the farmer's intimate communion with fertile soil, agrarian rhythms, and the soil as the sacred nurturing mother of all creation."
+    summary: "Unit 3 poem, three stanzas. The poet compares a garden to a work of art: the soil is a painter's palette, rich and full of colour and possibility; planting seeds is like making brushstrokes on a canvas; the gardener waits patiently for spring to bring colour and bloom; in the hands of those who till the soil, gardens become paintings. Theme: gardening as art, the link between nature, creativity and patient care. It is about a gardener and a garden as a painting, NOT about a peasant's or farmer's struggle and toil."
   },
   "i cannot remember my mother": {
     title: "I Cannot Remember My Mother (Rabindranath Tagore)",
     type: "Poem",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "A tender, nostalgic poem capturing delicate sensory memories of the poet's deceased mother through the scent of autumn shiuli blossoms, a floating childhood lullaby, and a quiet gaze into the vast blue sky."
+    summary: "Unit 4 poem. The speaker cannot remember his mother's face, yet she returns through the senses: the tune of a song she hummed while rocking his cradle hovers over his playthings, the scent of shiuli flowers on an autumn morning brings back the smell of the temple worship, and when he looks at the sky from his bedroom window he feels her gaze. Themes: memory, loss and a mother's lasting presence."
   },
   "nine gold medals": {
     title: "Nine Gold Medals (David Roth)",
     type: "Poem",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "A moving sports ballad based on the Special Olympics where eight runners turn back to assist a fallen 100-metre competitor, linking hands to cross the finish line together to share nine gold medals; celebrates empathy, compassion, and true sportsmanship."
+    summary: "Unit 5 poem. At the Special Olympics nine athletes line up for the hundred-metre race; when one stumbles and falls, the other eight turn back to help him, and they cross the finish line together, arm in arm, so the organisers give out nine gold medals. Themes: empathy, compassion, true sportsmanship, winning together."
   },
   "a friend found in music": {
-    title: "A Friend Found in Music",
+    title: "A Friend Found in Music (Bryanna T. Perkins)",
     type: "Poem",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "Reflective lyric on the solace, healing companionship, and emotional communion discovered through musical harmony amidst solitude and life's challenges."
+    summary: "Unit 6 poem, three stanzas: music as an ocean and a rhythm, music as therapy, and music as a faithful friend who is always there. Music comforts the speaker in hard times and adds to moments of joy."
   },
   "words": {
-    title: "Words",
+    title: "Words (Charles Swain)",
     type: "Poem",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "A thought-provoking poem exploring the immense constructive and destructive power of spoken words; urges mindfulness, kindness, and empathy in human communication."
+    summary: "Unit 7 poem by the English poet Charles Swain, on the power of words: words carry real meaning and value only when they are honest and sincere and come from the heart; empty words mean nothing. It asks us to use language responsibly."
   },
   "believe in yourself": {
-    title: "Believe in Yourself",
+    title: "Believe in Yourself (Robert Langley)",
     type: "Poem",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "An empowering motivational lyric emphasizing inner strength, resolute optimism, perseverance, and trusting one's potential when faced with setbacks and external skepticism."
+    summary: "Unit 8 poem. Encourages the reader to face challenges with courage and confidence: success begins with believing in oneself and taking the first step forward, despite setbacks and doubt."
   },
 
   // ==========================================
@@ -828,14 +833,17 @@ export function findLiteratureSummary(chapterStr) {
   const normInput = normalizeChapterKey(chapterStr);
   if (!normInput || normInput.length < 3) return null;
 
-  // 1. Exact or substring match in DB keys
+  // 1. Exact match first, so the poem "Words" is not taken for "Carrier of Words"
+  if (Object.hasOwn(LITERATURE_SUMMARIES, normInput)) return LITERATURE_SUMMARIES[normInput];
+
+  // 2. Substring match in DB keys
   for (const [key, item] of Object.entries(LITERATURE_SUMMARIES)) {
-    if (normInput === key || normInput.includes(key) || key.includes(normInput)) {
+    if (normInput.includes(key) || key.includes(normInput)) {
       return item;
     }
   }
 
-  // 2. Specific key tokens match
+  // 3. Specific key tokens match
   for (const [key, item] of Object.entries(LITERATURE_SUMMARIES)) {
     const keyWords = key.split(' ').filter(w => w.length > 2);
     if (keyWords.length >= 2) {
