@@ -4073,6 +4073,13 @@ function getSelectedUnseenPassageIndexes() {
   return picked;
 }
 
+// The least a quoted passage limit allows: "approx. 100-150 words" -> 100,
+// "about 200 words" -> 200. Zero when the limit names no word count.
+function minWordTarget(limitText) {
+  const m = String(limitText || '').match(/(\d+)\s*(?:[-–]\s*\d+\s*)?words/i);
+  return m ? Number(m[1]) : 0;
+}
+
 // Universal CBSE Diagram & Visual Protocol Generator (Inline Vector SVG)
 function buildDiagramProtocol(className, subjectName, marksVal, isWorksheet = false, unseenPassageCount = 2, quotaOverride = null) {
   const subLower = (subjectName || '').toLowerCase();
@@ -4526,7 +4533,7 @@ ${usesMark(5) ? `         - Rigorous 5-Mark Long Answer questions with structure
     activeBlueprint.sections.forEach(s => {
       blueprintPromptText += `*   **${s.name}**: ${s.type} -> ${s.count} Question(s) [${s.marksPerQ} each] = ${s.total} Marks (${s.choice})\n`;
     });
-    blueprintPromptText += `\n*(Note: You must construct BOTH Set A and Set B strictly conforming to this exact section layout and question count)*\n`;
+    blueprintPromptText += `\n*(Note: Set A and Set B, each written in its own reply, must BOTH conform strictly to this exact section layout and question count)*\n`;
 
     const isCombinedScience = (className === 'Class 9' || className === 'Class 10') && subjectName.toLowerCase().includes('science') && !subjectName.toLowerCase().includes('social');
     if (secScience && activeBlueprint.disciplineKeys) {
@@ -4702,27 +4709,43 @@ ${syllabusText.trim()}
 ${literatureContextText ? '\n\n' + literatureContextText.trim() : ''}
 ${blueprintPromptText}
 
-**CRITICAL CONTENT & MANDATORY PRINT-READY HTML/CSS GUIDELINES (MUST FOLLOW):**
-1.  **MANDATORY OUTPUT FORMAT — 100% STANDALONE PRINT-READY HTML & CSS:**
-    *   You MUST output the complete question paper directly as valid, self-contained HTML/CSS inside an \`\`\`html \`\`\` code block.
-    *   **STRICTLY DO NOT write or execute Python scripts, and DO NOT use or require any external compiler or CLI tools.** The document is designed to render directly in the browser preview / Gemini Canvas.
-    *   **TWO SEPARATE DOCUMENTS (CRITICAL):** Output **Set A** and **Set B** as **TWO INDEPENDENT, COMPLETE HTML DOCUMENTS in TWO SEPARATE \`\`\`html \`\`\` code blocks**, one immediately after the other. Each code block MUST start with its own \`<!DOCTYPE html>\` and contain its own \`<html>\`, \`<head>\` (with the full embedded \`<style>\`) and \`<body>\` with its own complete school header. **DO NOT merge both sets into one HTML document separated by a page break** — they must be two standalone files so each can be saved and printed as its own separate PDF.
-    *   Embed complete print styling (\`@media print { size: A4 portrait; margin: 19mm; }\`) and include a floating print button (\`<button onclick="window.print()" class="no-print" style="position: fixed; top: 16px; right: 16px; padding: 10px 18px; font-weight: bold; background: #0284c7; color: #fff; border: none; border-radius: 8px; cursor: pointer; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">🖨️ Print / Save as PDF</button>\`) so the user can immediately preview and save as a pixel-perfect CBSE A4 PDF directly from their browser (\`Ctrl+P\` / \`Cmd+P\` -> Save as PDF).
-2.  **Official CBSE Typography & Diagram Styling:** Style Section headings with **centered bold text only** — do NOT use \`text-decoration: underline\` on a heading/banner block, as the underline misplaces itself onto the next line when the paper is converted to PDF. In your HTML/CSS template, you must set the font family to 'Times New Roman' (or 'Mangal / Noto Serif Devanagari / Kruti Dev 010' for Hindi/Sanskrit), 12pt body text, 14pt bold sub-headings / section headers, and 18pt centered bold main header. For any diagram, chart, or graphic, wrap inside '<div class="diagram-container">' with 'text-align: center; margin: 8px auto 12px auto; page-break-inside: avoid;' and a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'. **Vectors:** write a vector quantity as \`<span class="vec">E</span>\` and add \`.vec { position: relative; display: inline-block; } .vec::before { content: '\\2192'; position: absolute; left: 0; right: 0; top: -0.55em; font-size: 0.7em; line-height: 1; text-align: center; }\` to your stylesheet so an arrow is drawn over the letter. NEVER write LaTeX-style \`&vec;\` — it is not HTML and prints as the literal text "&vec;". **Formulas, equations and units in plain HTML — NO LaTeX:** write every chemical formula, ion, equation, unit and symbol with HTML tags and entities, e.g. \`H<sub>2</sub>SO<sub>4</sub>\`, \`Cr<sup>3+</sup>\`, \`MnO<sub>4</sub><sup>&minus;</sup>\`, \`E&deg;<sub>cell</sub>\`, \`&Lambda;<sub>m</sub>\`, \`mol L<sup>&minus;1</sup> s<sup>&minus;1</sup>\`, \`1.2 &times; 10<sup>&minus;3</sup>\`, \`&rarr;\` and \`&rlhar;\`. NEVER use LaTeX or TeX syntax such as \`$...$\`, \`\\text{}\`, \`\\frac{}{}\`, \`^{...}\`, \`_{...}\` or \`\\ce{}\` — the paper is plain HTML, so LaTeX prints as raw code like "$E^\\circ(\\text{Cr}^{3+})$". Write a fraction as \`a/b\` or with a stacked \`<sup>\`/\`<sub>\` pair.
-3.  **Line Spacing & Margins:** Enforce a strict CSS line-height: 1.25 and standard margins of 19mm (0.75 inches) on all sides ('@page { size: A4 portrait; margin: 19mm; }').
-4.  **Alignment & Footer:** Ensure clean vertical alignment with right-aligned marks (e.g., [1], [2], [3], [5]) matching official board papers. **DO NOT add a page footer, page numbers, or "Page X of Y" text anywhere in the HTML** — you cannot know how the content will paginate, so any footer you write would land in the middle of a page. The running footer ("GNPS / ${examName.toUpperCase()} / ${fullSubjectDisplay.toUpperCase()} / SET A" on the left and "Page X of Y" on the right) is stamped automatically onto every page by the GNPS Exam Architect PDF converter. Simply leave the bottom of the document clean.
+**CRITICAL CONTENT & MANDATORY PRINT-READY HTML GUIDELINES (MUST FOLLOW):**
+1.  **MANDATORY OUTPUT FORMAT — ONE SET PER REPLY, PLAIN HTML WITH THE HOUSE CLASSES (NO CSS):**
+    *   Output the question paper as valid HTML inside ONE \`\`\`html \`\`\` code block.
+    *   **STRICTLY DO NOT write or execute Python scripts, and DO NOT use or require any external compiler or CLI tools.**
+    *   **ONE SET PER REPLY (CRITICAL):** This reply contains **ONLY Set A**, complete from the school header to the last question. Do NOT begin Set B in this reply. Set B is written in a later reply, only when the teacher asks for it (see Rule 6). Writing one set per reply leaves room for every passage, sub-part and figure at full length.
+    *   **NO STYLESHEET:** Do NOT write a \`<style>\` block, a \`<head>\`, \`<!DOCTYPE>\` or a print button. The GNPS Exam Architect PDF converter applies the school's official stylesheet itself (Times New Roman / Devanagari fonts, 12pt body, centred bold headings, right-aligned marks, A4 margins), so any CSS you write only uses up space needed for the questions. Avoid inline \`style\` attributes except on figures (Rule 2 and the figure rules).
+    *   **HOUSE CLASSES — the whole set is ONE \`<div class="gnps-paper">\` … \`</div>\` built ONLY from these:**
+        - \`<div class="paper-header">\` holding \`<div class="school-name">\`, \`<div class="exam-title">\`, \`<div class="set-label">SET A</div>\` and two \`<div class="meta-row">\` lines, each with two \`<span>\`s (CLASS … / SUBJECT …, then TIME ALLOWED … / MAXIMUM MARKS …)
+        - \`<div class="instructions">\` — "GENERAL INSTRUCTIONS:" followed by an \`<ol>\`
+        - \`<div class="section-title">SECTION A</div>\`, optionally followed by \`<div class="section-note">\` (e.g. "Questions 1 to 18 carry 1 mark each.")
+        - \`<div class="q"><b>1.</b> question stem … <span class="marks">[1]</span></div>\` — one per question
+        - \`<div class="sub">(a) … <span class="marks">[2]</span></div>\` — one per sub-part
+        - \`<p class="passage">\` — each paragraph of a case study, source or literature extract; an UNSEEN READING passage instead goes in \`<div class="unseen-passage" data-target-words="…">\` with one \`<p>\` per paragraph (Rule 11)
+        - \`<div class="or">— OR —</div>\`
+        - \`<table class="mcq-table">\` — MCQ options as a 2x2 grid; \`<table class="data-table">\` — any data table
+        - \`<div class="diagram-container">\` + \`<div class="diagram-caption">\` — figures; \`<span class="vec">\` — vectors
+        - end the set with \`<div class="end-line">*** END OF SET A ***</div>\`
+2.  **Official CBSE Typography & Diagram Styling:** The house stylesheet sets the fonts and sizes; your job is the structure above. Section headings are plain centred bold text — never underline a heading/banner block. For any diagram, chart, or graphic, wrap it inside '<div class="diagram-container">' with a bold italic figure caption '<div class="diagram-caption">Fig. X: [Label]</div>'. **Vectors:** write a vector quantity as \`<span class="vec">E</span>\`; the house stylesheet draws the arrow over the letter. NEVER write LaTeX-style \`&vec;\` — it is not HTML and prints as the literal text "&vec;". **Formulas, equations and units in plain HTML — NO LaTeX:** write every chemical formula, ion, equation, unit and symbol with HTML tags and entities, e.g. \`H<sub>2</sub>SO<sub>4</sub>\`, \`Cr<sup>3+</sup>\`, \`MnO<sub>4</sub><sup>&minus;</sup>\`, \`E&deg;<sub>cell</sub>\`, \`&Lambda;<sub>m</sub>\`, \`mol L<sup>&minus;1</sup> s<sup>&minus;1</sup>\`, \`1.2 &times; 10<sup>&minus;3</sup>\`, \`&rarr;\` and \`&rlhar;\`. NEVER use LaTeX or TeX syntax such as \`$...$\`, \`\\text{}\`, \`\\frac{}{}\`, \`^{...}\`, \`_{...}\` or \`\\ce{}\` — the paper is plain HTML, so LaTeX prints as raw code like "$E^\\circ(\\text{Cr}^{3+})$". Write a fraction as \`a/b\` or with a stacked \`<sup>\`/\`<sub>\` pair.
+3.  **Line Spacing & Margins:** Set by the house stylesheet (line-height 1.25–1.3, 1.4 for Devanagari; A4 margins). Do not add CSS for them.
+4.  **Alignment & Footer:** Marks are right-aligned at the end of their question (e.g., [1], [2], [3], [5]) as on official board papers. **DO NOT add a page footer, page numbers, or "Page X of Y" text anywhere in the HTML** — you cannot know how the content will paginate, so any footer you write would land in the middle of a page. The running footer ("GNPS / ${examName.toUpperCase()} / ${fullSubjectDisplay.toUpperCase()} / SET A" or "/ SET B" on the left and "Page X of Y" on the right) is stamped automatically onto every page by the GNPS Exam Architect PDF converter. Simply leave the bottom of the document clean.
 5.  **Space Optimisation & Page Breaks (Critical for Printing — NO HALF-EMPTY PAGES):**
     *   **Fill every page from top to bottom.** The paper must read as one continuous flow of questions with no blank gaps. Do NOT try to control where pages end or aim for a particular page count: the GNPS Exam Architect PDF converter paginates the paper itself and breaks long questions cleanly between their parts, so any attempt to keep a question on one page only leaves the rest of the previous page blank.
-    *   **NEVER force a page break between sections.** Do NOT put \`page-break-before: always;\` on any Section or Part banner/heading. They must flow continuously down the page, one starting immediately after the previous one ends, otherwise the paper wastes half-empty pages. The ONLY permitted forced page break is between Set A and Set B (and those are separate documents anyway).
-    *   **NO KEEP-TOGETHER RULES ON BIG BLOCKS:** Do NOT put \`page-break-inside: avoid;\` / \`break-inside: avoid;\` (or \`display: inline-block\`, \`display: flex\` or \`display: grid\`) on a question, a question wrapper, a case study, a reading passage, an OR-choice block, an internal-choice (Option A / Option B) block or a section. A whole question pushed to the next page leaves the previous page half empty. The ONLY elements that may carry \`page-break-inside: avoid;\` are a diagram container and the small 2x2 MCQ option table (e.g., \`.mcq-table tr { page-break-inside: avoid; }\`). Never apply it globally to all table rows ('tr').
-    *   **Build every question from separate small blocks:** put the question stem, each case-study passage paragraph, each sub-part (A, B, C, D / (I), (II) / (a), (b), (c)), each "— OR —" line and each "(Option A)" / "(Option B)" heading in its OWN \`<div>\` or \`<p>\`, one after another. Do NOT put a whole question inside a single table cell, and do NOT stack sub-parts with \`<br>\` tags inside one block — separate blocks are what let a long question continue neatly onto the next page.
-    *   **No wasted vertical space:** no empty \`<p>\`/\`<div>\` spacers, no runs of \`<br>\`, no \`min-height\` or fixed \`height\` on text blocks, and no answer-writing space. Keep gaps compact but READABLE (never cramped): about 8–10px between questions, 5–6px between sub-parts, 12–14px above a Section heading; body line-height 1.25–1.3 for English and at least 1.4 for Hindi/Sanskrit (Devanagari matras need the extra room). Save space by removing spacers and empty lines, never by squeezing lines or questions together.
-    *   **Marks on the last line of text:** place each mark allocation (e.g., [1], [2], [3], [5]) right-aligned at the END of the last line of the question or sub-part it belongs to (for example, \`<span style="float: right; font-weight: bold;">[3]</span>\` as the very last thing inside that block, straight after its final word), NOT in a separate block or on a line of its own — a marks-only line wastes a full line and can end up alone at the top of a page. For an MCQ, the \`[1]\` goes at the end of the question stem, BEFORE the options table — never after the options.
-    *   Compact your line gaps and format MCQ options into a 2x2 grid ((a) ... (b) ... / (c) ... (d) ...).
-    *   The files must be completely ready for double-sided printing.
-6.  **Dual Balanced Sets (Set A & Set B):**
-    *   Generate **EXACTLY TWO DISTINCT SETS** (**Set A** and **Set B**), delivered as two separate standalone HTML documents in two separate \`\`\`html \`\`\` code blocks (see Rule 1).
-    *   Both sets must feature 100% different questions while maintaining the exact same difficulty level, chapter weightage, and blueprint question counts.
+    *   **NEVER force a page break anywhere.** No \`page-break-before\` / \`page-break-inside\` on any section, heading, question, passage or choice block.
+    *   **Build every question from separate small blocks:** put the question stem, each case-study passage paragraph, each sub-part (A, B, C, D / (I), (II) / (a), (b), (c)), each "— OR —" line and each "(Option A)" / "(Option B)" heading in its OWN block (\`q\`, \`sub\`, \`passage\`, \`or\`), one after another. Do NOT put a whole question inside a single table cell, and do NOT stack sub-parts with \`<br>\` tags inside one block — separate blocks are what let a long question continue neatly onto the next page.
+    *   **No wasted vertical space:** no empty \`<p>\`/\`<div>\` spacers, no runs of \`<br>\`, and no answer-writing space.
+    *   **Marks on the last line of text:** place each mark allocation as \`<span class="marks">[3]</span>\`, the very last thing inside the \`q\` or \`sub\` block it belongs to, straight after its final word — never in a separate block or on a line of its own. For an MCQ, the \`[1]\` goes at the end of the question stem, BEFORE the options table — never after the options.
+    *   Format MCQ options into a 2x2 grid ((a) ... (b) ... / (c) ... (d) ...) with \`<table class="mcq-table">\`.
+6.  **Two Balanced Sets — ONE PER REPLY (Set A now, Set B on request):**
+    *   **This reply = Set A only**, in one \`\`\`html \`\`\` code block.
+    *   **NO SHORTCUTS (ZERO TOLERANCE):** Write every question, sub-part, option and passage in full. NEVER use placeholders such as "<!-- remaining questions here -->", "...", "[continue similarly]", "Questions 12–15 follow the same pattern" or "similar to above". Every unseen passage reaches its full word target, and every section has exactly the question count the blueprint gives. A shortened set is rejected by the school's converter.
+    *   **Hidden ledger:** as the very last thing inside the \`gnps-paper\` div (after the end line), add ONE HTML comment that starts with \`<!-- GNPS-SET-LEDGER\` and lists, one line per question: its number, marks, chapter / skill, and the exact content it used (passage topic and genre, chart subject and figures, grammar context sentences, literature extract and its chapter / poem, case-study scenario, numerical values, MCQ concept). The comment never prints; Set B is checked against it.
+    *   **Checkpoint, then STOP:** after the code block, write only this and wait for the teacher's reply:
+        "✓ SET A IS COMPLETE — [total marks] marks, [number of questions] questions.
+        Reply **SET B** to generate Set B, **FIX** followed by what to change (e.g. **FIX Q7** or **FIX Section C**) to correct Set A, or **DONE** to finish with Set A only."
+    *   **If the teacher replies FIX …:** rewrite the part named and send back the WHOLE corrected Set A again in one code block (same rules, updated ledger), then show the same checkpoint again.
+    *   **If the teacher replies SET B:** write Set B as one complete paper in its own \`\`\`html \`\`\` code block, following EVERY rule of this prompt, with \`<div class="set-label">SET B</div>\` and \`*** END OF SET B ***\`. Set B is a **parallel mirror** of Set A: question N of Set B has the same section, question type, marks, internal-choice pattern and chapter / skill as question N of Set A, at the same difficulty, but with **entirely new content**. Nothing in Set A's ledger may be reused: no same passage topic, chart subject or figures, grammar context sentence, sentence stem, literature extract, case-study scenario, numerical values, or MCQ testing the same fact in the same way. Check each Set B question against the ledger before writing it. Set B must be just as long as Set A: same passage lengths, same number of sub-parts and options. End Set B with its own \`GNPS-SET-LEDGER\` comment, then write: "✓ SET B IS COMPLETE — both sets are ready." and stop.
+    *   **If the teacher replies DONE:** write "Finished — Set A only." and stop.
 7.  **High-Yield Official Repositories (MANDATORY SOURCING):** You MUST source, adapt, and formulate questions directly from the following authoritative repositories:
     *   **Official CBSE Competency-Based Education (CBE / CBT) Question Banks** (from cbseacademic.nic.in/cbe/).
     *   **Official CBSE Additional Practice Questions (APQs)** & latest Board Sample Papers.
@@ -4791,7 +4814,7 @@ ${secScience.scope.map(line => `        - ${line}`).join('\n')}
 ${secMaths.scope.map(line => `        - ${line}`).join('\n')}
 ` : ''}    *   **ZERO TOLERANCE FOR UNSELECTED CHAPTERS:** Every single question across all sections (MCQs, Short Answers, Long Answers, Case Studies) in Set A and Set B MUST be derived 100% exclusively from the chapters specified in the Syllabus section above. Under NO circumstances should you invent, borrow, or frame questions from unselected chapters of ${fullSubjectDisplay}.
 10. **School Branding & Official Header:**
-    *   Display the prominent school header at the top of BOTH sets:
+    *   Display the prominent school header at the top of EACH set (in the \`paper-header\` block, with its \`set-label\` reading SET A or SET B):
         ------------------------------------------------------------------------
                               GOMTI NANDAN PUBLIC SCHOOL
                                ${examName.toUpperCase()} (${getCurrentAcademicSession()})
@@ -4819,6 +4842,10 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
     return unseenPassageIdx.map(i => row[i]).filter(Boolean).join(' | ');
   };
 
+  // The limits quoted for this paper's unseen passages, in passage order, so
+  // each passage can carry its word target for the converter's length check.
+  let readingTargetLimits = '';
+
   if (subjectName.includes("English")) {
     const limits = {
       "Class 6": ["Passage 1 (Discursive, approx. 125 words)", "Passage 2 (Case-based factual, approx. 75 words)"],
@@ -4833,6 +4860,7 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
     if (secEnglish) limits[className] = secEnglish.readingLimits;
     const englishLimits = quoteLimitsFor(limits);
     if (englishLimits) {
+      readingTargetLimits = englishLimits;
       promptText += `\n11. **English Reading Section Word Limits:** Ensure the unseen passages adhere to these limits: ${englishLimits}. These are approximate limits; you may increase the word limit by up to 10% if required to maintain passage quality.`;
     }
 
@@ -4894,6 +4922,7 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
     };
     const hindiLimits = quoteLimitsFor(limits);
     if (hindiLimits) {
+      readingTargetLimits = hindiLimits;
       promptText += `\n11. **Hindi Reading Section Word Limits:** Ensure the unseen passages adhere to these limits: ${hindiLimits}. These are approximate limits; you may increase the word limit by up to 10% if required to maintain passage quality.`;
     }
   }
@@ -4906,6 +4935,7 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
     if (secHindi) limits[className] = secHindi.readingLimits;
     const hindiBLimits = quoteLimitsFor(limits);
     if (hindiBLimits) {
+      readingTargetLimits = hindiBLimits;
       promptText += `\n11. **Hindi Reading Section Word Limits:** Ensure the unseen passages strictly adhere to these limits: ${hindiBLimits}. Passages must be intellectually rich, engaging, and strictly NOT LESS THAN 200 words each.`;
     }
   }
@@ -4922,8 +4952,14 @@ ${secMaths ? `        2. ... (the section-by-section instructions for this paper
     };
     const sanskritLimits = quoteLimitsFor(limits);
     if (sanskritLimits) {
+      readingTargetLimits = sanskritLimits;
       promptText += `\n11. **Sanskrit Reading Section Word Limits:** Ensure the unseen passage adheres to these limits: ${sanskritLimits}. These are approximate limits; you may increase the word limit by up to 10% if required to maintain passage quality.`;
     }
+  }
+
+  const passageWordTargets = readingTargetLimits.split(' | ').map(minWordTarget).filter(Boolean);
+  if (passageWordTargets.length) {
+    promptText += `\n\n**UNSEEN PASSAGE WORD TARGETS (CHECKED BY THE CONVERTER):** Wrap ${passageWordTargets.length > 1 ? `each unseen reading passage in its own` : `the unseen reading passage in a`} \`<div class="unseen-passage" data-target-words="…">\` with one \`<p>\` per paragraph, and set the number to ${passageWordTargets.map((n, i) => `${n} for Passage ${i + 1}`).join(' and ')}. The school's converter counts the words and flags a passage that falls short, so write each passage in full.`;
   }
 
   const isLanguageSubject = subjectName.includes("English") || subjectName.includes("Hindi") || subjectName.includes("Sanskrit");
@@ -5244,16 +5280,23 @@ CRITICAL EXECUTION PROTOCOL (INTERACTIVE ONE-BY-ONE CONFIRMATION LOOP):
 You are acting as the Chief CBSE Examination Controller tasked with generating the complete, official examination papers for all ${totalPapers} subjects listed above.
 
 STRICT SEQUENTIAL RULE TO PREVENT AI TOKEN TRUNCATION & MAINTAIN 100% ACADEMIC DEPTH:
-1. NEVER attempt to generate multiple question papers in a single response. Generating multiple papers simultaneously causes severe output token truncation, missing questions, and superficial answers.
-2. YOU MUST GENERATE EXACTLY ONE QUESTION PAPER PER RESPONSE CYCLE.
-3. STEP 1: Begin immediately by generating ONLY Question Paper #1: [${masterPromptQueue[0].className} - ${masterPromptQueue[0].subjectName}] in complete, publication-grade academic detail according to its full blueprint specifications below (BOTH Set A and Set B, complete questions, figures/tables/data, source-based case studies, and full marking scheme).
-4. AT THE END OF QUESTION PAPER #1, STOP COMPLETELY AND DO NOT PROCEED TO PAPER #2. Output this exact checkpoint verification message:
+1. NEVER put more than ONE SET of ONE question paper in a single response. Writing several sets or papers at once runs out of output space: passages get shortened, questions go missing, and the reply is cut off mid-code.
+2. Work in this order, ONE SET PER REPLY: Paper 1 Set A → Paper 1 Set B → Paper 2 Set A → Paper 2 Set B → … Finish both sets of a paper before starting the next paper. (A worksheet has no sets: it is written whole in one reply.)
+3. STEP 1: Begin immediately with Question Paper #1: [${masterPromptQueue[0].className} - ${masterPromptQueue[0].subjectName}] — SET A ONLY, in complete, publication-grade academic detail according to its full specification below (complete questions, figures/tables/data, passages and source-based case studies at full length). Student question paper only: NO answers and NO marking scheme.
+4. Each paper's own specification below says to stop after Set A with a checkpoint offering SET B, FIX or DONE. In this bundle, use these checkpoints instead:
+   • After Set A of Paper N:
    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   ✓ [QUESTION PAPER 1 OF ${totalPapers}: ${masterPromptQueue[0].subjectName.toUpperCase()} IS COMPLETE]
-   Please review the generated question paper above. When you are ready, reply 'CONTINUE' or 'PROCEED' to begin Question Paper 2: ${totalPapers > 1 ? masterPromptQueue[1].subjectName : 'END OF BUNDLE'}.
+   ✓ [QUESTION PAPER N OF ${totalPapers}: SUBJECT — SET A IS COMPLETE]
+   Reply SET B to generate Set B of this paper, FIX followed by what to change (e.g. FIX Q7) to correct Set A, or NEXT to skip Set B and begin Question Paper N+1: SUBJECT.
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-5. WAIT FOR EXPLICIT USER CONFIRMATION. Do NOT output any content for Question Paper #2 until the user sends confirmation.
-6. Upon user confirmation ('CONTINUE' or 'PROCEED'), generate Question Paper #2, stop and ask for confirmation again, and repeat this strict one-by-one verification cycle until all ${totalPapers} question papers are complete.
+   • After Set B of Paper N:
+   "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   ✓ [QUESTION PAPER N OF ${totalPapers}: SUBJECT — SET B IS COMPLETE]
+   Reply NEXT to begin Question Paper N+1: SUBJECT.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+   (Fill in N and the subject names from the overview above. After the last paper, write "END OF BUNDLE" instead of offering NEXT.)
+5. WAIT FOR THE TEACHER'S REPLY at every checkpoint. Never start the next set or the next paper on your own.
+6. Set B of a paper is written in the same way as that paper's specification describes: a parallel mirror of its Set A with entirely new content, checked against Set A's hidden GNPS-SET-LEDGER comment, and just as long as Set A.
 ================================================================================\n\n`;
 
   masterPromptQueue.forEach((p, idx) => {
@@ -5530,6 +5573,7 @@ const SET_LABEL_RE = /\bSET\s*[-–—:]?\s*([A-D])\b/;
 // above. Replace the tags themselves with spaces so words stay separated.
 function flattenMarkupText(markup) {
   return String(markup || '')
+    .replace(/<!--[\s\S]*?-->/g, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&nbsp;/gi, ' ')
     .replace(/\s+/g, ' ')
@@ -5541,12 +5585,20 @@ function extractHtmlDocuments(raw) {
   if (!text) return [];
 
   const fenced = [];
+  const looksLikePaper = block => /<!doctype\s+html|<html[\s>]|<body[\s>]|<div[\s>]|<table[\s>]/i.test(block);
   const fenceRe = /```(?:html|HTML)?[^\S\n]*\n([\s\S]*?)```/g;
   let match;
+  let consumed = 0;
   while ((match = fenceRe.exec(text)) !== null) {
     const block = match[1].trim();
-    if (/<!doctype\s+html|<html[\s>]|<body[\s>]|<div[\s>]|<table[\s>]/i.test(block)) fenced.push(block);
+    if (looksLikePaper(block)) fenced.push(block);
+    consumed = fenceRe.lastIndex;
   }
+  // A reply cut off by the AI's output limit never closes its last code block.
+  // Keep what arrived, so the length check can say so instead of the set
+  // silently going missing.
+  const open = text.slice(consumed).match(/```(?:html|HTML)?[^\S\n]*\n([\s\S]*)$/);
+  if (open && looksLikePaper(open[1])) fenced.push(open[1].trim());
   if (fenced.length) return fenced;
 
   const splitIfRepeated = (pattern) => {
@@ -5653,6 +5705,40 @@ function repairSvgTextMarkup(html) {
     .replace(/<\/(sub|sup|i|em|b|strong|span)\s*>/gi, '</tspan>'));
 }
 
+// The school's own stylesheet for papers written in the house classes. The
+// prompt asks the AI for structure only (<div class="gnps-paper"> with q / sub
+// / passage / or blocks) and no CSS, which leaves its one-set reply more room
+// for the questions themselves. Papers that bring their own <style> keep it:
+// their rules come after these and win.
+const HOUSE_PAPER_CSS = `
+.gnps-paper { font-family: 'Times New Roman', Times, 'Noto Serif Devanagari', Mangal, serif; font-size: 12pt; line-height: 1.3; color: #000; }
+.gnps-paper .paper-header { text-align: center; border-bottom: 1.5px solid #000; padding-bottom: 6px; margin-bottom: 8px; }
+.gnps-paper .school-name { font-size: 18pt; font-weight: bold; letter-spacing: 0.5px; }
+.gnps-paper .exam-title { font-size: 13pt; font-weight: bold; margin-top: 2px; }
+.gnps-paper .set-label { font-size: 12pt; font-weight: bold; margin-top: 2px; }
+.gnps-paper .meta-row { display: flex; justify-content: space-between; font-weight: bold; margin-top: 3px; }
+.gnps-paper .instructions { font-size: 11pt; margin: 4px 0 6px; }
+.gnps-paper .instructions ol { margin: 2px 0 0; padding-left: 22px; }
+.gnps-paper .section-title { text-align: center; font-weight: bold; font-size: 13pt; margin: 12px 0 4px; }
+.gnps-paper .section-note { text-align: center; font-style: italic; font-size: 11pt; margin-bottom: 4px; }
+.gnps-paper .q { margin: 8px 0 0; text-align: justify; }
+.gnps-paper .sub { margin: 5px 0 0 22px; text-align: justify; }
+.gnps-paper .passage, .gnps-paper .unseen-passage p { margin: 5px 0 0 22px; text-align: justify; }
+.gnps-paper .unseen-passage { margin: 0; }
+.gnps-paper .or { text-align: center; font-weight: bold; margin: 5px 0; }
+.gnps-paper .marks { float: right; font-weight: bold; margin-left: 8px; }
+.gnps-paper table.mcq-table { width: calc(100% - 22px); margin: 3px 0 0 22px; border-collapse: collapse; }
+.gnps-paper table.mcq-table td { width: 50%; padding: 1px 6px 1px 0; vertical-align: top; border: none; }
+.gnps-paper table.mcq-table tr { page-break-inside: avoid; }
+.gnps-paper table.data-table { border-collapse: collapse; margin: 6px auto; }
+.gnps-paper table.data-table th, .gnps-paper table.data-table td { border: 1px solid #000; padding: 3px 8px; text-align: center; }
+.gnps-paper .diagram-container { text-align: center; margin: 8px auto 12px; page-break-inside: avoid; }
+.gnps-paper .diagram-caption { font-weight: bold; font-style: italic; font-size: 11pt; margin-top: 3px; }
+.gnps-paper .vec { position: relative; display: inline-block; }
+.gnps-paper .vec::before { content: '\\2192'; position: absolute; left: 0; right: 0; top: -0.55em; font-size: 0.7em; line-height: 1; text-align: center; }
+.gnps-paper .end-line { text-align: center; font-weight: bold; margin-top: 12px; }
+`;
+
 function buildPrintableNode(htmlString) {
   const doc = new DOMParser().parseFromString(repairSvgTextMarkup(htmlString), 'text/html');
   doc.querySelectorAll('script, .no-print, [data-no-print]').forEach(n => n.remove());
@@ -5677,6 +5763,7 @@ function buildPrintableNode(htmlString) {
   }
 
   let css = Array.from(doc.querySelectorAll('style')).map(s => s.textContent || '').join('\n');
+  if (doc.querySelector('.gnps-paper')) css = `${HOUSE_PAPER_CSS}\n${css}`;
   // Sections must flow on continuously; a forced break before each one leaves
   // half-empty pages between Biology / Chemistry / Physics.
   css = css.replace(/page-break-before\s*:\s*always\s*;?/gi, '');
@@ -6474,7 +6561,8 @@ async function exportPastedPaperToPdf(htmlString, filename, footerLeft) {
   }
 }
 
-async function handleGeneratePdfFromAi() {
+async function handleGeneratePdfFromAi(options = {}) {
+  const skipChecks = options && options.skipChecks === true;
   const input = document.getElementById('aiResponseInput');
   const statusEl = document.getElementById('aiPdfStatus');
   const badgeEl = document.getElementById('aiPdfBadge');
@@ -6514,9 +6602,20 @@ async function handleGeneratePdfFromAi() {
     return;
   }
 
+  const labels = papers.map((html, i) => detectPaperLabel(html, i, papers.length));
+
+  hidePastedPaperWarnings();
+  if (!skipChecks) {
+    const problems = checkPastedPapers(raw, papers, labels);
+    if (problems.length) {
+      showPastedPaperWarnings(problems);
+      setStatus('Check the problems listed below before making the PDF.', '#f87171');
+      return;
+    }
+  }
+
   const originalText = btnText ? btnText.textContent : '';
   btn.disabled = true;
-  const labels = papers.map((html, i) => detectPaperLabel(html, i, papers.length));
 
   try {
     for (let i = 0; i < papers.length; i++) {
@@ -6536,6 +6635,125 @@ async function handleGeneratePdfFromAi() {
   }
 }
 
+// ---------------------------------------------------------------------------
+// Completeness check on a pasted AI reply. An AI that runs short of output
+// space cuts the reply off, writes "remaining questions here" instead of the
+// questions, or shortens the reading passages. Each of those is listed for the
+// teacher before the PDF is made; they can still make it anyway.
+// ---------------------------------------------------------------------------
+
+const PLACEHOLDER_TEXT_RES = [
+  /\b(?:remaining|rest of the|other|more|further)\s+(?:questions?|sub-?parts?|options?|parts?|items?)\s+(?:here|follow|go here|to be added|omitted|are similar)/i,
+  /\b(?:insert|add|continue|repeat)\b[^.]{0,40}\b(?:here|similarly|same (?:pattern|format|way))\b/i,
+  /\bsimilar(?:ly)?\s+to\s+(?:the\s+)?(?:above|previous|set a)\b/i,
+  /\bquestions?\s+\d{1,2}\s*(?:-|–|to)\s*\d{1,2}\s+(?:follow|are similar|continue|as above)/i,
+  /\[\s*(?:\.{3}|…|continue|insert|add|more)[^\]]{0,60}\]/i,
+  /\(\s*(?:and so on|etc\.?)\s*\)/i,
+];
+const PLACEHOLDER_COMMENT_RE = /\b(?:remaining|insert|add|continue|similar|same pattern|omitted|truncated|rest of|and so on|etc)\b|\.{3}|…/i;
+const LEDGER_COMMENT_RE = /^\s*GNPS-SET-LEDGER/i;
+const PASSAGE_SHORTFALL = 0.9;
+
+// The question count the prompt asked for, when the paper on screen is the
+// one the last prompt was built for.
+function expectedQuestionCount() {
+  if (!lastGeneratedPaper || !classSelect || !subjectSelect) return 0;
+  if (lastGeneratedPaper.className !== classSelect.value) return 0;
+  if (lastGeneratedPaper.subjectName !== getSubjectWithCode(subjectSelect.value, classSelect.value)) return 0;
+  const m = String(lastGeneratedPaper.promptText || '').match(/\*\*Total Questions:\*\*\s*(\d+)\s*Questions/);
+  return m ? Number(m[1]) : 0;
+}
+
+function questionNumbersIn(doc) {
+  const numberOf = el => {
+    const m = (el.textContent || '').trim().match(/^(?:Q\.?\s*|प्र(?:श्न)?\s*\.?\s*)?(\d{1,2})\s*[.)](?!\d)/i);
+    return m ? Number(m[1]) : 0;
+  };
+  const house = doc.querySelectorAll('.gnps-paper .q');
+  const blocks = house.length ? house : doc.querySelectorAll('body p, body div, body td, body li');
+  return [...new Set(Array.from(blocks).map(numberOf).filter(Boolean))].sort((a, b) => a - b);
+}
+
+function describeNumbers(nums) {
+  return nums.length > 6 ? `${nums.slice(0, 6).join(', ')} and ${nums.length - 6} more` : nums.join(', ');
+}
+
+function checkPastedPapers(raw, papers, labels) {
+  const problems = [];
+  const replyUnclosed = ((raw.match(/```/g) || []).length % 2) === 1;
+  const expectedTotal = expectedQuestionCount();
+
+  papers.forEach((html, i) => {
+    const label = labels[i];
+    const add = msg => problems.push(`${label}: ${msg}`);
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    const house = doc.querySelector('.gnps-paper');
+    const flatText = flattenMarkupText(html);
+
+    // 1. Stopped midway.
+    const lastAndUnclosed = replyUnclosed && i === papers.length - 1;
+    const missingEndLine = house && !house.querySelector('.end-line') && !/\bEND OF (?:SET|PAPER|QUESTION PAPER)\b/.test(flatText);
+    const missingHtmlClose = !house && /<html[\s>]/i.test(html) && !/<\/html>/i.test(html);
+    if (lastAndUnclosed || missingEndLine || missingHtmlClose) {
+      add('the paper stops midway (its last code block or its "END OF SET" line never arrived), so the AI ran out of space.');
+    }
+
+    // 2. Lazy shortcuts.
+    const shortcuts = new Set();
+    (html.match(/<!--[\s\S]*?-->/g) || []).forEach(c => {
+      const body = c.slice(4, -3);
+      if (!LEDGER_COMMENT_RE.test(body) && PLACEHOLDER_COMMENT_RE.test(body)) shortcuts.add(body.trim().slice(0, 70));
+    });
+    doc.querySelectorAll('body p, body div, body td, body li, body span').forEach(el => {
+      if (el.querySelector('p, div, td, li, img, svg, table')) return;
+      const text = (el.textContent || '').trim();
+      if (!text) return;
+      if (/^[.…\s]{3,}$/.test(text) || PLACEHOLDER_TEXT_RES.some(re => re.test(text))) shortcuts.add(text.slice(0, 70));
+    });
+    if (shortcuts.size) {
+      add(`the AI wrote a placeholder instead of the content: ${[...shortcuts].slice(0, 3).map(t => `"${t}"`).join('; ')}.`);
+    }
+
+    // 3. Questions missing.
+    const nums = questionNumbersIn(doc);
+    if (nums.length) {
+      const highest = nums[nums.length - 1];
+      const skipped = [];
+      for (let n = 1; n <= highest; n++) if (!nums.includes(n)) skipped.push(n);
+      if (skipped.length) add(`question number${skipped.length > 1 ? 's' : ''} ${describeNumbers(skipped)} ${skipped.length > 1 ? 'are' : 'is'} missing.`);
+      if (expectedTotal && highest < expectedTotal) add(`the blueprint asks for ${expectedTotal} questions, but the paper ends at Q${highest}.`);
+    }
+
+    // 4. Passage too short.
+    doc.querySelectorAll('.unseen-passage[data-target-words]').forEach((passage, k) => {
+      const target = parseInt(passage.getAttribute('data-target-words'), 10);
+      if (!target) return;
+      const words = (passage.textContent || '').trim().split(/\s+/).filter(Boolean).length;
+      if (words < target * PASSAGE_SHORTFALL) add(`unseen passage ${k + 1} has ${words} words, but it should have about ${target}.`);
+    });
+  });
+
+  return problems;
+}
+
+function showPastedPaperWarnings(problems) {
+  const box = document.getElementById('aiPdfWarnings');
+  const list = document.getElementById('aiPdfWarningList');
+  if (!box || !list) return;
+  list.innerHTML = '';
+  problems.forEach(p => {
+    const li = document.createElement('li');
+    li.textContent = p;
+    list.appendChild(li);
+  });
+  box.classList.remove('hidden');
+}
+
+function hidePastedPaperWarnings() {
+  const box = document.getElementById('aiPdfWarnings');
+  if (box) box.classList.add('hidden');
+}
+
 (function setupAiToPdfSection() {
   const input = document.getElementById('aiResponseInput');
   const btn = document.getElementById('generatePdfFromAiBtn');
@@ -6544,9 +6762,15 @@ async function handleGeneratePdfFromAi() {
   const badgeEl = document.getElementById('aiPdfBadge');
   if (!input || !btn) return;
 
-  btn.addEventListener('click', handleGeneratePdfFromAi);
+  btn.addEventListener('click', () => handleGeneratePdfFromAi());
+
+  const makeAnywayBtn = document.getElementById('aiPdfMakeAnywayBtn');
+  const cancelBtn = document.getElementById('aiPdfCancelWarningsBtn');
+  if (makeAnywayBtn) makeAnywayBtn.addEventListener('click', () => handleGeneratePdfFromAi({ skipChecks: true }));
+  if (cancelBtn) cancelBtn.addEventListener('click', hidePastedPaperWarnings);
 
   input.addEventListener('input', () => {
+    hidePastedPaperWarnings();
     const len = input.value.length;
     if (countEl) countEl.textContent = len ? `${len.toLocaleString()} characters` : '';
     if (badgeEl) badgeEl.textContent = len ? 'Ready to Convert' : 'Awaiting Paste';
@@ -6555,11 +6779,12 @@ async function handleGeneratePdfFromAi() {
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
       input.value = '';
+      hidePastedPaperWarnings();
       if (countEl) countEl.textContent = '';
       if (badgeEl) badgeEl.textContent = 'Awaiting Paste';
       const statusEl = document.getElementById('aiPdfStatus');
       if (statusEl) {
-        statusEl.textContent = 'Tip: Set A and Set B are detected automatically and downloaded as two separate PDF files.';
+        statusEl.textContent = 'Tip: paste one Gemini reply at a time (Set A, then Set B). Each set becomes its own PDF.';
         statusEl.style.color = 'var(--c-text-muted)';
       }
     });
