@@ -2872,7 +2872,7 @@ tr.paper-subject-row.is-subject-excluded .paper-subj-title {
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
-  max-height: 200px;
+  max-height: 340px;
   overflow-y: auto;
 }
 
@@ -2885,7 +2885,7 @@ tr.paper-subject-row.is-subject-excluded .paper-subj-title {
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   border-radius: 4px;
-  max-height: 200px;
+  max-height: 340px;
   overflow-y: auto;
 }
 
