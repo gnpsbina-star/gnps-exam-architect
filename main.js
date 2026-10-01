@@ -4975,8 +4975,8 @@ Anchor the passages in timeless human values:
       ? `one place for the student to locate and label, or one place marked A for the student to identify`
       : `${mm} items: places marked A, B ... to identify, and places to locate and label with suitable symbols`;
     promptText += `\n14. **Social Science Map Skill Rule (MANDATORY, ${mm} mark${mm > 1 ? 's' : ''} in ${middleMapSec.name}):** The paper MUST contain the map work set out in ${middleMapSec.name} of the blueprint; do not replace it with a written question or leave it out. Set ${mapTask}.
-    - Take every map item from the selected chapters only: places, rivers, mountains, regions, ancient sites, cities, kingdoms or monuments that those chapters name. Use an outline political map of India; use an outline map of the world only when the item is from a chapter about the world (for example oceans and continents).
-    - Print the outline map at the END of each set, headed "Map for Q. no. __", and refer to it from the question ("Map is given at the end of the paper"). Mark only the places to be identified (A, B) with a blank line beside each for the answer; do NOT mark or name the places the student has to locate.
+    - Take every map item from the selected chapters only: places, rivers, mountains, regions, ancient sites, cities, kingdoms or monuments that those chapters name. Use the map the chapter is about: an outline political map of India for items from chapters about India, and an outline map of the world for items from chapters about the world (for example oceans and continents, or world geography).
+    - Print the outline map at the END of each set (both an India map and a world map when the items need both), headed "Map for Q. no. __", and refer to it from the question ("Map is given at the end of the paper"). Mark only the places to be identified (A, B) with a blank line beside each for the answer; do NOT mark or name the places the student has to locate.
     - Directly below the map question add "Note: The following question is for Visually Impaired candidates only, in lieu of Q. No. __" and a words-only question on the same places with the same marks.
     - Only if none of the selected chapters names any place that can be shown on a map (for example only civics or economics chapters are selected), set those ${mm} mark${mm > 1 ? 's' : ''} as a written question instead and print no map.`;
   }
@@ -8329,7 +8329,12 @@ function renderSyllabusSheetPaper() {
 
       // Map Work carries no syllabus of its own - it is set from the chapters
       // listed above, so the line says that instead of naming extra topics.
-      const MAP_WORK_TEXT = 'Identification and labelling on the Outline Political Map of India, from the prescribed chapters listed above only. No additional map syllabus.';
+      // Class 10's CBSE map list is all India; the other classes have chapters
+      // about the world too (oceans and continents, world geography), so their
+      // map is whichever the chapter is about.
+      const MAP_WORK_TEXT = cls === 'Class 10'
+        ? 'Identification and labelling on the Outline Political Map of India, from the prescribed chapters listed above only. No additional map syllabus.'
+        : 'Identification and labelling on the outline map of India or of the World, as the chapter requires, from the prescribed chapters listed above only. No additional map syllabus.';
       const mapWorkLine = `<div style="margin-top: 3px; font-size: 9pt; color: #333333;">&bull; <strong>Map Work:</strong> ${MAP_WORK_TEXT}</div>`;
 
       let themesSummaryHtml = '';
