@@ -814,7 +814,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
           { name: "Section A", type: "Objective Type (MCQs, Fill in Blanks & 1-Word Qs)", count: 6, unitMark: 1, marksPerQ: "1 Mark", total: 6, choice: "All Compulsory" },
           { name: "Section B", type: "Short Answer I (20-30 words)", count: 2, unitMark: 2, marksPerQ: "2 Marks", total: 4, choice: "Direct Conceptual Questions" },
           { name: "Section C", type: "Short Answer II (40-50 words)", count: 2, unitMark: 3, marksPerQ: "3 Marks", total: 6, choice: "Internal choice in 1 Q" },
-          { name: "Section D", type: "Long Answer (60-80 words) & Map Skill Work", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "3M Long Question + 1M Map Location" }
+          { name: "Section D", type: "Long Answer (60-80 words) & Map Skill Work", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "3M Long Question + 1M Map Location", mapMarks: 1 }
         ];
       } else {
         // Class 9 & Class 10
@@ -971,7 +971,7 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
         { name: "Section B", type: "Very Short Answer (VSA - 40 words)", count: 3, unitMark: 2, marksPerQ: "2 Marks", total: 6, choice: "Internal choice in 1 Q" },
         { name: "Section C", type: "Short Answer (SA - 60 words)", count: 4, unitMark: 3, marksPerQ: "3 Marks", total: 12, choice: "Internal choice in 1 Q" },
         { name: "Section D", type: "Long Answer (LA - 120 words)", count: 2, unitMark: 5, marksPerQ: "5 Marks", total: 10, choice: "Internal choice in 1 Q" },
-        { name: "Section E", type: "Case-Based Integrated Study / Map Work", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "3M Case/Source + 1M Map Location" }
+        { name: "Section E", type: "Case-Based Integrated Study / Map Work", count: 1, unitMark: 4, marksPerQ: "4 Marks", total: 4, choice: "3M Case/Source + 1M Map Location", mapMarks: 1 }
       ];
     } else if (subLower.includes("general knowledge") || subLower.includes("gk")) {
       sections = [
@@ -1119,6 +1119,10 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
   // 9. Standard 80M Board Subjects (Math, Science 9/10, SST 9/10, Economics, etc.)
   else {
     const isSecSocial = (className === "Class 9" || className === "Class 10") && (subLower.includes("social") || subLower.includes("sst") || subLower.includes("087"));
+    // Class 6-8 Social Science has no CBSE sample paper, but the school sets a
+    // map question in every exam (the syllabus sheet promises Map Work), so the
+    // full paper takes the same six-section layout with its Section F map.
+    const isMiddleSocial = isMiddle && (subLower.includes("social") || subLower.includes("sst"));
     // Only Class 9-10 use the Biology/Chemistry/Physics subject-based split -
     // their NCERT syllabus is genuinely organized into those three
     // disciplines, matching the real Class 10 board pattern. Class 6-8's
@@ -1154,14 +1158,16 @@ function calculateExamBlueprint(className, subjectName, examName, marksVal, dura
       // Class 9/10 Social Science: History / Geography / Political Science /
       // Economics sections on the CBSE 2026-27 layout in sqp_blueprints.js.
       sections = buildSocialScienceSections(sstSpec, disciplineSel, marks);
-    } else if (isSecSocial) {
+    } else if (isSecSocial || isMiddleSocial) {
       sections = [
         { name: "Section A", type: "MCQs & Assertion-Reasoning", count: 20, unitMark: 1, marksPerQ: "1 Mark", total: 20, choice: "18 MCQs + 2 Assertion-Reason" },
         { name: "Section B", type: "Very Short Answer (VSA - 40 words)", count: 4, unitMark: 2, marksPerQ: "2 Marks", total: 8, choice: "Internal choice in 1 Q" },
         { name: "Section C", type: "Short Answer (SA - 60 words)", count: 5, unitMark: 3, marksPerQ: "3 Marks", total: 15, choice: "Internal choice in 1 Q" },
         { name: "Section D", type: "Long Answer (LA - 120 words)", count: 4, unitMark: 5, marksPerQ: "5 Marks", total: 20, choice: "Internal choice in 2 Qs" },
         { name: "Section E", type: "Case-Based Integrated Questions", count: 3, unitMark: 4, marksPerQ: "4 Marks", total: 12, choice: "Internal choice in one sub-part" },
-        { name: "Section F", type: "Map Skill Question (History 2M + Geo 3M)", count: 1, unitMark: 5, marksPerQ: "5 Marks", total: 5, choice: "CBSE Prescribed Map Syllabus" }
+        isMiddleSocial
+          ? { name: "Section F", type: "Map Skill Question (outline map)", count: 1, unitMark: 5, marksPerQ: "5 Marks", total: 5, choice: "Identify 2 places marked A and B + locate and label 3, one with an OR", mapMarks: 5 }
+          : { name: "Section F", type: "Map Skill Question (History 2M + Geo 3M)", count: 1, unitMark: 5, marksPerQ: "5 Marks", total: 5, choice: "CBSE Prescribed Map Syllabus" }
       ];
     } else {
       sections = [
@@ -4953,7 +4959,28 @@ Anchor the passages in timeless human values:
   }
 
   const isSocialScience = subLower.includes("social science") || subLower.includes("social studies") || subLower.includes("sst") || subLower.includes("087");
-  if (isSocialScience && (marks <= 25 || examName.includes("Unit Test"))) {
+  const isMiddleSocial = isSocialScience && ['Class 6', 'Class 7', 'Class 8'].includes(className);
+  // Classes 6-8 carry their map marks on a blueprint row (mapMarks), at every
+  // exam size. The unit-test rule below was written for Class 9/10 chapter
+  // names and told the AI "NO Map Work" for chapters such as "Locating Places
+  // on the Earth", so these classes take the map rule here instead.
+  const middleMapSec = isMiddleSocial && activeBlueprint
+    ? activeBlueprint.sections.find(s => s.mapMarks && s.count > 0)
+    : null;
+  if (middleMapSec) {
+    const mm = middleMapSec.mapMarks;
+    const mapTask = mm >= 5
+      ? `two places or areas marked A and B on the map for the student to identify (1 mark each), and three items for the student to locate and label with suitable symbols (1 mark each), one of them with an OR`
+      : mm === 1
+      ? `one place for the student to locate and label, or one place marked A for the student to identify`
+      : `${mm} items: places marked A, B ... to identify, and places to locate and label with suitable symbols`;
+    promptText += `\n14. **Social Science Map Skill Rule (MANDATORY, ${mm} mark${mm > 1 ? 's' : ''} in ${middleMapSec.name}):** The paper MUST contain the map work set out in ${middleMapSec.name} of the blueprint; do not replace it with a written question or leave it out. Set ${mapTask}.
+    - Take every map item from the selected chapters only: places, rivers, mountains, regions, ancient sites, cities, kingdoms or monuments that those chapters name. Use an outline political map of India; use an outline map of the world only when the item is from a chapter about the world (for example oceans and continents).
+    - Print the outline map at the END of each set, headed "Map for Q. no. __", and refer to it from the question ("Map is given at the end of the paper"). Mark only the places to be identified (A, B) with a blank line beside each for the answer; do NOT mark or name the places the student has to locate.
+    - Directly below the map question add "Note: The following question is for Visually Impaired candidates only, in lieu of Q. No. __" and a words-only question on the same places with the same marks.
+    - Only if none of the selected chapters names any place that can be shown on a map (for example only civics or economics chapters are selected), set those ${mm} mark${mm > 1 ? 's' : ''} as a written question instead and print no map.`;
+  }
+  if (isSocialScience && !isMiddleSocial && (marks <= 25 || examName.includes("Unit Test"))) {
     const hasMapChapter = selectedChaptersData.some(c => {
       const name = c.name.toLowerCase();
       return name.includes("india") || name.includes("location") || name.includes("physical features") || 
