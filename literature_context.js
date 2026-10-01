@@ -2,7 +2,8 @@
  * literature_context.js
  * Verified Core Plots, Characters, and Thematic Summaries for CBSE & NEP 2020 Textbooks.
  * Injected dynamically into AI prompts to prevent plot hallucination on newly introduced textbooks
- * (e.g. Kaveri for Class 9 English, Ganga for Class 9 Hindi, Poorvi for Classes 6, 7 & 8, etc.).
+ * (e.g. Kaveri for Class 9 English, Ganga for Class 9 Hindi, Poorvi for Classes 6, 7 & 8,
+ * and the Class 10-12 English readers).
  */
 
 export const LITERATURE_SUMMARIES = {
@@ -755,6 +756,256 @@ export const LITERATURE_SUMMARIES = {
     book: "Footprints Without Feet",
     grade: "Class 10",
     summary: "A humorous play: a historian of the 25th century tells how Earth was saved in the twenty-first century. Think-Tank, the vain, big-headed ruler of Mars, plans to invade Earth and orders his crew (Captain Omega, Lieutenant Iota, Sergeant Oop) to study an Earth 'sandwich-book' they find in a library: Mother Goose nursery rhymes. With his assistant Noodle he misreads the rhymes ('Humpty Dumpty', 'Mary Had a Little Lamb', 'Hey Diddle Diddle') as secret codes about Earth's power, panics, calls off the invasion and orders the Martians to flee. Themes: humour, the folly of arrogance, the power of books."
+  },
+
+  // ==========================================
+  // CLASS 11 ENGLISH CORE — HORNBILL & SNAPSHOTS
+  // ==========================================
+  // Classes 11 and 12 had no entries, so the AI set every literature question
+  // from memory. These books are long established and it mostly gets them
+  // right, but the Class 7 paper showed what happens when it guesses; every
+  // entry below is checked against the book.
+  "the portrait of a lady": {
+    title: "The Portrait of a Lady (Khushwant Singh)",
+    type: "Prose",
+    book: "Hornbill",
+    grade: "Class 11",
+    summary: "The author remembers his grandmother: very old, short, fat and slightly bent, always telling the beads of her rosary. In the village she got him ready for school, went with him to the temple school, and fed the village dogs with stale chapattis on the way. When they moved to the city and he went to an English school, she could no longer help him; she disliked his learning about Western science and music, which she thought was not for gentlefolk, and spent her time feeding the sparrows in the courtyard. When he went abroad for five years she saw him off at the station silently and kissed his forehead. On his return she celebrated by gathering the women of the neighbourhood and singing to an old drum all evening; the next morning she fell ill, refused to stop praying, and died peacefully telling her beads. Thousands of sparrows came and sat silently around her body, ignored the crumbs the author's mother threw them, and flew away after her body was carried off. Themes: love and dignity of the old, the gap between generations, faith."
+  },
+  "we re not afraid to die if we can all be together": {
+    title: "We're Not Afraid to Die... If We Can All Be Together (Gordon Cook and Alan East)",
+    type: "Prose",
+    book: "Hornbill",
+    grade: "Class 11",
+    summary: "The narrator, his wife Mary, son Jonathan (6) and daughter Suzanne (7) set out from Plymouth in July 1976 to sail round the world in their boat Wavewalker, with two crewmen, Larry Vigil and Herb Seigler. In the southern Indian Ocean a gigantic wave strikes the boat and nearly sinks it: the narrator is thrown overboard and climbs back, the boat fills with water, he hurts his ribs and Suzanne is badly hurt on the head but does not complain. They pump water for hours and patch the hull. Jonathan tells his father that they are not afraid of dying if they can all be together. After days of danger the narrator navigates them to the tiny Ile Amsterdam, where they are rescued. Themes: courage, optimism and teamwork in a crisis, family love."
+  },
+  "discovering tut the saga continues": {
+    title: "Discovering Tut: The Saga Continues (A.R. Williams)",
+    type: "Prose",
+    book: "Hornbill",
+    grade: "Class 11",
+    summary: "Tutankhamun, the boy king of Egypt who died at about nineteen over 3,300 years ago, was the last of his family's line. Howard Carter found his tomb in 1922; because the resins had hardened, Carter's team cut the mummy apart to remove it and the treasures from the coffin. In 2005, under Zahi Hawass, the mummy was scanned with a CT scanner to learn how he lived and died. The essay recalls Amenhotep III (probably his grandfather) and Akhenaten (perhaps his father), who replaced the old gods with the worship of the Aten, and how in Tut's reign the old gods were restored. Themes: archaeology, science helping us understand history, the mystery of the past."
+  },
+  "the adventure": {
+    title: "The Adventure (Jayant Narlikar)",
+    type: "Prose",
+    book: "Hornbill",
+    grade: "Class 11",
+    summary: "Professor Gaitonde, a historian, is in a collision with a truck and finds himself in another version of India, in which the Marathas won the third Battle of Panipat (1761) because Vishwasrao escaped the bullet that killed him in real history; the British never ruled India and the East India Company remained a trading company confined to Bombay. In a library he reads this alternative history. At a meeting at Azad Maidan he sits in the empty chair of the chairman and is thrown out, and then wakes in hospital in his own world. Rajendra Deshpande, a scientist, explains his experience through catastrophe theory and the lack of determinism in quantum theory: the professor may have passed into an alternative reality. Themes: history and chance, science and alternative worlds."
+  },
+  "silk road": {
+    title: "Silk Road (Nick Middleton)",
+    type: "Prose",
+    book: "Hornbill",
+    grade: "Class 11",
+    summary: "A travelogue of the author's journey from Lhasa across western Tibet to Mount Kailash for the kora, the holy circuit around the mountain. He travels with his driver Tsetan and guide Daniel, meets nomads with their herds and fierce mastiffs, crosses high passes, finds Hor a grim, dirty town, and in Darchen suffers from the cold and altitude sickness; a doctor treats him. In Darchen he meets Norbu, a Tibetan academic also going on the kora, and finally sets out round the mountain. Themes: the hardship and beauty of travel, Tibetan landscape and faith."
+  },
+  "a photograph": {
+    title: "A Photograph (Shirley Toulson)",
+    type: "Poem",
+    book: "Hornbill",
+    grade: "Class 11",
+    summary: "The poet looks at an old photograph of her mother at about twelve, paddling at the sea with two girl cousins, holding her hands. Twenty or thirty years later her mother would laugh at the picture and at their old-fashioned clothes. Now the mother has been dead for nearly as many years as the girl in the photograph was old, and the poet has nothing to say about that circumstance: 'Its silence silences.' Themes: the passage of time, loss and memory; the sea stays the same while human life changes."
+  },
+  "the laburnum top": {
+    title: "The Laburnum Top (Ted Hughes)",
+    type: "Poem",
+    book: "Hornbill",
+    grade: "Class 11",
+    summary: "On a September afternoon the top of a laburnum tree is silent and still, its leaves yellow. A goldfinch arrives with a twitching chirrup, 'a suddenness, a startlement, at a branch end', and the tree comes alive: she enters the leaves to feed her young in the nest, and the whole tree trembles and thrills with their chitterings. She stokes her family full, flits out to a branch end, then launches away towards the infinite, and the laburnum subsides to empty silence. Themes: nature, the life a bird brings to a tree, a mother's care for her young."
+  },
+  "the voice of the rain": {
+    title: "The Voice of the Rain (Walt Whitman)",
+    type: "Poem",
+    book: "Hornbill",
+    grade: "Class 11",
+    summary: "The poet asks the falling rain who it is; the rain answers that it is the Poem of Earth, rising from the land and the sea into the sky, then coming down to wash and give life to the earth, and returning to its origin. The poet adds in brackets that a song, issuing from its birthplace, after fulfilment, also returns with love to its origin. Themes: the water cycle as a cycle of life, the likeness between rain and poetry."
+  },
+  "childhood": {
+    title: "Childhood (Markus Natten)",
+    type: "Poem",
+    book: "Hornbill",
+    grade: "Class 11",
+    summary: "The poet asks when his childhood went. Was it when he stopped being eleven, when he found that hell and heaven could not be found in geography; when he saw that adults were not what they seemed, preaching love but not acting lovingly; or when he found that his mind was his own, to use as he chose? He concludes that his childhood has gone to some forgotten place, hidden in an infant's face. Themes: the loss of innocence, growing up, reason and individuality."
+  },
+  "father to son": {
+    title: "Father to Son (Elizabeth Jennings)",
+    type: "Poem",
+    book: "Hornbill",
+    grade: "Class 11",
+    summary: "A father laments that he does not understand his grown son, though they have lived in the same house for years; the son seems a stranger with a world of his own. The father wants to build on the land he knows, to see his son grow up in it, but the son is drawn elsewhere. Both are hurt and angry; at the end father and son each put out an empty hand, longing for something to forgive. Themes: the generation gap, failure of communication between parent and child, love and longing for understanding."
+  },
+  "the summer of the beautiful white horse": {
+    title: "The Summer of the Beautiful White Horse (William Saroyan)",
+    type: "Prose",
+    book: "Snapshots",
+    grade: "Class 11",
+    summary: "Aram, nine, narrates. His cousin Mourad, thought 'crazy', wakes him at four in the morning sitting on a beautiful white horse. Their Garoghlanian tribe is poor but famous for its honesty, so Aram cannot believe Mourad has stolen it, yet the boys ride it secretly and hide it in a barn on a deserted vineyard. Mourad has a way with animals: he mends a robin's broken wing and calms dogs. Uncle Khosrove, an angry man whose catchphrase is 'It is no harm; pay no attention to it', also appears. John Byro, an Assyrian farmer, complains that his white horse was stolen; when he meets the boys with the horse he looks at its teeth but says he would swear it is his horse, yet 'a suspicious man would believe his eyes instead of his heart', and lets them go. The boys return the horse to his barn, and Byro later says it is better tempered than before. Themes: honesty, family pride, childhood longing, innocence."
+  },
+  "the address": {
+    title: "The Address (Marga Minco)",
+    type: "Prose",
+    book: "Snapshots",
+    grade: "Class 11",
+    summary: "Set in Holland after the Second World War. During the war Mrs Dorling, an acquaintance of the narrator's Jewish mother, took away the family's valuable possessions for 'safe keeping'. After the war, the mother dead, the daughter goes to Mrs Dorling's house at 46 Marconi Street; Mrs Dorling pretends not to know her and shuts the door. On a second visit Mrs Dorling's daughter lets her in, and she sees her mother's things (the tablecloth with a burn mark, the silver cutlery, the antique pewter plate) in ugly, alien surroundings, and feels they have lost their meaning. She leaves, deciding to forget the address. Themes: war and loss, memory, attachment to possessions, letting go."
+  },
+  "mother s day": {
+    title: "Mother's Day (J.B. Priestley)",
+    type: "Prose",
+    book: "Snapshots",
+    grade: "Class 11",
+    summary: "A comic one-act play. Mrs Annie Pearson is treated like a servant by her husband George and grown children Doris and Cyril. Her bold neighbour Mrs Fitzgerald, who can tell fortunes, exchanges personalities with her by a magic spell. As Mrs Pearson (now in Mrs Fitzgerald's body) shocks the family by smoking, drinking stout, refusing to work and speaking sharply, they learn to respect her. The personalities are switched back, and Mrs Pearson, now firm, arranges a family game of rummy while she talks with her husband. Themes: a mother's unrecognised work, the need for respect and family responsibility, humour."
+  },
+  "birth": {
+    title: "Birth (A.J. Cronin)",
+    type: "Prose",
+    book: "Snapshots",
+    grade: "Class 11",
+    summary: "From 'The Citadel'. Andrew Manson, a young doctor just out of medical college, is called at midnight to deliver the first baby of Susan Morgan, wife of the miner Joe Morgan, in a Welsh mining town. After a long night's work he saves the mother, but the baby is born apparently lifeless. Remembering a case he once saw, he revives it by plunging it alternately into hot and cold water and rubbing it, until it cries. As he walks home he feels he has at last done something real. Themes: a doctor's dedication, life and death, the miracle of birth."
+  },
+  "the tale of melon city": {
+    title: "The Tale of Melon City (Vikram Seth)",
+    type: "Poem",
+    book: "Snapshots",
+    grade: "Class 11",
+    summary: "A humorous narrative poem. A just and placid king orders an arch to be built across a main street; it is built too low and knocks off his crown. He orders the chief of builders hanged, and the blame passes from the builders to the workmen, the masons and the architect, and finally back to the king. A wise old man is consulted; the noose is too high for anyone but the king, so the king himself is hanged. The ministers proclaim that the next man to pass the city gate will choose the new king; an idiot says 'a melon', so a melon is crowned, and the people are content as long as they are left in peace. Themes: satire on foolish rulers and justice, people's indifference to who rules them."
+  },
+
+  // ==========================================
+  // CLASS 12 ENGLISH CORE — FLAMINGO & VISTAS
+  // ==========================================
+  "the last lesson": {
+    title: "The Last Lesson (Alphonse Daudet)",
+    type: "Prose",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "Set in Alsace in 1870, after the Prussians won the Franco-Prussian War. Little Franz is late for school and afraid of being scolded for not learning his participles, but finds the class strangely quiet, M. Hamel in his best clothes, and village elders such as old Hauser sitting at the back. M. Hamel announces that an order has come from Berlin that only German will be taught in the schools of Alsace and Lorraine; this is their last French lesson. Franz regrets having wasted his time. M. Hamel tells them French is the most beautiful language and to hold on to it, for while a people keep their language they hold the key to their prison. At the end he writes 'Vive La France!' on the board and dismisses them. Themes: love of one's language, the pain of linguistic chauvinism, valuing what we have before it is lost."
+  },
+  "lost spring": {
+    title: "Lost Spring (Anees Jung)",
+    type: "Prose",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "Two stories of children robbed of childhood by poverty. Saheb-e-Alam, whose family came from Dhaka, is a ragpicker in Seemapuri on the edge of Delhi, scrounging in garbage for 'gold'; he later works at a tea stall for 800 rupees a month and loses his freedom. Mukesh lives in Firozabad, where families have made glass bangles for generations, working in dark hot furnaces and losing their eyesight; caught in a vicious circle of sahukars, middlemen, policemen and politicians, they accept their fate, but Mukesh dreams of becoming a motor mechanic. Themes: child labour, poverty, exploitation, lost childhood."
+  },
+  "deep water": {
+    title: "Deep Water (William Douglas)",
+    type: "Prose",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "William O. Douglas describes his fear of water: as a child of three or four a wave knocked him down at a California beach. At about ten or eleven, learning to swim at the Y.M.C.A. pool, a big bruiser of a boy threw him into the deep end; he nearly drowned, and the terror haunted him for years. He hired an instructor who taught him piece by piece, with a rope and pulley, and then tested himself alone, swimming in Lake Wentworth in New Hampshire and at Warm Lake, until he had conquered the fear. He concludes that in death there is peace and that there is terror only in the fear of death, as Roosevelt said: 'All we have to fear is fear itself.' Themes: overcoming fear through will and effort."
+  },
+  "the rattrap": {
+    title: "The Rattrap (Selma Lagerlöf)",
+    type: "Prose",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "A poor peddler who sells rattraps believes the whole world is a big rattrap that tempts people with bait. A lonely old crofter gives him shelter and shows him the thirty kronor he earned from his cow; next day the peddler steals it, gets lost in the forest and realises he himself is caught in a trap. At the Ramsjö ironworks the ironmaster mistakes him for an old regimental comrade, Captain von Stahle, and invites him home for Christmas; when the mistake is found out, the ironmaster wants him gone, but the daughter, Edla Willmansson, insists he stay and treats him kindly. He leaves the stolen money and a rattrap as a Christmas present, with a letter signed Captain von Stahle, asking her to return the money to the crofter. Themes: human kindness can redeem a person, the trap of material greed."
+  },
+  "indigo": {
+    title: "Indigo (Louis Fischer)",
+    type: "Prose",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "From 'The Life of Mahatma Gandhi'. In 1916 Rajkumar Shukla, an illiterate sharecropper from Champaran in Bihar, persuades Gandhi to come and see the peasants' plight: British landlords forced them to grow indigo on 15 per cent of their land (the tinkathia system) and, when synthetic indigo made it worthless, demanded compensation. In Motihari Gandhi was ordered to leave the district; he refused, peasants gathered in thousands, and the case against him was dropped (the first civil disobedience in India). An official inquiry followed; Gandhi accepted a 25 per cent refund from the planters, because the principle of their surrender mattered more than the money. He also worked on schools, hygiene and health in the villages. Themes: freedom from fear, self-reliance, non-violent resistance."
+  },
+  "poets and pancakes": {
+    title: "Poets and Pancakes (Asokamitran)",
+    type: "Prose",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "An extract from 'My Years with Boss', a humorous account of the author's years at Gemini Studios in Madras in the 1940s. Pancake was the brand of make-up the studio bought in truckloads; the make-up department was run by a Bengali and then a Maharashtrian, with an office boy who wanted to be a writer and blamed Kothamangalam Subbu for his failure. Subbu, the Boss's loyal number two, was creative but treated as a sycophant. The 'poets' were the staff of the story department. The author recalls the visit of the Moral Rearmament Army, and that of an English poet whom no one understood; years later the author discovered he was Stephen Spender, editor of 'The Encounter' and a contributor to 'The God That Failed'. Themes: gentle satire, the film world, humour."
+  },
+  "the interview": {
+    title: "The Interview (Christopher Silvester)",
+    type: "Prose",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "Part I discusses the interview as a form of journalism, invented about 130 years ago: some see it as an art and a source of truth, while celebrities such as V.S. Naipaul, Lewis Carroll, Rudyard Kipling and H.G. Wells disliked or distrusted it. Part II is an extract from Mukund Padmanabhan's interview with the Italian scholar and novelist Umberto Eco, who explains how he finds time to do so much by using the 'interstices', the empty spaces in his day, and how his novel 'The Name of the Rose' became a huge success though it was a serious work. Themes: the value and limits of the interview, the life of a writer."
+  },
+  "going places": {
+    title: "Going Places (A.R. Barton)",
+    type: "Prose",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "Sophie, a girl from a poor working-class family about to leave school, dreams of owning a boutique, becoming an actress or a fashion designer, though her friend Jansie knows they are meant for the biscuit factory. She hero-worships her brother Geoff and the young Irish footballer Danny Casey, whom her father and brothers follow, and makes up a story that she met Casey and that he promised to meet her. She waits for him alone by the canal one evening, but he never comes. Themes: adolescent fantasy versus reality, dreams and disappointment."
+  },
+  "my mother at sixty six": {
+    title: "My Mother at Sixty-Six (Kamala Das)",
+    type: "Poem",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "Driving from her parents' home to Cochin airport, the poet looks at her mother dozing beside her, her face ashen like a corpse, and feels her old familiar ache, the childhood fear of losing her. She turns away to look at the young trees sprinting past and the merry children spilling out of their homes. At the security check she looks again at her mother, wan and pale as a late winter's moon, but hides her fear and says only, 'See you soon, Amma', smiling. Themes: ageing, the fear of losing a parent, love between mother and daughter."
+  },
+  "keeping quiet": {
+    title: "Keeping Quiet (Pablo Neruda)",
+    type: "Poem",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "The poet asks us to count to twelve and keep still for once on the face of the earth, without speaking any language or moving our arms. In that moment there would be no rush or engines; fishermen would not harm the whales, the man gathering salt would look at his hurt hands, and those preparing wars would put on clean clothes and walk with their brothers. He does not mean total inactivity or death; perhaps a huge silence could interrupt the sadness of never understanding ourselves, as the earth teaches us when everything seems dead and later proves to be alive. Themes: introspection, peace, unity, the value of silence."
+  },
+  "a thing of beauty": {
+    title: "A Thing of Beauty (John Keats)",
+    type: "Poem",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "An extract from 'Endymion'. A thing of beauty is a joy for ever: its loveliness increases, it never passes into nothingness, and it gives us a quiet bower, sleep full of sweet dreams, health and quiet breathing. In spite of despondence, gloomy days and our own unhealthy ways, beauty removes the pall from our dark spirits: the sun, the moon, trees, daffodils, clear rills, the musk-rose blooms, and the grandeur of the mighty dead and the stories we have heard. All these are an endless fountain of immortal drink pouring from heaven. Themes: beauty as a source of lasting joy and strength."
+  },
+  "a roadside stand": {
+    title: "A Roadside Stand (Robert Frost)",
+    type: "Poem",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "A poor rural family puts up a little shed by the road to sell wild berries and squash to the city traffic, hoping for some city money; but the cars rush past without a look, or stop only to ask the way or complain about the scenery. The poet is pained by the country people's unfulfilled hopes and by the city planners and 'greedy good-doers' who promise to help them, and he sometimes wishes to end their pain at one stroke. Themes: the gap between the rich city and the poor countryside, insensitivity, empathy."
+  },
+  "aunt jennifer s tigers": {
+    title: "Aunt Jennifer's Tigers (Adrienne Rich)",
+    type: "Poem",
+    book: "Flamingo",
+    grade: "Class 12",
+    summary: "Aunt Jennifer embroiders tigers on a screen: bright topaz tigers prancing proudly and fearlessly through a green world, unafraid of the men beneath the tree. Her own fingers flutter through the wool, finding even the needle hard to pull, because the massive weight of Uncle's wedding band sits heavily on her hand. When she is dead her terrified hands will still lie ringed with the ordeals she was mastered by, but the tigers she made will go on prancing, proud and unafraid. Themes: a woman's oppression in marriage, art as escape and as freedom."
+  },
+  "the third level": {
+    title: "The Third Level (Jack Finney)",
+    type: "Prose",
+    book: "Vistas",
+    grade: "Class 12",
+    summary: "Charley, thirty-one, says that one night he found a third level beneath the two levels of Grand Central Station in New York: gas lamps, people in old-fashioned clothes and a newspaper dated 1894. He tried to buy two tickets to Galesburg, Illinois, a peaceful town of his childhood, but his money was the modern kind and the clerk took him for a fraud. He changed his money for old currency at a loss, but never found the third level again. His psychiatrist friend Sam says it is a waking dream, a way to escape the worries of modern life; Sam then disappears, and Charley later finds in his grandfather's stamp collection a first-day cover posted in 1894 to his grandfather, in which Sam writes that he has reached Galesburg. Themes: escapism, the stress of modern life, the mystery of time."
+  },
+  "the tiger king": {
+    title: "The Tiger King (Kalki)",
+    type: "Prose",
+    book: "Vistas",
+    grade: "Class 12",
+    summary: "A satire. At his birth the astrologers predict that the Maharaja of Pratibandapuram, Jilani Jung Jung Bahadur, will be killed by a tiger, specifically the hundredth tiger. He sets out to kill a hundred tigers, bans tiger hunting by anyone else, saves his throne from an angry British officer by sending the officer's wife costly diamond rings, and even marries a princess from a state with many tigers. When the tigers run out at ninety-nine, his dewan secretly brings an old tiger from the People's Park in Madras; the king shoots it but only frightens it unconscious, and the hunters kill it secretly. Later he buys a wooden toy tiger for his son's birthday; a sliver from it pricks his hand, the wound becomes infected, and he dies during the operation, killed by the hundredth tiger. Themes: satire on the vanity of rulers, the cruelty of hunting, irony of fate."
+  },
+  "journey to the end of the earth": {
+    title: "Journey to the End of the Earth (Tishani Doshi)",
+    type: "Prose",
+    book: "Vistas",
+    grade: "Class 12",
+    summary: "The author's journey to Antarctica aboard the Russian research vessel Akademik Shokalskiy with the 'Students on Ice' programme, led by Geoffrey Green, which takes high-school students to the end of the world so that they will understand and act on climate change. She describes Antarctica's place in the history of Gondwana, its ice and silence, and how changes there show the effects of global warming; tiny phytoplankton sustain the whole food chain, so small changes can have huge effects. Themes: climate change, the fragile environment, the need for young people to act."
+  },
+  "the enemy": {
+    title: "The Enemy (Pearl S. Buck)",
+    type: "Prose",
+    book: "Vistas",
+    grade: "Class 12",
+    summary: "During the Second World War, Dr Sadao Hoki, a Japanese surgeon trained in America, and his wife Hana find a wounded American prisoner of war washed up on the beach near their house. Though he is the enemy, Sadao's duty as a doctor makes him operate and save the man; their servants leave in protest. Sadao tells the old General, whom he is treating, and the General promises to send assassins, but forgets. In the end Sadao helps the American escape in his boat to a nearby island to wait for a Korean fishing boat. Themes: humanity and professional duty above national hatred, the conflict between patriotism and compassion."
+  },
+  "on the face of it": {
+    title: "On the Face of It (Susan Hill)",
+    type: "Prose",
+    book: "Vistas",
+    grade: "Class 12",
+    summary: "A play. Derry, a fourteen-year-old boy whose face was burnt on one side by acid, avoids people because they stare or pity him. He climbs into the garden of Mr Lamb, an old man with a tin leg who welcomes everyone and is not bitter. Mr Lamb talks about bees, weeds and flowers and helps Derry see that what matters is inside a person and how he looks at the world. Derry promises to come back and help him pick crab apples, despite his mother's objections; when he returns, he finds Mr Lamb has fallen from his ladder and died. Themes: disability, loneliness and isolation, acceptance and the power of a positive outlook."
+  },
+  "memories of childhood": {
+    title: "Memories of Childhood (Zitkala-Sa and Bama)",
+    type: "Prose",
+    book: "Vistas",
+    grade: "Class 12",
+    summary: "Two autobiographical accounts by women from marginalised communities. (1) 'The Cutting of My Long Hair' by Zitkala-Sa, a Native American: at a missionary boarding school (the 'land of apples') she is humiliated by the rules, the tight clothes and above all the cutting of her long hair, which among her people was done only to cowards; she hides under a bed and is dragged out, and feels she has lost her spirit. (2) 'We Too Are Human Beings' by Bama, a Tamil Dalit writer (from 'Karukku'): as a child she laughs at an elder of her community carrying a packet of snacks by its string so as not to touch it, until her elder brother Annan explains untouchability, and tells her that education is the way to earn respect; she studies hard and stands first. Themes: discrimination, cultural oppression, resistance, the value of education."
   },
 
   // ==========================================

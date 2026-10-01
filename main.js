@@ -1,6 +1,6 @@
 import { cbseData } from './data.js?v=45';
 import { getSqpBlueprint, getSecondaryMaths, getSecondaryScience, getSecondarySocialScience, getSecondaryEnglish, getSecondaryHindi, getSecondarySkill, disciplineSectionOf, scienceQuestionMarks, socialScienceQuestionMarks, accountancyPaper } from './sqp_blueprints.js?v=11';
-import { getLiteratureContext } from './literature_context.js?v=4';
+import { getLiteratureContext } from './literature_context.js?v=5';
 import { GNPS_CREST_DATA_URI } from './brand_assets.js?v=1';
 import { PRINCIPAL_SIGNATURE_BASE64 } from './signature_asset.js?v=1';
 
