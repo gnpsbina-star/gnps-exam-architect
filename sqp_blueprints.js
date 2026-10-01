@@ -90,13 +90,21 @@ const class10MathsScope = [
   "Probability: classical definition and simple problems only."
 ];
 
+// Chapters are matched to units by keyword, longest match winning, so each
+// unit lists both the Ganita Manjari chapter names and the older CBSE ones a
+// teacher may still have selected. Part 2 was published on 21 September 2026
+// and renamed several of these: "Propositions and their Converses" carries the
+// geometry proof work, "The World of Algorithms" the GCD and divisor material,
+// "Two Variables, One Line" the linear equation, and "How Quantities Combine"
+// the statistics. A chapter that matches nothing still reaches the paper, but
+// without a unit's share of the marks, so these keywords must keep up.
 const class9MathsUnits = [
-  { name: "Number System", marks: 7, chapters: ["World of Numbers", "Number System"] },
-  { name: "Algebra", marks: 20, chapters: ["Linear Polynomials", "Introduction to Polynomials", "Sequences and Progressions", "Algebraic Identities", "Linear Equations in Two Variables"] },
+  { name: "Number System", marks: 7, chapters: ["World of Numbers", "Number System", "World of Algorithms", "Algorithms"] },
+  { name: "Algebra", marks: 20, chapters: ["Linear Polynomials", "Introduction to Polynomials", "Sequences and Progressions", "Algebraic Identities", "Linear Equations in Two Variables", "Two Variables, One Line"] },
   { name: "Coordinate Geometry", marks: 4, chapters: ["Use of Coordinates", "Coordinate Geometry"] },
-  { name: "Geometry", marks: 25, chapters: ["Euclid", "Lines and Angles", "Triangles", "4-gons", "Quadrilaterals", "Round and Round", "Circles"] },
-  { name: "Mensuration", marks: 14, chapters: ["Perimeter and Area", "Surface Area and Volume"] },
-  { name: "Statistics and Probability", marks: 10, chapters: ["Statistics", "Probability"] }
+  { name: "Geometry", marks: 25, chapters: ["Euclid", "Lines and Angles", "Triangles", "4-gons", "Quadrilaterals", "Round and Round", "Circles", "Propositions and their Converses", "Propositions"] },
+  { name: "Mensuration", marks: 14, chapters: ["Perimeter and Area", "Surface Area and Volume", "Math of Space"] },
+  { name: "Statistics and Probability", marks: 10, chapters: ["Statistics", "Probability", "How Quantities Combine", "Understanding Data"] }
 ];
 
 const class9MathsScope = [

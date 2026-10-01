@@ -1632,56 +1632,53 @@
         "8.6 Geometric Progressions: nth Term, Visualising a GP and Practical Contexts",
         "8.7 Applications of GP in Fractals and the Tower of Hanoi Puzzle"
       ],
-      "Chapter 9: Linear Equations in Two Variables": [
-        "9.1 Introduction to Linear Equations in Two Variables through Practical Examples",
-        "9.2 Solutions of a Linear Equation in Two Variables and their Graphical Representation",
-        "9.3 Slope-Intercept Form; Drawing Graphs when x and y Take Only Certain Values",
-        "9.4 Pair of Linear Equations in Two Variables: Graphical Method of Solution",
-        "9.5 Nature of Solutions: Consistency and Inconsistency",
-        "9.6 Algebraic Methods: Substitution and Elimination; Modelling Contextual Problems"
+"Chapter 9: Propositions and their Converses": [
+        "9.1 Mathematical Statements: Hypothesis and Conclusion in 'If X, then Y'",
+        "9.2 Forming the Converse; Why a True Statement Need Not Have a True Converse",
+        "9.3 Disproving a Claim using a Counterexample; Proof by Contradiction",
+        "9.4 Euclid's Definitions, Axioms and Five Postulates; Baudhayana's Sulbasutras",
+        "9.5 Pairs of Angles: Linear Pair Theorem and its Converse; Vertically Opposite Angles",
+        "9.6 Parallel Lines and a Transversal: Corresponding, Alternate and Interior Angles",
+        "9.7 Congruence of Triangles: SAS, SSS, ASA, AAS and RHS; Isosceles Triangles",
+        "9.8 Why SSA is Not in General a Valid Congruence Condition"
       ],
-      "Chapter 10: Introduction to Euclid's Geometry - Axioms and Postulates": [
-        "10.1 History of Geometry: Contributions of India, Egypt and Greece",
-        "10.2 Constructing a Square with a Given Side as in Baudhayana's Sulbasutras",
-        "10.3 Discovering Euclid's Definitions: Point, Line and Surface",
-        "10.4 Axioms: Axioms of Measurement and Rules for Geometric Objects",
-        "10.5 Euclid's Five Postulates and Parallelism; Justifying Simple Constructions using Axioms"
+      "Chapter 10: How Quantities Combine - Understanding Data": [
+        "10.1 Statistical Investigative Questions: Collecting and Organising Data",
+        "10.2 Graphical Representation: Stacked Bar Graphs and 100% Stacked Bar Graphs",
+        "10.3 Measures of Central Tendency: Mean, Median and Mode",
+        "10.4 The Weighted Average and How it Differs from a Simple Mean",
+        "10.5 Weighted Averages in Mixtures, Ratings and Combined Group Scores"
       ],
-      "Chapter 11: Lines and Angles": [
-        "11.1 Rays and Angles; Measures of Angles (Acute, Right, Obtuse, Straight and Reflex)",
-        "11.2 Intersecting Lines and Pairs of Angles; Linear Pair Theorem and its Converse",
-        "11.3 Vertically Opposite Angles; Proof by Contradiction in Geometry",
-        "11.4 Parallel Lines and a Transversal: Corresponding, Alternate and Interior Angles; Transitivity of Parallelism",
-        "11.5 Theorems and Examples on Parallel Lines; Why a Triangle has at least Two Acute Angles"
+      "Chapter 11: The World of Algorithms": [
+        "11.1 What Makes a Procedure an Algorithm",
+        "11.2 Digit-by-Digit Addition as a Worked Algorithm",
+        "11.3 Listing the Divisors of a Number",
+        "11.4 Greatest Common Divisor by Euclid's Subtraction Method",
+        "11.5 Greatest Common Divisor by the Division Algorithm",
+        "11.6 Comparing Algorithms for Correctness and Efficiency"
       ],
-      "Chapter 12: Triangles - Congruence Theorems": [
-        "12.1 Practical Applications of Triangles: Rigidity and Stability of Structures",
-        "12.2 Congruence of Triangles: Correspondence of Vertices, Sides and Angles",
-        "12.3 Congruence Conditions and their Proofs: SAS Axiom, SSS, ASA, AAS and RHS",
-        "12.4 Properties of Isosceles Triangles",
-        "12.5 Propositions and their Converses; Why SSA is Not in General a Valid Congruence Condition",
-        "12.6 Problems Based on Applications of Theorems on Triangles"
+      "Chapter 12: Quadrilaterals": [
+        "12.1 Definition of a Quadrilateral and Properties of Parallelograms",
+        "12.2 Theorems Characterising a Parallelogram and their Proofs",
+        "12.3 Midpoint Theorem and its Converse, with Applications",
+        "12.4 Medians of a Triangle are Concurrent (2:1 Ratio); the Midpoint Quadrilateral is a Parallelogram",
+        "12.5 Coordinates: Midpoint of a Segment and the Fourth Vertex of a Parallelogram",
+        "12.6 Central Symmetry, Reflection and Rotation Symmetries; Tiling the Plane"
       ],
-      "Chapter 13: 4-gons (Quadrilaterals)": [
-        "13.1 Definition of a 4-gon and Properties of Parallelograms",
-        "13.2 Theorems Characterising a Parallelogram and their Proofs",
-        "13.3 Midpoint Theorem and its Converse, with Applications",
-        "13.4 Medians of a Triangle are Concurrent (2:1 Ratio); the Midpoint 4-gon is a Parallelogram",
-        "13.5 Coordinates: Midpoint of a Segment and the Fourth Vertex of a Parallelogram",
-        "13.6 Central Symmetry, Reflection and Rotation Symmetries of 4-gons; Tiling the Plane"
+      "Chapter 13: Two Variables, One Line": [
+        "13.1 Introduction to Linear Equations in Two Variables through Practical Examples",
+        "13.2 Solutions of a Linear Equation and why there are Infinitely Many",
+        "13.3 Graphical Representation of a Linear Equation in Two Variables",
+        "13.4 Slope-Intercept Form; Drawing Graphs when x and y Take Only Certain Values",
+        "13.5 Modelling Contextual Problems with a Linear Equation"
       ],
-      "Chapter 14: Surface Area and Volume": [
+      "Chapter 14: Math of Space - Surface Area and Volume": [
         "14.1 Surface Area and Volume of Cuboids and Cubes (the Cube as a Special Case)",
         "14.2 Surface Area and Volume of a Right Circular Cylinder",
         "14.3 Surface Area and Volume of a Right Circular Cone",
         "14.4 Surface Area and Volume of a Pyramid",
-        "14.5 Surface Area and Volume of Spheres and Hemispheres"
-      ],
-      "Chapter 15: Statistics": [
-        "15.1 Statistical Investigative Questions: Collecting and Organising Data",
-        "15.2 Graphical Representation of Data: Stacked Bar Graphs and 100% Stacked Bar Graphs",
-        "15.3 Measures of Central Tendency: Mean, Median and Mode",
-        "15.4 Weighted Average and its Applications"
+        "14.5 Surface Area and Volume of Spheres and Hemispheres",
+        "14.6 Hands-On Derivations, Real-Life Modelling and Estimation"
       ]
     },
     "Social Science": {
