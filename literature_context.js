@@ -2,7 +2,7 @@
  * literature_context.js
  * Verified Core Plots, Characters, and Thematic Summaries for CBSE & NEP 2020 Textbooks.
  * Injected dynamically into AI prompts to prevent plot hallucination on newly introduced textbooks
- * (e.g. Kaveri for Class 9 English, Ganga for Class 9 Hindi, Poorvi for Classes 6 & 8, etc.).
+ * (e.g. Kaveri for Class 9 English, Ganga for Class 9 Hindi, Poorvi for Classes 6, 7 & 8, etc.).
  */
 
 export const LITERATURE_SUMMARIES = {
@@ -218,214 +218,343 @@ export const LITERATURE_SUMMARIES = {
   },
 
   // ==========================================
-  // CLASS 8 ENGLISH — POORVI (NCERT NEP 2020)
+  // CLASS 6, 7 & 8 ENGLISH — POORVI (NCERT NEP 2020)
   // ==========================================
+  // Class 7 had no entries at all, so the AI made the chapters up: a Class 7
+  // paper set "The Day the River Spoke" on a girl called Janu with polio and
+  // crutches, and quoted the wrong "Try Again" poem. The Class 6 and Class 8
+  // entries had been written from the chapter titles (A Concrete Example as
+  // building infrastructure, The Magic Brush of Dreams as a prose folktale,
+  // A Bottle of Dew with a "Ramaiah" and his father-in-law). Every entry below
+  // is checked against the book; keep it that way, and name a common wrong
+  // reading where the AI is known to make one.
+
+  // Class 8 Poorvi
   "the wit that won hearts": {
     title: "The Wit that Won Hearts",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "Clever folk tale celebrating sharp intellect, quick presence of mind, and amicable dispute resolution over hostility and brute force."
+    summary: "Unit 1. A Tenali Ramakrishna story set in the Vijayanagara court of King Krishnadeva Raya. The queen, Thirumalambal, yawns out of tiredness while the king is reciting his poem; he takes it as an insult and stops speaking to her. The unhappy queen asks Tenali for help. Tenali comes to court with paddy seeds and says they would give a wonderful harvest if sown by someone who has never yawned in his life; the king says no such person exists, sees his own mistake, apologises to the queen and the two are reconciled. Themes: wit and presence of mind, correcting a powerful person tactfully, pride and forgiveness."
   },
   "a concrete example": {
-    title: "A Concrete Example",
-    type: "Prose",
+    title: "A Concrete Example (Reginald Arkell)",
+    type: "Poem",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "An insightful narrative demonstrating real-world applications of scientific inquiry, logical problem-solving, and communal collaboration in building infrastructure."
+    summary: "Unit 1 poem. A humorous poem about the speaker's next-door neighbour, Mrs Jones, whose garden is almost all stone: a crazy path, a lily pond, a rockery and a sundial, with tiny plants tucked between the stones that the speaker jokes she must plant with a pin. She invites the speaker over to admire one rare flower, and after a long talk about it reveals that the speaker has been standing on it all the time. Light verse; the title is a pun on concrete (stone). It is NOT about science, engineering or building infrastructure."
   },
   "wisdom paves the way": {
     title: "Wisdom Paves the Way",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "Moral fable highlighting foresight, thoughtful leadership, and ethical wisdom steering individuals away from impending perils."
+    summary: "Unit 1. A play. Four young men, Ram Datt, Shiv Datt, Har Datt and Dev Datt, travelling to Ujjain, study the tracks of an animal on the road and work out the details of a camel they have never seen. A merchant who has lost his camel hears them describe it exactly and accuses them of stealing it. Before the king they explain how each conclusion came from careful observation and reasoning; the king, impressed, sets them free and makes them his advisers. Themes: observation, logical reasoning, wisdom over hasty judgement."
   },
-  "a tale of valour major somnath sharma": {
+  "a tale of valour major somnath sharma and the battle of badgam": {
     title: "A Tale of Valour: Major Somnath Sharma and the Battle of Badgam",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "Inspiring biographical account of India's first Param Vir Chakra recipient defending Srinagar airport with indomitable valor and supreme sacrifice in 1947."
+    summary: "Unit 2. The story of Major Somnath Sharma, the first recipient of the Param Vir Chakra (awarded posthumously). In 1947 his D Company of the 4th Battalion, the Kumaon Regiment, was flown to Kashmir; though his left hand was in plaster he insisted on going with his men. On 3 November 1947 at Badgam, near Srinagar airfield, his company of about ninety men was attacked by several hundred raiders. He held the position, sending the message that the enemy was only fifty yards away, they were heavily outnumbered, and he would not withdraw an inch but fight to the last man and the last round. He was killed by a mortar shell, but his men held on for hours until reinforcements arrived, saving the airfield and Srinagar. Themes: courage, duty, leadership, sacrifice for the nation."
   },
-  "somebodys mother": {
+  "somebody s mother": {
     title: "Somebody's Mother (Mary Dow Brine)",
     type: "Poem",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "Heartwarming poem where a cheerful schoolboy helps a frail elderly woman cross a snowy road, trusting that someone will similarly aid his own mother in her old age; celebrates universal empathy."
+    summary: "Unit 2 poem. On a cold winter day an old, poor woman waits at a busy, snowy street crossing, afraid to cross. Schoolboys rush past laughing; one boy stops, gently helps her across, and goes back to his friends saying she is somebody's mother, and he hopes someone will help his own mother if she is ever old, poor and far away. That night the old woman prays for the kind boy, who is 'somebody's son'. Themes: kindness and respect for the elderly, empathy."
   },
   "verghese kurien i too had a dream": {
     title: "Verghese Kurien – I Too Had a Dream",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "Biographical journey of the Father of the White Revolution who revolutionized Indian dairy farming through the Amul cooperative model, empowering rural farmers."
+    summary: "Unit 2. Written as a letter from Dr Verghese Kurien to his grandson Siddharth (drawn from his memoir 'I Too Had a Dream'). Trained as an engineer, Kurien came to Anand in Gujarat almost by chance, chose to stay and serve the dairy farmers there, and built the farmers' cooperative movement that became Amul; Operation Flood carried the Anand model across India and made India the world's largest milk producer (the White Revolution). He tells his grandson that a life of integrity, hard work and service to others is the most satisfying one. Themes: service, integrity, cooperation, empowering farmers."
   },
   "the case of the fifth word": {
-    title: "The Case of the Fifth Word",
+    title: "The Case of the Fifth Word (Donald J. Sobol)",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "An intriguing mystery story testing keen deductive reasoning, forensic observation, and linguistic clues to unravel a perplexing deception."
+    summary: "Unit 3. An Encyclopedia Brown mystery. Leroy 'Encyclopedia' Brown, a boy detective in Idaville, helps his father, Chief Brown of the police. Two men, Nolan and Davenport, are suspected of a hold-up; Davenport disappears and Nolan dies leaving a puzzling coded message written on his desk calendar, meant to tell his partner where the loot is hidden. Encyclopedia works out the message and asks a single question: is there a young fir tree in Nolan's palm-tree nursery? There is, and that is where the money is. Themes: observation, logical deduction, wordplay."
   },
   "the magic brush of dreams": {
     title: "The Magic Brush of Dreams",
-    type: "Prose",
+    type: "Poem",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "A fantastical folktale examining creative imagination, altruistic service, and moral responsibility in using one's unique gifts for the welfare of the poor."
+    summary: "Unit 3 poem (a narrative poem, not a prose story). A poor girl, Gopi, receives a magic brush: whatever she paints comes to life. Remembering that the brush is meant for the poor, she paints food, clothes and tools for the needy villagers. A greedy Zamindar hears of it and orders her to paint riches for him; she outwits him, painting a river and a beast that stop his chase. Themes: using one's gifts for others, imagination, honesty against greed."
   },
   "spectacular wonders": {
     title: "Spectacular Wonders",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "A vivid exploration of architectural and natural wonders across the world, inspiring cultural curiosity, conservation consciousness, and global appreciation."
+    summary: "Unit 3. An informative piece on seven natural wonders of India: the Valley of Flowers (Uttarakhand), the living root bridges of Meghalaya (grown by the local people from the roots of rubber trees), Lonar Crater Lake in Maharashtra (formed by a meteorite impact), the magnetic hill (Ladakh), the glowing waters of Kerala (bioluminescent micro-organisms, e.g. at Kumbalangi), the Sundarbans mangroves, and Chandipur beach in Odisha, where the sea recedes for kilometres at low tide. Themes: the natural wonders of India, curiosity, conservation. It is about natural wonders in India, NOT the man-made wonders of the world."
   },
   "the cherry tree": {
     title: "The Cherry Tree (Ruskin Bond)",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "Rakesh plants a cherry seed in the Himalayan hills; tenderly depicts the resilience of life surviving hungry goats, a grass-cutter's scythe, and harsh winters into a flowering tree."
+    summary: "Unit 4. Rakesh, about six, lives with his grandfather on the outskirts of Mussoorie and goes to school there. Coming home with cherries from the bazaar, he plants a seed in the garden. The little tree survives a hungry goat, a grass-cutter's scythe that cuts it in two, and the monsoon and winter, growing back each time with Rakesh watering and caring for it. Years later it blossoms and bears a few cherries, and Rakesh lies in its shade, wondering at the life in it because he planted it himself. Themes: patience, nurturing nature, the resilience of life, the bond between grandfather and grandson."
   },
   "harvest hymn": {
-    title: "Harvest Hymn",
+    title: "Harvest Hymn (Sarojini Naidu)",
     type: "Poem",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "Lyrical thanksgiving offering gratitude to nature, the sun, rain, and fertile earth for generous agrarian harvests and communal sustenance."
+    summary: "Unit 4 poem. A hymn of thanksgiving sung at harvest by the voices of men, women and all together: they praise Surya, the sun god, for ripening the crops, Varuna, the god of rain, for the showers that sustain them, and Prithvi, the Earth Mother, for nourishing all creatures, and give thanks for the harvest. Themes: gratitude to nature, the bond between farmers and the earth, Indian harvest traditions."
   },
   "waiting for the rain": {
     title: "Waiting for the Rain",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "Evocative portrayal of rural Indian anxieties during drought, the longing for the seasonal monsoon, and farming communities' deep resilience and faith."
+    summary: "Unit 4. Velu, a hardworking farmer who never takes a day off from his land, watches the sky every day in a year of drought while his fields crack and dry. Some villagers turn to astrologers and rituals. Resting under a tree, he meets a wise, gentle old woman who tells him that the land, like people, sometimes needs rest, and that he must be patient and trust nature's rhythm. As he accepts this, the rain comes. Themes: patience, hope, respect for nature's cycles."
   },
   "feathered friend": {
     title: "Feathered Friend (Arthur C. Clarke)",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "Classic sci-fi story set on a space station where pet canary Claribel detects an oxygen supply failure before electronic alarms, saving the entire crew."
+    summary: "Unit 5. A science-fiction story told by a crew member of a space station under construction. Sven Olsen, a construction worker, secretly brings a canary, Claribel, on board; she adapts to weightlessness and becomes the crew's pet. One morning she is found unconscious and recovers with oxygen; the narrator himself has a headache. They realise the air supply has failed: the carbon-dioxide purifier had broken down and the alarm had not gone off. Like the canaries miners once took down coal mines, Claribel's fainting warned them in time and saved the crew; after that every space station kept canaries. Themes: science and curiosity, observation, human-animal companionship."
   },
   "magnifying glass": {
-    title: "Magnifying Glass",
-    type: "Prose",
+    title: "Magnifying Glass (Walter de la Mare)",
+    type: "Poem",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "Engaging tale highlighting scientific curiosity and micro-observation, revealing marvelous microscopic worlds hidden in common everyday objects."
+    summary: "Unit 5 poem. Through a round magnifying glass the speaker finds wonders in tiny ordinary things: countless shells in a scrap of chalk, a forest of flowers and trees in an inch of moss, a drop of water as busy as a hive of bees, and the delicate parts of small creatures such as a spider. Themes: curiosity, close observation, the marvels hidden in small things."
   },
-  "bibha chowdhuri": {
+  "bibha chowdhuri the beam of light that lit the path for women in indian science": {
     title: "Bibha Chowdhuri: The Beam of Light that Lit the Path for Women in Indian Science",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 8",
-    summary: "Pioneering biography of Indian physicist Bibha Chowdhuri whose breakthrough research on cosmic rays and meson particles shattered gender barriers in nuclear physics."
+    summary: "Unit 5. The life of Bibha Chowdhuri, India's first woman particle physicist. She studied physics at Calcutta University when very few women did, and at the Bose Institute worked with D. M. Bose on cosmic rays, using photographic plates exposed at high altitudes (such as Darjeeling) to detect sub-atomic particles called mesons and estimate their mass. She earned her PhD in Manchester under P. M. S. Blackett, and later worked at the Tata Institute of Fundamental Research and the Physical Research Laboratory. Her work went largely unrecognised in her lifetime; in 2019 a star was named 'Bibha' in her honour. Themes: women in science, perseverance, curiosity."
   },
 
-  // ==========================================
-  // CLASS 6 ENGLISH — POORVI (NCERT NEP 2020)
-  // ==========================================
+  // Class 7 Poorvi
+  "the day the river spoke": {
+    title: "The Day the River Spoke (Kamala Nair)",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 1. Jahnavi, a bright, curious girl of nearly ten in a coastal village, longs to go to school. Her older siblings Gopi and Meena go to school, but she must stay home and look after her younger siblings Ramu and Appu while her parents work in the fields, and she fears she is now too old to start. Crying by the river one day, she hears the River speak to her in a sleepy, kind voice; it listens to all she wants to learn about (spiders, bamboo, frogs, the moon), tells her that little girls can do as much as little boys, and advises her to slip quietly into the school with Appu and sit in the class to see whether the teacher lets her stay. She does, and listens to a lesson about Emperor Ashoka; the kind teacher welcomes her, visits her home and persuades her father to let her study, and her mother, who had once wished to study herself, supports her. Jahnavi resolves to become a teacher so that every girl in her village can go to school. Themes: girls' education, courage to ask, nature as a friend. Jahnavi has NO disability (no polio, no crutches), and there is no character called Janu."
+  },
+  "try again": {
+    title: "Try Again (Eliza Cook)",
+    type: "Poem",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 1 poem. A narrative poem by Eliza Cook about King Bruce of Scotland. Defeated and in despair after failing again and again in a great task for his people, the king lies alone and watches a spider trying to climb its thread and spin its web. It falls again and again but never gives up, and at last it succeeds. Bruce cries 'Bravo!', praising the spider for having 'defied despair', takes heart, tries again and wins. Moral: perseverance; never give up after failure. This is NOT the proverb poem beginning 'Tis a lesson you should heed, / Try, try again; / If at first you don't succeed' (often credited to William Edward Hickson): never quote, extract or name that poem or poet for this chapter."
+  },
+  "three days to see": {
+    title: "Three Days to See (Helen Keller)",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 1. An essay by Helen Keller, who was blind and deaf, imagining what she would do with three days of sight. She explains how much she already enjoys the world through touch (the shape of a leaf, the bark of a tree). On the first day she would look at the people whose kindness and friendship have made her life worth living, looking into their eyes and faces, which she has only known by touch; on the second day she would watch the sunrise and visit museums to see the history of the earth and of human art; on the third day she would watch ordinary people going about their daily life in the city. She urges those who can see to use their eyes, and all their senses, as if they would lose them tomorrow. Themes: gratitude for the senses, observation, resilience."
+  },
+  "animals birds and dr dolittle": {
+    title: "Animals, Birds, and Dr. Dolittle (Hugh Lofting)",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 2. From 'The Story of Doctor Dolittle'. Dr John Dolittle, a kind but unusual doctor, loses his human patients because his house is full of pets. The Cat's-meat Man suggests he become an animal doctor, and his parrot Polynesia tells him the secret that animals have their own languages: they talk not only with sounds but with their ears, feet, tails and noses (his dog Jip twitching one side of his nose is asking whether the rain has stopped). Polynesia teaches him bird and animal language, and he becomes a famous animal doctor whom creatures come from far away to consult. Themes: humour, empathy and listening, kindness to animals, open-mindedness."
+  },
+  "a funny man": {
+    title: "A Funny Man (Natalie Joan)",
+    type: "Poem",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 2 poem. A nonsense poem: the speaker meets a funny man in the street who wears a shoe on his head and hats on his feet, offers a 'rose' that turns out to be a currant bun, and sings a funny song; when the speaker asks why he dresses that way, he turns away and hops home on his head. Themes: humour, nonsense, imagination, accepting people who are different."
+  },
+  "say the right thing": {
+    title: "Say the Right Thing",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 2. A humorous one-act play set in Lanfield. Mrs Shaw has invited her new neighbour Mrs Harding and Mrs Lee (Mr Harding's sister, staying with the Hardings) to her home, and warns her talkative daughter Mary to be polite and say nothing that could offend them. Mary means well, but one blunder follows another: blunt, tactless remarks and wrong guesses about the guests' children, clothes, habits and pets embarrass her mother and the visitors, and every attempt to put things right makes them worse. Themes: tact and good manners, thinking before speaking, humour of social situations. Mary's blunders come from being too frank and tactless, NOT from trying to sound grand or sophisticated."
+  },
+  "my brother s great invention": {
+    title: "My Brother's Great Invention (Anita Rau Badami)",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 3. Narrated by Anita (14) about her younger brother Anand (13), who thinks of himself as a scientist and is always building gadgets. His burglar alarm, set up after thefts in their colony, drops a bag of water and drenches their father, so his parents lock up his toolbox. Inspired by the film 'Back to the Future', he turns his room into a workshop and builds a 'time machine' of wires, levers and bulbs; his parents forbid him to test it until they return from a trip. While they are away a burglar breaks into the house; Anand lures him into his room, the machine starts up, and the burglar mysteriously vanishes, leaving only a green scarf behind. Anand is soon planning his next invention, a phone to talk to aliens. Themes: curiosity, imagination, perseverance, humour."
+  },
+  "paper boats": {
+    title: "Paper Boats (Rabindranath Tagore)",
+    type: "Poem",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 3 poem. Day by day a child floats paper boats down the running stream, writing his name and the name of his village on them in big black letters, hoping someone in a strange land will find them and know who he is. He loads them with shiuli flowers from his garden, hoping these blooms of the dawn will be carried safely to land in the night. At night he dreams that his boats float on under the midnight stars, with the fairies of sleep sailing in them, their baskets full of dreams. Themes: a child's imagination, longing to connect with the unknown world, innocence."
+  },
+  "north south east west": {
+    title: "North, South, East, West (C. G. Salamander)",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 3. Told through postcards that Shaana, a girl from Rameswaram island, sends to her classmates and teachers while travelling across India with her parents. Each postcard describes a new place, its land, people and culture and her own experiences: the Thajiwas glacier in Kashmir in the north, where she sees snow and icy blue glaciers, floating past mangroves and crocodiles in the Sundarbans of West Bengal in the east, and other places in the west and south. Themes: the geographical and cultural diversity of India, travel and discovery."
+  },
+  "the tunnel": {
+    title: "The Tunnel (Ruskin Bond)",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 4. Suraj, a boy fascinated by trains, cycles out of town to a railway tunnel in the jungle to watch the midday steam train come out of it. He walks through the dark tunnel and meets Sunder Singh, the watchman, who lives in a hut near the entrance, jokes that the tunnel is his and has been lent to the Government, and must check the tunnel and signal with his lamp that the line is clear before each train passes. A leopard lives in the jungle nearby. When Suraj goes with Sunder Singh to inspect the tunnel before the night mail, they find the leopard crouching on the tracks; they shout and make a noise, and it slips away before the night mail thunders through. Themes: curiosity and adventure, quiet courage, the forest and its creatures, friendship."
+  },
+  "travel": {
+    title: "Travel (Edna St. Vincent Millay)",
+    type: "Poem",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 4 poem. The railroad track is miles away, yet the speaker hears the trains' whistles all day and their sound all night, sees their cinders red against the sky, and longs to board any train, no matter where it is going, even while busy with friends. Theme: the longing to travel and see new places (wanderlust)."
+  },
+  "conquering the summit": {
+    title: "Conquering the Summit",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 4. The true story of Arunima Sinha from Ambedkar Nagar, Uttar Pradesh, a national-level volleyball player. In April 2011 she was thrown off a moving train by robbers and lost a leg, which was replaced with a prosthetic leg. In hospital she resolved to climb Mount Everest, trained at the Nehru Institute of Mountaineering in Uttarkashi, and was guided by Bachendri Pal, the first Indian woman to climb Everest, who told her she had already conquered the Everest within her. After a 52-day climb she reached the summit on 21 May 2013, the first woman amputee to climb Everest. Themes: resilience, determination, courage."
+  },
+  "a homage to our brave soldiers": {
+    title: "A Homage to Our Brave Soldiers",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 5. Letters between two friends, Soumya in Bengaluru and Ananda in Chandigarh. Soumya describes her school trip to the National War Memorial in New Delhi, near India Gate, opened in February 2019 to honour Indian soldiers who gave their lives in conflicts after Independence (1962, 1965, 1971, Kargil 1999 and peacekeeping missions). She describes the eternal flame and the four concentric circles: the Amar Chakra (immortality), Veerta Chakra (bravery), Tyag Chakra (sacrifice, with the names of the fallen) and Raksha Chakra (protection). Themes: patriotism, gratitude to soldiers, remembrance."
+  },
+  "my dear soldiers": {
+    title: "My Dear Soldiers (A. P. J. Abdul Kalam)",
+    type: "Poem",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 5 poem. A tribute by Dr A. P. J. Abdul Kalam to India's soldiers: while the citizens sleep peacefully, the soldiers keep watch over the nation in snow, scorching heat, deserts, marshes and valleys, and on the seas and in the skies, so that the people can live in peace. Themes: gratitude, patriotism, the sacrifice of soldiers."
+  },
+  "rani abbakka": {
+    title: "Rani Abbakka",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 7",
+    summary: "Unit 5. The story of Rani Abbakka, the 16th-century queen of Ullal on the coast of present-day Karnataka, who refused to pay tribute to the Portuguese and resisted them for years. She united the neighbouring local rulers against the Portuguese, built merchant ships, allied with the Zamorin of Kozhikode and traded with Arabia in defiance of the Portuguese, and fought them bravely. Themes: courage, freedom, leadership, resistance to colonial power."
+  },
+
+  // Class 6 Poorvi
   "a bottle of dew": {
     title: "A Bottle of Dew",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Ramaiah seeks a magic potion made from morning dew to turn copper into gold; his sage father-in-law cleverly engages him in farming bananas to collect dew, showing that honest manual labor is true wealth."
+    summary: "Unit 1. Rama Natha, a lazy young man, dreams of getting rich with a magic potion that turns things into gold. The sage Mahipati tells him the potion needs five litres of dew collected from the leaves of banana plants he has planted and tended himself. Rama Natha and his wife Madhumati plant and care for a huge banana plantation for years, collecting dew and selling the bananas in the market. When he finally brings the dew, the sage reveals that the real magic was their hard work: the plantation has already made them rich. Themes: the value of hard work, the folly of shortcuts. There is no 'Ramaiah' and no father-in-law in this story."
   },
   "the raven and the fox": {
-    title: "The Raven and the Fox (Poem)",
+    title: "The Raven and the Fox (Jean de La Fontaine)",
     type: "Poem",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Classic fable where a crafty fox flatters a foolish raven into singing, causing the raven to drop its cheese; cautions against insincere flattery and vanity."
+    summary: "Unit 1 poem. A raven sits on a branch with a piece of cheese in its beak. A fox, wanting the cheese, flatters the raven, praising its handsome looks and saying that if its voice matched its feathers it would be king of the birds. The vain raven opens its beak to sing and drops the cheese; the fox snatches it and mocks the raven, telling it to beware of flatterers. Moral: beware of flattery and vanity."
   },
   "rama to the rescue": {
     title: "Rama to the Rescue",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Heartwarming story showing quick thinking, empathy, and courage in protecting animals and neighbors from peril, fostering community harmony."
+    summary: "Unit 1. A humorous folk tale. Late one night a man and his wife realise that a thief has crept into their house. Keeping calm, they begin a loud conversation about what to name the son they hope to have, deciding to call him Rama, and call out 'Rama! Rama!' as if calling the boy. Rama is also the name of the village kotwal (watchman), who hears his name, comes running and catches the thief. Themes: presence of mind, quick thinking, humour."
   },
-  "the friendship": {
-    title: "The Friendship",
+  "the unlikely best friends": {
+    title: "The Unlikely Best Friends",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Touching story exploring the meaning of genuine companionship, selfless sharing, and unconditional emotional support between childhood friends."
+    summary: "Unit 2. Gajaraj, the king's elephant, lives in the royal stable but is lonely until a thin, hungry stray dog, Buntee, wanders in; Gajaraj shares his food and the two become inseparable friends. When Buntee is taken away to live with someone else, Gajaraj grows miserable and stops eating, and Buntee is unhappy too; when the cause of the elephant's grief is found, Buntee is brought back and the two friends are joyfully reunited. Themes: friendship across differences, caring and loyalty."
   },
-  "the echo": {
-    title: "The Echo (Poem)",
+  "a friend s prayer": {
+    title: "A Friend's Prayer (Jill Wolf)",
     type: "Poem",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Playful nature poem about acoustic echoes across hills, demonstrating the philosophical principle that what one speaks and gives out to the world echoes back to oneself."
+    summary: "Unit 2 poem. A prayer for friendship: the speaker prays to be a true friend who is kind, patient, understanding and forgiving, to stand by a friend in good times and bad, and that their friendship may always last. Themes: the qualities of a good friend, loyalty, gratitude for friendship."
+  },
+  "the chair": {
+    title: "The Chair",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 6",
+    summary: "Unit 2. Mario boasts that he has many friends, so his grandfather makes a bet with him and gives him an invisible 'magic chair': Mario must sit on it at school, and it will show him who his true friends are. When he tries to sit on it in class, most of the children laugh at him as he keeps falling, but three classmates, Guneet, Asma and Deepa, hold him up and help him. Mario learns that true friends are those who stand by us when we need them. Themes: true and false friendship, support, self-awareness."
   },
   "neem baba": {
     title: "Neem Baba",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Narrated from the affectionate perspective of an ancient neem tree explaining its immense Ayurvedic medicinal virtues, ecological benefits, and oxygen purity."
+    summary: "Unit 3. Amber, a girl resting after school under the neem tree in her courtyard, talks with the old tree, whom she calls Neem Baba. The tree tells her its long history (it began millions of years ago in the region of northern India and Myanmar and spread to many lands), its many names in different languages, and how its leaves, bark, flowers, fruit and roots are used as medicine and to keep pests away from crops. Amber remembers how her family used neem for measles and itchy eyes, and Neem Baba blesses her and encourages her to learn more about it. Themes: the value of trees and traditional knowledge, caring for nature."
   },
   "what a bird thought": {
-    title: "What a Bird Thought (Poem)",
+    title: "What a Bird Thought",
     type: "Poem",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Charming poem tracing a growing bird's evolving understanding of the world, from a cozy blue shell to a straw nest, and finally into the boundless open sky."
+    summary: "Unit 3 poem. A young bird describes how its idea of the world grew: inside its small blue shell it thought the world was made of blue; in its straw nest it thought the world was made of straw; when it fluttered out among the leaves it thought the world was made of leaves; and when it flew beyond the tree into the open, it realised it does not know what the world is made of, and neither do its neighbours. Themes: growing up, curiosity, our understanding widening with experience."
   },
   "spices that heal us": {
     title: "Spices that Heal Us",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Explores India's rich culinary and traditional herbal legacy of everyday spices (turmeric, ginger, clove) as potent home remedies and natural protectors of wellness."
+    summary: "Unit 3. A letter from a grandmother to her grandchildren Vikram and Vaibhavi, who wrote that her home remedy had cured their cough and cold. She explains that she learnt these remedies as a child from her own grandmother, and describes how everyday kitchen spices such as turmeric and ginger are used as natural remedies for common ailments, warning them to use the remedies only after asking an elder. Themes: traditional Indian knowledge, health and wellness, the bond between generations."
   },
   "change of heart": {
     title: "Change of Heart",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Story of moral reform where patience, compassionate understanding, and self-reflection encourage a misbehaving protagonist to embrace kindness."
+    summary: "Unit 4. Prabhat loves to win and hates losing; he plays only games he is sure to win. When Surya, a new boy, joins and plays badminton very well, Prabhat is worried and, desperate to win their match, does not play fairly. Surya does not mind losing and stays cheerful; Prabhat notices that Surya enjoys every game whether he wins or loses, even ones he is bad at. Watching him, Prabhat changes his attitude and begins to enjoy playing for its own sake. Themes: sportsmanship, fair play, enjoying the game more than the win."
   },
   "the winner": {
-    title: "The Winner (Poem)",
+    title: "The Winner",
     type: "Poem",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Motivational sports poem reminding young learners that true victory is defined not by medals alone, but by grit, fairness, and respecting one's competitors."
+    summary: "Unit 4 poem. Children play ball beside a creek through a summer evening, breathless with excitement, playing on as the sky turns from blue to black and the cold grass aches their feet. Themes: the joy and freedom of outdoor play, childhood, playing for the fun of it."
   },
   "yoga a way of life": {
     title: "Yoga — A Way of Life",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Informative guide illustrating how daily practice of yogic asanas, pranayama, and mindfulness promotes physical fitness, mental composure, and holistic health."
+    summary: "Unit 4. An informative piece on yoga, which began in ancient India. The word comes from the Sanskrit root 'yuj', to join or unite: the union of body and mind, thought and action, and harmony between humans and nature. It describes asanas (postures) that build strength, flexibility, endurance and balance, pranayama (breathing) and meditation that calm the mind, reduce stress and improve sleep and concentration, and presents yoga as a holistic way of living, celebrated on International Day of Yoga (21 June)."
   },
   "hamara bharat incredible india": {
     title: "Hamara Bharat — Incredible India!",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Vibrant celebration of India's cultural, architectural, and linguistic tapestry, highlighting the civilizational thread of unity in diversity."
+    summary: "Unit 5. At a school event under the 'Ek Bharat Shreshtha Bharat' programme, students meet friends from other states and share their regions' traditional arts and crafts, such as Aipan (Uttarakhand), Dhokra metal craft (Odisha), coconut-shell craft (Kerala) and Kondapalli toys (Andhra Pradesh). The chapter celebrates India's cultural, linguistic and geographical diversity (rivers, mountains, forests and wildlife) and its unity in diversity."
   },
   "the kites": {
-    title: "The Kites (Poem)",
+    title: "The Kites",
     type: "Poem",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Vivid, joyous poem capturing the fluttering dance, vibrant soaring colors, and carefree excitement of flying kites against a clear blue breeze."
+    summary: "Unit 5 poem. A lively poem about kites flying in the wind: bright kites dance and soar high in the sky, while some get tangled in trees, torn or come tumbling down. Themes: the joy and freedom of flying kites, colour and movement, the spirit to rise high."
   },
-  "ila sachani": {
+  "ila sachani embroidering dreams with her feet": {
     title: "Ila Sachani: Embroidering Dreams with her Feet",
     type: "Prose",
     book: "Poorvi",
     grade: "Class 6",
-    summary: "Inspiring true life of Gujarati artist Ila Sachani who overcame severe limb paralysis, learning to thread needles and master traditional Kathiawar embroidery with her feet and toes."
+    summary: "Unit 5. The true story of Ila Sachani from Gujarat, who was born unable to use her hands. With the support of her family she learnt traditional Kathiawar embroidery using her feet, threading the needle and stitching with her toes, and became a skilled artist making cushions, bedcovers and other embroidered pieces; her work was exhibited and won her recognition and awards. Themes: determination, overcoming challenges, India's traditional crafts."
+  },
+  "national war memorial": {
+    title: "National War Memorial",
+    type: "Prose",
+    book: "Poorvi",
+    grade: "Class 6",
+    summary: "Unit 5. An informative piece on the National War Memorial in New Delhi, near India Gate, dedicated to the nation on 25 February 2019 to honour Indian soldiers who laid down their lives defending the country after Independence. It is built as four concentric circles: the Amar Chakra (immortality, with the eternal flame), Veerta Chakra (bravery), Tyag Chakra (sacrifice, with the names of the fallen soldiers inscribed) and Raksha Chakra (protection). Themes: patriotism, respect and gratitude for soldiers, remembrance."
   },
 
   // ==========================================
@@ -827,24 +956,30 @@ export function normalizeChapterKey(raw) {
 
 /**
  * Finds a matching literature summary from LITERATURE_SUMMARIES for a given chapter string.
+ * With a grade (e.g. "Class 7"), only that class's books are searched: the
+ * substring match would otherwise give a Class 11 "The Adventure" the summary
+ * of Class 9 "The Adventures of Toto", or a Class 7 poem the plot of a Class 6 one.
  */
-export function findLiteratureSummary(chapterStr) {
+export function findLiteratureSummary(chapterStr, grade) {
   if (!chapterStr) return null;
   const normInput = normalizeChapterKey(chapterStr);
   if (!normInput || normInput.length < 3) return null;
 
+  const entries = Object.entries(LITERATURE_SUMMARIES).filter(([, item]) => !grade || item.grade === grade);
+
   // 1. Exact match first, so the poem "Words" is not taken for "Carrier of Words"
-  if (Object.hasOwn(LITERATURE_SUMMARIES, normInput)) return LITERATURE_SUMMARIES[normInput];
+  const exact = entries.find(([key]) => key === normInput);
+  if (exact) return exact[1];
 
   // 2. Substring match in DB keys
-  for (const [key, item] of Object.entries(LITERATURE_SUMMARIES)) {
+  for (const [key, item] of entries) {
     if (normInput.includes(key) || key.includes(normInput)) {
       return item;
     }
   }
 
   // 3. Specific key tokens match
-  for (const [key, item] of Object.entries(LITERATURE_SUMMARIES)) {
+  for (const [key, item] of entries) {
     const keyWords = key.split(' ').filter(w => w.length > 2);
     if (keyWords.length >= 2) {
       const allWordsPresent = keyWords.every(w => normInput.includes(w));
@@ -863,6 +998,11 @@ export function getLiteratureContext(className, subjectName, selectedChapters) {
   if (!selectedChapters || !Array.isArray(selectedChapters) || selectedChapters.length === 0) {
     return '';
   }
+  // Only the English and Hindi textbooks are summarised here; a Science or
+  // General Knowledge chapter such as "Winds" or "Yoga" must not pick up a poem's plot.
+  if (subjectName && !/english|hindi/i.test(subjectName)) {
+    return '';
+  }
 
   const matchedSummaries = [];
   const seenTitles = new Set();
@@ -875,7 +1015,7 @@ export function getLiteratureContext(className, subjectName, selectedChapters) {
     const parts = rawName.split('->');
     const leafName = parts[parts.length - 1].trim();
 
-    const matched = findLiteratureSummary(leafName) || findLiteratureSummary(rawName);
+    const matched = findLiteratureSummary(leafName, className) || findLiteratureSummary(rawName, className);
     if (matched && !seenTitles.has(matched.title)) {
       seenTitles.add(matched.title);
       matchedSummaries.push(matched);

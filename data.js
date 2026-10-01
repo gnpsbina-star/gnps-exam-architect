@@ -192,23 +192,25 @@ export const cbseData = {
         "Chapter 3: Rama to the Rescue"
       ],
       "Section C: Literature - Poorvi (Unit 2: Friendship)": [
-        "Chapter 4: The Friendship",
-        "Chapter 5: The Echo (Poem)"
+        "Chapter 4: The Unlikely Best Friends",
+        "Chapter 5: A Friend's Prayer (Poem)",
+        "Chapter 6: The Chair"
       ],
       "Section C: Literature - Poorvi (Unit 3: Nurturing Nature)": [
-        "Chapter 6: Neem Baba",
-        "Chapter 7: What a Bird Thought (Poem)",
-        "Chapter 8: Spices that Heal Us"
+        "Chapter 7: Neem Baba",
+        "Chapter 8: What a Bird Thought (Poem)",
+        "Chapter 9: Spices that Heal Us"
       ],
       "Section C: Literature - Poorvi (Unit 4: Sports and Wellness)": [
-        "Chapter 9: Change of Heart",
-        "Chapter 10: The Winner (Poem)",
-        "Chapter 11: Yoga — A Way of Life"
+        "Chapter 10: Change of Heart",
+        "Chapter 11: The Winner (Poem)",
+        "Chapter 12: Yoga — A Way of Life"
       ],
       "Section C: Literature - Poorvi (Unit 5: Culture and Tradition)": [
-        "Chapter 12: Hamara Bharat — Incredible India!",
-        "Chapter 13: The Kites (Poem)",
-        "Chapter 14: Ila Sachani: Embroidering Dreams with her Feet"
+        "Chapter 13: Hamara Bharat — Incredible India!",
+        "Chapter 14: The Kites (Poem)",
+        "Chapter 15: Ila Sachani: Embroidering Dreams with her Feet",
+        "Chapter 16: National War Memorial"
       ]
     },
     "Hindi (R2)": {
