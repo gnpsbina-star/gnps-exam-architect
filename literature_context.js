@@ -119,14 +119,14 @@ export const LITERATURE_SUMMARIES = {
     type: "Poem",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "Unit 7 poem by the English poet Charles Swain, on the power of words: words carry real meaning and value only when they are honest and sincere and come from the heart; empty words mean nothing. It asks us to use language responsibly."
+    summary: "Unit 7 poem by the English poet Charles Swain. Words often fail to satisfy the real needs of the heart: the poet compares empty words to summer birds that come and go and leave nothing behind, and calls the heart a pilgrim that finds them as useless as weeds when it is truly in need. A voice that cheers a lonely home says very little, yet those few sincere words are precious; many hollow words are like plants that blossom but bear no fruit. Message: a few sincere, heartfelt words are worth far more than many meaningless ones (quality over quantity)."
   },
   "believe in yourself": {
     title: "Believe in Yourself (Robert Langley)",
     type: "Poem",
     book: "Kaveri",
     grade: "Class 9",
-    summary: "Unit 8 poem. Encourages the reader to face challenges with courage and confidence: success begins with believing in oneself and taking the first step forward, despite setbacks and doubt."
+    summary: "Unit 8 poem. Encourages the reader to face challenges with courage instead of staying in the comfort zone: the future depends on the choices we make today; the first step towards any goal is the hardest, but once it is taken there is no turning back; believing in oneself overcomes fear and doubt and keeps one moving towards one's dreams."
   },
 
   // ==========================================
@@ -565,7 +565,7 @@ export const LITERATURE_SUMMARIES = {
     type: "Prose",
     book: "First Flight",
     grade: "Class 10",
-    summary: "Lencho, an impoverished, hardworking farmer, writes a letter to God requesting 100 pesos after a destructive hailstorm ruins his corn; highlights absolute naive faith contrasted with ironical human distrust of generous post office workers."
+    summary: "Lencho, a hardworking farmer, hopes for rain for his ripe corn; the rain turns into a hailstorm that destroys the whole crop. With deep faith he writes to God asking for 100 pesos. The postmaster, moved by his faith, collects money from the post office employees and his friends and sends 70 pesos signed 'God'. Lencho, sure God could not have made a mistake, writes again asking for the rest and calls the post office employees 'a bunch of crooks' who must have taken it. Themes: unshakeable faith, the irony of distrusting the very people who helped him, kindness."
   },
   "nelson mandela long walk to freedom": {
     title: "Nelson Mandela: Long Walk to Freedom",
@@ -586,14 +586,14 @@ export const LITERATURE_SUMMARIES = {
     type: "Prose",
     book: "First Flight",
     grade: "Class 10",
-    summary: "Anne Frank confides in her diary 'Kitty' as a lonely 13-year-old in hiding in Amsterdam; includes humorous anecdotes of writing witty essays for her strict maths teacher Mr. Keesing."
+    summary: "Extract from Anne Frank's diary, written in June 1942 just after her thirteenth birthday, before the family went into hiding. Anne explains why she keeps a diary, which she names 'Kitty': she feels she has no true friend to confide in. She gives a short history of her family (the move from Germany to Amsterdam). At school, her maths teacher Mr Keesing, annoyed by her talking in class, sets her extra essays: 'A Chatterbox', 'An Incorrigible Chatterbox', and finally 'Quack, Quack, Quack, Said Mistress Chatterback', a funny poem that wins him over, and after that he lets her talk. The Secret Annex and life in hiding are NOT part of this extract."
   },
   "glimpses of india": {
     title: "Glimpses of India (Baker from Goa, Coorg, Tea from Assam)",
     type: "Prose",
     book: "First Flight",
     grade: "Class 10",
-    summary: "Three travel accounts: the nostalgic Portuguese bakery tradition (*Pader*) in Goa, the brave martial culture and coffee hills of Coorg (*Kodagu*), and the legendary tea gardens of Assam explored by Rajvir and Pranjol."
+    summary: "Three pieces. (1) A Baker from Goa (Lucio Rodrigues): the author recalls the Portuguese tradition of the Goan baker, the 'pader', who came with his jingling bamboo stick and basket of loaves, his long frock 'kabai', and how bread and cakes were part of every festival and occasion. (2) Coorg (Lokesh Abrol): the beauty of Coorg (Kodagu) in Karnataka, its coffee estates, rainforests and the Kodavu people, their martial tradition and hospitality, river rafting and the Brahmagiri hills. (3) Tea from Assam (Arup Kumar Datta): Rajvir travels by train with his friend Pranjol to Pranjol's home on a tea estate in Assam (Dhekiabari); Rajvir tells the legends of tea's discovery (the Chinese emperor and the leaves falling into boiling water; Bodhidharma's eyelids) and sees tea being plucked."
   },
   "mijbil the otter": {
     title: "Mijbil the Otter (Gavin Maxwell)",
@@ -698,21 +698,21 @@ export const LITERATURE_SUMMARIES = {
     type: "Prose",
     book: "Footprints Without Feet",
     grade: "Class 10",
-    summary: "Pampered dog Tricki becomes dangerously obese under Mrs. Pumphrey's overindulgence; vet Herriot cures him not by surgery or medication, but through strict fasting, exercise, and energetic pack play."
+    summary: "Tricki, Mrs Pumphrey's pampered Pekingese, falls ill because she overfeeds him with cream cakes, chocolates and malt, and he gets no exercise. The vet James Herriot takes him to his surgery for two weeks, where he gets no food at first, only water, and then plays and runs with the other dogs. Mrs Pumphrey sends eggs, wine and brandy 'to build him up', which the vets enjoy themselves. Tricki returns healthy and lively, and Mrs Pumphrey calls it a triumph of surgery, though no surgery was done. Themes: humour, the harm of over-indulgence, sensible care of pets."
   },
-  "the thiefs story": {
+  "the thief s story": {
     title: "The Thief's Story (Ruskin Bond)",
     type: "Prose",
     book: "Footprints Without Feet",
     grade: "Class 10",
-    summary: "Young thief Hari Singh attempts to rob trusting, kind-hearted writer Anil; Anil's absolute trust and commitment to educate Hari reforms Hari's conscience, turning him toward an honest life."
+    summary: "Narrated by a fifteen-year-old thief who calls himself Hari Singh. He wins the trust of Anil, a kind young writer, who lets him cook for him and starts teaching him to read, write and add. One night he steals Anil's money (six hundred rupees) and goes to the railway station to escape to Lucknow, but cannot board the train, realising that learning from Anil could make him a big man one day. He returns in the rain and puts the money back; next morning Anil, who has clearly noticed the wet notes, says nothing about it, gives him a fifty-rupee note and promises to go on teaching him. Themes: trust and kindness reforming a person, the value of education."
   },
   "the midnight visitor": {
     title: "The Midnight Visitor (Robert Arthur)",
     type: "Prose",
     book: "Footprints Without Feet",
     grade: "Class 10",
-    summary: "Unassuming secret agent Ausable outwits armed rival Max in a hotel room through sheer mental calm, fabricating a story about an imaginary balcony that causes Max to jump to his doom."
+    summary: "Fowler, a young writer, follows Ausable, a fat, unimpressive secret agent, to his hotel room in Paris, disappointed that he looks nothing like a romantic spy. In the room they find Max, a rival agent, waiting with a pistol for an important paper about missiles. Ausable calmly invents a story that Max must have come in by the balcony below the window, and when a knock comes, he says it must be the police whom he had asked to check on him. Max, frightened, climbs out of the window to hide on the 'balcony' and falls with a yell, for there is no balcony; the knock was only Henry the waiter bringing drinks. Themes: presence of mind and quick wit over force."
   },
   "a question of trust": {
     title: "A Question of Trust (Victor Canning)",
@@ -733,14 +733,14 @@ export const LITERATURE_SUMMARIES = {
     type: "Prose",
     book: "Footprints Without Feet",
     grade: "Class 10",
-    summary: "Traces Richard Ebright's journey from childhood butterfly collecting to discovering a hormone in pupa gold spots, unlocking the blueprint of DNA and cellular biology."
+    summary: "Richard Ebright, who as a boy collected butterflies (the monarchs) in Reading, Pennsylvania, after his mother encouraged his curiosity and a book 'The Travels of Monarch X' led him to tag butterflies for Dr Frederick Urquhart's migration study. Science-fair projects grew into real research: he showed why viceroy butterflies copy monarchs, and discovered that the gold spots on the monarch pupa produce a hormone needed for the butterfly's development. As a student he went on to propose how a cell reads the blueprint in its DNA. Themes: curiosity, a mother's encouragement, hard work, the wish to win, and how a scientist is made."
   },
   "the necklace": {
     title: "The Necklace (Guy de Maupassant)",
     type: "Prose",
     book: "Footprints Without Feet",
     grade: "Class 10",
-    summary: "Vain Mathilde Loisel loses a borrowed diamond necklace at a ministry ball; she and her husband endure 10 years of grueling poverty to replace it, only to learn the original was inexpensive imitation paste."
+    summary: "Matilda Loisel, a pretty but discontented woman married to a clerk, borrows a diamond necklace from her rich friend Mme Forestier to wear at a ball at the Ministry, and loses it. She and her husband buy a replacement for 36,000 francs, borrowing heavily, and spend ten years in hard work and poverty to repay the debt. Later she meets Mme Forestier and learns the original necklace was an imitation worth at most 500 francs. Themes: vanity and pride, honesty, the cost of appearances, irony. (NCERT spells her name Matilda.)"
   },
   "bholi": {
     title: "Bholi (K.A. Abbas)",
@@ -754,7 +754,7 @@ export const LITERATURE_SUMMARIES = {
     type: "Prose",
     book: "Footprints Without Feet",
     grade: "Class 10",
-    summary: "Humorous 25th-century play where foolish Martian invader Think-Tank misinterprets earthly nursery rhymes in 'Mother Goose' as advanced secret warfare codes, fleeing Mars in panic."
+    summary: "A humorous play: a historian of the 25th century tells how Earth was saved in the twenty-first century. Think-Tank, the vain, big-headed ruler of Mars, plans to invade Earth and orders his crew (Captain Omega, Lieutenant Iota, Sergeant Oop) to study an Earth 'sandwich-book' they find in a library: Mother Goose nursery rhymes. With his assistant Noodle he misreads the rhymes ('Humpty Dumpty', 'Mary Had a Little Lamb', 'Hey Diddle Diddle') as secret codes about Earth's power, panics, calls off the invasion and orders the Martians to flee. Themes: humour, the folly of arrogance, the power of books."
   },
 
   // ==========================================
